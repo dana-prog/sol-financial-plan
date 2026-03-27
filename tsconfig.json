@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "types-tmp",
+    "types": ["google-apps-script"],
+    "lib": ["ES2020"]
+  },
+}
