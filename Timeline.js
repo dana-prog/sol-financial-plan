@@ -37,6 +37,14 @@ function syncTimelineConstructionParams(unitTypes) {
   SOLLibrary.alert('Done', `'${TIMELINE_CONSTRUCTION_PLAN_CATEGORY}' params and '${TIMELINE_CONSTRUCTION_COSTS_CATEGORY}' params in the 'Timeline' sheet were synced according to the unit types in the 'Construction Costs' sheet`)
 }
 
+function getTotalUnitCount(unitType) {
+  const paramName = unitType + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX;
+  const paramValuesRange = _getParamValuesRange(paramName);
+  return paramValuesRange
+    .getValues()[0]
+    .reduce((acc, val) => acc + val, 0);
+}
+
 function _updateTimelineParam(oldName, newName, numberFormat) {
   // set the param name
   _getParamNameRange(oldName).setValue(newName);
@@ -67,7 +75,6 @@ function _getParamRange(paramName, startCol, colCount) {
 }
 
 function _getTimelineParamRowNumber(paramName) {
-  SOLLibrary.log('Timeline', 'getTimelineParamRowNumber', '1');
   const sheet = _getTimelineSheet();
   const values = sheet
     .getRange(TIMELINE_HEADER_ROW_NUM + 1,
@@ -76,20 +83,12 @@ function _getTimelineParamRowNumber(paramName) {
     .getValues()
     .flat();
 
-
-  SOLLibrary.log('Timeline', 'getTimelineParamRowNumber', '2');
-
   const paramIndex = values.indexOf(paramName);
   if (paramIndex === -1) {
     throw new Error(`Parameter '${paramName}' does not exist in the Timeline sheet`);
   }
 
-  const paramRow = paramIndex + TIMELINE_HEADER_ROW_NUM + 1;
-
-  SOLLibrary.log('Timeline', 'getTimelineParamRowNumber', '3');
-
-
-  return paramRow;
+  return paramIndex + TIMELINE_HEADER_ROW_NUM + 1;
 }
 
 function _syncTimelineConstructionParams(category, paramPostfix, unitTypes, getValueFormat) {
