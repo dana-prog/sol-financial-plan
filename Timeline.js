@@ -37,7 +37,7 @@ function syncTimelineConstructionParams(unitTypes) {
   SOLLibrary.alert('Done', `'${TIMELINE_CONSTRUCTION_PLAN_CATEGORY}' params and '${TIMELINE_CONSTRUCTION_COSTS_CATEGORY}' params in the 'Timeline' sheet were synced according to the unit types in the 'Construction Costs' sheet`)
 }
 
-function getTotalUnitCount(unitType) {
+function getTimelineTotalUnitCount(unitType) {
   const paramName = unitType + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX;
   const paramValuesRange = _getParamValuesRange(paramName);
   return paramValuesRange
