@@ -20,6 +20,23 @@ function updateTimelineConstructionParams(oldUnitType, newUnitType) {
   );
 }
 
+function syncTimelineConstructionParams(unitTypes) {
+  _syncTimelineConstructionParams(
+    TIMELINE_CONSTRUCTION_PLAN_CATEGORY,
+    TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX,
+    unitTypes,
+    _getUnitCountNumberFormat,
+  );
+
+  _syncTimelineConstructionParams(
+    TIMELINE_CONSTRUCTION_COSTS_CATEGORY,
+    TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX,
+    unitTypes
+  );
+
+  SOLLibrary.alert('Done', `'${TIMELINE_CONSTRUCTION_PLAN_CATEGORY}' params and '${TIMELINE_CONSTRUCTION_COSTS_CATEGORY}' params in the 'Timeline' sheet were synced according to the unit types in the 'Construction Costs' sheet`)
+}
+
 function _updateTimelineParam(oldName, newName, numberFormat) {
   // set the param name
   _getParamNameRange(oldName).setValue(newName);
@@ -45,11 +62,11 @@ function _getParamNameRange(paramName) {
 
 function _getParamRange(paramName, startCol, colCount) {
   const sheet = _getTimelineSheet();
-  const rowNum = getTimelineParamRowNumber(paramName);
+  const rowNum = _getTimelineParamRowNumber(paramName);
   return sheet.getRange(rowNum, startCol, 1, colCount);
 }
 
-function getTimelineParamRowNumber(paramName) {
+function _getTimelineParamRowNumber(paramName) {
   SOLLibrary.log('Timeline', 'getTimelineParamRowNumber', '1');
   const sheet = _getTimelineSheet();
   const values = sheet
@@ -73,23 +90,6 @@ function getTimelineParamRowNumber(paramName) {
 
 
   return paramRow;
-}
-
-function syncTimelineConstructionParams(unitTypes) {
-  _syncTimelineConstructionParams(
-    TIMELINE_CONSTRUCTION_PLAN_CATEGORY,
-    TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX,
-    unitTypes,
-    _getUnitCountNumberFormat,
-  );
-
-  _syncTimelineConstructionParams(
-    TIMELINE_CONSTRUCTION_COSTS_CATEGORY,
-    TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX,
-    unitTypes
-  );
-
-  SOLLibrary.alert('Done', `'${TIMELINE_CONSTRUCTION_PLAN_CATEGORY}' params and '${TIMELINE_CONSTRUCTION_COSTS_CATEGORY}' params in the 'Timeline' sheet were synced according to the unit types in the 'Construction Costs' sheet`)
 }
 
 function _syncTimelineConstructionParams(category, paramPostfix, unitTypes, getValueFormat) {
