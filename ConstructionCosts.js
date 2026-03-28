@@ -1,5 +1,5 @@
-const CONSTRUCTION_COSTS_SHEET_NAME = '_Construction Costs';
-const CONSTRUCTION_COSTS_TYPE_COLUMN_HEADER = 'type';
+const CONSTRUCTION_COSTS_SHEET_NAME = 'Construction Costs';
+const CONSTRUCTION_COSTS_TYPE_COLUMN_HEADER = 'unit type';
 
 function getConstructionCostsTypeColRange() {
   return SOLLibrary.getColumnRange(CONSTRUCTION_COSTS_SHEET_NAME, CONSTRUCTION_COSTS_TYPE_COLUMN_HEADER, false);

@@ -1,4 +1,4 @@
-const TIMELINE_SHEET_NAME = '_Timeline';
+const TIMELINE_SHEET_NAME = 'Timeline';
 const TIMELINE_CATEGORY_COLUMN_NUMBER = 1;
 const TIMELINE_PARAM_NAME_COLUMN_NUMBER = 2;
 const TIMELINE_FIRST_QUARTER_COLUMN_NUMBER = 3;
@@ -8,99 +8,19 @@ const TIMELINE_CONSTRUCTION_COSTS_CATEGORY = 'Construction Costs';
 const TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX = ' construction count';
 const TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX = ' construction cost';
 
-function syncTimelineConstructionParams(unitTypes) {
-  _syncTimelineConstructionParams()
-}
-
-function _syncTimelineConstructionParams(category, paramPostfix, unitTypes) {
-  const params = _getCategoryParams(TIMELINE_CONSTRUCTION_PLAN_CATEGORY);
-  const expectedParams = unitTypes.map(unitType => unitType + paramPostfix);
-  if (params.join() === expectedParams.join()) {
-    return;
-  }
-
-
-}
-
-function addTimelineConstructionTypeParams(type, paramPosition) {
-  addTimelineParam(
-    TIMELINE_CONSTRUCTION_PLAN_CATEGORY,
-    type + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX,
-    paramPosition
+function updateTimelineConstructionParams(oldUnitType, newUnitType) {
+  _updateTimelineParam(
+    oldUnitType + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX,
+    newUnitType + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX,
+    `[=1]0 "${newUnitType}";0 "${newUnitType}s"`
   );
-
-  _getParamValuesRange(type + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX).setNumberFormat(`[=1]0 "${type}";0 "${type}s"`);
-
-  addTimelineParam(
-    TIMELINE_CONSTRUCTION_COSTS_CATEGORY,
-    type + TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX,
-    paramPosition
+  _updateTimelineParam(
+    oldUnitType + TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX,
+    newUnitType + TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX
   );
 }
 
-function updateTimelineUnitTypeParams(oldType, newType) {
-  updateTimelineParam(
-    oldType + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX,
-    newType + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX,
-    `[=1]0 "${newType}";0 "${newType}s"`
-  );
-  updateTimelineParam(
-    oldType + TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX,
-    newType + TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX
-  )
-}
-
-function removeTimelineConstructionTypeParams(typeIndex) {
-  removeTimelineParam(TIMELINE_CONSTRUCTION_PLAN_CATEGORY, typeIndex);
-  removeTimelineParam(TIMELINE_CONSTRUCTION_COSTS_CATEGORY, typeIndex);
-}
-
-function addTimelineParam(category, paramName, paramPosition) {
-  SOLLibrary.log('Timeline', 'addTimelineParam', '1');
-
-  const sheet = _getTimelineSheet();
-  const {
-    categoryStartRow,
-    categoryEndRow,
-  } = _getCategoryRowBoundaries(category);
-
-  const categoryParamCount = categoryEndRow - categoryStartRow + 1;
-  const colCount = sheet.getLastColumn();
-  const newRowNum = categoryStartRow + paramPosition - 1;
-  const newRowValues = Array(colCount).fill(0);
-  newRowValues[TIMELINE_CATEGORY_COLUMN_NUMBER - 1] = TIMELINE_CONSTRUCTION_PLAN_CATEGORY;
-  newRowValues[TIMELINE_PARAM_NAME_COLUMN_NUMBER - 1] = paramName;
-
-  SOLLibrary.log('Timeline', 'addTimelineParam', '2');
-
-  sheet.insertRowBefore(newRowNum);
-  const newRowRange = sheet.getRange(newRowNum, 1, 1, colCount).setValues([newRowValues]);
-
-  if (paramPosition === 1 || paramPosition === categoryParamCount + 1) {
-    // if the row was added first or last - make sure all lines are merged for the category cell
-    sheet
-      .getRange(categoryStartRow, TIMELINE_CATEGORY_COLUMN_NUMBER, categoryParamCount + 1, 1)
-      .merge();
-  }
-
-  if (paramPosition === 1) {
-    // if this is the last param it will be created with a top border so cancel them
-    newRowRange.setBorder(true, true, false, null, null, null, '#666666',
-      SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-  }
-
-  if (paramPosition === categoryParamCount + 1) {
-    // if this is the last param it will be created with a top border so cancel them
-    newRowRange.setBorder(false, true, null, null, null, null, '#666666',
-      SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-  }
-
-  SOLLibrary.log('Timeline', 'addTimelineParam', '3');
-
-  return newRowNum;
-}
-
-function updateTimelineParam(oldName, newName, numberFormat) {
+function _updateTimelineParam(oldName, newName, numberFormat) {
   // set the param name
   _getParamNameRange(oldName).setValue(newName);
   const paramValuesRange = _getParamValuesRange(newName);
@@ -110,27 +30,23 @@ function updateTimelineParam(oldName, newName, numberFormat) {
   }
 }
 
-function removeTimelineParam(category, paramIndex) {
-  SOLLibrary.log('Timeline', 'removeTimelineParam', '1');
+function _getParamValuesRange(paramName) {
   const sheet = _getTimelineSheet();
 
-  const {categoryStartRow} = _getCategoryRowBoundaries(TIMELINE_CONSTRUCTION_PLAN_CATEGORY);
-  SOLLibrary.log('Timeline', 'removeTimelineParam', '2');
-  const paramRowNum = categoryStartRow + paramIndex;
-  sheet.deleteRow(paramRowNum);
+  return _getParamRange(
+    paramName,
+    TIMELINE_FIRST_QUARTER_COLUMN_NUMBER,
+    sheet.getLastColumn() - TIMELINE_FIRST_QUARTER_COLUMN_NUMBER + 1);
+}
 
-  if (paramRowNum === categoryStartRow) {
-    SOLLibrary.log('Timeline', 'removeTimelineParam', '3');
-    sheet
-      .getRange(paramRowNum, 1, 1, sheet.getLastColumn())
-      .setBorder(true, true, false, null, null, null, '#666666', SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-    SOLLibrary.log('Timeline', 'removeTimelineParam', '4');
-    sheet
-      .getRange(paramRowNum, TIMELINE_CATEGORY_COLUMN_NUMBER, 1, 1)
-      .setValue(category);
-  }
+function _getParamNameRange(paramName) {
+  return _getParamRange(paramName, TIMELINE_PARAM_NAME_COLUMN_NUMBER, 1);
+}
 
-  SOLLibrary.log('Timeline', 'removeTimelineParam', '5');
+function _getParamRange(paramName, startCol, colCount) {
+  const sheet = _getTimelineSheet();
+  const rowNum = getTimelineParamRowNumber(paramName);
+  return sheet.getRange(rowNum, startCol, 1, colCount);
 }
 
 function getTimelineParamRowNumber(paramName) {
@@ -159,38 +75,123 @@ function getTimelineParamRowNumber(paramName) {
   return paramRow;
 }
 
-function _getTimelineSheet() {
-  return SpreadsheetApp.getActiveSpreadsheet().getSheetByName(TIMELINE_SHEET_NAME);
+function syncTimelineConstructionParams(unitTypes) {
+  _syncTimelineConstructionParams(
+    TIMELINE_CONSTRUCTION_PLAN_CATEGORY,
+    TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX,
+    unitTypes,
+    _getUnitCountNumberFormat,
+  );
+
+  _syncTimelineConstructionParams(
+    TIMELINE_CONSTRUCTION_COSTS_CATEGORY,
+    TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX,
+    unitTypes
+  );
+
+  SOLLibrary.alert('Done', `'${TIMELINE_CONSTRUCTION_PLAN_CATEGORY}' params and '${TIMELINE_CONSTRUCTION_COSTS_CATEGORY}' params in the 'Timeline' sheet were synced according to the unit types in the 'Construction Costs' sheet`)
 }
 
-function _getParamRowRange(paramName) {
+function _syncTimelineConstructionParams(category, paramPostfix, unitTypes, getValueFormat) {
+  const oldParamNames = _getCategoryParamNames(category);
+  const newParamNames = unitTypes.map(unitType => unitType + paramPostfix);
+
+  if (oldParamNames.join() === newParamNames.join()) {
+    return;
+  }
+
+  _syncCategoryRowCount(category, newParamNames.length);
+  _fillCategoryNewValues(category, newParamNames);
+  getValueFormat && _setValuesNumberFormat(category, unitTypes, getValueFormat);
+}
+
+function _syncCategoryRowCount(category, expectedParamCount) {
   const sheet = _getTimelineSheet();
-  return _getParamRange(paramName, 1, sheet.getLastColumn());
+  const {
+    categoryStartRow,
+    categoryEndRow
+  } = _getCategoryRowBoundaries(category);
+  const actualParamCount = categoryEndRow - categoryStartRow + 1;
+
+  if (actualParamCount === expectedParamCount) {
+    return;
+  }
+
+  const paramCountDiff = expectedParamCount - actualParamCount;
+  if (paramCountDiff > 0) {
+    sheet.insertRows(categoryStartRow, paramCountDiff);
+    // merge the inserted rows with the existing category rows in the category column
+    sheet
+      .getRange(categoryStartRow, TIMELINE_CATEGORY_COLUMN_NUMBER, expectedParamCount, 1)
+      .merge();
+
+  } else if (paramCountDiff < 0) {
+    sheet.deleteRows(categoryStartRow, paramCountDiff);
+  }
+
+  // set the border of the category
+  // (since we might have added a row at the beginning of the category without a border or removed the last row which had a border)
+  const startRowRange = sheet.getRange(categoryStartRow, 1, 1, sheet.getLastColumn());
+  startRowRange.setBorder(categoryStartRow > TIMELINE_HEADER_ROW_NUM + 1, true, expectedParamCount === 1, true, null, null, '#666666', SpreadsheetApp.BorderStyle.SOLID_THICK);
+
+  // const endRowRange = sheet.getRange(
+  //   categoryStartRow + totalRowsAfterSync - 1,
+  //   1,
+  //   1,
+  //   sheet.getLastColumn()
+  // );
+  // endRowRange.setBorder(
+  //   totalRowsAfterSync === 1,
+  //   true,
+  //   true,
+  //   true,
+  //   null,
+  //   null,
+  //   '#666666',
+  //   SpreadsheetApp.BorderStyle.SOLID_THICK
+  // );
 }
 
-function _getParamValuesRange(paramName) {
+function _fillCategoryNewValues(category, newParamNames) {
+  const oldParamsQuarterValues = _getCategoryParamsQuarterValues(category);
   const sheet = _getTimelineSheet();
+  const numOfTimelineQuarters = sheet.getLastColumn() - TIMELINE_PARAM_NAME_COLUMN_NUMBER;
 
-  return _getParamRange(
-    paramName,
-    TIMELINE_FIRST_QUARTER_COLUMN_NUMBER,
-    sheet.getLastColumn() - TIMELINE_FIRST_QUARTER_COLUMN_NUMBER + 1);
+  const newCategoryRange = _getCategoryRange(category);
+
+  const newValues = newParamNames.map((name) => {
+    const oldParamValues = oldParamsQuarterValues[name];
+    const paramTimelineValues = oldParamValues || Array(numOfTimelineQuarters).fill(0);
+    newCategoryRange.clearContent();
+    return [category, name, ...paramTimelineValues];
+  });
+
+  newCategoryRange.setValues(newValues);
 }
 
-function _getParamNameRange(paramName) {
-  return _getParamRange(paramName, TIMELINE_PARAM_NAME_COLUMN_NUMBER, 1);
-}
-
-function _getParamRange(paramName, startCol, colCount) {
+function _setValuesNumberFormat(category, unitTypes, getValueFormat) {
   const sheet = _getTimelineSheet();
-  const rowNum = getTimelineParamRowNumber(paramName);
-  return sheet.getRange(rowNum, startCol, 1, colCount);
+  const numOfTimelineQuarters = sheet.getLastColumn() - TIMELINE_PARAM_NAME_COLUMN_NUMBER;
+  const formats = [];
+
+  for (let i = 0; i < unitTypes.length; i++) {
+    const unitType = unitTypes[i];
+    const format = getValueFormat(unitType);
+    formats.push(Array(numOfTimelineQuarters).fill(format));
+  }
+
+  const {
+    categoryStartRow,
+    categoryEndRow
+  } = _getCategoryRowBoundaries(category);
+  const range = sheet.getRange(categoryStartRow, TIMELINE_FIRST_QUARTER_COLUMN_NUMBER, categoryEndRow - categoryStartRow + 1, numOfTimelineQuarters);
+  range.setNumberFormats(formats);
 }
 
 function _getCategoryRowBoundaries(category) {
   const sheet = _getTimelineSheet();
-  const cell = sheet.getRange(TIMELINE_HEADER_ROW_NUM + 1, TIMELINE_CATEGORY_COLUMN_NUMBER, sheet.getLastRow(),
-    sheet.getLastColumn()).createTextFinder(category).findNext();
+  const cell = sheet.getRange(TIMELINE_HEADER_ROW_NUM + 1, TIMELINE_CATEGORY_COLUMN_NUMBER, sheet.getLastRow(), sheet.getLastColumn())
+    .createTextFinder(category).findNext();
 
   if (!cell) return null;
 
@@ -209,50 +210,64 @@ function _getCategoryRowBoundaries(category) {
   };
 }
 
-function _getCategoryParams(category) {
+function _getCategoryRange(category) {
   const sheet = _getTimelineSheet();
   const {
     categoryStartRow,
     categoryEndRow
   } = _getCategoryRowBoundaries(category);
 
-  const paramNamesRange = sheet.getRange(
+  return sheet.getRange(categoryStartRow, 1, categoryEndRow - categoryStartRow + 1, sheet.getLastColumn());
+}
+
+function _getCategoryParamNames(category) {
+  const sheet = _getTimelineSheet();
+  const {
     categoryStartRow,
-    TIMELINE_PARAM_NAME_COLUMN_NUMBER,
-    categoryEndRow - categoryStartRow + 1,
-    1
-  );
+    categoryEndRow
+  } = _getCategoryRowBoundaries(category);
 
-  return paramNamesRange.getValues().flat();
+  return sheet
+    .getRange(categoryStartRow, TIMELINE_PARAM_NAME_COLUMN_NUMBER, categoryEndRow - categoryStartRow + 1, 1)
+    .getValues()
+    .flat();
 }
 
-function validateUnitTypesParamsSync(types) {
-  const expectedConstructionPlanParams = types.map(type => type + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX);
-  const expectedConstructionCostParams = types.map(type => type + TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX);
-  const actualConstructionPlanParams = _getCategoryParams(TIMELINE_CONSTRUCTION_PLAN_CATEGORY);
-  const actualConstructionCostParams = _getCategoryParams(TIMELINE_CONSTRUCTION_COSTS_CATEGORY);
+function _getCategoryParamsQuarterValues(category) {
+  const sheet = _getTimelineSheet();
+  const numOfTimelineQuarters = sheet.getLastColumn() - TIMELINE_PARAM_NAME_COLUMN_NUMBER;
+  const categoryRange = _getCategoryRange(category);
+  const oldValues = categoryRange.getValues();
+  // assumption: either all cells of a category contain the same formula or none contains any formula
+  // take the formula from the 1st cell in the 1st row
+  const oldFormulaValue = categoryRange.getFormulas()[0][TIMELINE_FIRST_QUARTER_COLUMN_NUMBER];
 
-  _assertArraysMatch(expectedConstructionPlanParams, actualConstructionPlanParams);
-  _assertArraysMatch(expectedConstructionCostParams, actualConstructionCostParams);
+  const res = {};
+
+  oldValues.forEach((rowValues) => {
+    const paramName = rowValues[TIMELINE_PARAM_NAME_COLUMN_NUMBER - 1];
+
+    res[paramName] = oldFormulaValue
+      ? Array(numOfTimelineQuarters).fill(oldFormulaValue)
+      : rowValues.slice(TIMELINE_PARAM_NAME_COLUMN_NUMBER);
+  });
+
+  return res;
 }
 
-function _assertArraysMatch(expected, actual) {
-  SOLLibrary.log('Timeline', '_assertArraysMatch', '1');
+function _getUnitCountNumberFormat(unitType) {
+  const abbreviation = _getUnitTypeAbbreviation(unitType);
+  return `[=1]0 "${abbreviation}";0 "${abbreviation}s"`;
+}
 
-  const expectedSet = new Set(expected);
-  const actualSet = new Set(actual);
+function _getUnitTypeAbbreviation(unitType) {
+  return unitType
+    .replace(/ area$/, '')
+    .replace(/ and$/, '')
+    .replace('surroundings', 'surr')
+    .replace(/\(\d+\)$/, '').trim();
+}
 
-  SOLLibrary.log('Timeline', '_assertArraysMatch', '2');
-
-  const missing = expected.filter(x => !actualSet.has(x));
-  const extra = actual.filter(x => !expectedSet.has(x));
-
-  if (missing.length || extra.length) {
-    SOLLibrary.log('Timeline', '_assertArraysMatch', '3');
-    throw new Error(
-      (missing.length ? `Missing: ${missing.join(', ')}\n` : '') +
-      (extra.length ? `Extra: ${extra.join(', ')}` : '')
-    );
-  }
-  SOLLibrary.log('Timeline', '_assertArraysMatch', '3');
+function _getTimelineSheet() {
+  return SpreadsheetApp.getActiveSpreadsheet().getSheetByName(TIMELINE_SHEET_NAME);
 }
