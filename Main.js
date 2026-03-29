@@ -1,4 +1,3 @@
-
 /**
  * An event handler called when the spreadsheet is opened. Initializes the SOL menu.
  */
@@ -7,14 +6,6 @@ function onOpen() {
   _createMenu();
 }
 
-function onEdit(event) {
-  const oldValue = event.oldValue;
-  const newValue = event.value;
-
-  if (oldValue !== newValue && oldValue !== '' && newValue !== '') {
-    updateTimelineConstructionParams(oldValue, newValue);
-  }
-}
 /**
  * Creates the SOL menu.
  * @private
