@@ -1,5 +1,7 @@
 const CONSTRUCTION_COSTS_SHEET_NAME = 'Construction Costs';
+const CONSTRUCTION_COSTS_SHEET_ID = 1436796628;
 const CONSTRUCTION_COSTS_UNIT_TYPE_COLUMN_HEADER = 'unit type';
+const CONSTRUCTION_COSTS_UNIT_TYPE_COLUMN_NUMBER = 2;
 const CONSTRUCTION_COSTS_UNIT_COUNT_COLUMN_HEADER = 'unit plan';
 
 function getConstructionCostsTypeColRange() {
@@ -30,7 +32,6 @@ function getConstructionCostsTotalUnitCount(unitTypeNameOrRow) {
     .getColumnValues(CONSTRUCTION_COSTS_SHEET_NAME, CONSTRUCTION_COSTS_UNIT_COUNT_COLUMN_HEADER, false)[unitTypeIndex];
 }
 
-function _getConstructionCostsSheet() {
-  return SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONSTRUCTION_COSTS_SHEET_NAME);
+function getConstructionCostsSheet() {
+  return SpreadsheetApp.getActiveSpreadsheet().getSheetById(CONSTRUCTION_COSTS_SHEET_ID);
 }
-
