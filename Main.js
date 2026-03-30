@@ -6,6 +6,7 @@ function onOpen() {
   _createMenu();
 }
 
+// using installable edit triggers instead of onEdit since onEdit has a 30-seconds timeout
 // noinspection JSUnusedGlobalSymbols
 function onInstallableEdit(event) {
   const oldValue = event.oldValue;
@@ -13,28 +14,20 @@ function onInstallableEdit(event) {
   const sheetId = event.range.getSheet().getSheetId();
   const col = event.range.getColumn();
 
-  SOLLibrary.logArgs('Main', 'onEdit', {oldValue, newValue, sheetId, col});
-
-  const unitTypeCol = SOLLibrary.getColNumByHeader(getConstructionCostsSheet(), CONSTRUCTION_COSTS_UNIT_TYPE_COLUMN_HEADER);
-  SOLLibrary.logArgs('Main', 'onEdit', {unitTypeCol});
-
   if (
     sheetId === CONSTRUCTION_COSTS_SHEET_ID
     && (oldValue !== newValue && oldValue !== '' && newValue !== '')
-    && col === unitTypeCol
+    && col === SOLLibrary.getColNumByHeader(getConstructionCostsSheet(), CONSTRUCTION_COSTS_UNIT_TYPE_COLUMN_HEADER)
   ) {
     SOLLibrary.log('Main', 'onEdit', `unit type changed from '${oldValue}' to '${newValue}'`);
     // unit type was changed -> update timeline construction params
     updateTimelineConstructionParams(oldValue, newValue);
   }
 
-  const roleCol = SOLLibrary.getColNumByHeader(getStaffSheet(), STAFF_ROLE_COLUMN_HEADER);
-  SOLLibrary.logArgs('Main', 'onEdit', {roleCol});
-
   if (
     sheetId === STAFF_SHEET_ID
     && (oldValue !== newValue && oldValue !== '' && newValue !== '')
-    && col === roleCol
+    && col === SOLLibrary.getColNumByHeader(getStaffSheet(), STAFF_ROLE_COLUMN_HEADER)
   ) {
     SOLLibrary.log('Main', 'onEdit', `role changed from '${oldValue}' to '${newValue}'`);
     // role was changed -> update timeline staff params
