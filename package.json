@@ -1,8 +1,5 @@
 {
   "devDependencies": {
     "@types/google-apps-script": "^2.0.8"
-  },
-  "scripts": {
-    "deploy": "clasp push && git add . && git commit -m \"$npm_config_msg\" && git push"
   }
 }
