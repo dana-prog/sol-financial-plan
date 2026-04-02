@@ -63,7 +63,16 @@ const SYNC_MAPPINGS = [
 function updateTimelineParamNames(editEvent) {
   const srcSheetId = editEvent.range.getSheet().getSheetId();
   const srcCol = editEvent.range.getColumn();
+  const oldValue = editEvent.oldValue;
+  const newValue = editEvent.value;
   const syncMapping = this._findSyncMapping(srcSheetId, srcCol);
+  SOLLibrary.logArgs('TimelineParamsSync', 'updateTimelineParamNames', {
+    srcSheetId,
+    srcCol,
+    oldValue,
+    newValue,
+    syncMapping
+  });
   if (!syncMapping) {
     return;
   }
@@ -75,9 +84,9 @@ function updateTimelineParamNames(editEvent) {
     Object.values(syncMapping.target.categories).forEach(category => {
       this._updateTimelineParamName(
         targetSheet,
-        editEvent.oldValue + category.paramPostfix,
-        editEvent.value + category.paramPostfix,
-        category.numberFormatCallback && category.numberFormatCallback(editEvent.value)
+        oldValue + category.paramPostfix,
+        newValue + category.paramPostfix,
+        category.numberFormatCallback && category.numberFormatCallback(newValue)
       );
     });
   });
@@ -101,7 +110,11 @@ function _updateTimelineParamName(sheet, oldName, newName, numberFormat) {
       return;
     }
 
-    SOLLibrary.logArgs('TimelineParamsSync', {oldName, newName, paramRowNum});
+    SOLLibrary.logArgs('TimelineParamsSync', '_updateTimelineParamName', {
+      oldName,
+      newName,
+      paramRowNum
+    });
 
     let paramNameRange;
     paramNameRange = sheet.getRange(paramRowNum, TIMELINE_PARAM_NAME_COLUMN_NUMBER);
