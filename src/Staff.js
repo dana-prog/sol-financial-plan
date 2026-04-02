@@ -1,2 +1,0 @@
-const STAFF_SHEET_ID = 1162211165;
-const STAFF_ROLE_COLUMN_HEADER = 'role';

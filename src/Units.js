@@ -1,18 +1,5 @@
 
-function onEditConstructionCostsSheet(oldValue, newValue, rowNum, colNum) {
-  if (oldValue && newValue && colNum === getUnitTypeColNum()) {
-    // unit type was changed -> update timeline construction params
-    updateTimelineConstructionParams(oldValue, newValue);
-  }
-}
-
-function getUnitTypes() {
-  const sheet = getConstructionCostsSheet();
-  const colRange = sheet.getRange(2, getUnitTypeColNum(), sheet.getLastRow() - 1, 1);
-  return [].concat.apply([], colRange.getValues());
-}
-
-function getConstructionCostsSheet() {
+function getUnitsSheet() {
   return SpreadsheetApp.getActiveSpreadsheet().getSheetById(UNITS_SHEET_ID);
 }
 

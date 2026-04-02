@@ -1,4 +1,4 @@
-const COLUMN_HEADERS_TO_NUMS_PROPERTY_NAME = 'columnHeadersToNums';
+const _COLUMN_HEADERS_TO_NUMS_PROPERTY_NAME = 'columnHeadersToNums';
 let colMapping;
 
 function persistSheetsColumnsMap() {
@@ -27,13 +27,13 @@ function persistSheetsColumnsMap() {
 
   PropertiesService
     .getDocumentProperties()
-    .setProperty(COLUMN_HEADERS_TO_NUMS_PROPERTY_NAME, JSON.stringify(mapping));
+    .setProperty(_COLUMN_HEADERS_TO_NUMS_PROPERTY_NAME, JSON.stringify(mapping));
 
   SOLLibrary.logArgs(
     'persistColumnHeadersToNums',
     'columnHeadersToNums',
     mapping,
-    `Property: ${COLUMN_HEADERS_TO_NUMS_PROPERTY_NAME} was set`);
+    `Property: ${_COLUMN_HEADERS_TO_NUMS_PROPERTY_NAME} was set`);
 }
 
 function getColumnNumByHeader(sheetId, header) {
@@ -47,7 +47,7 @@ function getColumnHeaderByNum(sheetId, num) {
 function _getColumnMapValue(sheetId, key) {
   if (!colMapping) {
     colMapping = JSON.parse(
-      PropertiesService.getDocumentProperties().getProperty(COLUMN_HEADERS_TO_NUMS_PROPERTY_NAME));
+      PropertiesService.getDocumentProperties().getProperty(_COLUMN_HEADERS_TO_NUMS_PROPERTY_NAME));
   }
 
   if (!colMapping) {
