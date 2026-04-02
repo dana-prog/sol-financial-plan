@@ -14,7 +14,6 @@ function onInstallableOpen(e) {
 function onInstallableEdit(e) {
   SOLLibrary.debugDuration('onInstallableEdit', () => {
     updateTimelineParamNames(e);
-
   });
 }
 
