@@ -24,26 +24,9 @@ function onInstallableEdit(e) {
 function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     // .addItem('Debug', '_debug')
-    .addItem('Sync Timeline Construction Params', '_onSyncTimelineConstructionParams')
-    .addItem('Sync Timeline Staff Params', '_onSyncTimelineStaffParams')
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
     .addItem('Toggle Write Logs to File', '_onToggleWriteLogsToFile')
     .addToUi();
-}
-
-function _onSyncTimelineConstructionParams() {
-  const unitTypes = getUnitTypes();
-  syncTimelineConstructionParams(unitTypes);
-  SOLLibrary.alert('Done',
-    `'${TIMELINE_UNITS_COUNT_CATEGORY}' and '${TIMELINE_UNITS_COSTS_CATEGORY}' params in the 'Timeline' sheet were synced according to the unit types in the 'Construction Costs' sheet`)
-}
-
-function _onSyncTimelineStaffParams() {
-  const staffRoles = getStaffRoles();
-  syncTimelineStaffParams(staffRoles);
-  SOLLibrary.alert('Done',
-    `'${TIMELINE_STAFF_CATEGORY}', '${TIMELINE_MONTHLY_NET_SALARIES_CATEGORY}' and '${TIMELINE_NET_SALARIES_CATEGORY}' params in the 'Timeline' sheet were synced according to the unit types in the 'Construction Costs' sheet`)
-
 }
 
 function _onExportValuesXSLX() {

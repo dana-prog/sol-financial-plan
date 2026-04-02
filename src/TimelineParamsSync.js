@@ -52,8 +52,8 @@ const SYNC_MAPPINGS = [
       sheetId: MAIN_TIMELINE_SHEET_ID,
       categories: [
         {
-          name: INFRASTRUCTURE_COSTS_CATEGORY,
-          paramPostfix: INFRASTRUCTURE_COSTS_PARAM_POSTFIX,
+          name: TIMELINE_INFRASTRUCTURE_COSTS_CATEGORY,
+          paramPostfix: TIMELINE_INFRASTRUCTURE_COSTS_PARAM_POSTFIX,
         },
       ]
     }
