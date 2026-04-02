@@ -1,16 +1,21 @@
-const TIMELINE_SHEET_ID = 224444304;
+const MAIN_TIMELINE_SHEET_ID = 224444304;
+const CONSTRUCTION_TIMELINE_SHEET_ID = 1618658099;
+const INFRASTRUCTURE_TIMELINE_SHEET_ID = 374017605;
+const UNITS_SHEET_ID = 1436796628;
+const UNITS_UNIT_TYPE_COLUMN_HEADER = 'unit type';
 
 const TIMELINE_CATEGORY_COLUMN_NUMBER = 1;
 const TIMELINE_PARAM_NAME_COLUMN_NUMBER = 2;
+const TIMELINE_CATEGORY_COLUMN_HEADER = 'category';
 const TIMELINE_FIRST_QUARTER_COLUMN_NUMBER = 3;
 const TIMELINE_HEADER_ROW_NUM = 3;
 
 // categories
-const TIMELINE_CONSTRUCTION_PLAN_CATEGORY = 'Construction Plan';
-const TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX = ' construction count';
+const TIMELINE_UNITS_COUNT_CATEGORY = 'Units Count';
+const TIMELINE_UNITS_COUNT_PARAM_POSTFIX = ' construction count';
 
-const TIMELINE_CONSTRUCTION_COSTS_CATEGORY = 'Construction Costs';
-const TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX = ' construction cost';
+const TIMELINE_UNITS_COSTS_CATEGORY = 'Units Costs';
+const TIMELINE_UNITS_COST_PARAM_POSTFIX = ' construction cost';
 
 const TIMELINE_STAFF_CATEGORY = 'Staff';
 const TIMELINE_STAFF_PARAM_POSTFIX = 's headcount';
@@ -21,63 +26,27 @@ const TIMELINE_MONTHLY_NET_SALARIES_PARAM_POSTFIX = 's monthly net salaries';
 const TIMELINE_NET_SALARIES_CATEGORY = 'Net Salaries';
 const TIMELINE_NET_SALARIES_PARAM_POSTFIX = 's net salaries';
 
+const INFRASTRUCTURE_COSTS_CATEGORY = 'Infrastructure Costs';
+const INFRASTRUCTURE_COSTS_PARAM_POSTFIX = '';
+
 let _timelineSheet = null;
-let _paramsRange = null;
 
-function updateTimelineConstructionParams(oldUnitType, newUnitType) {
-  // Construction Plan Param
-  _updateTimelineParam(
-    oldUnitType + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX,
-    newUnitType + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX,
-    `[=1]0 "${newUnitType}";0 "${newUnitType}s"`
-  );
-
-  // Construction Costs Param
-  _updateTimelineParam(
-    oldUnitType + TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX,
-    newUnitType + TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX
-  );
-}
-
-function updateTimelineStaffParams(oldRoleName, newRoleName) {
-  // Staff Param
-  _updateTimelineParam(
-    oldRoleName + TIMELINE_STAFF_PARAM_POSTFIX,
-    newRoleName + TIMELINE_STAFF_PARAM_POSTFIX,
-    `[=1]0 "${newRoleName}";0 "${newRoleName}s"`
-  );
-
-  // Monthly Net Salaries Param
-  _updateTimelineParam(
-    oldRoleName + TIMELINE_MONTHLY_NET_SALARIES_PARAM_POSTFIX,
-    newRoleName + TIMELINE_MONTHLY_NET_SALARIES_PARAM_POSTFIX
-  );
-
-  // Net Salaries Param
-  _updateTimelineParam(
-    oldRoleName + TIMELINE_NET_SALARIES_PARAM_POSTFIX,
-    newRoleName + TIMELINE_NET_SALARIES_PARAM_POSTFIX
-  );
-}
 
 function syncTimelineConstructionParams(unitTypes) {
   SOLLibrary.debugDuration('syncTimelineConstructionParams', () => {
     _syncTimelineParams(
-      TIMELINE_CONSTRUCTION_PLAN_CATEGORY,
-      TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX,
+      TIMELINE_UNITS_COUNT_CATEGORY,
+      TIMELINE_UNITS_COUNT_PARAM_POSTFIX,
       unitTypes,
       getCountNumberFormat,
     );
 
     _syncTimelineParams(
-      TIMELINE_CONSTRUCTION_COSTS_CATEGORY,
-      TIMELINE_CONSTRUCTION_COST_PARAM_POSTFIX,
+      TIMELINE_UNITS_COSTS_CATEGORY,
+      TIMELINE_UNITS_COST_PARAM_POSTFIX,
       unitTypes
     );
   });
-
-  SOLLibrary.alert('Done',
-    `'${TIMELINE_CONSTRUCTION_PLAN_CATEGORY}' and '${TIMELINE_CONSTRUCTION_COSTS_CATEGORY}' params in the 'Timeline' sheet were synced according to the unit types in the 'Construction Costs' sheet`)
 }
 
 function syncTimelineStaffParams(staffRoles) {
@@ -103,51 +72,6 @@ function syncTimelineStaffParams(staffRoles) {
         staffRoles
       );
     });
-  SOLLibrary.alert('Done',
-    `'${TIMELINE_STAFF_CATEGORY}', '${TIMELINE_MONTHLY_NET_SALARIES_CATEGORY}' and '${TIMELINE_NET_SALARIES_CATEGORY}' params in the 'Timeline' sheet were synced according to the unit types in the 'Construction Costs' sheet`)
-}
-
-function _updateTimelineParam(oldName, newName, numberFormat) {
-  const sheet = getTimelineSheet();
-  const paramRowNum = _getTimelineParamRowNumber(oldName);
-
-
-  if (paramRowNum === -1) {
-    SOLLibrary.log('Timeline', '_updateTimelineParam', `param '${oldName}' does not exist`, 'WARN');
-    return;
-  }
-
-  const paramNameRange = sheet.getRange(paramRowNum, TIMELINE_PARAM_NAME_COLUMN_NUMBER);
-  paramNameRange.setValue(newName);
-
-  if (numberFormat !== undefined) {
-    const paramRange = sheet.getRange(`${paramRowNum}:${paramRowNum}`);
-    paramRange.setNumberFormat(numberFormat);
-  }
-}
-
-function _getParamsRange() {
-  if (!_paramsRange) {
-    const sheet = getTimelineSheet();
-
-    _paramsRange = sheet
-      .getRange(
-        TIMELINE_HEADER_ROW_NUM + 1,
-        TIMELINE_PARAM_NAME_COLUMN_NUMBER,
-        sheet.getLastRow() - TIMELINE_HEADER_ROW_NUM - 1
-      );
-  }
-
-  return _paramsRange;
-}
-
-function _getTimelineParamRowNumber(paramName) {
-  // const values = _getParamsRange().getValues().flat();
-
-  // const paramIndex = values.indexOf(paramName);
-  // return paramIndex === -1 ? paramIndex : paramIndex + TIMELINE_HEADER_ROW_NUM + 1;
-  const cell = _getParamsRange().createTextFinder(paramName).findNext();
-  return cell ? cell.getRow() : -1;
 }
 
 function _syncTimelineParams(category, paramPostfix, baseValues, getValueFormat) {
@@ -321,21 +245,21 @@ function _getCategoryParamsQuarterValues(category) {
   return res;
 }
 
-function _getUnitTypeAbbreviation(unitType) {
-  return unitType
-    .replace(/ area$/, '')
-    .replace(/ and$/, '')
-    .replace('surroundings', 'surr')
-    .replace(/\(\d+\)$/, '').trim();
-}
-
 function getTimelineSheet() {
   if (!_timelineSheet) {
-    _timelineSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetById(TIMELINE_SHEET_ID);
+    _timelineSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetById(MAIN_TIMELINE_SHEET_ID);
   }
 
   return _timelineSheet;
 }
+
+// function _getUnitTypeAbbreviation(unitType) {
+//   return unitType
+//     .replace(/ area$/, '')
+//     .replace(/ and$/, '')
+//     .replace('surroundings', 'surr')
+//     .replace(/\(\d+\)$/, '').trim();
+// }
 
 // function getTimelineTotalUnitCount(unitType) {
 //   const paramName = unitType + TIMELINE_CONSTRUCTION_PLAN_PARAM_POSTFIX;

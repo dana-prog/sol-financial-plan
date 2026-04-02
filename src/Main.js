@@ -3,7 +3,7 @@
 function onInstallableOpen(e) {
   SOLLibrary.debugDuration('onInstallableOpen', () => {
     _createMenu();
-    persistColumnHeadersToNums();
+    persistSheetsColumnsMap();
   });
 }
 
@@ -13,24 +13,8 @@ function onInstallableOpen(e) {
 // noinspection JSUnusedGlobalSymbols
 function onInstallableEdit(e) {
   SOLLibrary.debugDuration('onInstallableEdit', () => {
-    const oldValue = e.oldValue;
-    const newValue = e.value;
-    const sheetId = e.range.getSheet().getSheetId();
-    const row = e.range.getRow();
-    const col = e.range.getColumn();
+    updateTimelineParamNames(e);
 
-    switch (sheetId) {
-      case CONSTRUCTION_COSTS_SHEET_ID:
-        SOLLibrary.debugDuration('onEditConstructionCostsSheet', () => {
-          onEditConstructionCostsSheet(oldValue, newValue, row, col);
-        });
-        break;
-      case STAFF_SHEET_ID:
-        SOLLibrary.debugDuration('onEditStaffSheet', () => {
-          onEditStaffSheet(oldValue, newValue, row, col);
-        });
-        break;
-    }
   });
 }
 
@@ -51,11 +35,16 @@ function _createMenu() {
 function _onSyncTimelineConstructionParams() {
   const unitTypes = getUnitTypes();
   syncTimelineConstructionParams(unitTypes);
+  SOLLibrary.alert('Done',
+    `'${TIMELINE_UNITS_COUNT_CATEGORY}' and '${TIMELINE_UNITS_COSTS_CATEGORY}' params in the 'Timeline' sheet were synced according to the unit types in the 'Construction Costs' sheet`)
 }
 
 function _onSyncTimelineStaffParams() {
   const staffRoles = getStaffRoles();
   syncTimelineStaffParams(staffRoles);
+  SOLLibrary.alert('Done',
+    `'${TIMELINE_STAFF_CATEGORY}', '${TIMELINE_MONTHLY_NET_SALARIES_CATEGORY}' and '${TIMELINE_NET_SALARIES_CATEGORY}' params in the 'Timeline' sheet were synced according to the unit types in the 'Construction Costs' sheet`)
+
 }
 
 function _onExportValuesXSLX() {
@@ -66,15 +55,6 @@ function _onToggleWriteLogsToFile() {
   SOLLibrary.toggleWriteToLogFile();
   SOLLibrary.alert('Write Logs To File',
     `Write Logs to File is ${SOLLibrary.getWriteToLogFileEnabled() ? 'enabled' : 'disabled'}`);
-}
-
-function _debug() {
-  SOLLibrary.debugDuration(
-    'getRange',
-    () => {
-      SpreadsheetApp.getActiveSpreadsheet().getSheetById(CONSTRUCTION_COSTS_SHEET_ID).getRange(2, 1, 1, 1)
-        .setValue('test');
-    });
 }
 
 // do not remove this line. see SOLLibrary.exportValuesXSLX docs for details
