@@ -13,8 +13,8 @@ function onInstallableOpen(e) {
 // noinspection JSUnusedGlobalSymbols
 function onInstallableEdit(e) {
   SOLLibrary.debugDuration('onInstallableEdit', () => {
+    updateUnits(e);
     updateTimelineParamNames(e);
-    updateUnitCountStatus(e);
   });
 }
 

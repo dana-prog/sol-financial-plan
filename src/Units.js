@@ -3,9 +3,9 @@ function getUnitsSheet() {
   return SpreadsheetApp.getActiveSpreadsheet().getSheetById(UNITS_SHEET_ID);
 }
 
-function getUnitTypeColNum() {
-  return _getColumnMapValue(UNITS_SHEET_ID, UNITS_UNIT_TYPE_COLUMN_HEADER);
-}
+// function getUnitTypeColNum() {
+//   return _getColumnMapValue(UNITS_SHEET_ID, UNITS_UNIT_TYPE_COLUMN_HEADER);
+// }
 
 // const CONSTRUCTION_COSTS_UNIT_COUNT_COLUMN_HEADER = 'unit plan';
 

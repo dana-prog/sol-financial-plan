@@ -8,13 +8,13 @@ const SYNC_MAPPINGS = [
       sheetId: CONSTRUCTION_TIMELINE_SHEET_ID,
       categories: [
         {
-          name: TIMELINE_UNITS_COUNT_CATEGORY,
-          paramPostfix: TIMELINE_UNITS_COUNT_PARAM_POSTFIX,
+          name: TIMELINE_CONST_PLAN_CATEGORY,
+          paramPostfix: TIMELINE_CONST_PLAN_PARAM_POSTFIX,
           numberFormatCallback: getCountNumberFormat
         },
         {
-          name: TIMELINE_UNITS_COSTS_CATEGORY,
-          paramPostfix: TIMELINE_UNITS_COST_PARAM_POSTFIX,
+          name: TIMELINE_CONST_COSTS_CATEGORY,
+          paramPostfix: TIMELINE_CONST_COST_PARAM_POSTFIX,
         }
       ]
     }
@@ -79,16 +79,14 @@ function updateTimelineParamNames(editEvent) {
 
   const targetSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetById(syncMapping.target.sheetId);
 
-  SOLLibrary.debugDuration('TimelineParamsSync.updateTimelineParamNames - Object.values iteration', () => {
-    // for each target category, update the param name in the target sheet
-    Object.values(syncMapping.target.categories).forEach(category => {
-      this._updateTimelineParamName(
-        targetSheet,
-        oldValue + category.paramPostfix,
-        newValue + category.paramPostfix,
-        category.numberFormatCallback && category.numberFormatCallback(newValue)
-      );
-    });
+  // for each target category, update the param name in the target sheet
+  Object.values(syncMapping.target.categories).forEach(category => {
+    this._updateTimelineParamName(
+      targetSheet,
+      oldValue + category.paramPostfix,
+      newValue + category.paramPostfix,
+      category.numberFormatCallback && category.numberFormatCallback(newValue)
+    );
   });
 }
 
@@ -101,32 +99,26 @@ function _findSyncMapping(srcSheetId, srcCol) {
 }
 
 function _updateTimelineParamName(sheet, oldName, newName, numberFormat) {
-  SOLLibrary.debugDuration('TimelineParamsSync._updateTimelineParamName', () => {
-    let paramRowNum;
-    paramRowNum = this._getTimelineParamRowNumber(sheet, oldName);
+  const paramRowNum = this._getTimelineParamRowNumber(sheet, oldName);
 
-    if (paramRowNum === -1) {
-      SOLLibrary.log('TimelineParamsSync', '_updateTimelineParam', `param '${oldName}' does not exist`, 'WARN');
-      return;
-    }
+  if (paramRowNum === -1) {
+    SOLLibrary.log('TimelineParamsSync', '_updateTimelineParam', `param '${oldName}' does not exist`, 'WARN');
+    return;
+  }
 
-    SOLLibrary.logArgs('TimelineParamsSync', '_updateTimelineParamName', {
-      oldName,
-      newName,
-      paramRowNum
-    });
-
-    let paramNameRange;
-    paramNameRange = sheet.getRange(paramRowNum, TIMELINE_PARAM_NAME_COLUMN_NUMBER);
-
-    paramNameRange.setValue(newName);
-
-    if (numberFormat) {
-      let paramRange;
-      paramRange = sheet.getRange(`${paramRowNum}:${paramRowNum}`);
-      paramRange.setNumberFormat(numberFormat);
-    }
+  SOLLibrary.logArgs('TimelineParamsSync', '_updateTimelineParamName', {
+    oldName,
+    newName,
+    paramRowNum
   });
+
+  const paramNameRange = sheet.getRange(paramRowNum, TIMELINE_PARAM_NAME_COLUMN_NUMBER);
+  paramNameRange.setValue(newName);
+
+  if (numberFormat) {
+    const paramRange = sheet.getRange(`${paramRowNum}:${paramRowNum}`);
+    paramRange.setNumberFormat(numberFormat);
+  }
 }
 
 function _getTimelineParamRowNumber(sheet, paramName) {
