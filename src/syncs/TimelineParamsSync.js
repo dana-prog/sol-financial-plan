@@ -15,6 +15,11 @@ const SYNC_MAPPINGS = [
         {
           name: TIMELINE_CONST_COSTS_CATEGORY,
           paramPostfix: TIMELINE_CONST_COST_PARAM_POSTFIX,
+        },
+        {
+          name: TIMELINE_CONST_COMPLETED_UNITS_CATEGORY,
+          paramPostfix: TIMELINE_CONST_COMPLETED_UNITS_PARAM_POSTFIX,
+          numberFormatCallback: getCountNumberFormat
         }
       ]
     }

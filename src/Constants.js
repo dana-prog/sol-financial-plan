@@ -27,6 +27,9 @@ const TIMELINE_CONST_PLAN_PARAM_POSTFIX = ' construction count';
 const TIMELINE_CONST_COSTS_CATEGORY = 'Construction Costs';
 const TIMELINE_CONST_COST_PARAM_POSTFIX = ' construction cost';
 
+const TIMELINE_CONST_COMPLETED_UNITS_CATEGORY = 'Completed Units';
+const TIMELINE_CONST_COMPLETED_UNITS_PARAM_POSTFIX = ' completed count';
+
 const TIMELINE_STAFF_CATEGORY = 'Staff';
 const TIMELINE_STAFF_PARAM_POSTFIX = 's headcount';
 
