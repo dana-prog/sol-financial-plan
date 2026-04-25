@@ -26,6 +26,11 @@ function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     // .addItem('Debug', '_debug')
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
+    .addItem('Export Perf Audit (Formulas + Named Ranges)', 'exportPerfAudit')
+    .addSeparator()
+    .addItem('PerfFix: Vectorize Interest Cascade (Dry Run)', 'vectorizeInterestCascadeBatch1DryRun')
+    .addItem('PerfFix: Vectorize Interest Cascade (Apply)', 'vectorizeInterestCascadeBatch1Apply')
+    .addSeparator()
     .addItem('Toggle Write Logs to File', '_onToggleWriteLogsToFile')
     .addToUi();
 }
