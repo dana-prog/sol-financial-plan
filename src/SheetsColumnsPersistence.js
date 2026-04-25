@@ -15,10 +15,10 @@ function persistSheetsColumnsMap() {
   });
 
   const timelineColMapping = {
-    category: 1,
-    1: 'category',
-    param: 2,
-    2: 'param',
+    _category: 1,
+    1: '_category',
+    param: 3,
+    3: 'param',
   };
 
   mapping[CONSTRUCTION_TIMELINE_SHEET_ID] = timelineColMapping;
