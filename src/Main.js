@@ -12,10 +12,18 @@ function onInstallableOpen(e) {
 // simple triggers have a 30 seconds timeout
 // noinspection JSUnusedGlobalSymbols
 function onInstallableEdit(e) {
-  SOLLibrary.debugDuration('onInstallableEdit', () => {
-    updateUnits(e);
-    updateTimelineParamNames(e);
-  });
+  // SOLLibrary.debugDuration('onInstallableEdit', () => {
+  //   updateUnits(e);
+  //   updateTimelineParamNames(e);
+  // });
+
+  const sheet = e.range.getSheet();
+  if (sheet.getName() !== CF_SHEET_NAME) return;
+  if (e.range.getA1Notation() !== CF_TOGGLE) return;
+                                                                                                               
+  const value = String(e.value || '').trim();          
+  if (value === 'Static Values (fast)') freezeCashFlow(sheet);
+  else if (value === 'Auto Calculated Formulas (slow)') unfreezeCashFlow(sheet);
 }
 
 /**
