@@ -12,10 +12,10 @@ function onInstallableOpen(e) {
 // simple triggers have a 30 seconds timeout
 // noinspection JSUnusedGlobalSymbols
 function onInstallableEdit(e) {
-  // SOLLibrary.debugDuration('onInstallableEdit', () => {
-  //   updateUnits(e);
-  //   updateTimelineParamNames(e);
-  // });
+  SOLLibrary.debugDuration('onInstallableEdit', () => {
+    updateUnits(e);
+    updateTimelineParamNames(e);
+  });
 
   const sheet = e.range.getSheet();
   if (sheet.getName() !== CF_SHEET_NAME) return;

@@ -21,10 +21,10 @@ const TIMELINE_HEADER_ROW_NUM = 3;
 
 // TIMELINE CATEGORIES
 const TIMELINE_CONST_PLAN_CATEGORY = 'Construction Plan';
-const TIMELINE_CONST_PLAN_PARAM_POSTFIX = ' construction count';
+const TIMELINE_CONST_PLAN_PARAM_POSTFIX = ' const. count';
 
 const TIMELINE_CONST_COSTS_CATEGORY = 'Construction Costs';
-const TIMELINE_CONST_COST_PARAM_POSTFIX = ' construction cost';
+const TIMELINE_CONST_COST_PARAM_POSTFIX = ' const. cost';
 
 const TIMELINE_CONST_COMPLETED_UNITS_CATEGORY = 'Completed Units';
 const TIMELINE_CONST_COMPLETED_UNITS_PARAM_POSTFIX = ' completed count';
