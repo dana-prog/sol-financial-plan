@@ -22,8 +22,8 @@ function onInstallableEdit(e) {
   if (e.range.getA1Notation() !== CF_TOGGLE) return;
                                                                                                                
   const value = String(e.value || '').trim();          
-  if (value === 'Static Values (fast)') freezeCashFlow(sheet);
-  else if (value === 'Auto Calculated Formulas (slow)') unfreezeCashFlow(sheet);
+  if (value === 'Static Values (fast)') freezeCashFlow();
+  else if (value === 'Auto Calculated Formulas (slow)') unfreezeCashFlow();
 }
 
 /**
