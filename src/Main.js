@@ -24,8 +24,8 @@ function _createMenu() {
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
     // .addSeparator()
     // .addItem('Toggle Write Logs To File', '_onToggleWriteLogsToFile')
-    // .addItem('Export Named Functions', '_onExportNamedFunctions')
-    // .addItem('Export Formulas', '_onExportFormulas')
+    .addItem('Export Named Functions', '_onExportNamedFunctions')
+    .addItem('Export Formulas', '_onExportFormulas')
     .addToUi();
 }
 
