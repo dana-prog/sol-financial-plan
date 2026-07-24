@@ -5,7 +5,7 @@ const SYNC_MAPPINGS = [
       columnHeader: UNITS_UNIT_TYPE_COLUMN_HEADER,
     },
     target: {
-      sheetId: CONSTRUCTION_TIMELINE_SHEET_ID,
+      sheetId: CONSTRUCTION_SHEET_ID,
       categories: [
         {
           name: TIMELINE_CONST_PLAN_CATEGORY,
@@ -30,7 +30,7 @@ const SYNC_MAPPINGS = [
       columnHeader: STAFF_ROLE_COLUMN_HEADER,
     },
     target: {
-      sheetId: MAIN_TIMELINE_SHEET_ID,
+      sheetId: OPERATIONS_SHEET_ID,
       categories: [
         {
           name: TIMELINE_STAFF_CATEGORY,
@@ -50,11 +50,11 @@ const SYNC_MAPPINGS = [
   },
   {
     source: {
-      sheetId: INFRASTRUCTURE_TIMELINE_SHEET_ID,
+      sheetId: SETUP_SHEET_ID,
       columnHeader: TIMELINE_CATEGORY_COLUMN_HEADER
     },
     target: {
-      sheetId: MAIN_TIMELINE_SHEET_ID,
+      sheetId: OPERATIONS_SHEET_ID,
       categories: [
         {
           name: TIMELINE_INFRASTRUCTURE_COSTS_CATEGORY,
@@ -96,7 +96,8 @@ function updateTimelineParamNames(editEvent) {
 }
 
 function _findSyncMapping(srcSheetId, srcCol) {
-  const srcColHeader = (typeof srcCol === 'number') ? getColumnHeaderByNum(srcSheetId, srcCol) : srcCol;
+  const srcSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetById(srcSheetId);
+  const srcColHeader = (typeof srcCol === 'number') ? SOLLibrary.getColHeaderByNum(srcSheet, srcCol) : srcCol;
   return SYNC_MAPPINGS.find(mapping => {
     return mapping.source.sheetId === srcSheetId &&
       mapping.source.columnHeader === srcColHeader;

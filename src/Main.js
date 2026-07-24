@@ -1,10 +1,7 @@
 // using an installable trigger since simple triggers have limited permissions (for example cannot write to log sheet)
 // noinspection JSUnusedGlobalSymbols
 function onInstallableOpen() {
-  SOLLibrary.debugDuration('onInstallableOpen', () => {
-    _createMenu();
-    persistSheetsColumnsMap();
-  });
+  _createMenu();
 }
 
 // using an installable trigger since:
@@ -12,18 +9,8 @@ function onInstallableOpen() {
 // simple triggers have a 30 seconds timeout
 // noinspection JSUnusedGlobalSymbols
 function onInstallableEdit(e) {
-  SOLLibrary.debugDuration('onInstallableEdit', () => {
-    updateUnits(e);
-    updateTimelineParamNames(e);
-  });
-
-  // const sheet = e.range.getSheet();
-  // if (sheet.getName() !== CF_SHEET_NAME) return;
-  // if (e.range.getA1Notation() !== CF_TOGGLE) return;
-  //
-  // const value = String(e.value || '').trim();
-  // if (value === 'Static Values (fast)') freezeCashFlow();
-  // else if (value === 'Auto Calculated Formulas (slow)') unfreezeCashFlow();
+  updateUnits(e);
+  updateTimelineParamNames(e);
 }
 
 /**
@@ -34,6 +21,8 @@ function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     .addItem('Show Details', '_onShowDetails')
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
+    .addSeparator()
+    .addItem('Toggle Write Logs To File', '_onToggleWriteLogsToFile')
     // .addItem('Export Named Functions', '_onExportNamedFunctions')
     // .addItem('Export Formulas', '_onExportFormulas')
     .addToUi();
