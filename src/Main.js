@@ -20,9 +20,10 @@ function onInstallableEdit(e) {
 function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     .addItem('Show Details', '_onShowDetails')
+    .addItem('Set Timeline Sheet Borders', '_onSetTimelineSheetBorders')
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
-    .addSeparator()
-    .addItem('Toggle Write Logs To File', '_onToggleWriteLogsToFile')
+    // .addSeparator()
+    // .addItem('Toggle Write Logs To File', '_onToggleWriteLogsToFile')
     // .addItem('Export Named Functions', '_onExportNamedFunctions')
     // .addItem('Export Formulas', '_onExportFormulas')
     .addToUi();
@@ -60,6 +61,10 @@ function _onToggleWriteLogsToFile() {
   SOLLibrary.toggleWriteToLogFile();
   SOLLibrary.alert('Write Logs To File',
     `Write Logs to File is ${SOLLibrary.getWriteToLogFileEnabled() ? 'enabled' : 'disabled'}`);
+}
+
+function _onSetTimelineSheetBorders() {
+  setTimelineSheetBorders();
 }
 
 // do not remove this line. see SOLLibrary.exportValuesXSLX docs for details
