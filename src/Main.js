@@ -20,7 +20,7 @@ function onInstallableEdit(e) {
 function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     .addItem('Show Details', '_onShowDetails')
-    .addItem('Set Timeline Sheet Borders', '_onSetTimelineSheetBorders')
+    .addItem('Set Timeline Borders', '_onSetTimelineBorders')
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
     // .addSeparator()
     // .addItem('Toggle Write Logs To File', '_onToggleWriteLogsToFile')
@@ -63,7 +63,7 @@ function _onToggleWriteLogsToFile() {
     `Write Logs to File is ${SOLLibrary.getWriteToLogFileEnabled() ? 'enabled' : 'disabled'}`);
 }
 
-function _onSetTimelineSheetBorders() {
+function _onSetTimelineBorders() {
   setTimelineSheetBorders();
 }
 
