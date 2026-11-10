@@ -89,3 +89,78 @@ test('repeated freeze never reads current formulas or replaces the saved backup'
     context._readInLoansBackup = readBackup;
   }
 });
+
+test('dropdown routes only In Loans A1 and preserves queued edit choices', () => {
+  const saved = {...context};
+  let selection = 'Freeze';
+  let state = 'frozen';
+  const messages = [];
+  const range = {getSheet: () => ({getName: () => 'In Loans'}), getRow: () => 1,
+    getColumn: () => 1, getNumRows: () => 1, getNumColumns: () => 1};
+  const source = {toast: message => messages.push(message)};
+  Object.assign(context, {
+    _getInLoansCalculationToggle: () => range,
+    _freezeInLoans: () => { state = 'frozen'; return 'Frozen'; },
+    _unfreezeInLoans: () => { state = 'live'; return 'Live'; },
+    _syncInLoansCalculationToggle: () => { selection = state === 'frozen' ? 'Unfreeze' : 'Freeze'; },
+    LockService: {getDocumentLock: () => ({waitLock() {}, releaseLock() {}})}
+  });
+  try {
+    assert.equal(context.updateInLoansCalculationMode({range, source, value: 'Unfreeze'}), true);
+    assert.equal(state, 'live');
+    assert.equal(selection, 'Freeze');
+    context.updateInLoansCalculationMode({range, source, value: 'Freeze'});
+    assert.equal(state, 'frozen');
+    assert.deepEqual(messages, ['Live', 'Frozen']);
+    assert.equal(context.updateInLoansCalculationMode({range: {...range, getColumn: () => 2}, source}), false);
+    assert.equal(context.updateInLoansCalculationMode({range: {...range,
+      getSheet: () => ({getName: () => 'Cash Flow'})}, source}), false);
+  } finally { Object.assign(context, saved); }
+});
+
+test('failed freeze and multi-cell paste restore dropdown to actual state', () => {
+  const saved = {...context};
+  let selection = 'Freeze';
+  let message;
+  let released = 0;
+  const range = {getSheet: () => ({getName: () => 'In Loans'}), getRow: () => 1,
+    getColumn: () => 1, getNumRows: () => 1, getNumColumns: () => 1};
+  const source = {toast: text => {message = text;}};
+  Object.assign(context, {
+    console: {error() {}},
+    _getInLoansCalculationToggle: () => range,
+    _freezeInLoans: () => { throw new Error('Loading result'); },
+    _syncInLoansCalculationToggle: () => { selection = 'Freeze'; },
+    LockService: {getDocumentLock: () => ({waitLock() {}, releaseLock() {released++;}})}
+  });
+  try {
+    context.updateInLoansCalculationMode({range, source, value: 'Freeze'});
+    assert.equal(selection, 'Freeze');
+    assert.match(message, /Loading result/);
+    context.updateInLoansCalculationMode({range: {...range, getNumColumns: () => 2}, source});
+    assert.match(message, /multi-cell paste/);
+    assert.equal(released, 2);
+  } finally { Object.assign(context, saved); }
+});
+
+test('dropdown offers Freeze while live and Unfreeze while frozen', () => {
+  const saved = {...context};
+  let backup = null;
+  let selection;
+  Object.assign(context, {
+    _getInLoansSheet: () => ({}),
+    _getInLoansCalculationToggle: () => ({setValue: value => {selection = value;}}),
+    _readInLoansBackup: () => backup,
+    SpreadsheetApp: {flush() {}}
+  });
+  try {
+    context._syncInLoansCalculationToggle({});
+    assert.equal(selection, 'Freeze');
+    backup = {state: 'frozen'};
+    context._syncInLoansCalculationToggle({});
+    assert.equal(selection, 'Unfreeze');
+    backup = {state: 'live'};
+    context._syncInLoansCalculationToggle({});
+    assert.equal(selection, 'Freeze');
+  } finally { Object.assign(context, saved); }
+});

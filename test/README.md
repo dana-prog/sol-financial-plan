@@ -1,6 +1,12 @@
 # In Loans calculation control
 
 The bound spreadsheet exposes **SOL → In Loans calculations → Freeze / Unfreeze / Show status**.
+The **In Loans!A1** dropdown also accepts **Freeze** and **Unfreeze**. The existing
+`onInstallableEdit` trigger handles it and displays a toast. Menu operations and failed
+dropdown operations synchronize A1 to the next available action: **Freeze** while live,
+and **Unfreeze** while frozen. The Date header in C3
+remains unchanged. Change the dropdown on its own and wait for the completion toast
+before choosing another action.
 Reload the spreadsheet after `clasp push` to refresh its existing installable menu trigger.
 
 Freeze saves the formulas and array results as literal JSON in the hidden
@@ -30,3 +36,5 @@ in the Apps Script editor. It creates a separate validation spreadsheet and test
 two freeze/unfreeze cycles, input preservation, array results, literal strings,
 booleans, repeated freeze, and conflict detection. The execution log records its URL.
 Remove the temporary source file and push again after testing.
+Run `validateInLoansDropdownIntegration` in the same temporary test file to verify
+dropdown actions, menu synchronization, input preservation, and failure recovery.

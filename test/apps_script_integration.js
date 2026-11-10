@@ -35,3 +35,36 @@ function validateInLoansFreezeIntegration() {
   console.log('PASS: freeze, repeated freeze, input preservation, array restoration, conflict detection, second cycle.');
   return spreadsheet.getUrl();
 }
+
+function validateInLoansDropdownIntegration() {
+  const spreadsheet = SpreadsheetApp.create('In Loans dropdown validation', 5, 5);
+  console.log('Validation spreadsheet: ' + spreadsheet.getUrl());
+  const sheet = spreadsheet.getSheets()[0].setName('In Loans');
+  const toggle = sheet.getRange('A1').setDataValidation(SpreadsheetApp.newDataValidation()
+    .requireValueInList(['Freeze', 'Unfreeze'], true).setAllowInvalid(false).build());
+  toggle.setValue('Freeze');
+  sheet.getRange('B1').setValue(5);
+  sheet.getRange('B3').setFormula('=SEQUENCE(2,2,B1,1)');
+  SpreadsheetApp.flush();
+  const select = value => {
+    toggle.setValue(value);
+    SpreadsheetApp.flush();
+    updateInLoansCalculationMode({range: toggle, source: spreadsheet, value});
+  };
+  select('Freeze');
+  if (_readInLoansBackup(spreadsheet)?.state !== 'frozen') throw new Error('Dropdown did not freeze.');
+  if (toggle.getValue() !== 'Unfreeze') throw new Error('Dropdown is out of sync.');
+  sheet.getRange('B1').setValue(10);
+  select('Unfreeze');
+  if (_readInLoansBackup(spreadsheet)?.state !== 'live') throw new Error('Dropdown did not unfreeze.');
+  if (sheet.getRange('C4').getValue() !== 13) throw new Error('Array did not recalculate.');
+  _applyInLoansCalculationAction(spreadsheet, _freezeInLoans);
+  if (toggle.getValue() !== 'Unfreeze') throw new Error('Menu action did not sync dropdown.');
+  sheet.getRange('C4').setValue(999);
+  select('Unfreeze');
+  if (toggle.getValue() !== 'Unfreeze') throw new Error('Failed operation left incorrect dropdown state.');
+  sheet.getRange('C4').setValue(13);
+  select('Unfreeze');
+  if (toggle.getValue() !== 'Freeze') throw new Error('Final unfreeze failed.');
+  console.log('PASS: dropdown freeze/unfreeze, menu sync, failure recovery, and preserved input edits.');
+}

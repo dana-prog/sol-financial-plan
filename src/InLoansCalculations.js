@@ -1,6 +1,42 @@
 const IN_LOANS_FREEZE_BACKUP = '_in_loans_freeze_backup';
 const IN_LOANS_FREEZE_VERSION = 1;
 const IN_LOANS_BACKUP_CHUNK_SIZE = 30000;
+const IN_LOANS_CALCULATION_TOGGLE = 'A1';
+
+function updateInLoansCalculationMode(event) {
+  const range = event && event.range;
+  if (!range || range.getSheet().getName() !== 'In Loans' ||
+      range.getRow() !== 1 || range.getColumn() !== 1 ||
+      !_getInLoansCalculationToggle(range.getSheet())) return false;
+
+  const message = _applyInLoansCalculationAction(event.source, spreadsheet => {
+    if (range.getNumRows() !== 1 || range.getNumColumns() !== 1) {
+      throw new Error('Change the A1 dropdown on its own, outside a multi-cell paste.');
+    }
+    const selection = event.value;
+    if (selection === 'Freeze') return _freezeInLoans(spreadsheet);
+    if (selection === 'Unfreeze') return _unfreezeInLoans(spreadsheet);
+    throw new Error('Choose Freeze or Unfreeze from the A1 dropdown.');
+  });
+  event.source.toast(message, 'In Loans calculations', 10);
+  return true;
+}
+
+function _getInLoansCalculationToggle(sheet) {
+  const range = sheet.getRange(IN_LOANS_CALCULATION_TOGGLE);
+  const rule = range.getDataValidation();
+  if (!rule || rule.getCriteriaType() !== SpreadsheetApp.DataValidationCriteria.VALUE_IN_LIST) return null;
+  const choices = rule.getCriteriaValues()[0];
+  return choices.length === 2 && choices.includes('Freeze') && choices.includes('Unfreeze') ? range : null;
+}
+
+function _syncInLoansCalculationToggle(spreadsheet) {
+  const range = _getInLoansCalculationToggle(_getInLoansSheet(spreadsheet));
+  if (!range) return;
+  const backup = _readInLoansBackup(spreadsheet);
+  range.setValue(backup && backup.state === 'frozen' ? 'Unfreeze' : 'Freeze');
+  SpreadsheetApp.flush();
+}
 
 function freezeInLoans() {
   _runInLoansCalculationAction(_freezeInLoans);
@@ -21,19 +57,27 @@ function showInLoansCalculationStatus() {
 }
 
 function _runInLoansCalculationAction(action) {
+  const message = _applyInLoansCalculationAction(SpreadsheetApp.getActive(), action);
+  SpreadsheetApp.getUi().alert('In Loans calculations', message,
+    SpreadsheetApp.getUi().ButtonSet.OK);
+}
+
+function _applyInLoansCalculationAction(spreadsheet, action) {
   const lock = LockService.getDocumentLock();
-  let message;
   try {
     lock.waitLock(10000);
-    message = action(SpreadsheetApp.getActive());
+    try {
+      return action(spreadsheet);
+    } finally {
+      // Always offer the next action, including when the requested operation fails.
+      _syncInLoansCalculationToggle(spreadsheet);
+    }
   } catch (error) {
     console.error(error);
-    message = 'Could not complete the operation: ' + error.message;
+    return 'Could not complete the operation: ' + error.message;
   } finally {
     lock.releaseLock();
   }
-  SpreadsheetApp.getUi().alert('In Loans calculations', message,
-    SpreadsheetApp.getUi().ButtonSet.OK);
 }
 
 function _freezeInLoans(spreadsheet) {
@@ -84,7 +128,9 @@ function _unfreezeInLoans(spreadsheet) {
   if (!backup || backup.state !== 'frozen') return 'In Loans is already live.';
   const sheet = _getInLoansSheet(spreadsheet);
   const current = _readInLoansCells(spreadsheet, sheet, 'userEnteredValue');
-  _validateInLoansRestore(backup.snapshot, current);
+  const toggle = _getInLoansCalculationToggle(sheet);
+  _validateInLoansRestore(backup.snapshot, current,
+    toggle ? {row: toggle.getRow() - 1, column: toggle.getColumn() - 1} : null);
   const requests = _inLoansCellWrites(backup.snapshot, 'restore');
   const header = {version: IN_LOANS_FREEZE_VERSION, state: 'live'};
   requests.push(_inLoansWrite(backup.sheetId, 0, 0, [[{stringValue: JSON.stringify(header)}]]));
@@ -137,7 +183,7 @@ function _buildInLoansSnapshot(sheetData) {
     columnCount: grid.columnCount, cells, formulaCount};
 }
 
-function _validateInLoansRestore(snapshot, current) {
+function _validateInLoansRestore(snapshot, current, controlCell) {
   const properties = current.properties;
   if (properties.sheetId !== snapshot.sheetId ||
       properties.gridProperties.rowCount !== snapshot.rowCount ||
@@ -146,6 +192,8 @@ function _validateInLoansRestore(snapshot, current) {
   }
   const rows = current.data?.[0]?.rowData || [];
   for (const [row, column, original, frozen] of snapshot.cells) {
+    // Permit installing the control into a previously blank cell while frozen.
+    if (!original && !frozen && controlCell?.row === row && controlCell.column === column) continue;
     const values = (rows[row] && rows[row].values) || [];
     const entered = (values[column] || {}).userEnteredValue || null;
     if (!_inLoansValuesEqual(entered, frozen)) {

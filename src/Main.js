@@ -9,6 +9,7 @@ function onInstallableOpen() {
 // simple triggers have a 30 seconds timeout
 // noinspection JSUnusedGlobalSymbols
 function onInstallableEdit(e) {
+  if (updateInLoansCalculationMode(e)) return;
   updateUnits(e);
   updateTimelineParamNames(e);
 }
