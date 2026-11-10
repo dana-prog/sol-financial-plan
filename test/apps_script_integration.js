@@ -41,8 +41,8 @@ function validateInLoansDropdownIntegration() {
   console.log('Validation spreadsheet: ' + spreadsheet.getUrl());
   const sheet = spreadsheet.getSheets()[0].setName('In Loans');
   const toggle = sheet.getRange('A1').setDataValidation(SpreadsheetApp.newDataValidation()
-    .requireValueInList(['Freeze', 'Unfreeze'], true).setAllowInvalid(false).build());
-  toggle.setValue('Freeze');
+    .requireValueInList(['Frozen Values', 'Live Values'], true).setAllowInvalid(false).build());
+  toggle.setValue('Live Values');
   sheet.getRange('B1').setValue(5);
   sheet.getRange('B3').setFormula('=SEQUENCE(2,2,B1,1)');
   SpreadsheetApp.flush();
@@ -51,20 +51,20 @@ function validateInLoansDropdownIntegration() {
     SpreadsheetApp.flush();
     updateInLoansCalculationMode({range: toggle, source: spreadsheet, value});
   };
-  select('Freeze');
+  select('Frozen Values');
   if (_readInLoansBackup(spreadsheet)?.state !== 'frozen') throw new Error('Dropdown did not freeze.');
-  if (toggle.getValue() !== 'Unfreeze') throw new Error('Dropdown is out of sync.');
+  if (toggle.getValue() !== 'Frozen Values') throw new Error('Dropdown is out of sync.');
   sheet.getRange('B1').setValue(10);
-  select('Unfreeze');
+  select('Live Values');
   if (_readInLoansBackup(spreadsheet)?.state !== 'live') throw new Error('Dropdown did not unfreeze.');
   if (sheet.getRange('C4').getValue() !== 13) throw new Error('Array did not recalculate.');
   _applyInLoansCalculationAction(spreadsheet, _freezeInLoans);
-  if (toggle.getValue() !== 'Unfreeze') throw new Error('Menu action did not sync dropdown.');
+  if (toggle.getValue() !== 'Frozen Values') throw new Error('Menu action did not sync dropdown.');
   sheet.getRange('C4').setValue(999);
-  select('Unfreeze');
-  if (toggle.getValue() !== 'Unfreeze') throw new Error('Failed operation left incorrect dropdown state.');
+  select('Live Values');
+  if (toggle.getValue() !== 'Frozen Values') throw new Error('Failed operation left incorrect dropdown state.');
   sheet.getRange('C4').setValue(13);
-  select('Unfreeze');
-  if (toggle.getValue() !== 'Freeze') throw new Error('Final unfreeze failed.');
+  select('Live Values');
+  if (toggle.getValue() !== 'Live Values') throw new Error('Final unfreeze failed.');
   console.log('PASS: dropdown freeze/unfreeze, menu sync, failure recovery, and preserved input edits.');
 }

@@ -92,7 +92,7 @@ test('repeated freeze never reads current formulas or replaces the saved backup'
 
 test('dropdown routes only In Loans A1 and preserves queued edit choices', () => {
   const saved = {...context};
-  let selection = 'Freeze';
+  let selection = 'Live Values';
   let state = 'frozen';
   const messages = [];
   const range = {getSheet: () => ({getName: () => 'In Loans'}), getRow: () => 1,
@@ -100,18 +100,18 @@ test('dropdown routes only In Loans A1 and preserves queued edit choices', () =>
   const source = {toast: message => messages.push(message)};
   Object.assign(context, {
     _getInLoansCalculationToggle: () => range,
-    _freezeInLoans: () => { state = 'frozen'; return 'Frozen'; },
+    _freezeInLoans: () => { state = 'frozen'; return 'Frozen Values'; },
     _unfreezeInLoans: () => { state = 'live'; return 'Live'; },
-    _syncInLoansCalculationToggle: () => { selection = state === 'frozen' ? 'Unfreeze' : 'Freeze'; },
+    _syncInLoansCalculationToggle: () => { selection = state === 'frozen' ? 'Frozen Values' : 'Live Values'; },
     LockService: {getDocumentLock: () => ({waitLock() {}, releaseLock() {}})}
   });
   try {
-    assert.equal(context.updateInLoansCalculationMode({range, source, value: 'Unfreeze'}), true);
+    assert.equal(context.updateInLoansCalculationMode({range, source, value: 'Live Values'}), true);
     assert.equal(state, 'live');
-    assert.equal(selection, 'Freeze');
-    context.updateInLoansCalculationMode({range, source, value: 'Freeze'});
+    assert.equal(selection, 'Live Values');
+    context.updateInLoansCalculationMode({range, source, value: 'Frozen Values'});
     assert.equal(state, 'frozen');
-    assert.deepEqual(messages, ['Live', 'Frozen']);
+    assert.deepEqual(messages, ['Live', 'Frozen Values']);
     assert.equal(context.updateInLoansCalculationMode({range: {...range, getColumn: () => 2}, source}), false);
     assert.equal(context.updateInLoansCalculationMode({range: {...range,
       getSheet: () => ({getName: () => 'Cash Flow'})}, source}), false);
@@ -120,7 +120,7 @@ test('dropdown routes only In Loans A1 and preserves queued edit choices', () =>
 
 test('failed freeze and multi-cell paste restore dropdown to actual state', () => {
   const saved = {...context};
-  let selection = 'Freeze';
+  let selection = 'Live Values';
   let message;
   let released = 0;
   const range = {getSheet: () => ({getName: () => 'In Loans'}), getRow: () => 1,
@@ -130,12 +130,12 @@ test('failed freeze and multi-cell paste restore dropdown to actual state', () =
     console: {error() {}},
     _getInLoansCalculationToggle: () => range,
     _freezeInLoans: () => { throw new Error('Loading result'); },
-    _syncInLoansCalculationToggle: () => { selection = 'Freeze'; },
+    _syncInLoansCalculationToggle: () => { selection = 'Live Values'; },
     LockService: {getDocumentLock: () => ({waitLock() {}, releaseLock() {released++;}})}
   });
   try {
-    context.updateInLoansCalculationMode({range, source, value: 'Freeze'});
-    assert.equal(selection, 'Freeze');
+    context.updateInLoansCalculationMode({range, source, value: 'Frozen Values'});
+    assert.equal(selection, 'Live Values');
     assert.match(message, /Loading result/);
     context.updateInLoansCalculationMode({range: {...range, getNumColumns: () => 2}, source});
     assert.match(message, /multi-cell paste/);
@@ -143,24 +143,26 @@ test('failed freeze and multi-cell paste restore dropdown to actual state', () =
   } finally { Object.assign(context, saved); }
 });
 
-test('dropdown offers Freeze while live and Unfreeze while frozen', () => {
+test('dropdown displays the saved Frozen Values or Live Values status', () => {
   const saved = {...context};
   let backup = null;
   let selection;
   Object.assign(context, {
     _getInLoansSheet: () => ({}),
-    _getInLoansCalculationToggle: () => ({setValue: value => {selection = value;}}),
+    _getInLoansCalculationToggle: () => ({setValue: value => {selection = value;}, setDataValidation() {}}),
     _readInLoansBackup: () => backup,
-    SpreadsheetApp: {flush() {}}
+    SpreadsheetApp: {flush() {}, newDataValidation: () => ({
+      requireValueInList() { return this; }, setAllowInvalid() { return this; }, build() { return {}; }
+    })}
   });
   try {
     context._syncInLoansCalculationToggle({});
-    assert.equal(selection, 'Freeze');
+    assert.equal(selection, 'Live Values');
     backup = {state: 'frozen'};
     context._syncInLoansCalculationToggle({});
-    assert.equal(selection, 'Unfreeze');
+    assert.equal(selection, 'Frozen Values');
     backup = {state: 'live'};
     context._syncInLoansCalculationToggle({});
-    assert.equal(selection, 'Freeze');
+    assert.equal(selection, 'Live Values');
   } finally { Object.assign(context, saved); }
 });

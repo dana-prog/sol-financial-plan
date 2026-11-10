@@ -14,9 +14,9 @@ function updateInLoansCalculationMode(event) {
       throw new Error('Change the A1 dropdown on its own, outside a multi-cell paste.');
     }
     const selection = event.value;
-    if (selection === 'Freeze') return _freezeInLoans(spreadsheet);
-    if (selection === 'Unfreeze') return _unfreezeInLoans(spreadsheet);
-    throw new Error('Choose Freeze or Unfreeze from the A1 dropdown.');
+    if (selection === 'Frozen Values' || selection === 'Freeze') return _freezeInLoans(spreadsheet);
+    if (selection === 'Live Values' || selection === 'Unfreeze') return _unfreezeInLoans(spreadsheet);
+    throw new Error('Choose Frozen Values or Live Values from the A1 dropdown.');
   });
   event.source.toast(message, 'In Loans calculations', 10);
   return true;
@@ -27,14 +27,18 @@ function _getInLoansCalculationToggle(sheet) {
   const rule = range.getDataValidation();
   if (!rule || rule.getCriteriaType() !== SpreadsheetApp.DataValidationCriteria.VALUE_IN_LIST) return null;
   const choices = rule.getCriteriaValues()[0];
-  return choices.length === 2 && choices.includes('Freeze') && choices.includes('Unfreeze') ? range : null;
+  const isStatus = choices.includes('Frozen Values') && choices.includes('Live Values');
+  const isLegacy = choices.includes('Freeze') && choices.includes('Unfreeze');
+  return choices.length === 2 && (isStatus || isLegacy) ? range : null;
 }
 
 function _syncInLoansCalculationToggle(spreadsheet) {
   const range = _getInLoansCalculationToggle(_getInLoansSheet(spreadsheet));
   if (!range) return;
   const backup = _readInLoansBackup(spreadsheet);
-  range.setValue(backup && backup.state === 'frozen' ? 'Unfreeze' : 'Freeze');
+  range.setDataValidation(SpreadsheetApp.newDataValidation()
+    .requireValueInList(['Frozen Values', 'Live Values'], true).setAllowInvalid(false).build());
+  range.setValue(backup && backup.state === 'frozen' ? 'Frozen Values' : 'Live Values');
   SpreadsheetApp.flush();
 }
 
@@ -69,7 +73,7 @@ function _applyInLoansCalculationAction(spreadsheet, action) {
     try {
       return action(spreadsheet);
     } finally {
-      // Always offer the next action, including when the requested operation fails.
+      // Display the actual saved state, including when the requested operation fails.
       _syncInLoansCalculationToggle(spreadsheet);
     }
   } catch (error) {

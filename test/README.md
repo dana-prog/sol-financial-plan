@@ -1,10 +1,10 @@
 # In Loans calculation control
 
 The bound spreadsheet exposes **SOL → In Loans calculations → Freeze / Unfreeze / Show status**.
-The **In Loans!A1** dropdown also accepts **Freeze** and **Unfreeze**. The existing
+The **In Loans!A1** dropdown displays **Frozen Values** or **Live Values**. Selecting the other state applies it. The existing
 `onInstallableEdit` trigger handles it and displays a toast. Menu operations and failed
-dropdown operations synchronize A1 to the next available action: **Freeze** while live,
-and **Unfreeze** while frozen. The Date header in C3
+dropdown operations synchronize A1 to the actual saved state: **Live Values** while live,
+and **Frozen Values** while frozen. The Date header in C3
 remains unchanged. Change the dropdown on its own and wait for the completion toast
 before choosing another action.
 Reload the spreadsheet after `clasp push` to refresh its existing installable menu trigger.
