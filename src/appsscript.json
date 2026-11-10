@@ -1,6 +1,13 @@
 {
   "timeZone": "Asia/Bangkok",
   "dependencies": {
+    "enabledAdvancedServices": [
+      {
+        "userSymbol": "Sheets",
+        "serviceId": "sheets",
+        "version": "v4"
+      }
+    ],
     "libraries": [{
       "userSymbol": "SOLLibrary",
       "libraryId": "1LtXhayclFpUquRSb4BZpNm6ufo03N7DMyeIMrLZAx5TcSpp0Zb1mVSvY",
