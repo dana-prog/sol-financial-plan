@@ -207,3 +207,24 @@ test('control metadata reads do not require calculation-dependent SpreadsheetApp
     assert.equal(context._getInLoansCalculationToggle(spreadsheet), null);
   } finally { Object.assign(context, saved); }
 });
+
+
+test('status update failure preserves the operation error and releases the lock', () => {
+  const saved = {...context};
+  const errors = [];
+  let released = false;
+  Object.assign(context, {
+    console: {error: error => errors.push(error.message)},
+    _syncInLoansCalculationToggle: () => {throw new Error('Status service unavailable');},
+    LockService: {getDocumentLock: () => ({waitLock() {}, releaseLock() {released = true;}})}
+  });
+  try {
+    const result = context._applyInLoansCalculationAction({}, () => {
+      throw new Error('Calculated results unavailable');
+    });
+    assert.match(result, /Calculated results unavailable/);
+    assert.match(result, /A1 status could not be updated: Status service unavailable/);
+    assert.deepEqual(errors, ['Calculated results unavailable', 'Status service unavailable']);
+    assert.equal(released, true);
+  } finally { Object.assign(context, saved); }
+});

@@ -83,12 +83,21 @@ function _applyInLoansCalculationAction(spreadsheet, action) {
   const lock = LockService.getDocumentLock();
   try {
     lock.waitLock(10000);
+    let message;
     try {
-      return action(spreadsheet);
-    } finally {
-      // Display the actual saved state, including when the requested operation fails.
-      _syncInLoansCalculationToggle(spreadsheet);
+      message = action(spreadsheet);
+    } catch (error) {
+      console.error(error);
+      message = 'Could not complete the operation: ' + error.message;
     }
+    try {
+      // A status-write failure must not hide the original operation's error.
+      _syncInLoansCalculationToggle(spreadsheet);
+    } catch (error) {
+      console.error(error);
+      message += ' A1 status could not be updated: ' + error.message;
+    }
+    return message;
   } catch (error) {
     console.error(error);
     return 'Could not complete the operation: ' + error.message;
