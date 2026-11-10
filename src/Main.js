@@ -9,7 +9,6 @@ function onInstallableOpen() {
 // simple triggers have a 30 seconds timeout
 // noinspection JSUnusedGlobalSymbols
 function onInstallableEdit(e) {
-  if (updateInLoansCalculationMode(e)) return;
   updateUnits(e);
   updateTimelineParamNames(e);
 }
@@ -22,10 +21,6 @@ function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     .addItem('Show Details', '_onShowDetails')
     .addItem('Set Timeline Borders', '_onSetTimelineBorders')
-    .addSubMenu(SpreadsheetApp.getUi().createMenu('In Loans calculations')
-      .addItem('Freeze', 'freezeInLoans')
-      .addItem('Unfreeze', 'unfreezeInLoans')
-      .addItem('Show status', 'showInLoansCalculationStatus'))
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
     // .addSeparator()
     // .addItem('Toggle Write Logs To File', '_onToggleWriteLogsToFile')
