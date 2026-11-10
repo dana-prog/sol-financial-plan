@@ -21,6 +21,11 @@ dimensions and modified results, but cannot reliably detect every same-size stru
 rearrangement. Do not edit the sheet while a freeze/unfreeze command is running;
 the document lock serializes script commands, not edits made by collaborators.
 
+Control metadata is read through the Sheets API, and an already correct A1 status is
+not rewritten. Freeze still needs calculated results: a workbook that stalls while
+calculating can block that read and time out the script. A1 alone is not confirmation
+that a freeze completed; wait for the completion message or use Show status.
+
 Freeze refuses formula errors, including loading errors. Unfreeze restores formulas;
 the spreadsheet's existing automatic/manual calculation setting still applies.
 

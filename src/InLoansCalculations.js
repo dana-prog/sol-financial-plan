@@ -5,9 +5,9 @@ const IN_LOANS_CALCULATION_TOGGLE = 'A1';
 
 function updateInLoansCalculationMode(event) {
   const range = event && event.range;
-  if (!range || range.getSheet().getName() !== 'In Loans' ||
-      range.getRow() !== 1 || range.getColumn() !== 1 ||
-      !_getInLoansCalculationToggle(range.getSheet())) return false;
+  if (!range || range.getRow() !== 1 || range.getColumn() !== 1) return false;
+  const toggle = _getInLoansCalculationToggle(event.source);
+  if (!toggle || range.getSheet().getSheetId() !== toggle.sheetId) return false;
 
   const message = _applyInLoansCalculationAction(event.source, spreadsheet => {
     if (range.getNumRows() !== 1 || range.getNumColumns() !== 1) {
@@ -22,24 +22,37 @@ function updateInLoansCalculationMode(event) {
   return true;
 }
 
-function _getInLoansCalculationToggle(sheet) {
-  const range = sheet.getRange(IN_LOANS_CALCULATION_TOGGLE);
-  const rule = range.getDataValidation();
-  if (!rule || rule.getCriteriaType() !== SpreadsheetApp.DataValidationCriteria.VALUE_IN_LIST) return null;
-  const choices = rule.getCriteriaValues()[0];
+function _getInLoansCalculationToggle(spreadsheet) {
+  const result = Sheets.Spreadsheets.get(spreadsheet.getId(), {
+    ranges: ["'In Loans'!" + IN_LOANS_CALCULATION_TOGGLE],
+    fields: 'sheets(properties(sheetId),data(rowData(values(userEnteredValue,dataValidation))))'
+  });
+  const sheet = result.sheets[0];
+  const cell = sheet.data?.[0]?.rowData?.[0]?.values?.[0] || {};
+  const condition = cell.dataValidation?.condition;
+  if (condition?.type !== 'ONE_OF_LIST') return null;
+  const choices = condition.values.map(value => value.userEnteredValue);
   const isStatus = choices.includes('Frozen Values') && choices.includes('Live Values');
   const isLegacy = choices.includes('Freeze') && choices.includes('Unfreeze');
-  return choices.length === 2 && (isStatus || isLegacy) ? range : null;
+  return choices.length === 2 && (isStatus || isLegacy)
+    ? {sheetId: sheet.properties.sheetId, value: cell.userEnteredValue?.stringValue, isStatus} : null;
 }
 
 function _syncInLoansCalculationToggle(spreadsheet) {
-  const range = _getInLoansCalculationToggle(_getInLoansSheet(spreadsheet));
-  if (!range) return;
+  const toggle = _getInLoansCalculationToggle(spreadsheet);
+  if (!toggle) return;
   const backup = _readInLoansBackup(spreadsheet);
-  range.setDataValidation(SpreadsheetApp.newDataValidation()
-    .requireValueInList(['Frozen Values', 'Live Values'], true).setAllowInvalid(false).build());
-  range.setValue(backup && backup.state === 'frozen' ? 'Frozen Values' : 'Live Values');
-  SpreadsheetApp.flush();
+  const value = backup && backup.state === 'frozen' ? 'Frozen Values' : 'Live Values';
+  // Successful edits already display the correct state; avoid another recalculation.
+  if (toggle.isStatus && toggle.value === value) return;
+  Sheets.Spreadsheets.batchUpdate({requests: [{updateCells: {
+    start: {sheetId: toggle.sheetId, rowIndex: 0, columnIndex: 0},
+    rows: [{values: [{userEnteredValue: {stringValue: value}, dataValidation: {
+      condition: {type: 'ONE_OF_LIST', values: [
+        {userEnteredValue: 'Frozen Values'}, {userEnteredValue: 'Live Values'}]},
+      strict: true, showCustomUi: true
+    }}]}], fields: 'userEnteredValue,dataValidation'
+  }}]}, spreadsheet.getId());
 }
 
 function freezeInLoans() {
@@ -100,8 +113,7 @@ function _freezeInLoans(spreadsheet) {
   const backupId = previous ? previous.sheetId : _newInLoansBackupId(spreadsheet);
   const header = {
     version: IN_LOANS_FREEZE_VERSION, state: 'frozen',
-    frozenAt: Utilities.formatDate(new Date(), spreadsheet.getSpreadsheetTimeZone(),
-      'yyyy-MM-dd HH:mm:ss z'),
+    frozenAt: new Date().toISOString(),
     chunks: chunks.length, checksum: _inLoansChecksum(serialized)
   };
   const requests = [];
@@ -132,9 +144,9 @@ function _unfreezeInLoans(spreadsheet) {
   if (!backup || backup.state !== 'frozen') return 'In Loans is already live.';
   const sheet = _getInLoansSheet(spreadsheet);
   const current = _readInLoansCells(spreadsheet, sheet, 'userEnteredValue');
-  const toggle = _getInLoansCalculationToggle(sheet);
+  const toggle = _getInLoansCalculationToggle(spreadsheet);
   _validateInLoansRestore(backup.snapshot, current,
-    toggle ? {row: toggle.getRow() - 1, column: toggle.getColumn() - 1} : null);
+    toggle ? {row: 0, column: 0} : null);
   const requests = _inLoansCellWrites(backup.snapshot, 'restore');
   const header = {version: IN_LOANS_FREEZE_VERSION, state: 'live'};
   requests.push(_inLoansWrite(backup.sheetId, 0, 0, [[{stringValue: JSON.stringify(header)}]]));
@@ -144,16 +156,17 @@ function _unfreezeInLoans(spreadsheet) {
 }
 
 function _getInLoansSheet(spreadsheet) {
-  const sheet = spreadsheet.getSheetByName('In Loans');
+  const metadata = Sheets.Spreadsheets.get(spreadsheet.getId(), {fields: 'sheets(properties)'});
+  const sheet = metadata.sheets.find(sheet => sheet.properties.title === 'In Loans');
   if (!sheet) throw new Error('The In Loans tab was not found.');
-  return sheet;
+  return sheet.properties;
 }
 
 function _readInLoansCells(spreadsheet, sheet, cellFields) {
   const fields = 'sheets(properties,data(rowData(values(' +
     (cellFields || 'userEnteredValue,effectiveValue') + '))))';
-  const range = "'" + sheet.getName().replace(/'/g, "''") + "'!A1:" +
-    _a1(sheet.getMaxRows(), sheet.getMaxColumns());
+  const range = "'" + sheet.title.replace(/'/g, "''") + "'!A1:" +
+    _a1(sheet.gridProperties.rowCount, sheet.gridProperties.columnCount);
   const result = Sheets.Spreadsheets.get(spreadsheet.getId(), {ranges: [range], fields});
   return result.sheets[0];
 }
@@ -265,7 +278,8 @@ function _inLoansChecksum(text) {
 }
 
 function _newInLoansBackupId(spreadsheet) {
-  const ids = new Set(spreadsheet.getSheets().map(sheet => sheet.getSheetId()));
+  const metadata = Sheets.Spreadsheets.get(spreadsheet.getId(), {fields: 'sheets(properties(sheetId))'});
+  const ids = new Set(metadata.sheets.map(sheet => sheet.properties.sheetId));
   let id = 1;
   while (ids.has(id)) id++;
   return id;
