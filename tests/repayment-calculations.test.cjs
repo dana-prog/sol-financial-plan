@@ -148,8 +148,8 @@ test('planned-loan edits tell the user to recalculate and the calculation-time c
   const event = (column, value) => ({value, range: {getRow: () => 1, getColumn: () => column, getGridId: () => 1346380865}});
   assert.equal(server.handleLoanModeEdit(event(4, 'Last Repayment Calculation Time')), false);
   assert.equal(server.handleLoanModeEdit(event(1, 'Planned Loans Disabled')), true);
-  assert.match(dialogs[0].message, /excluded from cash flow/);
-  assert.match(dialogs[0].message, /Recalculate Loan Repayments/);
+  assert.match(dialogs[0].message, /Planned loans disabled/);
+  assert.match(dialogs[0].message, /Recalculate loan repayments/);
   assert.equal(server.handleLoanModeEdit(event(1, 'Planned Loans Enabled')), true);
-  assert.match(dialogs[1].message, /included in cash flow/);
+  assert.match(dialogs[1].message, /Planned loans enabled/);
 });

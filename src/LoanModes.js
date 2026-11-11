@@ -9,9 +9,9 @@ function handleLoanModeEdit(e) {
   const template = HtmlService.createTemplateFromFile('LoanModeProgress');
   template.action = enabled ? 'Enabling Planned Loans…' : 'Disabling Planned Loans…';
   template.completionMessage = (enabled
-    ? 'Planned loans are now enabled. Their draw amounts will be included in cash flow calculations.'
-    : 'Planned loans are now disabled. Their draw amounts will be excluded from cash flow calculations.')
-    + ' Run SOL → Recalculate Loan Repayments to update In Loans repayments.';
+    ? 'Planned loans enabled.'
+    : 'Planned loans disabled.')
+    + ' Recalculate loan repayments to update.';
   SpreadsheetApp.getUi().showModalDialog(template.evaluate().setWidth(420).setHeight(105), 'Planned Loans');
   return true;
 }
