@@ -40,14 +40,15 @@ function setRepaymentMode_(sheet, mode) {
 function freezeLoanRepayments() {
   return withRepaymentLock_(() => {
     const props = PropertiesService.getDocumentProperties();
-    SpreadsheetApp.flush();
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = getRepaymentSheet_(spreadsheet);
     const layout = getRepaymentLayout_(sheet);
+    const range = repaymentTimelineRange_(sheet, layout);
+    const formulas = range.getFormulas();
     const previous = loadRepaymentSnapshot_(props);
     if (previous) {
       validateRepaymentSnapshot_(previous, spreadsheet, sheet, layout);
-      const current = previous.entries.map(entry => repaymentRange_(sheet, entry).getFormulas()[0]);
+      const current = previous.entries.map(entry => repaymentEntryValues_(formulas, layout, entry));
       if (current.every(row => row.every(formula => !formula))) {
         setRepaymentMode_(sheet, REPAYMENT_FREEZE.frozenValue);
         spreadsheet.toast('Repayments are already frozen.', 'Loan repayments', 6);
@@ -60,8 +61,7 @@ function freezeLoanRepayments() {
       // Replace it only after verifying that every original formula is still present.
       props.deleteProperty(REPAYMENT_FREEZE.backupKey);
     }
-    const range = sheet.getRange(4, layout.firstColumn, layout.labels.length, layout.width);
-    const entries = collectRepaymentEntries_(layout, range.getFormulas(), range.getValues());
+    const entries = collectRepaymentEntries_(layout, formulas, range.getValues());
     if (!entries.length) throw new Error('No repayment formulas were found. Nothing was changed.');
 
     const snapshot = {spreadsheetId: spreadsheet.getId(), sheetId: sheet.getSheetId(), layout, entries};
@@ -69,10 +69,11 @@ function freezeLoanRepayments() {
     // Capture every result before the first write: repayments depend on one another.
     entries.forEach(entry => repaymentRange_(sheet, entry).setValues([entry.values]));
     SpreadsheetApp.flush();
+    const frozenFormulas = range.getFormulas();
+    const frozenValues = range.getValues();
     entries.forEach(entry => {
-      const target = repaymentRange_(sheet, entry);
-      if (target.getFormulas()[0].some(Boolean) ||
-          JSON.stringify(target.getValues()[0]) !== JSON.stringify(entry.values)) {
+      if (repaymentEntryValues_(frozenFormulas, layout, entry).some(Boolean) ||
+          JSON.stringify(repaymentEntryValues_(frozenValues, layout, entry)) !== JSON.stringify(entry.values)) {
         throw new Error('Freeze verification failed. The backup is retained; run Unfreeze to recover.');
       }
     });
@@ -91,8 +92,9 @@ function unfreezeLoanRepayments() {
     validateRepaymentSnapshot_(snapshot, spreadsheet, sheet, getRepaymentLayout_(sheet));
     snapshot.entries.forEach(entry => repaymentRange_(sheet, entry).setFormulas([entry.formulas]));
     SpreadsheetApp.flush();
+    const restored = repaymentTimelineRange_(sheet, snapshot.layout).getFormulas();
     snapshot.entries.forEach(entry => {
-      if (JSON.stringify(repaymentRange_(sheet, entry).getFormulas()[0]) !== JSON.stringify(entry.formulas)) {
+      if (JSON.stringify(repaymentEntryValues_(restored, snapshot.layout, entry)) !== JSON.stringify(entry.formulas)) {
         throw new Error('Formula restoration failed. The backup is retained; retry Unfreeze.');
       }
     });
@@ -180,6 +182,15 @@ function repaymentRange_(sheet, entry) {
   return sheet.getRange(entry.row, entry.column, 1, entry.formulas.length);
 }
 
+function repaymentTimelineRange_(sheet, layout) {
+  return sheet.getRange(4, layout.firstColumn, layout.labels.length, layout.width);
+}
+
+function repaymentEntryValues_(grid, layout, entry) {
+  const startColumn = entry.column - layout.firstColumn;
+  return grid[entry.row - 4].slice(startColumn, startColumn + entry.formulas.length);
+}
+
 function saveRepaymentSnapshot_(props, snapshot) {
   const config = REPAYMENT_FREEZE;
   const json = JSON.stringify(snapshot);
@@ -187,10 +198,11 @@ function saveRepaymentSnapshot_(props, snapshot) {
   const encoded = Utilities.base64Encode(Utilities.gzip(Utilities.newBlob(json, 'application/json')).getBytes());
   deleteRepaymentChunks_(props);
   const count = Math.ceil(encoded.length / config.chunkSize);
+  const chunks = {};
   for (let index = 0; index < count; index++) {
-    props.setProperty(config.backupKey + '_' + index,
-      encoded.slice(index * config.chunkSize, (index + 1) * config.chunkSize));
+    chunks[config.backupKey + '_' + index] = encoded.slice(index * config.chunkSize, (index + 1) * config.chunkSize);
   }
+  props.setProperties(chunks);
   props.setProperty(config.backupKey, String(count));
   if (JSON.stringify(loadRepaymentSnapshot_(props)) !== json) {
     throw new Error('The repayment backup could not be verified. Nothing was changed.');
@@ -199,13 +211,14 @@ function saveRepaymentSnapshot_(props, snapshot) {
 
 function loadRepaymentSnapshot_(props) {
   const key = REPAYMENT_FREEZE.backupKey;
-  const marker = props.getProperty(key);
+  const properties = props.getProperties();
+  const marker = properties[key];
   if (!marker) return null;
   const count = Number(marker);
   if (!Number.isInteger(count) || count < 1) throw new Error('Invalid repayment backup. Nothing was changed.');
   let encoded = '';
   for (let index = 0; index < count; index++) {
-    const chunk = props.getProperty(key + '_' + index);
+    const chunk = properties[key + '_' + index];
     if (!chunk) throw new Error('Incomplete repayment backup. Nothing was changed.');
     encoded += chunk;
   }

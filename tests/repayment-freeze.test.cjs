@@ -5,20 +5,26 @@ const vm = require('node:vm');
 const zlib = require('node:zlib');
 const path = require('node:path');
 
-function fixture() {
-  const cells = Array.from({length: 8}, () => Array.from({length: 13}, () => ({value: '', formula: ''})));
+function fixture(loanCount = 1, monthCount = 2) {
+  const columnCount = 11 + monthCount;
+  const cells = Array.from({length: 3 + 5 * loanCount}, () => Array.from({length: columnCount}, () => ({value: '', formula: ''})));
   cells[0][0].value = 'Live Loans Repayments Calculations';
   cells[2][9].value = 'Param';
-  cells[2][10].value = new Date('2026-01-01T00:00:00Z');
-  cells[2][11].value = new Date('2026-02-01T00:00:00Z');
-  cells[2][12].value = '_name';
-  ['start balance', 'principal paid', 'interest paid', 'loan draw', 'total loan paid'].forEach((label, i) => {
+  const monthColumns = Array.from({length: monthCount}, (_, month) => 10 + month);
+  monthColumns.forEach((column, month) => { cells[2][column].value = new Date(Date.UTC(2026, month, 1)); });
+  cells[2][10 + monthCount].value = '_name';
+  const labels = Array.from({length: loanCount}, () =>
+    ['start balance', 'principal paid', 'interest paid', 'loan draw', 'total loan paid']).flat();
+  labels.forEach((label, i) => {
     cells[i + 3][9].value = label;
     cells[i + 3][0].value = i === 0 ? 'Loan A' : '';
-    [10, 11].forEach(col => { cells[i + 3][col] = {value: i * 10 + col, formula: '=SUM(1,2)'}; });
+    monthColumns.forEach(col => { cells[i + 3][col] = {value: i * 10 + col, formula: '=SUM(1,2)'}; });
   });
-  const state = {cells, properties: {}, writes: [], messages: [], failWrite: 0, locked: false, busy: false};
+  const state = {cells, properties: {}, writes: [], messages: [], failWrite: 0, locked: false, busy: false,
+    reads: {formulas: 0, values: 0, display: 0}, flushes: 0, corruptWrite: false, corruptFormula: false};
   const props = {
+    getProperties: () => ({...state.properties}),
+    setProperties: entries => { Object.assign(state.properties, entries); },
     getProperty: key => state.properties[key] ?? null,
     setProperty: (key, value) => { state.properties[key] = value; },
     deleteProperty: key => { delete state.properties[key]; },
@@ -33,8 +39,8 @@ function fixture() {
       if (state.writes.length === state.failWrite) throw new Error('Simulated write failure');
       data.forEach((line, r) => line.forEach((value, c) => {
         const cell = cells[row - 1 + r][column - 1 + c];
-        if (formula) cell.formula = value;
-        else { cell.value = value; cell.formula = ''; }
+        if (formula) cell.formula = state.corruptFormula ? '=0' : value;
+        else { cell.value = state.corruptWrite ? value + 1 : value; cell.formula = ''; }
       }));
     };
     return {
@@ -47,20 +53,20 @@ function fixture() {
         return {setNote: note => { state.note = note; }};
       },
       setNote: note => { state.note = note; },
-      getValues: () => read(cell => cell.value),
-      getDisplayValues: () => read(cell => String(cell.value)),
-      getFormulas: () => read(cell => cell.formula),
+      getValues: () => { state.reads.values++; return read(cell => cell.value); },
+      getDisplayValues: () => { state.reads.display++; return read(cell => String(cell.value)); },
+      getFormulas: () => { state.reads.formulas++; return read(cell => cell.formula); },
       setValues: data => write(data, false),
       setFormulas: data => write(data, true)
     };
   }
-  const sheet = {getName: () => 'In Loans', getRange: range, getLastRow: () => 8, getLastColumn: () => 13, getSheetId: () => 42};
+  const sheet = {getName: () => 'In Loans', getRange: range, getLastRow: () => cells.length, getLastColumn: () => columnCount, getSheetId: () => 42};
   const spreadsheet = {getSheetByName: () => sheet, getId: () => 'spreadsheet',
     toast(message) { state.messages.push({message, writes: state.writes.length}); }};
   const blob = (data, contentType) => ({contentType, getBytes: () => Buffer.from(data), getDataAsString: () => Buffer.from(data).toString()});
   const context = vm.createContext({
     Date,
-    SpreadsheetApp: {getActiveSpreadsheet: () => spreadsheet, flush() {}},
+    SpreadsheetApp: {getActiveSpreadsheet: () => spreadsheet, flush() { state.flushes++; }},
     PropertiesService: {getDocumentProperties: () => props},
     LockService: {getDocumentLock: () => ({
       tryLock: () => { if (state.busy) return false; state.locked = true; return true; },
@@ -251,4 +257,47 @@ test('invalid dropdown value cannot modify repayment cells', () => {
   state.cells[0][0].value = 'invalid';
   assert.throws(() => context.handleRepaymentModeEdit({range: range('A1')}), /Select Live/);
   assert.equal(state.writes.length, 0);
+});
+
+test('seven loans over 96 months use constant bulk reads and preserve manual gaps', () => {
+  const {state, context} = fixture(7, 96);
+  state.cells.forEach((row, r) => row.forEach((cell, c) => {
+    if (cell.formula) cell.formula = '=' + r + '+' + c;
+  }));
+  state.cells[4][35] = {formula: '', value: 7};
+  state.cells[9][105] = {formula: '', value: 9};
+  const before = structuredClone(state.cells);
+  context.freezeLoanRepayments();
+  assert.equal(state.reads.formulas + state.reads.values + state.reads.display, 6);
+  assert.equal(state.flushes, 1);
+  state.cells.slice(3).forEach((row, index) => {
+    const repaymentRow = ['principal paid', 'interest paid'].includes(row[9].value);
+    row.slice(10, 106).forEach((cell, column) => {
+      assert.equal(cell.formula, repaymentRow ? '' : before[index + 3][column + 10].formula);
+    });
+  });
+  state.reads = {formulas: 0, values: 0, display: 0};
+  state.flushes = 0;
+  context.unfreezeLoanRepayments();
+  assert.equal(state.reads.formulas + state.reads.values + state.reads.display, 3);
+  assert.equal(state.flushes, 1);
+  assert.deepEqual(state.cells, before);
+});
+
+test('bulk verification detects incorrect frozen values and retains recovery backup', () => {
+  const {state, context} = fixture();
+  state.corruptWrite = true;
+  assert.throws(() => context.freezeLoanRepayments(), /Freeze verification failed/);
+  assert.ok(state.properties.inLoanRepaymentSnapshotV1);
+});
+
+test('bulk verification detects incorrect restored formulas and retains recovery backup', () => {
+  const {state, context} = fixture();
+  context.freezeLoanRepayments();
+  state.corruptFormula = true;
+  assert.throws(() => context.unfreezeLoanRepayments(), /Formula restoration failed/);
+  assert.ok(state.properties.inLoanRepaymentSnapshotV1);
+  state.corruptFormula = false;
+  context.unfreezeLoanRepayments();
+  assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
 });
