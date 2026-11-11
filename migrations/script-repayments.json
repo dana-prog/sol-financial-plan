@@ -32,5 +32,7 @@
     "B14": "incoming loans - funds received",
     "B15": "outgoing loans - funds repaid"
   },
-  "loanTotalLookupScope": "Look up the matching total label within the relevant totals block. Exclude In Loans row 106 and Out Loans row 36, which link back to Cash Flow debt-service availability."
+  "loanTotalLookupScope": "Look up the matching total label within the relevant totals block. Exclude In Loans row 106 and Out Loans row 36, which link back to Cash Flow debt-service availability.",
+  "principalRepaymentStart": "Params: principal loan repayment start month (preserved January 2029). Gates principal only.",
+  "interestRepaymentStart": "Per loan: month of In Loans column C plus years in column G. Params displays Per loan contract. Interest eligibility is independent of principal eligibility; eligible interest retains priority and reserve limits."
 }

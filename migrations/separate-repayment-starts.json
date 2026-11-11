@@ -1,0 +1,474 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Apply once after deploying the separate principal/interest calculation. Preserve Params C12 and insert a per-loan interest-policy row at 13. Removes the obsolete warning comparing principal start to interest deadlines.",
+  "principalParameter": "principal loan repayment start month",
+  "interestParameter": "interest loan repayment start month",
+  "interestRule": "Each loan: month of date in In Loans C + non-negative whole years in G. Interest-free loans require no start. Interest-bearing dated loans require a valid G. Principal start does not gate interest. Both use available cash above the reserve.",
+  "requests": [
+    {
+      "deleteConditionalFormatRule": {
+        "sheetId": 280690834,
+        "index": 0
+      }
+    },
+    {
+      "insertDimension": {
+        "range": {
+          "sheetId": 280690834,
+          "dimension": "ROWS",
+          "startIndex": 12,
+          "endIndex": 13
+        },
+        "inheritFromBefore": true
+      }
+    },
+    {
+      "copyPaste": {
+        "source": {
+          "sheetId": 280690834,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 1,
+          "endColumnIndex": 3
+        },
+        "destination": {
+          "sheetId": 280690834,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 1,
+          "endColumnIndex": 3
+        },
+        "pasteType": "PASTE_FORMAT"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 280690834,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "principal loan repayment start month"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 280690834,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Principal repayments may start from this month, subject to cash above the minimum reserve. Interest starts separately for each loan using In Loans column C plus the contract years in column G. Run SOL \u2192 Recalculate Loan Repayments after changing inputs.",
+                "dataValidation": {
+                  "condition": {
+                    "type": "DATE_IS_VALID"
+                  },
+                  "strict": true,
+                  "showCustomUi": true,
+                  "inputMessage": "Enter a valid principal repayment-start month."
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "note,dataValidation"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 280690834,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 1,
+          "endColumnIndex": 3
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "interest loan repayment start month"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=\"Per loan contract\""
+                },
+                "note": "Calculated separately for every In Loans loan: loan date (column C) + interest repayment start years (column G), using the resulting month. For example, 8 Apr 2026 + 2 years starts interest repayments in Apr 2028. This is independent of the principal start month. Zero-interest loans have no interest payments. Payments remain subject to available cash above the minimum reserve.",
+                "userEnteredFormat": {
+                  "numberFormat": {
+                    "type": "TEXT"
+                  },
+                  "wrapStrategy": "WRAP"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note,dataValidation"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 280690834,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "TEXT"
+            },
+            "wrapStrategy": "WRAP"
+          }
+        },
+        "fields": "userEnteredFormat.numberFormat,userEnteredFormat.wrapStrategy"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 280690834,
+          "dimension": "ROWS",
+          "startIndex": 12,
+          "endIndex": 13
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 3,
+          "endRowIndex": 4,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "yearly interest\n\nInterest repayments start in the month of loan date (column C) + these contract years, independently of the principal start month. Red: no saved interest payment by that month. Amber: start is beyond the forecast. Payments use cash above the minimum reserve. Run SOL \u2192 Recalculate Loan Repayments after changes."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 17,
+          "endRowIndex": 18,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "no later than 5 years\nstarting 2 years\n\nInterest repayments start in the month of loan date (column C) + these contract years, independently of the principal start month. Red: no saved interest payment by that month. Amber: start is beyond the forecast. Payments use cash above the minimum reserve. Run SOL \u2192 Recalculate Loan Repayments after changes."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 31,
+          "endRowIndex": 32,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "no later than 5 years\nstarting 2 years\n\nInterest repayments start in the month of loan date (column C) + these contract years, independently of the principal start month. Red: no saved interest payment by that month. Amber: start is beyond the forecast. Payments use cash above the minimum reserve. Run SOL \u2192 Recalculate Loan Repayments after changes."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 45,
+          "endRowIndex": 46,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "no later than 5 years\nstarting 2 years\n\nInterest repayments start in the month of loan date (column C) + these contract years, independently of the principal start month. Red: no saved interest payment by that month. Amber: start is beyond the forecast. Payments use cash above the minimum reserve. Run SOL \u2192 Recalculate Loan Repayments after changes."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 59,
+          "endRowIndex": 60,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "no later than 5 years\nstarting 2 years\n\nInterest repayments start in the month of loan date (column C) + these contract years, independently of the principal start month. Red: no saved interest payment by that month. Amber: start is beyond the forecast. Payments use cash above the minimum reserve. Run SOL \u2192 Recalculate Loan Repayments after changes."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 73,
+          "endRowIndex": 74,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "no later than 5 years\nstarting 2 years\n\nInterest repayments start in the month of loan date (column C) + these contract years, independently of the principal start month. Red: no saved interest payment by that month. Amber: start is beyond the forecast. Payments use cash above the minimum reserve. Run SOL \u2192 Recalculate Loan Repayments after changes."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 87,
+          "endRowIndex": 88,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Interest repayments start in the month of loan date (column C) + these contract years, independently of the principal start month. Red: no saved interest payment by that month. Amber: start is beyond the forecast. Payments use cash above the minimum reserve. Run SOL \u2192 Recalculate Loan Repayments after changes."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 3,
+          "endRowIndex": 17,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=IF($G$4=\"\",OR($F$4=0,$C$4=\"\"),AND(ISNUMBER($G$4),$G$4>=0,MOD($G$4,1)=0,OR($H$4=\"\",$G$4<=$H$4)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Required for dated, interest-bearing loans: whole years (0 or greater), no later than the full repayment deadline."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 17,
+          "endRowIndex": 31,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=IF($G$18=\"\",OR($F$18=0,$C$18=\"\"),AND(ISNUMBER($G$18),$G$18>=0,MOD($G$18,1)=0,OR($H$18=\"\",$G$18<=$H$18)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Required for dated, interest-bearing loans: whole years (0 or greater), no later than the full repayment deadline."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 31,
+          "endRowIndex": 45,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=IF($G$32=\"\",OR($F$32=0,$C$32=\"\"),AND(ISNUMBER($G$32),$G$32>=0,MOD($G$32,1)=0,OR($H$32=\"\",$G$32<=$H$32)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Required for dated, interest-bearing loans: whole years (0 or greater), no later than the full repayment deadline."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 45,
+          "endRowIndex": 59,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=IF($G$46=\"\",OR($F$46=0,$C$46=\"\"),AND(ISNUMBER($G$46),$G$46>=0,MOD($G$46,1)=0,OR($H$46=\"\",$G$46<=$H$46)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Required for dated, interest-bearing loans: whole years (0 or greater), no later than the full repayment deadline."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 59,
+          "endRowIndex": 73,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=IF($G$60=\"\",OR($F$60=0,$C$60=\"\"),AND(ISNUMBER($G$60),$G$60>=0,MOD($G$60,1)=0,OR($H$60=\"\",$G$60<=$H$60)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Required for dated, interest-bearing loans: whole years (0 or greater), no later than the full repayment deadline."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 73,
+          "endRowIndex": 87,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=IF($G$74=\"\",OR($F$74=0,$C$74=\"\"),AND(ISNUMBER($G$74),$G$74>=0,MOD($G$74,1)=0,OR($H$74=\"\",$G$74<=$H$74)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Required for dated, interest-bearing loans: whole years (0 or greater), no later than the full repayment deadline."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 87,
+          "endRowIndex": 101,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=IF($G$88=\"\",OR($F$88=0,$C$88=\"\"),AND(ISNUMBER($G$88),$G$88>=0,MOD($G$88,1)=0,OR($H$88=\"\",$G$88<=$H$88)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Required for dated, interest-bearing loans: whole years (0 or greater), no later than the full repayment deadline."
+        }
+      }
+    }
+  ]
+}

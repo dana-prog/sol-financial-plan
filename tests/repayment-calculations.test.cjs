@@ -7,8 +7,8 @@ const context = vm.createContext({Date});
 vm.runInContext(source, context);
 const day = (year, month, date = 1) => context.repaymentDay(year, month - 1, date);
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-7, `${actual} != ${expected}`);
-const loan = (overrides = {}) => ({row: 4, name: 'Loan', priority: 1, date: day(2026, 1), rate: 0, draws: [100], ...overrides});
-const model = (overrides = {}) => ({months: [day(2026, 1)], loans: [loan()], receipts: [0], expenses: [0], reserve: 0, repaymentStart: day(2026, 1), ...overrides});
+const loan = (overrides = {}) => ({row: 4, name: 'Loan', priority: 1, date: day(2026, 1), rate: 0, draws: [100], interestRepaymentStart: day(2026, 1), ...overrides});
+const model = (overrides = {}) => ({months: [day(2026, 1)], loans: [loan()], receipts: [0], expenses: [0], reserve: 0, principalRepaymentStart: day(2026, 1), ...overrides});
 const calc = value => context.calculateIncomingRepayments(value);
 const state = (overrides = {}) => ({principal: 0, interest: 0, capitalized: 0, interestPaid: 0, ...overrides});
 
@@ -21,9 +21,9 @@ test('preserves the reserve and caps principal payments at the debt owed', () =>
   near(surplus.cash[0], 50);
 });
 
-test('starts repayments in the configured month and carries debt and cash forward', () => {
+test('starts principal repayments in the configured month and carries debt and cash forward', () => {
   const result = calc(model({months: [day(2026, 1), day(2026, 2)], loans: [loan({draws: [100, 0]})],
-    receipts: [0, 0], expenses: [0, 0], repaymentStart: day(2026, 2)}));
+    receipts: [0, 0], expenses: [0, 0], principalRepaymentStart: day(2026, 2)}));
   assert.deepEqual(Array.from(result.payments[0].principal), [0, 100]);
   assert.deepEqual(Array.from(result.cash), [100, 0]);
 });
@@ -34,6 +34,58 @@ test('pays all interest before principal and resolves equal priority by sheet ro
   near(result.payments[1].interest[0], 3.1);
   near(result.payments[1].principal[0], 3.8);
   near(result.payments[0].principal[0], 0);
+});
+
+test('interest starts in each contract month independently of the principal start', () => {
+  const months = [day(2026, 1), day(2026, 2), day(2026, 3)];
+  const result = calc(model({months, loans: [
+    loan({rate: 0.365, draws: [100, 0, 0], interestRepaymentStart: months[0]}),
+    loan({row: 18, rate: 0.365, draws: [100, 0, 0], interestRepaymentStart: months[1]})
+  ], receipts: [0, 0, 0], expenses: [0, 0, 0], principalRepaymentStart: months[2]}));
+  near(result.payments[0].interest[0], 3.1);
+  near(result.payments[1].interest[0], 0);
+  near(result.payments[1].interest[1], 5.9);
+  for (const payment of result.payments) {
+    assert.deepEqual(Array.from(payment.principal).slice(0, 2), [0, 0]);
+    assert.ok(payment.interest[2] > 0);
+  }
+  assert.ok(result.payments.some(payment => payment.principal[2] > 0));
+});
+
+test('moving the principal start does not delay contract interest', () => {
+  const input = model({months: [day(2026, 1), day(2026, 2)],
+    loans: [loan({rate: 0.365, draws: [100, 0]})], receipts: [0, 0], expenses: [0, 0],
+    principalRepaymentStart: day(2027, 1)});
+  assert.deepEqual(calc(input).payments[0].interest,
+    calc({...input, principalRepaymentStart: day(2030, 1)}).payments[0].interest);
+});
+
+test('interest before the principal start still respects cash availability and the reserve', () => {
+  const result = calc(model({loans: [loan({rate: 0.365})], reserve: 99,
+    principalRepaymentStart: day(2027, 1)}));
+  near(result.payments[0].interest[0], 1);
+  near(result.payments[0].principal[0], 0);
+  near(result.cash[0], 99);
+});
+
+test('a future interest start does not block otherwise eligible principal', () => {
+  const result = calc(model({loans: [loan({rate: 0.365, interestRepaymentStart: day(2027, 1)})]}));
+  near(result.payments[0].interest[0], 0);
+  near(result.payments[0].principal[0], 100);
+});
+
+test('contract interest starts in the anniversary month, including leap-day loans and zero-year terms', () => {
+  assert.equal(context.interestRepaymentStartMonth(day(2026, 4, 8), 0.07, 2, 'Loan'), day(2028, 4));
+  assert.equal(context.interestRepaymentStartMonth(day(2024, 2, 29), 0.07, 1, 'Loan'), day(2025, 2));
+  assert.equal(context.interestRepaymentStartMonth(day(2026, 4, 8), 0.07, 0, 'Loan'), day(2026, 4));
+  assert.equal(context.interestRepaymentStartMonth(day(2026, 4, 8), 0, '', 'Loan'), null);
+  assert.equal(context.interestRepaymentStartMonth(null, 0.07, '', 'Loan'), null);
+});
+
+test('missing or invalid interest terms fail instead of silently skipping payments', () => {
+  for (const years of ['', '2', -1, 0.5, NaN, Infinity]) {
+    assert.throws(() => context.interestRepaymentStartMonth(day(2026, 1), 0.07, years, 'Contract A'), /column G for Contract A/);
+  }
 });
 
 test('interest uses loan priority when cash cannot cover all interest', () => {
@@ -90,7 +142,7 @@ test('repeated calculations are deterministic and do not mutate inputs', () => {
 test('repayments and cash reconcile over a multi-year forecast', () => {
   const months = Array.from({length: 96}, (_, i) => day(2026 + Math.floor(i / 12), i % 12 + 1));
   const input = model({months, loans: [loan({rate: 0.07, draws: months.map((_, i) => i ? 0 : 100000)})],
-    receipts: months.map(() => 1000), expenses: months.map(() => 100), reserve: 15000, repaymentStart: day(2027, 1)});
+    receipts: months.map(() => 1000), expenses: months.map(() => 100), reserve: 15000, principalRepaymentStart: day(2027, 1)});
   const result = calc(input);
   let cash = 0;
   months.forEach((_, i) => {

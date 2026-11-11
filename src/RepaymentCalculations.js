@@ -10,11 +10,13 @@ function calculateIncomingRepayments(model) {
     const accrued = model.loans.map((loan, i) => accrueIncomingLoanMonth(loan, states[i], month, loan.draws[index]));
     const draws = model.loans.reduce((sum, loan) => sum + loan.draws[index], 0);
     const beforeRepayments = balance + model.receipts[index] + draws - model.expenses[index];
-    let available = month >= model.repaymentStart ? Math.max(0, beforeRepayments - model.reserve) : 0;
-    // Existing schedules give all interest priority over all principal, then use loan priority and row order.
+    let available = Math.max(0, beforeRepayments - model.reserve);
+    // Pay eligible interest before principal, then use loan priority and row order.
     for (const kind of ['interest', 'principal']) {
       order.forEach(({index: i}) => {
-        const payment = Math.min(Math.max(0, accrued[i][kind]), available);
+        const start = kind === 'interest' ? model.loans[i].interestRepaymentStart : model.principalRepaymentStart;
+        const payment = start !== null && month >= start
+          ? Math.min(Math.max(0, accrued[i][kind]), available) : 0;
         payments[i][kind].push(payment);
         accrued[i][kind] -= payment;
         available -= payment;
@@ -62,6 +64,17 @@ function repaymentDay(year, month, day) {
 function repaymentMonthStart(day) {
   const date = new Date((day - 25569) * 86400000);
   return repaymentDay(date.getUTCFullYear(), date.getUTCMonth(), 1);
+}
+
+function interestRepaymentStartMonth(date, rate, years, name) {
+  if (rate === 0 || date === null) return null;
+  if (typeof years !== 'number' || !Number.isInteger(years) || years < 0) {
+    throw new Error('Enter a non-negative whole number of years in column G for ' + name + '. Nothing was written.');
+  }
+  const loanDate = new Date((date - 25569) * 86400000);
+  const start = repaymentDay(loanDate.getUTCFullYear() + years, loanDate.getUTCMonth(), 1);
+  if (!Number.isFinite(start)) throw new Error('Interest repayment start month is out of range for ' + name + '. Nothing was written.');
+  return start;
 }
 
 function showRepaymentCalculation() {
@@ -115,7 +128,7 @@ function readIncomingRepaymentModel(spreadsheet) {
     if (matches.length !== 1) throw new Error('Expected exactly one parameter: ' + name);
     return matches[0][1];
   };
-  const repaymentStart = repaymentMonthStart(repaymentDate(parameter('loan repayments start month'), timezone, 'loan repayments start month'));
+  const principalRepaymentStart = repaymentMonthStart(repaymentDate(parameter('principal loan repayment start month'), timezone, 'principal loan repayment start month'));
   const reserve = repaymentNumber(parameter('minimum cash reserve'), 'minimum cash reserve');
   if (reserve < 0) throw new Error('Minimum cash reserve cannot be negative.');
   const loans = [];
@@ -133,7 +146,9 @@ function readIncomingRepaymentModel(spreadsheet) {
     if (date === null && draws.some(Boolean)) throw new Error('A loan with draw amounts must have a date: ' + row[0]);
     const rate = repaymentNumber(row[5], row[0] + ' interest');
     if (rate < 0 || draws.some(value => value < 0)) throw new Error('Negative loan draws or interest rates are unsupported: ' + row[0]);
-    loans.push({row: index + 3, name: row[0], priority: repaymentNumber(row[1], row[0] + ' priority'), date, rate, draws});
+    const interestRepaymentStart = interestRepaymentStartMonth(date, rate, row[6], row[0]);
+    loans.push({row: index + 3, name: row[0], priority: repaymentNumber(row[1], row[0] + ' priority'),
+      date, rate, draws, interestRepaymentStart});
   });
   if (!loans.length) throw new Error('No incoming loan schedules were found.');
   const cash = repaymentSheet(spreadsheet, 'Cash Flow').getRange(3, 2, 14, months.length + 1).getValues();
@@ -154,7 +169,7 @@ function readIncomingRepaymentModel(spreadsheet) {
   if (receiptsRows.length !== 1) throw new Error('Expected one total loan paid row in Out Loans.');
   const revenue = cashRow('revenue');
   const receipts = receiptsRows[0].slice(1).map((value, i) => repaymentNumber(value, 'Out Loans repayments') + revenue[i]);
-  return {months, loans, repaymentStart, reserve, receipts, expenses};
+  return {months, loans, principalRepaymentStart, reserve, receipts, expenses};
 }
 
 function repaymentSheet(spreadsheet, name) {
