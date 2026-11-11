@@ -20,7 +20,7 @@ function onInstallableEdit(e) {
  */
 function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
-    .addItem('Recalculate Loan Repayments', 'showRepaymentCalculation')
+    .addItem('Recalculate Loan Payments and Tax', 'showRepaymentCalculation')
     .addSeparator()
     .addItem('Show Details', '_onShowDetails')
     .addItem('Set Timeline Borders', '_onSetTimelineBorders')

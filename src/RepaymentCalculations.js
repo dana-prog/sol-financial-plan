@@ -83,7 +83,7 @@ function showRepaymentCalculation() {
   const template = HtmlService.createTemplateFromFile('LoanModeProgress');
   template.action = 'Calculating repayments and tax…';
   template.completionMessage = '';
-  SpreadsheetApp.getUi().showModalDialog(template.evaluate().setWidth(420).setHeight(70), 'Recalculate Loan Repayments');
+  SpreadsheetApp.getUi().showModalDialog(template.evaluate().setWidth(420).setHeight(70), 'Recalculate Loan Payments and Tax');
 }
 
 function recalculateIncomingLoanRepayments() {
@@ -102,7 +102,7 @@ function recalculateIncomingLoanRepayments() {
     SpreadsheetApp.flush();
     const timestamp = Utilities.formatDate(new Date(), spreadsheet.getSpreadsheetTimeZone(), 'dd MMM HH:mm');
     sheet.getRange('D1').clearDataValidations().setValue('Last Repayment Calculation Time\n' + timestamp)
-      .setNote('Last successful repayment and company-tax calculation. Run SOL → Recalculate Loan Repayments after changing loans, cash flow, unit costs, useful lives, or tax inputs.');
+      .setNote('Last successful repayment and company-tax calculation. Run SOL → Recalculate Loan Payments and Tax after changing loans, cash flow, unit costs, useful lives, or tax inputs.');
     return 'Loan repayments and tax updated.';
   } finally {
     lock.releaseLock();
