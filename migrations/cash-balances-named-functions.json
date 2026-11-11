@@ -1,0 +1,56 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Use existing named functions for Cash Flow cash opening and closing. Preserve array formulas and cumulative cash calculations.",
+  "formulas": {
+    "C4": "=ARRAYFORMULA(PREV_MONTH_ROW_VALUES(CASH_FLOW_PARAM_VALUES(\"cash closing\")))",
+    "C17": "=ARRAYFORMULA(SCAN(0,CASH_FLOW_PARAM_VALUES(\"total cash inflows\")-CASH_FLOW_PARAM_VALUES(\"total cash outflows\"),LAMBDA(balance,change,balance+change)))"
+  },
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 3,
+          "endRowIndex": 4,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=ARRAYFORMULA(PREV_MONTH_ROW_VALUES(CASH_FLOW_PARAM_VALUES(\"cash closing\")))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 16,
+          "endRowIndex": 17,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=ARRAYFORMULA(SCAN(0,CASH_FLOW_PARAM_VALUES(\"total cash inflows\")-CASH_FLOW_PARAM_VALUES(\"total cash outflows\"),LAMBDA(balance,change,balance+change)))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    }
+  ]
+}
