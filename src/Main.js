@@ -20,6 +20,8 @@ function onInstallableEdit(e) {
 function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     .addItem('Show Details', '_onShowDetails')
+    .addItem('Freeze Loan Repayments', 'freezeLoanRepayments')
+    .addItem('Unfreeze Loan Repayments', 'unfreezeLoanRepayments')
     .addItem('Set Timeline Borders', '_onSetTimelineBorders')
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
     // .addSeparator()
