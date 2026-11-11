@@ -1,17 +1,17 @@
 {
   "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
-  "menu": "SOL → Recalculate Loan Repayments",
+  "menu": "SOL \u2192 Recalculate Loan Repayments",
   "incomingRepayments": "Principal paid and interest paid are script outputs. In Loans!D1 records the last successful calculation, replacing the former dropdown.",
   "cashFlowFormulas": {
     "C4": "=ARRAYFORMULA(HSTACK(0,C17:CS17))",
-    "C14": "=ARRAYFORMULA('In Loans'!K102:DB102)",
-    "C15": "=ARRAYFORMULA('Out Loans'!I39:CZ39)",
+    "C14": "=XLOOKUP(\"total loan draw\",'In Loans'!J102:J105,'In Loans'!K102:DB105)",
+    "C15": "=XLOOKUP(\"total loan paid\",'Out Loans'!H37:H39,'Out Loans'!I37:CZ39)",
     "C17": "=ARRAYFORMULA(SCAN(0,C21:CT21-C26:CT26,LAMBDA(balance,change,balance+change)))",
     "C23": "=ARRAYFORMULA(C4:CT4+C21:CT21-C22:CT22)",
     "C24": "=ARRAYFORMULA(LET(available,C23:CT23-PARAM(\"minimum cash reserve\"),IF(available>0,available,0)))",
     "C26": "=ARRAYFORMULA(C22:CT22+C25:CT25)",
-    "C12": "=ARRAYFORMULA('Out Loans'!I32:CZ32)",
-    "C13": "=ARRAYFORMULA('In Loans'!K109:DB109)",
+    "C12": "=XLOOKUP(\"total loan draw\",'Out Loans'!H32:H35,'Out Loans'!I32:CZ35)",
+    "C13": "=XLOOKUP(\"total loan paid\",'In Loans'!J107:J109,'In Loans'!K107:DB109)",
     "C21": "=ARRAYFORMULA(C14:CT14+C15:CT15+C16:CT16)",
     "C22": "=BYCOL(C5:CT12,LAMBDA(month,SUM(month)))",
     "C25": "=ARRAYFORMULA(C13:CT13)",
@@ -27,5 +27,10 @@
   },
   "outgoingRepaymentRule": "Keep monthly principal and interest payment formulas. From the matching repayment month onward, pay the positive principal/interest owed; a blank date produces zero. The recalculation script does not write Out Loans.",
   "plannedLoansControl": "In Loans!A1; loan draw formulas reference $A$1",
-  "lastCalculationLabel": "Last Repayment Calculation Time"
+  "lastCalculationLabel": "Last Repayment Calculation Time",
+  "cashFlowLabels": {
+    "B14": "incoming loans - funds received",
+    "B15": "outgoing loans - funds repaid"
+  },
+  "loanTotalLookupScope": "Look up the matching total label within the relevant totals block. Exclude In Loans row 106 and Out Loans row 36, which link back to Cash Flow debt-service availability."
 }

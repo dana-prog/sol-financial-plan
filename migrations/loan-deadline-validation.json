@@ -1,0 +1,2147 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Native date/year validation and monthly repayment deadline warnings. Repayment calculations and tax formulas are unchanged. Apply once: conditional-format requests add rules.",
+  "deadlineSemantics": "Interest must start by the end of the deadline month; principal and interest must be settled by the end of the full repayment deadline month. Red = missed; amber = outside forecast. Planned loans with no draws are ignored.",
+  "nativeFormulaTests": [
+    {
+      "case": "paid in deadline month",
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "case": "paid after deadline month",
+      "expected": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "case": "no scheduled payment",
+      "expected": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "case": "disabled loan without draws",
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "case": "interest-free loan",
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "case": "optional deadlines blank",
+      "expected": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "case": "outside forecast",
+      "expected": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "case": "negative deadline",
+      "expected": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "case": "interest deadline after full deadline",
+      "expected": [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 3,
+          "endRowIndex": 17,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rule": {
+          "condition": {
+            "type": "DATE_IS_VALID"
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a valid loan date."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 3,
+          "endRowIndex": 17,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($G$4=\"\",AND(ISNUMBER($G$4),$G$4>=0,MOD($G$4,1)=0,OR($H$4=\"\",$G$4<=$H$4)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (0 or greater), no later than the full repayment deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 3,
+          "endRowIndex": 4,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "yearly interest\n\nRed: no interest payment is scheduled by the interest-start deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 3,
+              "endRowIndex": 17,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$4),ISNUMBER($G$4),$G$4>=0,$F$4>0,SUM($K$5:$DB$5)>0.01,EOMONTH(EDATE($C$4,12*$G$4),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$4,12*$G$4),0),$K$6:$DB$6)>0.01,SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$4,12*$G$4),0),$K$13:$DB$13)<=0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 3,
+              "endRowIndex": 17,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$4),ISNUMBER($G$4),$F$4>0,SUM($K$5:$DB$5)>0.01,EOMONTH(EDATE($C$4,12*$G$4),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 3,
+          "endRowIndex": 17,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($H$4=\"\",AND(ISNUMBER($H$4),$H$4>0,MOD($H$4,1)=0,OR($G$4=\"\",$H$4>=$G$4)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (1 or greater), no earlier than the interest-start deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 3,
+          "endRowIndex": 4,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Red: principal or interest remains unpaid at the full repayment deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 3,
+              "endRowIndex": 17,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$4),ISNUMBER($H$4),$H$4>0,SUM($K$5:$DB$5)>0.01,EOMONTH(EDATE($C$4,12*$H$4),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$4,12*$H$4),0),$K$5:$DB$5)+SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$4,12*$H$4),0),$K$6:$DB$6)-SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$4,12*$H$4),0),$K$7:$DB$7)>0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 3,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 3,
+              "endRowIndex": 17,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$4),ISNUMBER($H$4),SUM($K$5:$DB$5)>0.01,EOMONTH(EDATE($C$4,12*$H$4),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 17,
+          "endRowIndex": 31,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rule": {
+          "condition": {
+            "type": "DATE_IS_VALID"
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a valid loan date."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 17,
+          "endRowIndex": 31,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($G$18=\"\",AND(ISNUMBER($G$18),$G$18>=0,MOD($G$18,1)=0,OR($H$18=\"\",$G$18<=$H$18)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (0 or greater), no later than the full repayment deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 17,
+          "endRowIndex": 18,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "no later than 5 years\nstarting 2 years\n\nRed: no interest payment is scheduled by the interest-start deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 4,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 17,
+              "endRowIndex": 31,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$18),ISNUMBER($G$18),$G$18>=0,$F$18>0,SUM($K$19:$DB$19)>0.01,EOMONTH(EDATE($C$18,12*$G$18),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$18,12*$G$18),0),$K$20:$DB$20)>0.01,SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$18,12*$G$18),0),$K$27:$DB$27)<=0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 5,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 17,
+              "endRowIndex": 31,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$18),ISNUMBER($G$18),$F$18>0,SUM($K$19:$DB$19)>0.01,EOMONTH(EDATE($C$18,12*$G$18),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 17,
+          "endRowIndex": 31,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($H$18=\"\",AND(ISNUMBER($H$18),$H$18>0,MOD($H$18,1)=0,OR($G$18=\"\",$H$18>=$G$18)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (1 or greater), no earlier than the interest-start deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 17,
+          "endRowIndex": 18,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Red: principal or interest remains unpaid at the full repayment deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 6,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 17,
+              "endRowIndex": 31,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$18),ISNUMBER($H$18),$H$18>0,SUM($K$19:$DB$19)>0.01,EOMONTH(EDATE($C$18,12*$H$18),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$18,12*$H$18),0),$K$19:$DB$19)+SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$18,12*$H$18),0),$K$20:$DB$20)-SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$18,12*$H$18),0),$K$21:$DB$21)>0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 7,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 17,
+              "endRowIndex": 31,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$18),ISNUMBER($H$18),SUM($K$19:$DB$19)>0.01,EOMONTH(EDATE($C$18,12*$H$18),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 31,
+          "endRowIndex": 45,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rule": {
+          "condition": {
+            "type": "DATE_IS_VALID"
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a valid loan date."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 31,
+          "endRowIndex": 45,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($G$32=\"\",AND(ISNUMBER($G$32),$G$32>=0,MOD($G$32,1)=0,OR($H$32=\"\",$G$32<=$H$32)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (0 or greater), no later than the full repayment deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 31,
+          "endRowIndex": 32,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "no later than 5 years\nstarting 2 years\n\nRed: no interest payment is scheduled by the interest-start deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 8,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 31,
+              "endRowIndex": 45,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$32),ISNUMBER($G$32),$G$32>=0,$F$32>0,SUM($K$33:$DB$33)>0.01,EOMONTH(EDATE($C$32,12*$G$32),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$32,12*$G$32),0),$K$34:$DB$34)>0.01,SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$32,12*$G$32),0),$K$41:$DB$41)<=0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 9,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 31,
+              "endRowIndex": 45,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$32),ISNUMBER($G$32),$F$32>0,SUM($K$33:$DB$33)>0.01,EOMONTH(EDATE($C$32,12*$G$32),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 31,
+          "endRowIndex": 45,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($H$32=\"\",AND(ISNUMBER($H$32),$H$32>0,MOD($H$32,1)=0,OR($G$32=\"\",$H$32>=$G$32)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (1 or greater), no earlier than the interest-start deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 31,
+          "endRowIndex": 32,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Red: principal or interest remains unpaid at the full repayment deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 10,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 31,
+              "endRowIndex": 45,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$32),ISNUMBER($H$32),$H$32>0,SUM($K$33:$DB$33)>0.01,EOMONTH(EDATE($C$32,12*$H$32),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$32,12*$H$32),0),$K$33:$DB$33)+SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$32,12*$H$32),0),$K$34:$DB$34)-SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$32,12*$H$32),0),$K$35:$DB$35)>0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 11,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 31,
+              "endRowIndex": 45,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$32),ISNUMBER($H$32),SUM($K$33:$DB$33)>0.01,EOMONTH(EDATE($C$32,12*$H$32),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 45,
+          "endRowIndex": 59,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rule": {
+          "condition": {
+            "type": "DATE_IS_VALID"
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a valid loan date."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 45,
+          "endRowIndex": 59,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($G$46=\"\",AND(ISNUMBER($G$46),$G$46>=0,MOD($G$46,1)=0,OR($H$46=\"\",$G$46<=$H$46)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (0 or greater), no later than the full repayment deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 45,
+          "endRowIndex": 46,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "no later than 5 years\nstarting 2 years\n\nRed: no interest payment is scheduled by the interest-start deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 12,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 45,
+              "endRowIndex": 59,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$46),ISNUMBER($G$46),$G$46>=0,$F$46>0,SUM($K$47:$DB$47)>0.01,EOMONTH(EDATE($C$46,12*$G$46),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$46,12*$G$46),0),$K$48:$DB$48)>0.01,SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$46,12*$G$46),0),$K$55:$DB$55)<=0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 13,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 45,
+              "endRowIndex": 59,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$46),ISNUMBER($G$46),$F$46>0,SUM($K$47:$DB$47)>0.01,EOMONTH(EDATE($C$46,12*$G$46),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 45,
+          "endRowIndex": 59,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($H$46=\"\",AND(ISNUMBER($H$46),$H$46>0,MOD($H$46,1)=0,OR($G$46=\"\",$H$46>=$G$46)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (1 or greater), no earlier than the interest-start deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 45,
+          "endRowIndex": 46,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Red: principal or interest remains unpaid at the full repayment deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 14,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 45,
+              "endRowIndex": 59,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$46),ISNUMBER($H$46),$H$46>0,SUM($K$47:$DB$47)>0.01,EOMONTH(EDATE($C$46,12*$H$46),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$46,12*$H$46),0),$K$47:$DB$47)+SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$46,12*$H$46),0),$K$48:$DB$48)-SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$46,12*$H$46),0),$K$49:$DB$49)>0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 15,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 45,
+              "endRowIndex": 59,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$46),ISNUMBER($H$46),SUM($K$47:$DB$47)>0.01,EOMONTH(EDATE($C$46,12*$H$46),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 59,
+          "endRowIndex": 73,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rule": {
+          "condition": {
+            "type": "DATE_IS_VALID"
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a valid loan date."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 59,
+          "endRowIndex": 73,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($G$60=\"\",AND(ISNUMBER($G$60),$G$60>=0,MOD($G$60,1)=0,OR($H$60=\"\",$G$60<=$H$60)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (0 or greater), no later than the full repayment deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 59,
+          "endRowIndex": 60,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "no later than 5 years\nstarting 2 years\n\nRed: no interest payment is scheduled by the interest-start deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 16,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 59,
+              "endRowIndex": 73,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$60),ISNUMBER($G$60),$G$60>=0,$F$60>0,SUM($K$61:$DB$61)>0.01,EOMONTH(EDATE($C$60,12*$G$60),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$60,12*$G$60),0),$K$62:$DB$62)>0.01,SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$60,12*$G$60),0),$K$69:$DB$69)<=0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 17,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 59,
+              "endRowIndex": 73,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$60),ISNUMBER($G$60),$F$60>0,SUM($K$61:$DB$61)>0.01,EOMONTH(EDATE($C$60,12*$G$60),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 59,
+          "endRowIndex": 73,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($H$60=\"\",AND(ISNUMBER($H$60),$H$60>0,MOD($H$60,1)=0,OR($G$60=\"\",$H$60>=$G$60)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (1 or greater), no earlier than the interest-start deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 59,
+          "endRowIndex": 60,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Red: principal or interest remains unpaid at the full repayment deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 18,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 59,
+              "endRowIndex": 73,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$60),ISNUMBER($H$60),$H$60>0,SUM($K$61:$DB$61)>0.01,EOMONTH(EDATE($C$60,12*$H$60),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$60,12*$H$60),0),$K$61:$DB$61)+SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$60,12*$H$60),0),$K$62:$DB$62)-SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$60,12*$H$60),0),$K$63:$DB$63)>0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 19,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 59,
+              "endRowIndex": 73,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$60),ISNUMBER($H$60),SUM($K$61:$DB$61)>0.01,EOMONTH(EDATE($C$60,12*$H$60),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 73,
+          "endRowIndex": 87,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rule": {
+          "condition": {
+            "type": "DATE_IS_VALID"
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a valid loan date."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 73,
+          "endRowIndex": 87,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($G$74=\"\",AND(ISNUMBER($G$74),$G$74>=0,MOD($G$74,1)=0,OR($H$74=\"\",$G$74<=$H$74)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (0 or greater), no later than the full repayment deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 73,
+          "endRowIndex": 74,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "no later than 5 years\nstarting 2 years\n\nRed: no interest payment is scheduled by the interest-start deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 20,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 73,
+              "endRowIndex": 87,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$74),ISNUMBER($G$74),$G$74>=0,$F$74>0,SUM($K$75:$DB$75)>0.01,EOMONTH(EDATE($C$74,12*$G$74),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$74,12*$G$74),0),$K$76:$DB$76)>0.01,SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$74,12*$G$74),0),$K$83:$DB$83)<=0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 21,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 73,
+              "endRowIndex": 87,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$74),ISNUMBER($G$74),$F$74>0,SUM($K$75:$DB$75)>0.01,EOMONTH(EDATE($C$74,12*$G$74),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 73,
+          "endRowIndex": 87,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($H$74=\"\",AND(ISNUMBER($H$74),$H$74>0,MOD($H$74,1)=0,OR($G$74=\"\",$H$74>=$G$74)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (1 or greater), no earlier than the interest-start deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 73,
+          "endRowIndex": 74,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Red: principal or interest remains unpaid at the full repayment deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 22,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 73,
+              "endRowIndex": 87,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$74),ISNUMBER($H$74),$H$74>0,SUM($K$75:$DB$75)>0.01,EOMONTH(EDATE($C$74,12*$H$74),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$74,12*$H$74),0),$K$75:$DB$75)+SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$74,12*$H$74),0),$K$76:$DB$76)-SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$74,12*$H$74),0),$K$77:$DB$77)>0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 23,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 73,
+              "endRowIndex": 87,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$74),ISNUMBER($H$74),SUM($K$75:$DB$75)>0.01,EOMONTH(EDATE($C$74,12*$H$74),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 87,
+          "endRowIndex": 101,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rule": {
+          "condition": {
+            "type": "DATE_IS_VALID"
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a valid loan date."
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 87,
+          "endRowIndex": 101,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($G$88=\"\",AND(ISNUMBER($G$88),$G$88>=0,MOD($G$88,1)=0,OR($H$88=\"\",$G$88<=$H$88)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (0 or greater), no later than the full repayment deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 87,
+          "endRowIndex": 88,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Red: no interest payment is scheduled by the interest-start deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 24,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 87,
+              "endRowIndex": 101,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$88),ISNUMBER($G$88),$G$88>=0,$F$88>0,SUM($K$89:$DB$89)>0.01,EOMONTH(EDATE($C$88,12*$G$88),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$88,12*$G$88),0),$K$90:$DB$90)>0.01,SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$88,12*$G$88),0),$K$97:$DB$97)<=0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 25,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 87,
+              "endRowIndex": 101,
+              "startColumnIndex": 6,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$88),ISNUMBER($G$88),$F$88>0,SUM($K$89:$DB$89)>0.01,EOMONTH(EDATE($C$88,12*$G$88),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 87,
+          "endRowIndex": 101,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=OR($H$88=\"\",AND(ISNUMBER($H$88),$H$88>0,MOD($H$88,1)=0,OR($G$88=\"\",$H$88>=$G$88)))"
+              }
+            ]
+          },
+          "strict": true,
+          "inputMessage": "Enter whole years (1 or greater), no earlier than the interest-start deadline, or leave blank."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 87,
+          "endRowIndex": 88,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Red: principal or interest remains unpaid at the full repayment deadline. Deadline = loan date + years in this cell, checked through the end of that month (not an exact payment day). Amber: deadline is beyond the forecast. Based on saved repayments; run SOL \u2192 Recalculate Loan Repayments after changing inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 26,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 87,
+              "endRowIndex": 101,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$88),ISNUMBER($H$88),$H$88>0,SUM($K$89:$DB$89)>0.01,EOMONTH(EDATE($C$88,12*$H$88),0)<=EOMONTH($DB$3,0),SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$88,12*$H$88),0),$K$89:$DB$89)+SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$88,12*$H$88),0),$K$90:$DB$90)-SUMIF($K$3:$DB$3,\"<=\"&EOMONTH(EDATE($C$88,12*$H$88),0),$K$91:$DB$91)>0.01),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 27,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 87,
+              "endRowIndex": 101,
+              "startColumnIndex": 7,
+              "endColumnIndex": 8
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(AND(ISNUMBER($C$88),ISNUMBER($H$88),SUM($K$89:$DB$89)>0.01,EOMONTH(EDATE($C$88,12*$H$88),0)>EOMONTH($DB$3,0)),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.988,
+                "green": 0.898,
+                "blue": 0.69
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.45,
+                  "green": 0.28,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 280690834,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rule": {
+          "condition": {
+            "type": "DATE_IS_VALID"
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a valid repayment-start date. Check the loan deadline warnings after recalculating repayments."
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 280690834,
+              "startRowIndex": 11,
+              "endRowIndex": 12,
+              "startColumnIndex": 2,
+              "endColumnIndex": 3
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IFERROR(OR(AND(ISNUMBER(INDIRECT(\"'In Loans'!C4\")),ISNUMBER(INDIRECT(\"'In Loans'!G4\")),INDIRECT(\"'In Loans'!F4\")>0,SUM(INDIRECT(\"'In Loans'!K5:DB5\"))>0.01,EOMONTH($C$12,-1)+1>EOMONTH(EDATE(INDIRECT(\"'In Loans'!C4\"),12*INDIRECT(\"'In Loans'!G4\")),0)),AND(ISNUMBER(INDIRECT(\"'In Loans'!C18\")),ISNUMBER(INDIRECT(\"'In Loans'!G18\")),INDIRECT(\"'In Loans'!F18\")>0,SUM(INDIRECT(\"'In Loans'!K19:DB19\"))>0.01,EOMONTH($C$12,-1)+1>EOMONTH(EDATE(INDIRECT(\"'In Loans'!C18\"),12*INDIRECT(\"'In Loans'!G18\")),0)),AND(ISNUMBER(INDIRECT(\"'In Loans'!C32\")),ISNUMBER(INDIRECT(\"'In Loans'!G32\")),INDIRECT(\"'In Loans'!F32\")>0,SUM(INDIRECT(\"'In Loans'!K33:DB33\"))>0.01,EOMONTH($C$12,-1)+1>EOMONTH(EDATE(INDIRECT(\"'In Loans'!C32\"),12*INDIRECT(\"'In Loans'!G32\")),0)),AND(ISNUMBER(INDIRECT(\"'In Loans'!C46\")),ISNUMBER(INDIRECT(\"'In Loans'!G46\")),INDIRECT(\"'In Loans'!F46\")>0,SUM(INDIRECT(\"'In Loans'!K47:DB47\"))>0.01,EOMONTH($C$12,-1)+1>EOMONTH(EDATE(INDIRECT(\"'In Loans'!C46\"),12*INDIRECT(\"'In Loans'!G46\")),0)),AND(ISNUMBER(INDIRECT(\"'In Loans'!C60\")),ISNUMBER(INDIRECT(\"'In Loans'!G60\")),INDIRECT(\"'In Loans'!F60\")>0,SUM(INDIRECT(\"'In Loans'!K61:DB61\"))>0.01,EOMONTH($C$12,-1)+1>EOMONTH(EDATE(INDIRECT(\"'In Loans'!C60\"),12*INDIRECT(\"'In Loans'!G60\")),0)),AND(ISNUMBER(INDIRECT(\"'In Loans'!C74\")),ISNUMBER(INDIRECT(\"'In Loans'!G74\")),INDIRECT(\"'In Loans'!F74\")>0,SUM(INDIRECT(\"'In Loans'!K75:DB75\"))>0.01,EOMONTH($C$12,-1)+1>EOMONTH(EDATE(INDIRECT(\"'In Loans'!C74\"),12*INDIRECT(\"'In Loans'!G74\")),0)),AND(ISNUMBER(INDIRECT(\"'In Loans'!C88\")),ISNUMBER(INDIRECT(\"'In Loans'!G88\")),INDIRECT(\"'In Loans'!F88\")>0,SUM(INDIRECT(\"'In Loans'!K89:DB89\"))>0.01,EOMONTH($C$12,-1)+1>EOMONTH(EDATE(INDIRECT(\"'In Loans'!C88\"),12*INDIRECT(\"'In Loans'!G88\")),0))),FALSE)"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.957,
+                "green": 0.8,
+                "blue": 0.8
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.6,
+                  "green": 0,
+                  "blue": 0
+                },
+                "bold": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 280690834,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Red: the global repayment-start month is later than at least one active interest-bearing loan's interest-start deadline. Check In Loans columns G/H. Deadlines are compared by month. Run SOL \u2192 Recalculate Loan Repayments after changes."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 13,
+          "endRowIndex": 15,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "incoming loans - funds received"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "outgoing loans - funds repaid"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1346380865,
+          "dimension": "COLUMNS",
+          "startIndex": 6,
+          "endIndex": 8
+        },
+        "properties": {
+          "hiddenByUser": false,
+          "pixelSize": 150
+        },
+        "fields": "hiddenByUser,pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1346380865,
+          "dimension": "ROWS",
+          "startIndex": 2,
+          "endIndex": 3
+        },
+        "properties": {
+          "pixelSize": 64
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ]
+}
