@@ -47,7 +47,10 @@ function fixture(loanCount = 1, monthCount = 2) {
       getRow: () => row,
       getColumn: () => column,
       getSheet: () => sheet,
-      getValue: () => cells[row - 1][column - 1].value,
+      getValue: () => {
+        if (state.beforeReadValue) state.beforeReadValue();
+        return cells[row - 1][column - 1].value;
+      },
       setValue: value => {
         cells[row - 1][column - 1].value = value;
         return {setNote: note => { state.note = note; }};
@@ -193,20 +196,20 @@ test('A1 dropdown freezes and restores formulas through the existing edit handle
   const event = {range: range('A1')};
   state.cells[0][0].value = 'Repayment Calculations Disabled';
   context.onInstallableEdit(event);
-  assert.match(state.messages[0].message, /Freezing repayments/);
+  assert.match(state.messages[1].message, /Freezing repayments/);
   assert.equal(state.messages[0].writes, 0);
   assert.match(state.dialogs[0].message, /are frozen/);
   assert.equal(state.dialogs[0].buttons, 'OK');
   assert.equal(state.messages[0].timeout, -1);
-  assert.equal(state.messages[1].message, '');
+  assert.equal(state.messages[2].message, '');
   assert.equal(state.cells[4][10].formula, '');
   assert.equal(state.cells[0][0].value, 'Repayment Calculations Disabled');
   state.cells[0][0].value = 'Repayment Calculations Enabled';
   context.onInstallableEdit(event);
-  assert.match(state.messages[2].message, /Restoring repayment formulas/);
-  assert.equal(state.messages[2].writes, 2);
+  assert.match(state.messages[4].message, /Restoring repayment formulas/);
+  assert.equal(state.messages[4].writes, 2);
   assert.match(state.dialogs[1].message, /formulas restored/);
-  assert.equal(state.messages[3].message, '');
+  assert.equal(state.messages[5].message, '');
   assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
   assert.equal(state.note, '');
 });
@@ -327,9 +330,9 @@ for (const mode of ['Enabled', 'Disabled']) {
     context.updateTimelineParamNames = () => { throw new Error('Unrelated handler called'); };
     vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/Main.js'), 'utf8'), context);
     context.onInstallableEdit({range: range(1, 4)});
-    assert.match(state.messages[0].message, /Applying Planned Loans/);
+    assert.match(state.messages[1].message, /Applying Planned Loans/);
     assert.equal(state.messages[0].timeout, -1);
-    assert.equal(state.messages[1].message, '');
+    assert.equal(state.messages[2].message, '');
     assert.equal(state.dialogs.length, 1);
     assert.match(state.dialogs[0].title, /Done/);
     assert.match(state.dialogs[0].message, mode === 'Disabled' ? /draws are set to zero/ : /original calculations/);
@@ -357,4 +360,17 @@ test('a repayment label in D1 is rejected without touching the repayment backup'
   assert.throws(() => context.handleLoanModeEdit({range: range(1, 4)}), /Select Planned Loans/);
   assert.equal(state.writes.length, 0);
   assert.deepEqual(state.properties, {});
+});
+
+test('progress appears before reading a dropdown value, even when the read fails', () => {
+  const {state, context, range} = fixture();
+  state.beforeReadValue = () => {
+    assert.equal(state.messages.length, 1);
+    assert.match(state.messages[0].message, /Applying your selection/);
+    throw new Error('Sheet read failed');
+  };
+  assert.throws(() => context.handleLoanModeEdit({range: range(1, 4)}), /Sheet read failed/);
+  assert.match(state.dialogs[0].title, /Failed/);
+  assert.match(state.note, /Sheet read failed/);
+  assert.equal(state.messages.at(-1).message, '');
 });

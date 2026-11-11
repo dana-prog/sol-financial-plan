@@ -5,11 +5,13 @@ function handleLoanModeEdit(e) {
   const column = e.range.getColumn();
   const cell = e.range.getSheet().getRange(1, column);
   const label = column === 1 ? 'Repayment Calculations' : 'Planned Loans';
-  const mode = cell.getValue();
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   let message;
   let failure;
   try {
+    // Reading a cell can wait for recalculation; show progress before that read.
+    spreadsheet.toast('Applying your selection. Please wait.', label, -1);
+    const mode = cell.getValue();
     if (mode !== label + ' Enabled' && mode !== label + ' Disabled') {
       throw new Error('Select ' + label + ' Enabled or ' + label + ' Disabled.');
     }
