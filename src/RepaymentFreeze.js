@@ -15,71 +15,90 @@ function setRepaymentMode_(sheet, mode) {
   sheet.getRange(REPAYMENT_FREEZE.toggleCell).setValue(mode).setNote('');
 }
 
+const REPAYMENT_SHEETS = [
+  REPAYMENT_FREEZE,
+  {sheetName: 'Out Loans', paramColumn: 8, firstMonthColumn: 9, backupKey: 'outLoanRepaymentSnapshotV1'}
+];
+
 function freezeLoanRepayments() {
   return withRepaymentLock_(() => {
     const props = PropertiesService.getDocumentProperties();
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = getRepaymentSheet_(spreadsheet);
-    const layout = getRepaymentLayout_(sheet);
-    const range = repaymentTimelineRange_(sheet, layout);
-    const formulas = range.getFormulas();
-    const previous = loadRepaymentSnapshot_(props);
-    if (previous) {
-      validateRepaymentSnapshot_(previous, spreadsheet, sheet, layout);
-      const current = previous.entries.map(entry => repaymentEntryValues_(formulas, layout, entry));
-      if (current.every(row => row.every(formula => !formula))) {
-        setRepaymentMode_(sheet, REPAYMENT_FREEZE.frozenValue);
-        return 'Repayments are already frozen.';
+    // Capture both sheets before any write: their calculations feed the same cash flow.
+    const plans = REPAYMENT_SHEETS.map(config => {
+      const sheet = getRepaymentSheet_(spreadsheet, config);
+      const layout = getRepaymentLayout_(sheet, config);
+      const range = repaymentTimelineRange_(sheet, layout);
+      const formulas = range.getFormulas();
+      const previous = loadRepaymentSnapshot_(props, config.backupKey);
+      if (previous) {
+        validateRepaymentSnapshot_(previous, spreadsheet, sheet, layout);
+        const current = previous.entries.map(entry => repaymentEntryValues_(formulas, layout, entry));
+        if (current.every(row => row.every(formula => !formula))) {
+          return {config, sheet, range, snapshot: previous, entries: []};
+        }
+        if (!current.every((row, index) => JSON.stringify(row) === JSON.stringify(previous.entries[index].formulas))) {
+          throw new Error('A repayment operation was interrupted. Select Repayment Calculations Enabled to restore the saved formulas before freezing again.');
+        }
       }
-      if (!current.every((row, index) => JSON.stringify(row) === JSON.stringify(previous.entries[index].formulas))) {
-        throw new Error('A repayment operation was interrupted. Select Repayment Calculations Enabled to restore the saved formulas before freezing again.');
-      }
-      // The old MIME-type error could leave a backup before any cell was frozen.
-      // Replace it only after verifying that every original formula is still present.
-      props.deleteProperty(REPAYMENT_FREEZE.backupKey);
-    }
-    const entries = collectRepaymentEntries_(layout, formulas, range.getValues());
-    if (!entries.length) throw new Error('No repayment formulas were found. Nothing was changed.');
-
-    const snapshot = {spreadsheetId: spreadsheet.getId(), sheetId: sheet.getSheetId(), layout, entries};
-    saveRepaymentSnapshot_(props, snapshot);
-    // Capture every result before the first write: repayments depend on one another.
-    entries.forEach(entry => repaymentRange_(sheet, entry).setValues([entry.values]));
-    SpreadsheetApp.flush();
-    const frozenFormulas = range.getFormulas();
-    const frozenValues = range.getValues();
-    entries.forEach(entry => {
-      if (repaymentEntryValues_(frozenFormulas, layout, entry).some(Boolean) ||
-          JSON.stringify(repaymentEntryValues_(frozenValues, layout, entry)) !== JSON.stringify(entry.values)) {
-        throw new Error('Freeze verification failed. The backup is retained; run Unfreeze to recover.');
-      }
+      const entries = collectRepaymentEntries_(layout, formulas, range.getValues());
+      const snapshot = {spreadsheetId: spreadsheet.getId(), sheetId: sheet.getSheetId(), layout, entries};
+      return {config, sheet, range, snapshot, entries};
     });
-    setRepaymentMode_(sheet, REPAYMENT_FREEZE.frozenValue);
-    return 'Principal and interest repayments are frozen.';
+    if (!plans.some(plan => plan.snapshot.entries.length)) {
+      throw new Error('No repayment formulas were found. Nothing was changed.');
+    }
+    const changes = plans.filter(plan => plan.entries.length);
+    changes.forEach(plan => saveRepaymentSnapshot_(props, plan.snapshot, plan.config.backupKey));
+    changes.forEach(plan => plan.entries.forEach(entry => repaymentRange_(plan.sheet, entry).setValues([entry.values])));
+    SpreadsheetApp.flush();
+    changes.forEach(plan => {
+      const frozenFormulas = plan.range.getFormulas();
+      const frozenValues = plan.range.getValues();
+      plan.entries.forEach(entry => {
+        if (repaymentEntryValues_(frozenFormulas, plan.snapshot.layout, entry).some(Boolean) ||
+            JSON.stringify(repaymentEntryValues_(frozenValues, plan.snapshot.layout, entry)) !== JSON.stringify(entry.values)) {
+          throw new Error('Freeze verification failed. The backup is retained; run Unfreeze to recover.');
+        }
+      });
+    });
+    setRepaymentMode_(plans[0].sheet, REPAYMENT_FREEZE.frozenValue);
+    return changes.length
+      ? 'Principal and interest repayments in In Loans and Out Loans are frozen.'
+      : 'Repayments are already frozen.';
   });
 }
 
 function unfreezeLoanRepayments() {
   return withRepaymentLock_(() => {
     const props = PropertiesService.getDocumentProperties();
-    const snapshot = loadRepaymentSnapshot_(props);
-    if (!snapshot) throw new Error('No saved repayment formulas were found. Nothing was changed.');
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = getRepaymentSheet_(spreadsheet);
-    validateRepaymentSnapshot_(snapshot, spreadsheet, sheet, getRepaymentLayout_(sheet));
-    snapshot.entries.forEach(entry => repaymentRange_(sheet, entry).setFormulas([entry.formulas]));
+    const plans = REPAYMENT_SHEETS.map(config => {
+      const snapshot = loadRepaymentSnapshot_(props, config.backupKey);
+      // Older freezes saved only In Loans; Out Loans remains live until first frozen.
+      if (!snapshot) return null;
+      const sheet = getRepaymentSheet_(spreadsheet, config);
+      validateRepaymentSnapshot_(snapshot, spreadsheet, sheet, getRepaymentLayout_(sheet, config));
+      return {config, snapshot, sheet};
+    }).filter(Boolean);
+    if (!plans.length) throw new Error('No saved repayment formulas were found. Nothing was changed.');
+    plans.forEach(plan => plan.snapshot.entries.forEach(entry => repaymentRange_(plan.sheet, entry).setFormulas([entry.formulas])));
     SpreadsheetApp.flush();
-    const restored = repaymentTimelineRange_(sheet, snapshot.layout).getFormulas();
-    snapshot.entries.forEach(entry => {
-      if (JSON.stringify(repaymentEntryValues_(restored, snapshot.layout, entry)) !== JSON.stringify(entry.formulas)) {
-        throw new Error('Formula restoration failed. The backup is retained; retry Unfreeze.');
-      }
+    plans.forEach(plan => {
+      const restored = repaymentTimelineRange_(plan.sheet, plan.snapshot.layout).getFormulas();
+      plan.snapshot.entries.forEach(entry => {
+        if (JSON.stringify(repaymentEntryValues_(restored, plan.snapshot.layout, entry)) !== JSON.stringify(entry.formulas)) {
+          throw new Error('Formula restoration failed. The backup is retained; retry Unfreeze.');
+        }
+      });
     });
-    // Remove the active marker only after every formula has been restored and checked.
-    props.deleteProperty(REPAYMENT_FREEZE.backupKey);
-    deleteRepaymentChunks_(props);
-    setRepaymentMode_(sheet, REPAYMENT_FREEZE.liveValue);
-    return 'Repayment formulas restored. Calculations are live.';
+    // Keep all recovery backups until both sheets have been restored and checked.
+    plans.forEach(plan => {
+      props.deleteProperty(plan.config.backupKey);
+      deleteRepaymentChunks_(props, plan.config.backupKey);
+    });
+    setRepaymentMode_(getRepaymentSheet_(spreadsheet), REPAYMENT_FREEZE.liveValue);
+    return 'Principal and interest repayment formulas restored in In Loans and Out Loans. Calculations are live.';
   });
 }
 
@@ -100,21 +119,20 @@ function withRepaymentLock_(action) {
   }
 }
 
-function getRepaymentSheet_(spreadsheet) {
-  const sheet = spreadsheet.getSheetByName(REPAYMENT_FREEZE.sheetName);
-  if (!sheet) throw new Error('Sheet not found: ' + REPAYMENT_FREEZE.sheetName);
+function getRepaymentSheet_(spreadsheet, config = REPAYMENT_FREEZE) {
+  const sheet = spreadsheet.getSheetByName(config.sheetName);
+  if (!sheet) throw new Error('Sheet not found: ' + config.sheetName);
   return sheet;
 }
 
-function getRepaymentLayout_(sheet) {
-  const config = REPAYMENT_FREEZE;
-  const headers = sheet.getRange(config.headerRow, 1, 1, sheet.getLastColumn()).getValues()[0];
+function getRepaymentLayout_(sheet, config = REPAYMENT_FREEZE) {
+  const headers = sheet.getRange(REPAYMENT_FREEZE.headerRow, 1, 1, sheet.getLastColumn()).getValues()[0];
   if (String(headers[config.paramColumn - 1]).toLowerCase() !== 'param') {
-    throw new Error('Expected the Param header in In Loans!J3. Nothing was changed.');
+    throw new Error('Expected the Param header in ' + config.sheetName + ' column ' + config.paramColumn + '. Nothing was changed.');
   }
   let width = 0;
   while (headers[config.firstMonthColumn - 1 + width] instanceof Date) width++;
-  const rowCount = sheet.getLastRow() - config.headerRow;
+  const rowCount = sheet.getLastRow() - REPAYMENT_FREEZE.headerRow;
   if (!width || rowCount < 1) throw new Error('The loan timeline or loan rows are missing.');
   const labels = sheet.getRange(4, 1, rowCount, config.paramColumn).getDisplayValues()
     .map(row => [row[0], row[config.paramColumn - 1]]);
@@ -165,26 +183,25 @@ function repaymentEntryValues_(grid, layout, entry) {
   return grid[entry.row - 4].slice(startColumn, startColumn + entry.formulas.length);
 }
 
-function saveRepaymentSnapshot_(props, snapshot) {
+function saveRepaymentSnapshot_(props, snapshot, backupKey = REPAYMENT_FREEZE.backupKey) {
   const config = REPAYMENT_FREEZE;
   const json = JSON.stringify(snapshot);
   // Compression keeps the full monthly formulas within document property storage limits.
   const encoded = Utilities.base64Encode(Utilities.gzip(Utilities.newBlob(json, 'application/json')).getBytes());
-  deleteRepaymentChunks_(props);
+  deleteRepaymentChunks_(props, backupKey);
   const count = Math.ceil(encoded.length / config.chunkSize);
   const chunks = {};
   for (let index = 0; index < count; index++) {
-    chunks[config.backupKey + '_' + index] = encoded.slice(index * config.chunkSize, (index + 1) * config.chunkSize);
+    chunks[backupKey + '_' + index] = encoded.slice(index * config.chunkSize, (index + 1) * config.chunkSize);
   }
   props.setProperties(chunks);
-  props.setProperty(config.backupKey, String(count));
-  if (JSON.stringify(loadRepaymentSnapshot_(props)) !== json) {
+  props.setProperty(backupKey, String(count));
+  if (JSON.stringify(loadRepaymentSnapshot_(props, backupKey)) !== json) {
     throw new Error('The repayment backup could not be verified. Nothing was changed.');
   }
 }
 
-function loadRepaymentSnapshot_(props) {
-  const key = REPAYMENT_FREEZE.backupKey;
+function loadRepaymentSnapshot_(props, key = REPAYMENT_FREEZE.backupKey) {
   const properties = props.getProperties();
   const marker = properties[key];
   if (!marker) return null;
@@ -200,7 +217,7 @@ function loadRepaymentSnapshot_(props) {
   return JSON.parse(Utilities.ungzip(compressed).getDataAsString('UTF-8'));
 }
 
-function deleteRepaymentChunks_(props) {
-  const prefix = REPAYMENT_FREEZE.backupKey + '_';
+function deleteRepaymentChunks_(props, backupKey = REPAYMENT_FREEZE.backupKey) {
+  const prefix = backupKey + '_';
   props.getKeys().filter(key => key.startsWith(prefix)).forEach(key => props.deleteProperty(key));
 }

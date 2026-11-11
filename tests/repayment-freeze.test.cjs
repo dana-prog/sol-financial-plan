@@ -5,18 +5,19 @@ const vm = require('node:vm');
 const zlib = require('node:zlib');
 const path = require('node:path');
 
-function fixture(loanCount = 1, monthCount = 2) {
-  const columnCount = 11 + monthCount;
+function fixture(loanCount = 1, monthCount = 2, outgoingCount = 0, sheetName = 'In Loans') {
+  const firstMonth = sheetName === 'In Loans' ? 10 : 8;
+  const columnCount = firstMonth + 1 + monthCount;
   const cells = Array.from({length: 3 + 5 * loanCount}, () => Array.from({length: columnCount}, () => ({value: '', formula: ''})));
   cells[0][0].value = 'Repayment Calculations Enabled';
-  cells[2][9].value = 'Param';
-  const monthColumns = Array.from({length: monthCount}, (_, month) => 10 + month);
+  cells[2][firstMonth - 1].value = 'Param';
+  const monthColumns = Array.from({length: monthCount}, (_, month) => firstMonth + month);
   monthColumns.forEach((column, month) => { cells[2][column].value = new Date(Date.UTC(2026, month, 1)); });
-  cells[2][10 + monthCount].value = '_name';
+  cells[2][firstMonth + monthCount].value = '_name';
   const labels = Array.from({length: loanCount}, () =>
     ['start balance', 'principal paid', 'interest paid', 'loan draw', 'total loan paid']).flat();
   labels.forEach((label, i) => {
-    cells[i + 3][9].value = label;
+    cells[i + 3][firstMonth - 1].value = label;
     cells[i + 3][0].value = i === 0 ? 'Loan A' : '';
     monthColumns.forEach(col => { cells[i + 3][col] = {value: i * 10 + col, formula: '=SUM(1,2)'}; });
   });
@@ -35,6 +36,7 @@ function fixture(loanCount = 1, monthCount = 2) {
     const read = fn => Array.from({length: height}, (_, r) =>
       Array.from({length: width}, (_, c) => fn(cells[row - 1 + r][column - 1 + c])));
     const write = (data, formula) => {
+      if (state.beforeWrite) state.beforeWrite();
       state.writes.push({row, column, height, width});
       if (state.writes.length === state.failWrite) throw new Error('Simulated write failure');
       data.forEach((line, r) => line.forEach((value, c) => {
@@ -67,8 +69,12 @@ function fixture(loanCount = 1, monthCount = 2) {
       setFormulas: data => write(data, true)
     };
   }
-  const sheet = {getName: () => 'In Loans', getRange: range, getLastRow: () => cells.length, getLastColumn: () => columnCount, getSheetId: () => 42};
-  const spreadsheet = {getSheetByName: () => sheet, getSheetById: () => sheet, getId: () => 'spreadsheet',
+  const sheet = {getName: () => sheetName, getRange: range, getLastRow: () => cells.length, getLastColumn: () => columnCount, getSheetId: () => sheetName === 'In Loans' ? 42 : 43};
+  const outgoing = sheetName === 'In Loans' ? fixture(Math.max(1, outgoingCount), monthCount, 0, 'Out Loans') : null;
+  if (outgoing && !outgoingCount) {
+    outgoing.state.cells.slice(3).forEach(row => row.slice(8).forEach(cell => { cell.formula = ''; cell.value = 0; }));
+  }
+  const spreadsheet = {getSheetByName: name => name === sheetName ? sheet : outgoing?.sheet, getSheetById: () => sheet, getId: () => 'spreadsheet',
     toast(message, title, timeout) { state.messages.push({message, title, timeout, writes: state.writes.length}); }};
   const blob = (data, contentType) => ({contentType, getBytes: () => Buffer.from(data), getDataAsString: () => Buffer.from(data).toString()});
   const ui = {
@@ -112,7 +118,7 @@ function fixture(loanCount = 1, monthCount = 2) {
   });
   vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/RepaymentFreeze.js'), 'utf8'), context);
   vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/LoanModes.js'), 'utf8'), context);
-  return {...state, state, context, range, sheet};
+  return {...state, state, context, range, sheet, outgoing};
 }
 
 test('freezes only principal/interest formulas and restores every formula', () => {
@@ -426,3 +432,97 @@ for (const [column, value, action] of [
     assert.equal(state.dialogs[0].html.height, 105);
   });
 }
+
+test('one dropdown freezes and restores principal and interest in both loan sheets', () => {
+  const {state, context, outgoing} = fixture(7, 96, 2);
+  const beforeIn = structuredClone(state.cells);
+  const beforeOut = structuredClone(outgoing.state.cells);
+  context.freezeLoanRepayments();
+  assert.equal(state.writes.length, 14);
+  assert.equal(outgoing.state.writes.length, 4);
+  for (const target of [state, outgoing.state]) {
+    assert.ok(target.writes.every(write => write.width === 96));
+    for (const write of target.writes) {
+      for (const cell of target.cells[write.row - 1].slice(write.column - 1, write.column - 1 + write.width)) {
+        assert.equal(cell.formula, '');
+      }
+    }
+  }
+  assert.ok(state.properties.inLoanRepaymentSnapshotV1);
+  assert.ok(state.properties.outLoanRepaymentSnapshotV1);
+  context.unfreezeLoanRepayments();
+  assert.deepEqual(state.cells, beforeIn);
+  assert.deepEqual(outgoing.state.cells, beforeOut);
+  assert.deepEqual(state.properties, {});
+});
+
+test('expanding an existing In Loans freeze keeps its backup and adds Out Loans', () => {
+  const {state, context, outgoing} = fixture(1, 2, 1);
+  const beforeOut = structuredClone(outgoing.state.cells);
+  context.freezeLoanRepayments();
+  const inBackup = Object.fromEntries(Object.entries(state.properties).filter(([key]) => key.startsWith('inLoan')));
+  Object.keys(state.properties).filter(key => key.startsWith('outLoan')).forEach(key => delete state.properties[key]);
+  outgoing.state.cells.forEach((row, r) => row.forEach((cell, c) => Object.assign(cell, beforeOut[r][c])));
+  const inWriteCount = state.writes.length;
+  context.freezeLoanRepayments();
+  assert.equal(state.writes.length, inWriteCount);
+  assert.deepEqual(Object.fromEntries(Object.entries(state.properties).filter(([key]) => key.startsWith('inLoan'))), inBackup);
+  assert.ok(state.properties.outLoanRepaymentSnapshotV1);
+  context.unfreezeLoanRepayments();
+  assert.deepEqual(outgoing.state.cells, beforeOut);
+  assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
+});
+
+test('an outgoing formula error prevents writes to either sheet', () => {
+  const {state, context, outgoing} = fixture(1, 2, 1);
+  outgoing.state.cells[5][8].value = '#REF!';
+  assert.throws(() => context.freezeLoanRepayments(), /numeric result/);
+  assert.equal(state.writes.length, 0);
+  assert.equal(outgoing.state.writes.length, 0);
+  assert.deepEqual(state.properties, {});
+});
+
+test('a changed outgoing timeline prevents restoration on either sheet', () => {
+  const {state, context, outgoing} = fixture(1, 2, 1);
+  context.freezeLoanRepayments();
+  outgoing.state.cells[2][8].value = new Date('2035-01-01T00:00:00Z');
+  assert.throws(() => context.unfreezeLoanRepayments(), /layout or timeline changed/);
+  assert.equal(state.writes.length, 2);
+  assert.equal(outgoing.state.writes.length, 2);
+  assert.ok(state.properties.inLoanRepaymentSnapshotV1);
+  assert.ok(state.properties.outLoanRepaymentSnapshotV1);
+});
+
+test('an interrupted outgoing freeze retains both backups for recovery', () => {
+  const {state, context, outgoing} = fixture(1, 2, 1);
+  const beforeIn = structuredClone(state.cells);
+  const beforeOut = structuredClone(outgoing.state.cells);
+  outgoing.state.failWrite = 2;
+  assert.throws(() => context.freezeLoanRepayments(), /Simulated/);
+  assert.ok(state.properties.inLoanRepaymentSnapshotV1);
+  assert.ok(state.properties.outLoanRepaymentSnapshotV1);
+  context.unfreezeLoanRepayments();
+  assert.deepEqual(state.cells, beforeIn);
+  assert.deepEqual(outgoing.state.cells, beforeOut);
+});
+
+test('an outgoing restoration verification failure retains both recovery backups', () => {
+  const {state, context, outgoing} = fixture(1, 2, 1);
+  context.freezeLoanRepayments();
+  outgoing.state.corruptFormula = true;
+  assert.throws(() => context.unfreezeLoanRepayments(), /Formula restoration failed/);
+  assert.ok(state.properties.inLoanRepaymentSnapshotV1);
+  assert.ok(state.properties.outLoanRepaymentSnapshotV1);
+  outgoing.state.corruptFormula = false;
+  context.unfreezeLoanRepayments();
+  assert.deepEqual(state.properties, {});
+});
+
+
+test('both sheets are captured before the first repayment write', () => {
+  const {state, context, outgoing} = fixture(1, 2, 1);
+  const original = outgoing.state.cells[4][8].value;
+  state.beforeWrite = () => { outgoing.state.cells[4][8].value = 999; };
+  context.freezeLoanRepayments();
+  assert.equal(outgoing.state.cells[4][8].value, original);
+});
