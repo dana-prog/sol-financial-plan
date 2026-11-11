@@ -1,0 +1,39 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Apply once after deploying CompanyTax.js without the annual-summary output dependency. Removes the unrequested summary sheet; tax calculations and Cash Flow results remain unchanged.",
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 41,
+          "endRowIndex": 43,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Monthly movement in year-to-date taxable profit after eligible prior-year losses. Can be negative when reversing earlier profit in the same accounting year. Refresh with loan repayments."
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "note": "Monthly change in year-to-date current tax after eligible prior-year losses. A negative month reverses earlier accrual in the same tax year; it is not a cash refund."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    },
+    {
+      "deleteSheet": {
+        "sheetId": 20261111
+      }
+    }
+  ]
+}

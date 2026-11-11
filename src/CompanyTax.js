@@ -61,7 +61,7 @@ function calculateCompanyTax(months, profits, rate, yearEndMonth) {
     if (profit < 0) losses.push({year, amount: -profit});
     const tax = previousTaxable * rate;
     // A forecast uses its full-year estimate, rather than treating six-month profit as annual profit.
-    // Partial boundary periods have no half-year prepayment; the summary identifies them explicitly.
+    // Partial boundary periods have no half-year prepayment.
     const prepayment = indexes.length === 12 ? tax / 2 : 0;
     const yearEnd = repaymentDay(year, yearEndMonth, 0);
     const prepaymentDate = repaymentDay(year, yearEndMonth - 4, 0);
@@ -121,12 +121,5 @@ function writeCompanyTaxResults(spreadsheet, model, result) {
     if (labels.filter(value => value === label).length !== 1) throw new Error('Expected one Cash Flow row: ' + label);
     return cash.getRange(labels.indexOf(label) + 1, 3, 1, model.months.length);
   });
-  const summary = repaymentSheet(spreadsheet, 'Company Tax');
-  const rows = result.tax.years.map(year => [year.yearEnd, year.months, year.profit, year.openingLoss,
-    year.expired, year.used, year.closingLoss, year.taxable, year.tax,
-    year.prepaymentDate, year.prepayment, year.settlementDate, year.settlement]);
-  if (summary.getMaxRows() < rows.length + 4) throw new Error('Extend the Company Tax summary before recalculating.');
   Object.values(outputs).forEach((values, i) => ranges[i].setValues([values]));
-  summary.getRange(5, 1, summary.getMaxRows() - 4, 13).clearContent();
-  summary.getRange(5, 1, rows.length, 13).setValues(rows);
 }

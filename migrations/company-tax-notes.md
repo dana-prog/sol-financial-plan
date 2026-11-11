@@ -2,7 +2,9 @@
 
 Apply `company-tax.json` once to the current workbook, deploy `CompanyTax.js` and
 `RepaymentCalculations.js`, and run **SOL → Recalculate Loan Repayments**.
-The migration clears the old tax/depreciation output formulas; the calculation
+Then apply `remove-company-tax-sheet.json` to remove the discontinued annual
+summary tab. Current code writes tax results only to Cash Flow.
+The original migration clears the old tax/depreciation output formulas; the calculation
 must populate the replacement outputs immediately. Do not replay the migration.
 
 The only new global parameter is `financial year-end month`, set to 12 (December)
@@ -24,14 +26,14 @@ unchanged. No BOI parameters or benefits are added.
 - A full forecast accounting year prepays 50% of its forecast annual tax in
   accounting month eight. The balance falls in the month containing the 150th
   day after year-end. December year-end produces August and May payments.
-  The annual summary retains settlements beyond the cash-flow horizon.
+  Settlements beyond the cash-flow horizon remain outside its cash payments.
 - Tax payments affect debt service, which affects accrued interest and tax.
   Repeated calculations in memory resolve this feedback to below 0.000001 THB,
   with a hard iteration limit and an error before any writes on nonconvergence.
   Saved tax payments and previous repayment outputs are never calculation inputs.
 - The existing menu action saves incoming repayments, construction depreciation,
   monthly tax payments, loss balances, taxable-profit movements, tax expense,
-  and the Company Tax annual summary together in one run. Other loan formulas
+  together in Cash Flow in one run. Other loan formulas
   and cash-flow array formulas remain formulas.
 
 ## Forecast assumptions and remaining classifications

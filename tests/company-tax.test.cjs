@@ -121,7 +121,7 @@ test('tax deducts accrued interest even when repayments have not started', () =>
   near(result.tax.years[0].tax, 220);
 });
 
-test('tax output updates the five matching cash-flow rows and annual summary only', () => {
+test('tax output updates only Cash Flow and needs no Company Tax sheet', () => {
   const writes = [];
   const labels = Array(43).fill('');
   for (const [row, label] of [[11, 'company tax paid'], [36, 'construction depreciation'],
@@ -130,18 +130,16 @@ test('tax output updates the five matching cash-flow rows and annual summary onl
     if (column === 2) return {getValues: () => labels.map(label => [label])};
     return {setValues(values) {writes.push({sheet: 'Cash Flow', row, column, height, width, values});}};
   }};
-  const summary = {getMaxRows: () => 30, getRange(row, column, height, width) {
-    return {clearContent() {}, setValues(values) {writes.push({sheet: 'Company Tax', row, column, height, width, values});}};
-  }};
   const spreadsheet = {getSheetByName(name) {
-    assert.ok(['Cash Flow', 'Company Tax'].includes(name));
-    return name === 'Cash Flow' ? cash : summary;
+    assert.equal(name, 'Cash Flow');
+    return cash;
   }};
   const months = timeline(12);
   const tax = context.calculateCompanyTax(months, months.map(() => 100), 0.2, 12);
   context.writeCompanyTaxResults(spreadsheet, {months, tax: {depreciation: months.map(() => 10)}}, {tax});
   assert.deepEqual(writes.filter(w => w.sheet === 'Cash Flow').map(w => w.row), [11, 36, 41, 42, 43]);
-  assert.equal(writes.at(-1).values[0][8], 240);
+  assert.equal(writes.length, 5);
+  near(sum(writes.at(-1).values[0]), 240);
   writes.length = 0;
   labels[10] = 'Unexpected label';
   assert.throws(() => context.writeCompanyTaxResults(spreadsheet, {months, tax: {depreciation: []}}, {tax}), /Expected one Cash Flow row/);
