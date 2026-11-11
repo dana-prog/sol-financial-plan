@@ -15,7 +15,9 @@ function handleLoanModeEdit(e) {
     : (enabled ? 'Enabling Planned Loans…' : 'Disabling Planned Loans…');
   // D1 already controls the draw formulas. Confirm the edit without a server round trip.
   template.completionMessage = column === 4
-    ? e.value + '. Sheets recalculates the affected formulas automatically.'
+    ? (enabled
+      ? 'Planned loans are now enabled. Their draw amounts will be included in cash flow calculations.'
+      : 'Planned loans are now disabled. Their draw amounts will be excluded from cash flow calculations.')
     : '';
   // Open the progress UI before any sheet reads can wait for recalculation.
   SpreadsheetApp.getUi().showModalDialog(

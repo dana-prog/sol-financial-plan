@@ -333,7 +333,9 @@ for (const mode of ['Enabled', 'Disabled']) {
     context.SpreadsheetApp.flush = () => { throw new Error('Unnecessary flush'); };
     assert.equal(context.handleLoanModeEdit({range: range(1, 4), value: 'Planned Loans ' + mode}), true);
     assert.equal(state.dialogs[0].title, 'Planned Loans');
-    assert.match(state.dialogs[0].html.completionMessage, new RegExp('Planned Loans ' + mode));
+    assert.equal(state.dialogs[0].html.completionMessage, mode === 'Enabled'
+      ? 'Planned loans are now enabled. Their draw amounts will be included in cash flow calculations.'
+      : 'Planned loans are now disabled. Their draw amounts will be excluded from cash flow calculations.');
     assert.deepEqual(state.cells, before);
     assert.deepEqual(state.properties, {});
     assert.equal(state.writes.length, 0);
