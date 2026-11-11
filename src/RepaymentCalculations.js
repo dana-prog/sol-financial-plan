@@ -66,9 +66,9 @@ function repaymentMonthStart(day) {
 
 function showRepaymentCalculation() {
   const template = HtmlService.createTemplateFromFile('LoanModeProgress');
-  template.action = 'Recalculating In Loans repayments…';
+  template.action = 'Calculating loan repayments…';
   template.completionMessage = '';
-  SpreadsheetApp.getUi().showModalDialog(template.evaluate().setWidth(420).setHeight(105), 'Recalculate Repayments');
+  SpreadsheetApp.getUi().showModalDialog(template.evaluate().setWidth(420).setHeight(70), 'Recalculate Loan Repayments');
 }
 
 function recalculateIncomingLoanRepayments() {
@@ -85,9 +85,9 @@ function recalculateIncomingLoanRepayments() {
     });
     SpreadsheetApp.flush();
     const timestamp = Utilities.formatDate(new Date(), spreadsheet.getSpreadsheetTimeZone(), 'dd MMM HH:mm');
-    sheet.getRange('A1').clearDataValidations().setValue('Repayments: ' + timestamp)
-      .setNote('Last successful calculation. Run SOL → Recalculate Repayments after changing loan or cash-flow inputs.');
-    return 'In Loans principal and interest repayments have been recalculated and saved. Cash Flow now uses the updated amounts.';
+    sheet.getRange('D1').clearDataValidations().setValue('Last Repayment Calculation Time\n' + timestamp)
+      .setNote('Last successful calculation. Run SOL → Recalculate Loan Repayments after changing loan or cash-flow inputs.');
+    return 'Loan repayments updated.';
   } finally {
     lock.releaseLock();
   }

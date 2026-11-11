@@ -1,7 +1,7 @@
 {
   "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
-  "menu": "SOL → Recalculate Repayments",
-  "incomingRepayments": "Principal paid and interest paid are script outputs. In Loans!A1 records the last successful calculation, replacing the former dropdown.",
+  "menu": "SOL → Recalculate Loan Repayments",
+  "incomingRepayments": "Principal paid and interest paid are script outputs. In Loans!D1 records the last successful calculation, replacing the former dropdown.",
   "cashFlowFormulas": {
     "C4": "=ARRAYFORMULA(HSTACK(0,C17:CS17))",
     "C14": "=ARRAYFORMULA('In Loans'!K102:DB102)",
@@ -25,5 +25,7 @@
     "10M": "10M loan - emetway to treehouse - repayment date",
     "30M": "30M loan - emetway to treehouse - repayment date"
   },
-  "outgoingRepaymentRule": "Keep monthly principal and interest payment formulas. From the matching repayment month onward, pay the positive principal/interest owed; a blank date produces zero. The recalculation script does not write Out Loans."
+  "outgoingRepaymentRule": "Keep monthly principal and interest payment formulas. From the matching repayment month onward, pay the positive principal/interest owed; a blank date produces zero. The recalculation script does not write Out Loans.",
+  "plannedLoansControl": "In Loans!A1; loan draw formulas reference $A$1",
+  "lastCalculationLabel": "Last Repayment Calculation Time"
 }

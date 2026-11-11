@@ -7,7 +7,6 @@
     .status { display: flex; align-items: center; gap: 14px; }
     #spinner { width: 24px; height: 24px; flex: 0 0 24px; border: 3px solid #dadce0;
       border-top-color: #202124; border-radius: 50%; animation: spin 1s linear infinite; }
-    h2 { margin: 0; font-size: 16px; font-weight: 500; }
     p { line-height: 1.5; margin: 12px 0; }
     .actions { text-align: right; }
     button { border: 0; border-radius: 4px; padding: 8px 22px; background: #1a73e8;
@@ -22,19 +21,17 @@
   <div role="status" aria-live="polite">
     <div class="status">
       <div id="spinner" aria-hidden="true"></div>
-      <h2 id="status"><?= action ?></h2>
+      <p id="message"><?= action ?></p>
     </div>
-    <p id="message">Please wait while the calculations are updated.</p>
   </div>
   <div class="actions"><button id="close" hidden>OK</button></div>
   <script>
-    function finish(title, message) {
+    function finish(message) {
       document.getElementById('spinner').hidden = true;
-      document.getElementById('status').textContent = title;
       document.getElementById('message').textContent = message;
       const close = document.getElementById('close');
       close.hidden = false;
-      google.script.host.setHeight(175);
+      google.script.host.setHeight(Math.max(96, document.body.scrollHeight + 12));
       close.focus();
     }
     document.getElementById('close').addEventListener('click', () => google.script.host.close());
@@ -42,12 +39,12 @@
     requestAnimationFrame(() => requestAnimationFrame(() => {
       const completionMessage = <?= completionMessage ?>;
       if (completionMessage) {
-        finish('Setting updated', completionMessage);
+        finish(completionMessage);
         return;
       }
       google.script.run
-        .withSuccessHandler(message => finish('Done', message))
-        .withFailureHandler(error => finish('Unable to recalculate repayments', error.message || String(error)))
+        .withSuccessHandler(finish)
+        .withFailureHandler(error => finish(error.message || String(error)))
         .recalculateIncomingLoanRepayments();
     }));
   </script>

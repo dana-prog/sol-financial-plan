@@ -110,7 +110,7 @@ test('server action writes only incoming payment rows and releases its lock', ()
   const writes = [];
   let released = false;
   const incoming = {getRange(row, column, height, width) {
-    if (row === 'A1') return {clearDataValidations() {return this;}, setValue(value) {writes.push({status: value}); return this;}, setNote() {return this;}};
+    if (row === 'D1') return {clearDataValidations() {return this;}, setValue(value) {writes.push({status: value}); return this;}, setNote() {return this;}};
     return {setValues(values) {writes.push({row, column, height, width, values});}};
   }};
   const server = vm.createContext({Date,
@@ -122,7 +122,7 @@ test('server action writes only incoming payment rows and releases its lock', ()
   server.readIncomingRepaymentModel = () => model();
   server.recalculateIncomingLoanRepayments();
   assert.deepEqual(writes.filter(x => x.row).map(x => x.row), [10, 13]);
-  assert.ok(writes.at(-1).status.startsWith('Repayments:'));
+  assert.ok(writes.at(-1).status.startsWith('Last Repayment Calculation Time\n'));
   assert.equal(released, true);
 });
 
@@ -138,7 +138,7 @@ test('input failure causes no writes and releases the lock', () => {
   assert.equal(released, true);
 });
 
-test('planned-loan edits tell the user to recalculate and the former repayment dropdown is ignored', () => {
+test('planned-loan edits tell the user to recalculate and the calculation-time cell is ignored', () => {
   const dialogs = [];
   const server = vm.createContext({IN_LOANS_SHEET_ID: 1346380865,
     HtmlService: {createTemplateFromFile() {return {evaluate() {dialogs.push({action: this.action, message: this.completionMessage}); return {setWidth() {return this;}, setHeight() {return this;}};}};}},
@@ -146,10 +146,10 @@ test('planned-loan edits tell the user to recalculate and the former repayment d
   });
   vm.runInContext(fs.readFileSync(require('node:path').join(__dirname, '../src/LoanModes.js'), 'utf8'), server);
   const event = (column, value) => ({value, range: {getRow: () => 1, getColumn: () => column, getGridId: () => 1346380865}});
-  assert.equal(server.handleLoanModeEdit(event(1, 'Repayment Calculations Enabled')), false);
-  assert.equal(server.handleLoanModeEdit(event(4, 'Planned Loans Disabled')), true);
+  assert.equal(server.handleLoanModeEdit(event(4, 'Last Repayment Calculation Time')), false);
+  assert.equal(server.handleLoanModeEdit(event(1, 'Planned Loans Disabled')), true);
   assert.match(dialogs[0].message, /excluded from cash flow/);
-  assert.match(dialogs[0].message, /Recalculate Repayments/);
-  assert.equal(server.handleLoanModeEdit(event(4, 'Planned Loans Enabled')), true);
+  assert.match(dialogs[0].message, /Recalculate Loan Repayments/);
+  assert.equal(server.handleLoanModeEdit(event(1, 'Planned Loans Enabled')), true);
   assert.match(dialogs[1].message, /included in cash flow/);
 });
