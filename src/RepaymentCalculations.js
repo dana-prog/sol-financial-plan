@@ -5,9 +5,11 @@ function calculateIncomingRepayments(model) {
   const order = model.loans.map((loan, index) => ({index, priority: loan.priority, row: loan.row}))
     .sort((a, b) => a.priority - b.priority || a.row - b.row);
   const cash = [];
+  const interestAccrued = [];
   let balance = 0;
   model.months.forEach((month, index) => {
     const accrued = model.loans.map((loan, i) => accrueIncomingLoanMonth(loan, states[i], month, loan.draws[index]));
+    interestAccrued.push(accrued.reduce((sum, state, i) => sum + state.interest - states[i].interest, 0));
     const draws = model.loans.reduce((sum, loan) => sum + loan.draws[index], 0);
     const beforeRepayments = balance + model.receipts[index] + draws - model.expenses[index];
     let available = Math.max(0, beforeRepayments - model.reserve);
@@ -32,7 +34,7 @@ function calculateIncomingRepayments(model) {
   if (![...cash, ...payments.flatMap(p => [...p.principal, ...p.interest])].every(Number.isFinite)) {
     throw new Error('Repayment calculation produced an invalid amount. Nothing was written.');
   }
-  return {payments, cash};
+  return {payments, cash, interestAccrued};
 }
 
 function accrueIncomingLoanMonth(loan, previous, month, draw) {
@@ -79,7 +81,7 @@ function interestRepaymentStartMonth(date, rate, years, name) {
 
 function showRepaymentCalculation() {
   const template = HtmlService.createTemplateFromFile('LoanModeProgress');
-  template.action = 'Calculating loan repayments…';
+  template.action = 'Calculating repayments and tax…';
   template.completionMessage = '';
   SpreadsheetApp.getUi().showModalDialog(template.evaluate().setWidth(420).setHeight(70), 'Recalculate Loan Repayments');
 }
@@ -90,7 +92,8 @@ function recalculateIncomingLoanRepayments() {
   try {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const model = readIncomingRepaymentModel(spreadsheet);
-    const result = calculateIncomingRepayments(model);
+    const result = calculateRepaymentsWithCompanyTax(model);
+    writeCompanyTaxResults(spreadsheet, model, result);
     const sheet = spreadsheet.getSheetByName('In Loans');
     result.payments.forEach(payment => {
       sheet.getRange(payment.row + 6, 11, 1, model.months.length).setValues([payment.principal]);
@@ -99,8 +102,8 @@ function recalculateIncomingLoanRepayments() {
     SpreadsheetApp.flush();
     const timestamp = Utilities.formatDate(new Date(), spreadsheet.getSpreadsheetTimeZone(), 'dd MMM HH:mm');
     sheet.getRange('D1').clearDataValidations().setValue('Last Repayment Calculation Time\n' + timestamp)
-      .setNote('Last successful calculation. Run SOL → Recalculate Loan Repayments after changing loan or cash-flow inputs.');
-    return 'Loan repayments updated.';
+      .setNote('Last successful repayment and company-tax calculation. Run SOL → Recalculate Loan Repayments after changing loans, cash flow, unit costs, useful lives, or tax inputs.');
+    return 'Loan repayments and tax updated.';
   } finally {
     lock.releaseLock();
   }
@@ -151,7 +154,7 @@ function readIncomingRepaymentModel(spreadsheet) {
       date, rate, draws, interestRepaymentStart});
   });
   if (!loans.length) throw new Error('No incoming loan schedules were found.');
-  const cash = repaymentSheet(spreadsheet, 'Cash Flow').getRange(3, 2, 14, months.length + 1).getValues();
+  const cash = repaymentSheet(spreadsheet, 'Cash Flow').getRange(3, 2, 40, months.length + 1).getValues();
   checkRepaymentTimeline(cash[0].slice(1), months, timezone, 'Cash Flow');
   const cashRow = name => {
     const rows = cash.slice(1).filter(row => row[0] === name);
@@ -160,7 +163,7 @@ function readIncomingRepaymentModel(spreadsheet) {
   };
   const expenses = Array(months.length).fill(0);
   ['land expenses', 'pre const. expenses', 'units const. expenses', 'other const. expenses',
-    'direct operating expenses', 'other operating expenses', 'company tax', 'outgoing loans - funds disbursed']
+    'direct operating expenses', 'other operating expenses', 'outgoing loans - funds disbursed']
     .forEach(name => cashRow(name).forEach((value, i) => { expenses[i] += value; }));
   const outgoing = repaymentSheet(spreadsheet, 'Out Loans');
   const outgoingRows = outgoing.getRange(3, 8, outgoing.getLastRow() - 2, months.length + 1).getValues();
@@ -169,7 +172,15 @@ function readIncomingRepaymentModel(spreadsheet) {
   if (receiptsRows.length !== 1) throw new Error('Expected one total loan paid row in Out Loans.');
   const revenue = cashRow('revenue');
   const receipts = receiptsRows[0].slice(1).map((value, i) => repaymentNumber(value, 'Out Loans repayments') + revenue[i]);
-  return {months, loans, principalRepaymentStart, reserve, receipts, expenses};
+  const depreciation = readUnitDepreciation(spreadsheet, months, timezone);
+  const otherDepreciation = cashRow('setup depreciation');
+  const operatingProfit = cashRow('operating profit');
+  const interestIncome = months.map((_, i) => outgoingRows.filter(row => row[0] === 'interest generated')
+    .reduce((sum, row) => sum + repaymentNumber(row[i + 1], 'Out Loans interest income'), 0));
+  const tax = {rate: repaymentNumber(parameter('company tax rate'), 'company tax rate'),
+    yearEndMonth: repaymentNumber(parameter('financial year-end month'), 'financial year-end month'), depreciation,
+    profitBeforeInterest: operatingProfit.map((profit, i) => profit + interestIncome[i] - depreciation[i] - otherDepreciation[i])};
+  return {months, loans, principalRepaymentStart, reserve, receipts, expenses, tax};
 }
 
 function repaymentSheet(spreadsheet, name) {

@@ -172,6 +172,8 @@ test('server action writes only incoming payment rows and releases its lock', ()
   });
   vm.runInContext(source, server);
   server.readIncomingRepaymentModel = () => model();
+  server.calculateRepaymentsWithCompanyTax = value => server.calculateIncomingRepayments(value);
+  server.writeCompanyTaxResults = () => {};
   server.recalculateIncomingLoanRepayments();
   assert.deepEqual(writes.filter(x => x.row).map(x => x.row), [10, 13]);
   assert.ok(writes.at(-1).status.startsWith('Last Repayment Calculation Time\n'));
