@@ -85,7 +85,7 @@ function fixture(loanCount = 1, monthCount = 2) {
       createTemplateFromFile(name) {
         assert.equal(name, 'LoanModeProgress');
         return {evaluate() {
-          return {column: this.column, setWidth() { return this; }, setHeight() { return this; }};
+          return {column: this.column, action: this.action, setWidth() { return this; }, setHeight(height) { this.height = height; return this; }};
         }};
       }
     },
@@ -397,7 +397,7 @@ for (const outcome of ['success', 'failure']) {
     vm.runInNewContext(script, {
       document: {getElementById: id => elements[id]},
       requestAnimationFrame: callback => frames.push(callback),
-      google: {script: {run: runner, host: {close() { closed = true; }}}}
+      google: {script: {run: runner, host: {close() { closed = true; }, setHeight(height) { assert.equal(height, 155); }}}}
     });
     assert.equal(started, false);
     frames.shift()();
@@ -415,5 +415,19 @@ for (const outcome of ['success', 'failure']) {
     assert.equal(elements.message.textContent, outcome === 'success' ? 'Planned loans are disabled.' : '<failure>');
     elements.close.click();
     assert.equal(closed, true);
+  });
+}
+
+for (const [column, value, action] of [
+  [1, 'Repayment Calculations Enabled', 'Restoring repayment formulas…'],
+  [1, 'Repayment Calculations Disabled', 'Freezing repayments…'],
+  [4, 'Planned Loans Enabled', 'Enabling Planned Loans…'],
+  [4, 'Planned Loans Disabled', 'Disabling Planned Loans…']
+]) {
+  test('compact progress describes ' + value, () => {
+    const {state, context, range} = fixture();
+    context.handleLoanModeEdit({range: range(1, column), value});
+    assert.equal(state.dialogs[0].html.action, action);
+    assert.equal(state.dialogs[0].html.height, 105);
   });
 }

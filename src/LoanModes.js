@@ -5,10 +5,15 @@ function handleLoanModeEdit(e) {
   const column = e.range.getColumn();
   const template = HtmlService.createTemplateFromFile('LoanModeProgress');
   template.column = column;
+  const label = column === 1 ? 'Repayment Calculations' : 'Planned Loans';
+  const actions = column === 1
+    ? {Enabled: 'Restoring repayment formulas…', Disabled: 'Freezing repayments…'}
+    : {Enabled: 'Enabling Planned Loans…', Disabled: 'Disabling Planned Loans…'};
+  template.action = e.value === label + ' Enabled' ? actions.Enabled
+    : e.value === label + ' Disabled' ? actions.Disabled : 'Updating ' + label + '…';
   // Open the progress UI before any sheet reads can wait for recalculation.
   SpreadsheetApp.getUi().showModalDialog(
-    template.evaluate().setWidth(420).setHeight(210),
-    column === 1 ? 'Repayment Calculations' : 'Planned Loans');
+    template.evaluate().setWidth(420).setHeight(105), label);
   return true;
 }
 
