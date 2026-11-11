@@ -105,7 +105,17 @@ function unfreezeLoanRepayments() {
 function validateRepaymentSnapshot_(snapshot, spreadsheet, sheet, layout) {
   if (snapshot.spreadsheetId !== spreadsheet.getId() || snapshot.sheetId !== sheet.getSheetId() ||
       JSON.stringify(snapshot.layout) !== JSON.stringify(layout)) {
-    throw new Error('The loan layout or timeline changed. Restore its structure before unfreezing; the backup is retained.');
+    const changes = [];
+    if (snapshot.sheetId !== sheet.getSheetId()) changes.push('sheet ID');
+    if (snapshot.spreadsheetId !== spreadsheet.getId()) changes.push('spreadsheet ID');
+    for (const field of ['firstColumn', 'width', 'months', 'labels']) {
+      if (JSON.stringify(snapshot.layout[field]) === JSON.stringify(layout[field])) continue;
+      if (field === 'labels') {
+        const row = snapshot.layout.labels.findIndex((labels, index) => JSON.stringify(labels) !== JSON.stringify(layout.labels[index]));
+        changes.push('row ' + (row + 4) + ': ' + JSON.stringify(snapshot.layout.labels[row]) + ' → ' + JSON.stringify(layout.labels[row]));
+      } else changes.push(field);
+    }
+    throw new Error('The loan layout or timeline changed in ' + sheet.getName() + ' (' + changes.join('; ') + '). Restore its structure before unfreezing; the backup is retained.');
   }
 }
 
