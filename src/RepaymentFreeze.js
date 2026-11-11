@@ -11,28 +11,6 @@ const REPAYMENT_FREEZE = Object.freeze({
   params: ['principal paid', 'interest paid']
 });
 
-function handleRepaymentModeEdit(e) {
-  if (!e || !e.range || e.range.getSheet().getName() !== REPAYMENT_FREEZE.sheetName ||
-      e.range.getRow() !== 1 || e.range.getColumn() !== 1) return false;
-  const cell = e.range.getSheet().getRange(REPAYMENT_FREEZE.toggleCell);
-  try {
-    const mode = cell.getValue();
-    if (mode !== REPAYMENT_FREEZE.frozenValue && mode !== REPAYMENT_FREEZE.liveValue) {
-      throw new Error('Select Repayment Calculations Enabled or Repayment Calculations Disabled.');
-    }
-    const message = mode === REPAYMENT_FREEZE.frozenValue
-      ? 'Freezing repayments. Please wait for confirmation.'
-      : 'Restoring repayment formulas. Please wait for confirmation.';
-    SpreadsheetApp.getActiveSpreadsheet().toast(message, 'Loan repayments', 30);
-    if (mode === REPAYMENT_FREEZE.frozenValue) freezeLoanRepayments();
-    else unfreezeLoanRepayments();
-  } catch (error) {
-    cell.setNote('The selected mode was not applied successfully. ' + error.message);
-    throw error;
-  }
-  return true;
-}
-
 function setRepaymentMode_(sheet, mode) {
   sheet.getRange(REPAYMENT_FREEZE.toggleCell).setValue(mode).setNote('');
 }
@@ -51,8 +29,7 @@ function freezeLoanRepayments() {
       const current = previous.entries.map(entry => repaymentEntryValues_(formulas, layout, entry));
       if (current.every(row => row.every(formula => !formula))) {
         setRepaymentMode_(sheet, REPAYMENT_FREEZE.frozenValue);
-        spreadsheet.toast('Repayments are already frozen.', 'Loan repayments', 6);
-        return;
+        return 'Repayments are already frozen.';
       }
       if (!current.every((row, index) => JSON.stringify(row) === JSON.stringify(previous.entries[index].formulas))) {
         throw new Error('A repayment operation was interrupted. Select Repayment Calculations Enabled to restore the saved formulas before freezing again.');
@@ -78,7 +55,7 @@ function freezeLoanRepayments() {
       }
     });
     setRepaymentMode_(sheet, REPAYMENT_FREEZE.frozenValue);
-    spreadsheet.toast('Principal and interest repayments are frozen.', 'Loan repayments', 6);
+    return 'Principal and interest repayments are frozen.';
   });
 }
 
@@ -102,7 +79,7 @@ function unfreezeLoanRepayments() {
     props.deleteProperty(REPAYMENT_FREEZE.backupKey);
     deleteRepaymentChunks_(props);
     setRepaymentMode_(sheet, REPAYMENT_FREEZE.liveValue);
-    spreadsheet.toast('Repayment formulas restored. Calculations are live.', 'Loan repayments', 6);
+    return 'Repayment formulas restored. Calculations are live.';
   });
 }
 
@@ -118,9 +95,6 @@ function withRepaymentLock_(action) {
   if (!lock.tryLock(10000)) throw new Error('Another repayment operation is running. Try again shortly.');
   try {
     return action();
-  } catch (error) {
-    SpreadsheetApp.getActiveSpreadsheet().toast(error.message, 'Loan repayments', 10);
-    throw error;
   } finally {
     lock.releaseLock();
   }

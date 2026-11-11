@@ -20,7 +20,7 @@ function fixture(loanCount = 1, monthCount = 2) {
     cells[i + 3][0].value = i === 0 ? 'Loan A' : '';
     monthColumns.forEach(col => { cells[i + 3][col] = {value: i * 10 + col, formula: '=SUM(1,2)'}; });
   });
-  const state = {cells, properties: {}, writes: [], messages: [], failWrite: 0, locked: false, busy: false,
+  const state = {cells, properties: {}, writes: [], messages: [], dialogs: [], failWrite: 0, locked: false, busy: false,
     reads: {formulas: 0, values: 0, display: 0}, flushes: 0, corruptWrite: false, corruptFormula: false};
   const props = {
     getProperties: () => ({...state.properties}),
@@ -62,11 +62,18 @@ function fixture(loanCount = 1, monthCount = 2) {
   }
   const sheet = {getName: () => 'In Loans', getRange: range, getLastRow: () => cells.length, getLastColumn: () => columnCount, getSheetId: () => 42};
   const spreadsheet = {getSheetByName: () => sheet, getId: () => 'spreadsheet',
-    toast(message) { state.messages.push({message, writes: state.writes.length}); }};
+    toast(message, title, timeout) { state.messages.push({message, title, timeout, writes: state.writes.length}); }};
   const blob = (data, contentType) => ({contentType, getBytes: () => Buffer.from(data), getDataAsString: () => Buffer.from(data).toString()});
+  const ui = {
+    ButtonSet: {OK: 'OK'},
+    alert(title, message, buttons) {
+      assert.equal(state.locked, false, 'Dialogs must not suspend an operation holding the lock');
+      state.dialogs.push({title, message, buttons, writes: state.writes.length, flushes: state.flushes});
+    }
+  };
   const context = vm.createContext({
     Date,
-    SpreadsheetApp: {getActiveSpreadsheet: () => spreadsheet, flush() { state.flushes++; }},
+    SpreadsheetApp: {getActiveSpreadsheet: () => spreadsheet, getUi: () => ui, flush() { state.flushes++; }},
     PropertiesService: {getDocumentProperties: () => props},
     LockService: {getDocumentLock: () => ({
       tryLock: () => { if (state.busy) return false; state.locked = true; return true; },
@@ -87,6 +94,7 @@ function fixture(loanCount = 1, monthCount = 2) {
     }
   });
   vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/RepaymentFreeze.js'), 'utf8'), context);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/LoanModes.js'), 'utf8'), context);
   return {...state, state, context, range, sheet};
 }
 
@@ -187,14 +195,18 @@ test('A1 dropdown freezes and restores formulas through the existing edit handle
   context.onInstallableEdit(event);
   assert.match(state.messages[0].message, /Freezing repayments/);
   assert.equal(state.messages[0].writes, 0);
-  assert.match(state.messages[1].message, /are frozen/);
+  assert.match(state.dialogs[0].message, /are frozen/);
+  assert.equal(state.dialogs[0].buttons, 'OK');
+  assert.equal(state.messages[0].timeout, -1);
+  assert.equal(state.messages[1].message, '');
   assert.equal(state.cells[4][10].formula, '');
   assert.equal(state.cells[0][0].value, 'Repayment Calculations Disabled');
   state.cells[0][0].value = 'Repayment Calculations Enabled';
   context.onInstallableEdit(event);
   assert.match(state.messages[2].message, /Restoring repayment formulas/);
   assert.equal(state.messages[2].writes, 2);
-  assert.match(state.messages[3].message, /formulas restored/);
+  assert.match(state.dialogs[1].message, /formulas restored/);
+  assert.equal(state.messages[3].message, '');
   assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
   assert.equal(state.note, '');
 });
@@ -209,11 +221,11 @@ test('direct actions keep A1 synchronized', () => {
 
 test('edits outside In Loans A1 never toggle repayments', () => {
   const {state, context, range, sheet} = fixture();
-  assert.equal(context.handleRepaymentModeEdit(), false);
-  assert.equal(context.handleRepaymentModeEdit({range: range(1, 2, 1, 1)}), false);
-  assert.equal(context.handleRepaymentModeEdit({range: range(2, 1, 1, 1)}), false);
+  assert.equal(context.handleLoanModeEdit(), false);
+  assert.equal(context.handleLoanModeEdit({range: range(1, 2, 1, 1)}), false);
+  assert.equal(context.handleLoanModeEdit({range: range(2, 1, 1, 1)}), false);
   sheet.getName = () => 'Cash Flow';
-  assert.equal(context.handleRepaymentModeEdit({range: range('A1')}), false);
+  assert.equal(context.handleLoanModeEdit({range: range('A1')}), false);
   assert.equal(state.writes.length, 0);
 });
 
@@ -221,11 +233,14 @@ test('failed dropdown action leaves an explanatory note and keeps the backup', (
   const {state, context, range} = fixture();
   state.cells[0][0].value = 'Repayment Calculations Disabled';
   state.failWrite = 2;
-  assert.throws(() => context.handleRepaymentModeEdit({range: range('A1')}), /Simulated/);
+  assert.throws(() => context.handleLoanModeEdit({range: range('A1')}), /Simulated/);
   assert.match(state.note, /not applied successfully/);
+  assert.equal(state.dialogs.length, 1);
+  assert.match(state.dialogs[0].title, /Failed/);
+  assert.match(state.dialogs[0].message, /Simulated write failure/);
   assert.ok(state.properties.inLoanRepaymentSnapshotV1);
   state.cells[0][0].value = 'Repayment Calculations Enabled';
-  context.handleRepaymentModeEdit({range: range('A1')});
+  context.handleLoanModeEdit({range: range('A1')});
   assert.equal(state.note, '');
   assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
 });
@@ -255,7 +270,7 @@ test('a partially frozen backup cannot be overwritten by another Freeze', () => 
 test('invalid dropdown value cannot modify repayment cells', () => {
   const {state, context, range} = fixture();
   state.cells[0][0].value = 'invalid';
-  assert.throws(() => context.handleRepaymentModeEdit({range: range('A1')}), /Select Repayment Calculations Enabled/);
+  assert.throws(() => context.handleLoanModeEdit({range: range('A1')}), /Select Repayment Calculations Enabled/);
   assert.equal(state.writes.length, 0);
 });
 
@@ -300,4 +315,46 @@ test('bulk verification detects incorrect restored formulas and retains recovery
   state.corruptFormula = false;
   context.unfreezeLoanRepayments();
   assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
+});
+
+for (const mode of ['Enabled', 'Disabled']) {
+  test('D1 ' + mode + ' shows progress and a completion dialog without changing formulas', () => {
+    const {state, context, range} = fixture();
+    state.cells[0][3].value = 'Planned Loans ' + mode;
+    const before = structuredClone(state.cells);
+    context.SOLLibrary = {};
+    context.updateUnits = () => { throw new Error('Unrelated handler called'); };
+    context.updateTimelineParamNames = () => { throw new Error('Unrelated handler called'); };
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/Main.js'), 'utf8'), context);
+    context.onInstallableEdit({range: range(1, 4)});
+    assert.match(state.messages[0].message, /Applying Planned Loans/);
+    assert.equal(state.messages[0].timeout, -1);
+    assert.equal(state.messages[1].message, '');
+    assert.equal(state.dialogs.length, 1);
+    assert.match(state.dialogs[0].title, /Done/);
+    assert.match(state.dialogs[0].message, mode === 'Disabled' ? /draws are set to zero/ : /original calculations/);
+    assert.equal(state.dialogs[0].flushes, 1);
+    assert.deepEqual(state.cells, before);
+    assert.deepEqual(state.properties, {});
+    assert.equal(state.writes.length, 0);
+  });
+}
+
+test('D1 failure reports an error dialog without reporting success', () => {
+  const {state, context, range} = fixture();
+  state.cells[0][3].value = 'Planned Loans Disabled';
+  context.SpreadsheetApp.flush = () => { throw new Error('Recalculation failed'); };
+  assert.throws(() => context.handleLoanModeEdit({range: range(1, 4)}), /Recalculation failed/);
+  assert.equal(state.dialogs.length, 1);
+  assert.match(state.dialogs[0].title, /Failed/);
+  assert.match(state.note, /Recalculation failed/);
+  assert.equal(state.messages.at(-1).message, '');
+});
+
+test('a repayment label in D1 is rejected without touching the repayment backup', () => {
+  const {state, context, range} = fixture();
+  state.cells[0][3].value = 'Repayment Calculations Disabled';
+  assert.throws(() => context.handleLoanModeEdit({range: range(1, 4)}), /Select Planned Loans/);
+  assert.equal(state.writes.length, 0);
+  assert.deepEqual(state.properties, {});
 });
