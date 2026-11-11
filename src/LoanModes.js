@@ -3,47 +3,31 @@ function handleLoanModeEdit(e) {
       ![1, 4].includes(e.range.getColumn()) || e.range.getGridId() !== IN_LOANS_SHEET_ID) return false;
 
   const column = e.range.getColumn();
-  const template = HtmlService.createTemplateFromFile('LoanModeProgress');
-  template.column = column;
   const label = column === 1 ? 'Repayment Calculations' : 'Planned Loans';
-  const actions = column === 1
-    ? {Enabled: 'Restoring repayment formulas…', Disabled: 'Freezing repayments…'}
-    : {Enabled: 'Enabling Planned Loans…', Disabled: 'Disabling Planned Loans…'};
-  template.action = e.value === label + ' Enabled' ? actions.Enabled
-    : e.value === label + ' Disabled' ? actions.Disabled : 'Updating ' + label + '…';
+  if (e.value !== label + ' Enabled' && e.value !== label + ' Disabled') {
+    SpreadsheetApp.getUi().alert('Select ' + label + ' Enabled or ' + label + ' Disabled.');
+    return true;
+  }
+  const template = HtmlService.createTemplateFromFile('LoanModeProgress');
+  const enabled = e.value === label + ' Enabled';
+  template.action = column === 1
+    ? (enabled ? 'Restoring repayment formulas…' : 'Freezing repayments…')
+    : (enabled ? 'Enabling Planned Loans…' : 'Disabling Planned Loans…');
+  // D1 already controls the draw formulas. Confirm the edit without a server round trip.
+  template.completionMessage = column === 4
+    ? e.value + '. Sheets recalculates the affected formulas automatically.'
+    : '';
   // Open the progress UI before any sheet reads can wait for recalculation.
   SpreadsheetApp.getUi().showModalDialog(
     template.evaluate().setWidth(420).setHeight(105), label);
   return true;
 }
 
-// Called by the progress dialog after its spinner has rendered.
-function applyLoanMode(column) {
-  if (![1, 4].includes(column)) throw new Error('Invalid loan control.');
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = spreadsheet.getSheetById(IN_LOANS_SHEET_ID);
-  if (!sheet) throw new Error('The In Loans sheet could not be found.');
-  const cell = sheet.getRange(1, column);
-  const label = column === 1 ? 'Repayment Calculations' : 'Planned Loans';
-  try {
-    const mode = cell.getValue();
-    if (mode !== label + ' Enabled' && mode !== label + ' Disabled') {
-      throw new Error('Select ' + label + ' Enabled or ' + label + ' Disabled.');
-    }
-    let message;
-    if (column === 1) {
-      message = mode === label + ' Disabled' ? freezeLoanRepayments() : unfreezeLoanRepayments();
-    } else {
-      // Loan draw formulas read D1 directly; no formula rewrite is needed.
-      SpreadsheetApp.flush();
-      message = mode === label + ' Disabled'
-        ? 'Planned loans are disabled. Their loan draws are set to zero.'
-        : 'Planned loans are enabled. Their loan draws use the original calculations.';
-    }
-    cell.setNote('');
-    return message;
-  } catch (error) {
-    cell.setNote('The selected mode was not applied successfully. ' + error.message);
-    throw error;
-  }
+// Read the current selection so an older dialog cannot apply a stale edit.
+function applyRepaymentMode() {
+  const sheet = getRepaymentSheet_(SpreadsheetApp.getActiveSpreadsheet());
+  const mode = sheet.getRange(REPAYMENT_FREEZE.toggleCell).getValue();
+  if (mode === REPAYMENT_FREEZE.frozenValue) return freezeLoanRepayments();
+  if (mode === REPAYMENT_FREEZE.liveValue) return unfreezeLoanRepayments();
+  throw new Error('Select Repayment Calculations Enabled or Repayment Calculations Disabled.');
 }

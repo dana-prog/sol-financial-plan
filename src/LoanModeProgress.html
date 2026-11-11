@@ -40,10 +40,15 @@
     document.getElementById('close').addEventListener('click', () => google.script.host.close());
     // Let the browser paint the spinner before starting the server operation.
     requestAnimationFrame(() => requestAnimationFrame(() => {
+      const completionMessage = <?= completionMessage ?>;
+      if (completionMessage) {
+        finish('Setting updated', completionMessage);
+        return;
+      }
       google.script.run
         .withSuccessHandler(message => finish('Done', message))
         .withFailureHandler(error => finish('Unable to apply the selection', error.message || String(error)))
-        .applyLoanMode(Number(<?= column ?>));
+        .applyRepaymentMode();
     }));
   </script>
 </body>

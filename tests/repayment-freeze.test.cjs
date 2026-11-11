@@ -72,6 +72,7 @@ function fixture(loanCount = 1, monthCount = 2) {
     toast(message, title, timeout) { state.messages.push({message, title, timeout, writes: state.writes.length}); }};
   const blob = (data, contentType) => ({contentType, getBytes: () => Buffer.from(data), getDataAsString: () => Buffer.from(data).toString()});
   const ui = {
+    alert(message) { state.messages.push(message); },
     showModalDialog(html, title) {
       assert.equal(state.locked, false);
       state.dialogs.push({html, title});
@@ -85,7 +86,7 @@ function fixture(loanCount = 1, monthCount = 2) {
       createTemplateFromFile(name) {
         assert.equal(name, 'LoanModeProgress');
         return {evaluate() {
-          return {column: this.column, action: this.action, setWidth() { return this; }, setHeight(height) { this.height = height; return this; }};
+          return {completionMessage: this.completionMessage, action: this.action, setWidth() { return this; }, setHeight(height) { this.height = height; return this; }};
         }};
       }
     },
@@ -207,14 +208,14 @@ test('A1 opens progress first, then the dialog applies freeze and restore', () =
   context.updateTimelineParamNames = () => { throw new Error('Unrelated handler called'); };
   vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/Main.js'), 'utf8'), context);
   state.cells[0][0].value = 'Repayment Calculations Disabled';
-  context.onInstallableEdit({range: range('A1')});
+  context.onInstallableEdit({range: range('A1'), value: state.cells[0][0].value});
   assert.equal(state.dialogs[0].title, 'Repayment Calculations');
   assert.equal(state.writes.length, 0);
-  assert.match(context.applyLoanMode(state.dialogs[0].html.column), /are frozen/);
+  assert.match(context.applyRepaymentMode(), /are frozen/);
   assert.equal(state.cells[4][10].formula, '');
   state.cells[0][0].value = 'Repayment Calculations Enabled';
-  context.onInstallableEdit({range: range('A1')});
-  assert.match(context.applyLoanMode(state.dialogs[1].html.column), /formulas restored/);
+  context.onInstallableEdit({range: range('A1'), value: state.cells[0][0].value});
+  assert.match(context.applyRepaymentMode(), /formulas restored/);
   assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
   assert.equal(state.note, '');
   assert.equal(state.messages.length, 0);
@@ -238,16 +239,15 @@ test('edits outside In Loans A1 never toggle repayments', () => {
   assert.equal(state.writes.length, 0);
 });
 
-test('failed dropdown action leaves an explanatory note and keeps the backup', () => {
+test('failed dropdown action reports the error and keeps the backup', () => {
   const {state, context, range} = fixture();
   state.cells[0][0].value = 'Repayment Calculations Disabled';
   state.failWrite = 2;
-  assert.throws(() => context.applyLoanMode(1), /Simulated/);
-  assert.match(state.note, /not applied successfully/);
+  assert.throws(() => context.applyRepaymentMode(), /Simulated/);
   assert.equal(state.locked, false);
   assert.ok(state.properties.inLoanRepaymentSnapshotV1);
   state.cells[0][0].value = 'Repayment Calculations Enabled';
-  context.applyLoanMode(1);
+  context.applyRepaymentMode();
   assert.equal(state.note, '');
   assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
 });
@@ -277,7 +277,7 @@ test('a partially frozen backup cannot be overwritten by another Freeze', () => 
 test('invalid dropdown value cannot modify repayment cells', () => {
   const {state, context, range} = fixture();
   state.cells[0][0].value = 'invalid';
-  assert.throws(() => context.applyLoanMode(1), /Select Repayment Calculations Enabled/);
+  assert.throws(() => context.applyRepaymentMode(), /Select Repayment Calculations Enabled/);
   assert.equal(state.writes.length, 0);
 });
 
@@ -325,20 +325,15 @@ test('bulk verification detects incorrect restored formulas and retains recovery
 });
 
 for (const mode of ['Enabled', 'Disabled']) {
-  test('D1 ' + mode + ' opens progress and applies the setting without rewriting formulas', () => {
+  test('D1 ' + mode + ' confirms the setting without accessing the spreadsheet', () => {
     const {state, context, range} = fixture();
-    state.cells[0][3].value = 'Planned Loans ' + mode;
     const before = structuredClone(state.cells);
-    context.SOLLibrary = {};
-    context.updateUnits = () => { throw new Error('Unrelated handler called'); };
-    context.updateTimelineParamNames = () => { throw new Error('Unrelated handler called'); };
-    vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/Main.js'), 'utf8'), context);
-    context.onInstallableEdit({range: range(1, 4)});
+    context.SpreadsheetApp.getActiveSpreadsheet = () => { throw new Error('Unnecessary spreadsheet access'); };
+    state.beforeGetSheet = () => { throw new Error('Unnecessary sheet access'); };
+    context.SpreadsheetApp.flush = () => { throw new Error('Unnecessary flush'); };
+    assert.equal(context.handleLoanModeEdit({range: range(1, 4), value: 'Planned Loans ' + mode}), true);
     assert.equal(state.dialogs[0].title, 'Planned Loans');
-    assert.equal(state.flushes, 0);
-    const result = context.applyLoanMode(state.dialogs[0].html.column);
-    assert.match(result, mode === 'Disabled' ? /draws are set to zero/ : /original calculations/);
-    assert.equal(state.flushes, 1);
+    assert.match(state.dialogs[0].html.completionMessage, new RegExp('Planned Loans ' + mode));
     assert.deepEqual(state.cells, before);
     assert.deepEqual(state.properties, {});
     assert.equal(state.writes.length, 0);
@@ -346,40 +341,28 @@ for (const mode of ['Enabled', 'Disabled']) {
   });
 }
 
-test('D1 failure reaches the dialog callback without reporting success', () => {
-  const {state, context} = fixture();
-  state.cells[0][3].value = 'Planned Loans Disabled';
-  context.SpreadsheetApp.flush = () => { throw new Error('Recalculation failed'); };
-  assert.throws(() => context.applyLoanMode(4), /Recalculation failed/);
-  assert.match(state.note, /Recalculation failed/);
-});
-
-test('a repayment label in D1 is rejected without touching the repayment backup', () => {
-  const {state, context} = fixture();
-  state.cells[0][3].value = 'Repayment Calculations Disabled';
-  assert.throws(() => context.applyLoanMode(4), /Select Planned Loans/);
+test('invalid dropdown edits show an error without starting an operation', () => {
+  const {state, context, range} = fixture();
+  for (const [column, value] of [[4, 'Repayment Calculations Disabled'], [1, 'invalid'], [4, undefined]]) {
+    assert.equal(context.handleLoanModeEdit({range: range(1, column), value}), true);
+  }
+  assert.equal(state.messages.length, 3);
+  assert.equal(state.dialogs.length, 0);
   assert.equal(state.writes.length, 0);
   assert.deepEqual(state.properties, {});
 });
 
-test('progress opens before any sheet access or calculation', () => {
+test('repayment progress opens before any sheet access or calculation', () => {
   const {state, context, range} = fixture();
   state.beforeGetSheet = () => { throw new Error('Premature sheet access'); };
   context.SpreadsheetApp.getActiveSpreadsheet = () => { throw new Error('Premature spreadsheet access'); };
-  assert.equal(context.handleLoanModeEdit({range: range(1, 4)}), true);
+  assert.equal(context.handleLoanModeEdit({range: range(1, 1), value: 'Repayment Calculations Disabled'}), true);
   assert.equal(state.dialogs.length, 1);
   assert.equal(state.reads.values, 0);
   assert.equal(state.flushes, 0);
 });
 
-test('dialog callback rejects unsupported columns', () => {
-  const {context} = fixture();
-  for (const column of [0, 2, 5, '1', null]) {
-    assert.throws(() => context.applyLoanMode(column), /Invalid loan control/);
-  }
-});
-
-for (const outcome of ['success', 'failure']) {
+for (const outcome of ['success', 'failure', 'planned']) {
   test('progress dialog renders before work and shows OK after ' + outcome, () => {
     const elements = Object.fromEntries(['spinner', 'status', 'message', 'close'].map(id =>
       [id, {hidden: id === 'close', textContent: '', focus() { this.focused = true; },
@@ -390,10 +373,10 @@ for (const outcome of ['success', 'failure']) {
     const runner = {
       withSuccessHandler(callback) { this.success = callback; return this; },
       withFailureHandler(callback) { this.failure = callback; return this; },
-      applyLoanMode(column) { assert.equal(column, 4); started = true; }
+      applyRepaymentMode() { started = true; }
     };
     const html = fs.readFileSync(path.join(__dirname, '../src/LoanModeProgress.html'), 'utf8');
-    const script = html.match(/<script>([\s\S]*?)<\/script>/)[1].replace('<?= column ?>', JSON.stringify('4'));
+    const script = html.match(/<script>([\s\S]*?)<\/script>/)[1].replace('<?= completionMessage ?>', JSON.stringify(outcome === 'planned' ? 'Planned Loans Enabled.' : ''));
     vm.runInNewContext(script, {
       document: {getElementById: id => elements[id]},
       requestAnimationFrame: callback => frames.push(callback),
@@ -403,6 +386,16 @@ for (const outcome of ['success', 'failure']) {
     frames.shift()();
     assert.equal(started, false);
     frames.shift()();
+    if (outcome === 'planned') {
+      assert.equal(started, false);
+      assert.equal(elements.spinner.hidden, true);
+      assert.equal(elements.status.textContent, 'Setting updated');
+      assert.equal(elements.message.textContent, 'Planned Loans Enabled.');
+      assert.equal(elements.close.hidden, false);
+      elements.close.click();
+      assert.equal(closed, true);
+      return;
+    }
     assert.equal(started, true);
     assert.equal(elements.spinner.hidden, false);
     assert.equal(elements.close.hidden, true);
