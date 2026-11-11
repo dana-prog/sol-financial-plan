@@ -1,0 +1,20 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Cash Flow",
+  "sheetId": 706577296,
+  "lastColumn": "CT",
+  "formulas": {
+    "C4": "=ARRAYFORMULA(HSTACK(0,C17:CS17))",
+    "C17": "=ARRAYFORMULA(SCAN(0,C21:CT21-C26:CT26,LAMBDA(balance,change,balance+change)))",
+    "C23": "=ARRAYFORMULA(C4:CT4+C21:CT21-C22:CT22)",
+    "C24": "=ARRAYFORMULA(LET(available,C23:CT23-PARAM(\"minimum cash reserve\"),IF(available>0,available,0)))",
+    "C26": "=ARRAYFORMULA(C22:CT22+C25:CT25)"
+  },
+  "verification": {
+    "months": 96,
+    "cashFlowFormulaCellsBefore": 514,
+    "cashFlowFormulaCellsAfter": 39,
+    "valueTolerance": 0.00001,
+    "changedValues": 0
+  }
+}
