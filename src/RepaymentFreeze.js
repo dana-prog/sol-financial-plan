@@ -17,9 +17,15 @@ function handleRepaymentModeEdit(e) {
   const cell = e.range.getSheet().getRange(REPAYMENT_FREEZE.toggleCell);
   try {
     const mode = cell.getValue();
+    if (mode !== REPAYMENT_FREEZE.frozenValue && mode !== REPAYMENT_FREEZE.liveValue) {
+      throw new Error('Select Live Loans Repayments Calculations or Frozen Loans Repayments Calculations.');
+    }
+    const message = mode === REPAYMENT_FREEZE.frozenValue
+      ? 'Freezing repayments. Please wait for confirmation.'
+      : 'Restoring repayment formulas. Please wait for confirmation.';
+    SpreadsheetApp.getActiveSpreadsheet().toast(message, 'Loan repayments', 30);
     if (mode === REPAYMENT_FREEZE.frozenValue) freezeLoanRepayments();
-    else if (mode === REPAYMENT_FREEZE.liveValue) unfreezeLoanRepayments();
-    else throw new Error('Select Live Loans Repayments Calculations or Frozen Loans Repayments Calculations.');
+    else unfreezeLoanRepayments();
   } catch (error) {
     cell.setNote('The selected mode was not applied successfully. ' + error.message);
     throw error;
@@ -44,6 +50,7 @@ function freezeLoanRepayments() {
       const current = previous.entries.map(entry => repaymentRange_(sheet, entry).getFormulas()[0]);
       if (current.every(row => row.every(formula => !formula))) {
         setRepaymentMode_(sheet, REPAYMENT_FREEZE.frozenValue);
+        spreadsheet.toast('Repayments are already frozen.', 'Loan repayments', 6);
         return;
       }
       if (!current.every((row, index) => JSON.stringify(row) === JSON.stringify(previous.entries[index].formulas))) {

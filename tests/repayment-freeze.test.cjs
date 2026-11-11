@@ -17,7 +17,7 @@ function fixture() {
     cells[i + 3][0].value = i === 0 ? 'Loan A' : '';
     [10, 11].forEach(col => { cells[i + 3][col] = {value: i * 10 + col, formula: '=SUM(1,2)'}; });
   });
-  const state = {cells, properties: {}, writes: [], failWrite: 0, locked: false, busy: false};
+  const state = {cells, properties: {}, writes: [], messages: [], failWrite: 0, locked: false, busy: false};
   const props = {
     getProperty: key => state.properties[key] ?? null,
     setProperty: (key, value) => { state.properties[key] = value; },
@@ -55,7 +55,8 @@ function fixture() {
     };
   }
   const sheet = {getName: () => 'In Loans', getRange: range, getLastRow: () => 8, getLastColumn: () => 13, getSheetId: () => 42};
-  const spreadsheet = {getSheetByName: () => sheet, getId: () => 'spreadsheet', toast() {}};
+  const spreadsheet = {getSheetByName: () => sheet, getId: () => 'spreadsheet',
+    toast(message) { state.messages.push({message, writes: state.writes.length}); }};
   const blob = (data, contentType) => ({contentType, getBytes: () => Buffer.from(data), getDataAsString: () => Buffer.from(data).toString()});
   const context = vm.createContext({
     Date,
@@ -178,15 +179,21 @@ test('A1 dropdown freezes and restores formulas through the existing edit handle
   const event = {range: range('A1')};
   state.cells[0][0].value = 'Frozen Loans Repayments Calculations';
   context.onInstallableEdit(event);
+  assert.match(state.messages[0].message, /Freezing repayments/);
+  assert.equal(state.messages[0].writes, 0);
+  assert.match(state.messages[1].message, /are frozen/);
   assert.equal(state.cells[4][10].formula, '');
   assert.equal(state.cells[0][0].value, 'Frozen Loans Repayments Calculations');
   state.cells[0][0].value = 'Live Loans Repayments Calculations';
   context.onInstallableEdit(event);
+  assert.match(state.messages[2].message, /Restoring repayment formulas/);
+  assert.equal(state.messages[2].writes, 2);
+  assert.match(state.messages[3].message, /formulas restored/);
   assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
   assert.equal(state.note, '');
 });
 
-test('menu actions keep A1 synchronized', () => {
+test('direct actions keep A1 synchronized', () => {
   const {state, context} = fixture();
   context.freezeLoanRepayments();
   assert.equal(state.cells[0][0].value, 'Frozen Loans Repayments Calculations');
