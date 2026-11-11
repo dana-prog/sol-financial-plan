@@ -46,7 +46,11 @@ function fixture(loanCount = 1, monthCount = 2) {
     return {
       getRow: () => row,
       getColumn: () => column,
-      getSheet: () => sheet,
+      getGridId: () => state.gridId ?? 1346380865,
+      getSheet: () => {
+        if (state.beforeGetSheet) state.beforeGetSheet();
+        return sheet;
+      },
       getValue: () => {
         if (state.beforeReadValue) state.beforeReadValue();
         return cells[row - 1][column - 1].value;
@@ -76,6 +80,8 @@ function fixture(loanCount = 1, monthCount = 2) {
   };
   const context = vm.createContext({
     Date,
+    console: {info() {}},
+    IN_LOANS_SHEET_ID: 1346380865,
     SpreadsheetApp: {getActiveSpreadsheet: () => spreadsheet, getUi: () => ui, flush() { state.flushes++; }},
     PropertiesService: {getDocumentProperties: () => props},
     LockService: {getDocumentLock: () => ({
@@ -223,11 +229,11 @@ test('direct actions keep A1 synchronized', () => {
 });
 
 test('edits outside In Loans A1 never toggle repayments', () => {
-  const {state, context, range, sheet} = fixture();
+  const {state, context, range} = fixture();
   assert.equal(context.handleLoanModeEdit(), false);
   assert.equal(context.handleLoanModeEdit({range: range(1, 2, 1, 1)}), false);
   assert.equal(context.handleLoanModeEdit({range: range(2, 1, 1, 1)}), false);
-  sheet.getName = () => 'Cash Flow';
+  state.gridId = 706577296;
   assert.equal(context.handleLoanModeEdit({range: range('A1')}), false);
   assert.equal(state.writes.length, 0);
 });
@@ -373,4 +379,17 @@ test('progress appears before reading a dropdown value, even when the read fails
   assert.match(state.dialogs[0].title, /Failed/);
   assert.match(state.note, /Sheet read failed/);
   assert.equal(state.messages.at(-1).message, '');
+});
+
+test('start feedback uses the edit event before any sheet access', () => {
+  const {state, context, range} = fixture();
+  state.cells[0][3].value = 'Planned Loans Disabled';
+  state.beforeGetSheet = () => {
+    assert.equal(state.messages.length, 1);
+    assert.match(state.messages[0].message, /Applying your selection/);
+  };
+  const source = {toast(message, title, timeout) { state.messages.push({message, title, timeout}); }};
+  context.SpreadsheetApp.getActiveSpreadsheet = () => { throw new Error('Must use event source'); };
+  context.handleLoanModeEdit({range: range(1, 4), source});
+  assert.match(state.dialogs[0].title, /Done/);
 });

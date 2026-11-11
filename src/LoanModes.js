@@ -1,17 +1,22 @@
 function handleLoanModeEdit(e) {
-  if (!e || !e.range || e.range.getSheet().getName() !== 'In Loans' ||
-      e.range.getRow() !== 1 || ![1, 4].includes(e.range.getColumn())) return false;
+  if (!e || !e.range || e.range.getRow() !== 1 ||
+      ![1, 4].includes(e.range.getColumn()) || e.range.getGridId() !== IN_LOANS_SHEET_ID) return false;
 
   const column = e.range.getColumn();
-  const cell = e.range.getSheet().getRange(1, column);
   const label = column === 1 ? 'Repayment Calculations' : 'Planned Loans';
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = e.source || SpreadsheetApp.getActiveSpreadsheet();
+  const startedAt = Date.now();
+  console.info(label + ': edit received');
+  let cell;
   let message;
   let failure;
   try {
-    // Reading a cell can wait for recalculation; show progress before that read.
+    // Range coordinates and grid ID come from the event; avoid sheet access before feedback.
     spreadsheet.toast('Applying your selection. Please wait.', label, -1);
+    console.info(label + ': progress displayed after ' + (Date.now() - startedAt) + ' ms');
+    cell = e.range.getSheet().getRange(1, column);
     const mode = cell.getValue();
+    console.info(label + ': selection read after ' + (Date.now() - startedAt) + ' ms');
     if (mode !== label + ' Enabled' && mode !== label + ' Disabled') {
       throw new Error('Select ' + label + ' Enabled or ' + label + ' Disabled.');
     }
@@ -31,12 +36,13 @@ function handleLoanModeEdit(e) {
     cell.setNote('');
   } catch (error) {
     failure = error;
-    cell.setNote('The selected mode was not applied successfully. ' + error.message);
+    if (cell) cell.setNote('The selected mode was not applied successfully. ' + error.message);
   } finally {
     spreadsheet.toast('', label, 1);
   }
 
   // Alerts suspend execution, so show them only after the repayment lock is released.
+  console.info(label + ': operation finished after ' + (Date.now() - startedAt) + ' ms');
   const ui = SpreadsheetApp.getUi();
   ui.alert(label + (failure ? ' — Failed' : ' — Done'),
     failure ? failure.message : message, ui.ButtonSet.OK);
