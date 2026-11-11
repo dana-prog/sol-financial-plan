@@ -1,0 +1,16 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Apply once after separate-repayment-starts.json. Remove the informational interest parameter from Params row 13. Per-loan interest timing continues to use In Loans columns C and G.",
+  "requests": [
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 280690834,
+          "dimension": "ROWS",
+          "startIndex": 12,
+          "endIndex": 13
+        }
+      }
+    }
+  ]
+}
