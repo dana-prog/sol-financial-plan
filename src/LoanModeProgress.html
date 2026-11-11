@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body { margin: 20px; font: 14px Arial, sans-serif; color: #202124; }
+    .status { display: flex; align-items: center; gap: 14px; }
+    #spinner { width: 24px; height: 24px; flex: 0 0 24px; border: 3px solid #dadce0;
+      border-top-color: #202124; border-radius: 50%; animation: spin 1s linear infinite; }
+    h2 { margin: 0; font-size: 18px; font-weight: 500; }
+    p { line-height: 1.5; margin: 16px 0; }
+    .actions { text-align: right; }
+    button { border: 0; border-radius: 4px; padding: 10px 25px; background: #1a73e8;
+      color: white; font: inherit; cursor: pointer; }
+    button:focus-visible { outline: 2px solid #174ea6; outline-offset: 3px; }
+    [hidden] { display: none !important; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { #spinner { animation: none; } }
+  </style>
+</head>
+<body>
+  <div role="status" aria-live="polite">
+    <div class="status">
+      <div id="spinner" aria-hidden="true"></div>
+      <h2 id="status">Applying your selection…</h2>
+    </div>
+    <p id="message">Please wait while the calculations are updated.</p>
+  </div>
+  <div class="actions"><button id="close" hidden>OK</button></div>
+  <script>
+    function finish(title, message) {
+      document.getElementById('spinner').hidden = true;
+      document.getElementById('status').textContent = title;
+      document.getElementById('message').textContent = message;
+      const close = document.getElementById('close');
+      close.hidden = false;
+      close.focus();
+    }
+    document.getElementById('close').addEventListener('click', () => google.script.host.close());
+    // Let the browser paint the spinner before starting the server operation.
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      google.script.run
+        .withSuccessHandler(message => finish('Done', message))
+        .withFailureHandler(error => finish('Unable to apply the selection', error.message || String(error)))
+        .applyLoanMode(<?= column ?>);
+    }));
+  </script>
+</body>
+</html>
