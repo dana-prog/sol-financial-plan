@@ -393,7 +393,7 @@ for (const outcome of ['success', 'failure']) {
       applyLoanMode(column) { assert.equal(column, 4); started = true; }
     };
     const html = fs.readFileSync(path.join(__dirname, '../src/LoanModeProgress.html'), 'utf8');
-    const script = html.match(/<script>([\s\S]*?)<\/script>/)[1].replace('<?= column ?>', '4');
+    const script = html.match(/<script>([\s\S]*?)<\/script>/)[1].replace('<?= column ?>', JSON.stringify('4'));
     vm.runInNewContext(script, {
       document: {getElementById: id => elements[id]},
       requestAnimationFrame: callback => frames.push(callback),

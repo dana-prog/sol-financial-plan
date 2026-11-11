@@ -42,7 +42,7 @@
       google.script.run
         .withSuccessHandler(message => finish('Done', message))
         .withFailureHandler(error => finish('Unable to apply the selection', error.message || String(error)))
-        .applyLoanMode(<?= column ?>);
+        .applyLoanMode(Number(<?= column ?>));
     }));
   </script>
 </body>
