@@ -3,13 +3,23 @@
   "menu": "SOL → Recalculate Repayments",
   "incomingRepayments": "Principal paid and interest paid are script outputs. In Loans!A1 records the last successful calculation, replacing the former dropdown.",
   "cashFlowFormulas": {
-    "C4": "=PREV_MONTH_ROW_VALUES(CASH_FLOW_PARAM_VALUES(\"cash closing\"))",
-    "C14": "=ARRAYFORMULA(IN_LOAN_PARAM_VALUES_BY_LOAN(\"totals\", \"total loan draw\"))",
-    "C15": "=ARRAYFORMULA(OUT_LOAN_PARAM_VALUES_BY_LOAN(\"totals\", \"total loan paid\"))",
+    "C4": "=ARRAYFORMULA(HSTACK(0,C17:CS17))",
+    "C14": "=ARRAYFORMULA('In Loans'!K102:DB102)",
+    "C15": "=ARRAYFORMULA('Out Loans'!I39:CZ39)",
     "C17": "=ARRAYFORMULA(SCAN(0,C21:CT21-C26:CT26,LAMBDA(balance,change,balance+change)))",
     "C23": "=ARRAYFORMULA(C4:CT4+C21:CT21-C22:CT22)",
     "C24": "=ARRAYFORMULA(LET(available,C23:CT23-PARAM(\"minimum cash reserve\"),IF(available>0,available,0)))",
-    "C26": "=ARRAYFORMULA(C22:CT22+C25:CT25)"
+    "C26": "=ARRAYFORMULA(C22:CT22+C25:CT25)",
+    "C12": "=ARRAYFORMULA('Out Loans'!I32:CZ32)",
+    "C13": "=ARRAYFORMULA('In Loans'!K109:DB109)",
+    "C21": "=ARRAYFORMULA(C14:CT14+C15:CT15+C16:CT16)",
+    "C22": "=BYCOL(C5:CT12,LAMBDA(month,SUM(month)))",
+    "C25": "=ARRAYFORMULA(C13:CT13)",
+    "C28": "=ARRAYFORMULA('In Loans'!K102:DB102)",
+    "C29": "=ARRAYFORMULA('In Loans'!K108:DB108)",
+    "C30": "=ARRAYFORMULA(SCAN(0,C28:CT28-C29:CT29,LAMBDA(balance,change,balance+change)))",
+    "C33": "=ARRAYFORMULA('In Loans'!K107:DB107)",
+    "C34": "=ARRAYFORMULA(C31:CT31+C32:CT32-C33:CT33)"
   },
   "outgoingRepaymentParameters": {
     "10M": "10M loan - emetway to treehouse - repayment date",
