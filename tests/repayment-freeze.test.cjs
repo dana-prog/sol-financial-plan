@@ -526,3 +526,25 @@ test('both sheets are captured before the first repayment write', () => {
   context.freezeLoanRepayments();
   assert.equal(outgoing.state.cells[4][8].value, original);
 });
+
+
+test('renaming a loan while frozen does not block restoring its formulas', () => {
+  const {state, context, outgoing} = fixture(1, 2, 1);
+  context.freezeLoanRepayments();
+  state.cells[3][0].value = '$100M-1';
+  outgoing.state.cells[3][0].value = 'Updated outgoing loan name';
+  context.unfreezeLoanRepayments();
+  assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
+  assert.equal(outgoing.state.cells[5][8].formula, '=SUM(1,2)');
+  assert.equal(state.cells[3][0].value, '$100M-1');
+});
+
+test('moving repayment parameter rows still prevents restoration', () => {
+  const {state, context} = fixture();
+  context.freezeLoanRepayments();
+  state.cells[4][9].value = 'interest paid';
+  state.cells[5][9].value = 'principal paid';
+  assert.throws(() => context.unfreezeLoanRepayments(), /parameter at row 5/);
+  assert.equal(state.writes.length, 2);
+  assert.ok(state.properties.inLoanRepaymentSnapshotV1);
+});

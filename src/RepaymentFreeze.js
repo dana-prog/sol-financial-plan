@@ -103,18 +103,18 @@ function unfreezeLoanRepayments() {
 }
 
 function validateRepaymentSnapshot_(snapshot, spreadsheet, sheet, layout) {
-  if (snapshot.spreadsheetId !== spreadsheet.getId() || snapshot.sheetId !== sheet.getSheetId() ||
-      JSON.stringify(snapshot.layout) !== JSON.stringify(layout)) {
-    const changes = [];
-    if (snapshot.sheetId !== sheet.getSheetId()) changes.push('sheet ID');
-    if (snapshot.spreadsheetId !== spreadsheet.getId()) changes.push('spreadsheet ID');
-    for (const field of ['firstColumn', 'width', 'months', 'labels']) {
-      if (JSON.stringify(snapshot.layout[field]) === JSON.stringify(layout[field])) continue;
-      if (field === 'labels') {
-        const row = snapshot.layout.labels.findIndex((labels, index) => JSON.stringify(labels) !== JSON.stringify(layout.labels[index]));
-        changes.push('row ' + (row + 4) + ': ' + JSON.stringify(snapshot.layout.labels[row]) + ' → ' + JSON.stringify(layout.labels[row]));
-      } else changes.push(field);
-    }
+  const changes = [];
+  if (snapshot.sheetId !== sheet.getSheetId()) changes.push('sheet ID');
+  if (snapshot.spreadsheetId !== spreadsheet.getId()) changes.push('spreadsheet ID');
+  for (const field of ['firstColumn', 'width', 'months']) {
+    if (JSON.stringify(snapshot.layout[field]) !== JSON.stringify(layout[field])) changes.push(field);
+  }
+  // Loan names are editable; row positions, parameter labels, and dates determine formula placement.
+  const savedLabels = snapshot.layout.labels;
+  const changedRow = savedLabels.findIndex((row, index) => row[1] !== layout.labels[index]?.[1]);
+  if (changedRow !== -1) changes.push('parameter at row ' + (changedRow + 4));
+  if (savedLabels.length !== layout.labels.length) changes.push('row count');
+  if (changes.length) {
     throw new Error('The loan layout or timeline changed in ' + sheet.getName() + ' (' + changes.join('; ') + '). Restore its structure before unfreezing; the backup is retained.');
   }
 }
