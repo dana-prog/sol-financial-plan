@@ -7,6 +7,7 @@ const path = require('node:path');
 
 function fixture() {
   const cells = Array.from({length: 8}, () => Array.from({length: 13}, () => ({value: '', formula: ''})));
+  cells[0][0].value = 'Live Loans Repayments Calculations';
   cells[2][9].value = 'Param';
   cells[2][10].value = new Date('2026-01-01T00:00:00Z');
   cells[2][11].value = new Date('2026-02-01T00:00:00Z');
@@ -24,6 +25,7 @@ function fixture() {
     getKeys: () => Object.keys(state.properties)
   };
   function range(row, column, height, width) {
+    if (row === 'A1') { row = 1; column = 1; height = 1; width = 1; }
     const read = fn => Array.from({length: height}, (_, r) =>
       Array.from({length: width}, (_, c) => fn(cells[row - 1 + r][column - 1 + c])));
     const write = (data, formula) => {
@@ -36,6 +38,15 @@ function fixture() {
       }));
     };
     return {
+      getRow: () => row,
+      getColumn: () => column,
+      getSheet: () => sheet,
+      getValue: () => cells[row - 1][column - 1].value,
+      setValue: value => {
+        cells[row - 1][column - 1].value = value;
+        return {setNote: note => { state.note = note; }};
+      },
+      setNote: note => { state.note = note; },
       getValues: () => read(cell => cell.value),
       getDisplayValues: () => read(cell => String(cell.value)),
       getFormulas: () => read(cell => cell.formula),
@@ -43,9 +54,9 @@ function fixture() {
       setFormulas: data => write(data, true)
     };
   }
-  const sheet = {getRange: range, getLastRow: () => 8, getLastColumn: () => 13, getSheetId: () => 42};
+  const sheet = {getName: () => 'In Loans', getRange: range, getLastRow: () => 8, getLastColumn: () => 13, getSheetId: () => 42};
   const spreadsheet = {getSheetByName: () => sheet, getId: () => 'spreadsheet', toast() {}};
-  const blob = data => ({getBytes: () => Buffer.from(data), getDataAsString: () => Buffer.from(data).toString()});
+  const blob = (data, contentType) => ({contentType, getBytes: () => Buffer.from(data), getDataAsString: () => Buffer.from(data).toString()});
   const context = vm.createContext({
     Date,
     SpreadsheetApp: {getActiveSpreadsheet: () => spreadsheet, flush() {}},
@@ -56,14 +67,20 @@ function fixture() {
     })},
     Utilities: {
       newBlob: blob,
-      gzip: data => blob(zlib.gzipSync(data.getBytes())),
-      ungzip: data => blob(zlib.gunzipSync(data.getBytes())),
+      gzip: data => {
+        assert.equal(data.contentType, 'application/json');
+        return blob(zlib.gzipSync(data.getBytes()), 'application/gzip');
+      },
+      ungzip: data => {
+        assert.equal(data.contentType, 'application/gzip');
+        return blob(zlib.gunzipSync(data.getBytes()), 'application/json');
+      },
       base64Encode: data => Buffer.from(data).toString('base64'),
       base64Decode: data => Buffer.from(data, 'base64')
     }
   });
   vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/RepaymentFreeze.js'), 'utf8'), context);
-  return {...state, state, context};
+  return {...state, state, context, range, sheet};
 }
 
 test('freezes only principal/interest formulas and restores every formula', () => {
@@ -84,7 +101,7 @@ test('repeated freeze preserves the original backup', () => {
   const {state, context} = fixture();
   context.freezeLoanRepayments();
   const backup = {...state.properties};
-  assert.throws(() => context.freezeLoanRepayments(), /already exists/);
+  context.freezeLoanRepayments();
   assert.deepEqual(state.properties, backup);
   context.unfreezeLoanRepayments();
   assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
@@ -149,5 +166,82 @@ test('no backup and lock contention cannot change cells', () => {
   assert.throws(() => context.unfreezeLoanRepayments(), /No saved/);
   state.busy = true;
   assert.throws(() => context.freezeLoanRepayments(), /Another repayment/);
+  assert.equal(state.writes.length, 0);
+});
+
+test('A1 dropdown freezes and restores formulas through the existing edit handler', () => {
+  const {state, context, range} = fixture();
+  context.SOLLibrary = {};
+  context.updateUnits = () => { throw new Error('Unrelated handler called'); };
+  context.updateTimelineParamNames = () => { throw new Error('Unrelated handler called'); };
+  vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/Main.js'), 'utf8'), context);
+  const event = {range: range('A1')};
+  state.cells[0][0].value = 'Frozen Loans Repayments Calculations';
+  context.onInstallableEdit(event);
+  assert.equal(state.cells[4][10].formula, '');
+  assert.equal(state.cells[0][0].value, 'Frozen Loans Repayments Calculations');
+  state.cells[0][0].value = 'Live Loans Repayments Calculations';
+  context.onInstallableEdit(event);
+  assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
+  assert.equal(state.note, '');
+});
+
+test('menu actions keep A1 synchronized', () => {
+  const {state, context} = fixture();
+  context.freezeLoanRepayments();
+  assert.equal(state.cells[0][0].value, 'Frozen Loans Repayments Calculations');
+  context.unfreezeLoanRepayments();
+  assert.equal(state.cells[0][0].value, 'Live Loans Repayments Calculations');
+});
+
+test('edits outside In Loans A1 never toggle repayments', () => {
+  const {state, context, range, sheet} = fixture();
+  assert.equal(context.handleRepaymentModeEdit(), false);
+  assert.equal(context.handleRepaymentModeEdit({range: range(1, 2, 1, 1)}), false);
+  assert.equal(context.handleRepaymentModeEdit({range: range(2, 1, 1, 1)}), false);
+  sheet.getName = () => 'Cash Flow';
+  assert.equal(context.handleRepaymentModeEdit({range: range('A1')}), false);
+  assert.equal(state.writes.length, 0);
+});
+
+test('failed dropdown action leaves an explanatory note and keeps the backup', () => {
+  const {state, context, range} = fixture();
+  state.cells[0][0].value = 'Frozen Loans Repayments Calculations';
+  state.failWrite = 2;
+  assert.throws(() => context.handleRepaymentModeEdit({range: range('A1')}), /Simulated/);
+  assert.match(state.note, /not applied successfully/);
+  assert.ok(state.properties.inLoanRepaymentSnapshotV1);
+  state.cells[0][0].value = 'Live Loans Repayments Calculations';
+  context.handleRepaymentModeEdit({range: range('A1')});
+  assert.equal(state.note, '');
+  assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
+});
+
+test('backup left before the first write is safely replaced on retry', () => {
+  const {state, context} = fixture();
+  state.failWrite = 1;
+  assert.throws(() => context.freezeLoanRepayments(), /Simulated/);
+  assert.ok(state.properties.inLoanRepaymentSnapshotV1);
+  state.cells[4][10].value = 123;
+  context.freezeLoanRepayments();
+  assert.equal(state.cells[4][10].value, 123);
+  assert.equal(state.cells[4][10].formula, '');
+  context.unfreezeLoanRepayments();
+  assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
+});
+
+test('a partially frozen backup cannot be overwritten by another Freeze', () => {
+  const {state, context} = fixture();
+  state.failWrite = 2;
+  assert.throws(() => context.freezeLoanRepayments(), /Simulated/);
+  const backup = {...state.properties};
+  assert.throws(() => context.freezeLoanRepayments(), /interrupted/);
+  assert.deepEqual(state.properties, backup);
+});
+
+test('invalid dropdown value cannot modify repayment cells', () => {
+  const {state, context, range} = fixture();
+  state.cells[0][0].value = 'invalid';
+  assert.throws(() => context.handleRepaymentModeEdit({range: range('A1')}), /Select Live/);
   assert.equal(state.writes.length, 0);
 });
