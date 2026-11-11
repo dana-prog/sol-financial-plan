@@ -212,7 +212,6 @@ test('A1 opens progress first, then the dialog applies freeze and restore', () =
   context.SOLLibrary = {};
   context.updateUnits = () => { throw new Error('Unrelated handler called'); };
   context.updateTimelineParamNames = () => { throw new Error('Unrelated handler called'); };
-  vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/OverviewPeriods.js'), 'utf8'), context);
   vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/Main.js'), 'utf8'), context);
   state.cells[0][0].value = 'Repayment Calculations Disabled';
   context.onInstallableEdit({range: range('A1'), value: state.cells[0][0].value});
