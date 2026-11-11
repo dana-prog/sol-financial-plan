@@ -34,7 +34,7 @@
       document.getElementById('message').textContent = message;
       const close = document.getElementById('close');
       close.hidden = false;
-      google.script.host.setHeight(155);
+      google.script.host.setHeight(175);
       close.focus();
     }
     document.getElementById('close').addEventListener('click', () => google.script.host.close());
@@ -47,8 +47,8 @@
       }
       google.script.run
         .withSuccessHandler(message => finish('Done', message))
-        .withFailureHandler(error => finish('Unable to apply the selection', error.message || String(error)))
-        .applyRepaymentMode();
+        .withFailureHandler(error => finish('Unable to recalculate repayments', error.message || String(error)))
+        .recalculateIncomingLoanRepayments();
     }));
   </script>
 </body>

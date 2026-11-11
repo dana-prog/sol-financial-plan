@@ -20,6 +20,8 @@ function onInstallableEdit(e) {
  */
 function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
+    .addItem('Recalculate Repayments', 'showRepaymentCalculation')
+    .addSeparator()
     .addItem('Show Details', '_onShowDetails')
     .addItem('Set Timeline Borders', '_onSetTimelineBorders')
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
