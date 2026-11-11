@@ -137,3 +137,19 @@ test('input failure causes no writes and releases the lock', () => {
   assert.throws(() => server.recalculateIncomingLoanRepayments(), /Bad input/);
   assert.equal(released, true);
 });
+
+test('planned-loan edits tell the user to recalculate and the former repayment dropdown is ignored', () => {
+  const dialogs = [];
+  const server = vm.createContext({IN_LOANS_SHEET_ID: 1346380865,
+    HtmlService: {createTemplateFromFile() {return {evaluate() {dialogs.push({action: this.action, message: this.completionMessage}); return {setWidth() {return this;}, setHeight() {return this;}};}};}},
+    SpreadsheetApp: {getUi: () => ({showModalDialog() {}, alert() {throw new Error('Unexpected validation failure');}})}
+  });
+  vm.runInContext(fs.readFileSync(require('node:path').join(__dirname, '../src/LoanModes.js'), 'utf8'), server);
+  const event = (column, value) => ({value, range: {getRow: () => 1, getColumn: () => column, getGridId: () => 1346380865}});
+  assert.equal(server.handleLoanModeEdit(event(1, 'Repayment Calculations Enabled')), false);
+  assert.equal(server.handleLoanModeEdit(event(4, 'Planned Loans Disabled')), true);
+  assert.match(dialogs[0].message, /excluded from cash flow/);
+  assert.match(dialogs[0].message, /Recalculate Repayments/);
+  assert.equal(server.handleLoanModeEdit(event(4, 'Planned Loans Enabled')), true);
+  assert.match(dialogs[1].message, /included in cash flow/);
+});
