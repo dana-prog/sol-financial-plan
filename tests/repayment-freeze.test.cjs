@@ -8,7 +8,7 @@ const path = require('node:path');
 function fixture(loanCount = 1, monthCount = 2) {
   const columnCount = 11 + monthCount;
   const cells = Array.from({length: 3 + 5 * loanCount}, () => Array.from({length: columnCount}, () => ({value: '', formula: ''})));
-  cells[0][0].value = 'Live Loans Repayments Calculations';
+  cells[0][0].value = 'Repayment Calculations Enabled';
   cells[2][9].value = 'Param';
   const monthColumns = Array.from({length: monthCount}, (_, month) => 10 + month);
   monthColumns.forEach((column, month) => { cells[2][column].value = new Date(Date.UTC(2026, month, 1)); });
@@ -183,14 +183,14 @@ test('A1 dropdown freezes and restores formulas through the existing edit handle
   context.updateTimelineParamNames = () => { throw new Error('Unrelated handler called'); };
   vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/Main.js'), 'utf8'), context);
   const event = {range: range('A1')};
-  state.cells[0][0].value = 'Frozen Loans Repayments Calculations';
+  state.cells[0][0].value = 'Repayment Calculations Disabled';
   context.onInstallableEdit(event);
   assert.match(state.messages[0].message, /Freezing repayments/);
   assert.equal(state.messages[0].writes, 0);
   assert.match(state.messages[1].message, /are frozen/);
   assert.equal(state.cells[4][10].formula, '');
-  assert.equal(state.cells[0][0].value, 'Frozen Loans Repayments Calculations');
-  state.cells[0][0].value = 'Live Loans Repayments Calculations';
+  assert.equal(state.cells[0][0].value, 'Repayment Calculations Disabled');
+  state.cells[0][0].value = 'Repayment Calculations Enabled';
   context.onInstallableEdit(event);
   assert.match(state.messages[2].message, /Restoring repayment formulas/);
   assert.equal(state.messages[2].writes, 2);
@@ -202,9 +202,9 @@ test('A1 dropdown freezes and restores formulas through the existing edit handle
 test('direct actions keep A1 synchronized', () => {
   const {state, context} = fixture();
   context.freezeLoanRepayments();
-  assert.equal(state.cells[0][0].value, 'Frozen Loans Repayments Calculations');
+  assert.equal(state.cells[0][0].value, 'Repayment Calculations Disabled');
   context.unfreezeLoanRepayments();
-  assert.equal(state.cells[0][0].value, 'Live Loans Repayments Calculations');
+  assert.equal(state.cells[0][0].value, 'Repayment Calculations Enabled');
 });
 
 test('edits outside In Loans A1 never toggle repayments', () => {
@@ -219,12 +219,12 @@ test('edits outside In Loans A1 never toggle repayments', () => {
 
 test('failed dropdown action leaves an explanatory note and keeps the backup', () => {
   const {state, context, range} = fixture();
-  state.cells[0][0].value = 'Frozen Loans Repayments Calculations';
+  state.cells[0][0].value = 'Repayment Calculations Disabled';
   state.failWrite = 2;
   assert.throws(() => context.handleRepaymentModeEdit({range: range('A1')}), /Simulated/);
   assert.match(state.note, /not applied successfully/);
   assert.ok(state.properties.inLoanRepaymentSnapshotV1);
-  state.cells[0][0].value = 'Live Loans Repayments Calculations';
+  state.cells[0][0].value = 'Repayment Calculations Enabled';
   context.handleRepaymentModeEdit({range: range('A1')});
   assert.equal(state.note, '');
   assert.equal(state.cells[4][10].formula, '=SUM(1,2)');
@@ -255,7 +255,7 @@ test('a partially frozen backup cannot be overwritten by another Freeze', () => 
 test('invalid dropdown value cannot modify repayment cells', () => {
   const {state, context, range} = fixture();
   state.cells[0][0].value = 'invalid';
-  assert.throws(() => context.handleRepaymentModeEdit({range: range('A1')}), /Select Live/);
+  assert.throws(() => context.handleRepaymentModeEdit({range: range('A1')}), /Select Repayment Calculations Enabled/);
   assert.equal(state.writes.length, 0);
 });
 

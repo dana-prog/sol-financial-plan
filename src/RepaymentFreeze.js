@@ -1,8 +1,8 @@
 const REPAYMENT_FREEZE = Object.freeze({
   sheetName: 'In Loans',
   toggleCell: 'A1',
-  liveValue: 'Live Loans Repayments Calculations',
-  frozenValue: 'Frozen Loans Repayments Calculations',
+  liveValue: 'Repayment Calculations Enabled',
+  frozenValue: 'Repayment Calculations Disabled',
   headerRow: 3,
   paramColumn: 10,
   firstMonthColumn: 11,
@@ -18,7 +18,7 @@ function handleRepaymentModeEdit(e) {
   try {
     const mode = cell.getValue();
     if (mode !== REPAYMENT_FREEZE.frozenValue && mode !== REPAYMENT_FREEZE.liveValue) {
-      throw new Error('Select Live Loans Repayments Calculations or Frozen Loans Repayments Calculations.');
+      throw new Error('Select Repayment Calculations Enabled or Repayment Calculations Disabled.');
     }
     const message = mode === REPAYMENT_FREEZE.frozenValue
       ? 'Freezing repayments. Please wait for confirmation.'
@@ -55,7 +55,7 @@ function freezeLoanRepayments() {
         return;
       }
       if (!current.every((row, index) => JSON.stringify(row) === JSON.stringify(previous.entries[index].formulas))) {
-        throw new Error('A repayment operation was interrupted. Select Live to restore the saved formulas before freezing again.');
+        throw new Error('A repayment operation was interrupted. Select Repayment Calculations Enabled to restore the saved formulas before freezing again.');
       }
       // The old MIME-type error could leave a backup before any cell was frozen.
       // Replace it only after verifying that every original formula is still present.
