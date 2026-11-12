@@ -101,7 +101,7 @@ test('negative cash produces no repayments', () => {
   near(result.payments[0].principal[0], 0);
 });
 
-test('a disabled planned loan with zero draws produces no debt or repayments', () => {
+test('a loan with zero draws produces no debt or repayments', () => {
   const result = calc(model({loans: [loan({rate: 0.07, draws: [0]})], receipts: [1000]}));
   near(result.payments[0].principal[0], 0);
   near(result.payments[0].interest[0], 0);
@@ -190,20 +190,4 @@ test('input failure causes no writes and releases the lock', () => {
   server.readIncomingRepaymentModel = () => {throw new Error('Bad input');};
   assert.throws(() => server.recalculateIncomingLoanRepayments(), /Bad input/);
   assert.equal(released, true);
-});
-
-test('planned-loan edits tell the user to recalculate and the calculation-time cell is ignored', () => {
-  const dialogs = [];
-  const server = vm.createContext({IN_LOANS_SHEET_ID: 1346380865,
-    HtmlService: {createTemplateFromFile() {return {evaluate() {dialogs.push({action: this.action, message: this.completionMessage}); return {setWidth() {return this;}, setHeight() {return this;}};}};}},
-    SpreadsheetApp: {getUi: () => ({showModalDialog() {}, alert() {throw new Error('Unexpected validation failure');}})}
-  });
-  vm.runInContext(fs.readFileSync(require('node:path').join(__dirname, '../src/LoanModes.js'), 'utf8'), server);
-  const event = (column, value) => ({value, range: {getRow: () => 1, getColumn: () => column, getGridId: () => 1346380865}});
-  assert.equal(server.handleLoanModeEdit(event(4, 'Last Repayment Calculation Time')), false);
-  assert.equal(server.handleLoanModeEdit(event(1, 'Planned Loans Disabled')), true);
-  assert.match(dialogs[0].message, /Planned loans disabled/);
-  assert.match(dialogs[0].message, /Recalculate loan repayments/);
-  assert.equal(server.handleLoanModeEdit(event(1, 'Planned Loans Enabled')), true);
-  assert.match(dialogs[1].message, /Planned loans enabled/);
 });

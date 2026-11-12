@@ -80,9 +80,8 @@ function interestRepaymentStartMonth(date, rate, years, name) {
 }
 
 function showRepaymentCalculation() {
-  const template = HtmlService.createTemplateFromFile('LoanModeProgress');
+  const template = HtmlService.createTemplateFromFile('RepaymentProgress');
   template.action = 'Calculating repayments and tax…';
-  template.completionMessage = '';
   SpreadsheetApp.getUi().showModalDialog(template.evaluate().setWidth(420).setHeight(70), 'Recalculate Loan Payments and Tax');
 }
 
