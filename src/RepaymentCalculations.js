@@ -95,8 +95,8 @@ function recalculateIncomingLoanRepayments() {
     writeCompanyTaxResults(spreadsheet, model, result);
     const sheet = spreadsheet.getSheetByName('In Loans');
     result.payments.forEach(payment => {
-      sheet.getRange(payment.row + 6, model.timelineColumn, 1, model.months.length).setValues([payment.principal]);
-      sheet.getRange(payment.row + 9, model.timelineColumn, 1, model.months.length).setValues([payment.interest]);
+      sheet.getRange(payment.row + 6, 11, 1, model.months.length).setValues([payment.principal]);
+      sheet.getRange(payment.row + 9, 11, 1, model.months.length).setValues([payment.interest]);
     });
     SpreadsheetApp.flush();
     const timestamp = Utilities.formatDate(new Date(), spreadsheet.getSpreadsheetTimeZone(), 'dd MMM HH:mm');
@@ -113,13 +113,9 @@ function readIncomingRepaymentModel(spreadsheet) {
   const incoming = repaymentSheet(spreadsheet, 'In Loans');
   const grid = incoming.getRange(3, 1, incoming.getLastRow() - 2, incoming.getLastColumn()).getValues();
   const headers = grid[0];
-  const paramIndex = headers.indexOf('Param');
-  if (paramIndex < 9 || headers.lastIndexOf('Param') !== paramIndex) {
-    throw new Error('Expected one In Loans Param header after the loan input columns.');
-  }
-  const timelineIndex = paramIndex + 1;
+  if (headers[9] !== 'Param') throw new Error('Expected the In Loans Param header in column J.');
   const months = [];
-  for (let c = timelineIndex; headers[c] instanceof Date; c++) months.push(repaymentDate(headers[c], timezone, 'In Loans timeline'));
+  for (let c = 10; headers[c] instanceof Date; c++) months.push(repaymentDate(headers[c], timezone, 'In Loans timeline'));
   if (!months.length) throw new Error('The In Loans monthly timeline is missing.');
   months.forEach((day, i) => {
     const previous = new Date(((months[i - 1] || day) - 25569) * 86400000);
@@ -142,12 +138,12 @@ function readIncomingRepaymentModel(spreadsheet) {
     'principal paid', 'principal carried forward', 'interest owed', 'interest paid', 'interest carried forward',
     'interest capitalization month', 'capitalized interest', 'balance bearing interest'];
   grid.forEach((row, index) => {
-    if (row[paramIndex] !== 'start balance') return;
+    if (row[9] !== 'start balance') return;
     if (!row[0]) throw new Error('Missing loan name at In Loans row ' + (index + 3));
     labels.forEach((label, offset) => {
-      if (grid[index + offset]?.[paramIndex] !== label) throw new Error('Unexpected schedule layout for ' + row[0] + ': ' + label);
+      if (grid[index + offset]?.[9] !== label) throw new Error('Unexpected schedule layout for ' + row[0] + ': ' + label);
     });
-    const draws = grid[index + 1].slice(timelineIndex, timelineIndex + months.length).map(value => repaymentNumber(value, row[0] + ' loan draw'));
+    const draws = grid[index + 1].slice(10, 10 + months.length).map(value => repaymentNumber(value, row[0] + ' loan draw'));
     const date = row[2] === '' ? null : repaymentDate(row[2], timezone, row[0] + ' date');
     if (date === null && draws.some(Boolean)) throw new Error('A loan with draw amounts must have a date: ' + row[0]);
     const rate = repaymentNumber(row[5], row[0] + ' interest');
@@ -183,7 +179,7 @@ function readIncomingRepaymentModel(spreadsheet) {
   const tax = {rate: repaymentNumber(parameter('company tax rate'), 'company tax rate'),
     yearEndMonth: repaymentNumber(parameter('financial year-end month'), 'financial year-end month'), depreciation,
     profitBeforeInterest: operatingProfit.map((profit, i) => profit + interestIncome[i] - depreciation[i] - otherDepreciation[i])};
-  return {months, loans, principalRepaymentStart, reserve, receipts, expenses, tax, timelineColumn: timelineIndex + 1};
+  return {months, loans, principalRepaymentStart, reserve, receipts, expenses, tax};
 }
 
 function repaymentSheet(spreadsheet, name) {
