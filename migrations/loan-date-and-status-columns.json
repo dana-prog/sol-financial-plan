@@ -1053,6 +1053,20 @@
           }
         }
       }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1346380865,
+          "dimension": "ROWS",
+          "startIndex": 2,
+          "endIndex": 3
+        },
+        "properties": {
+          "pixelSize": 80
+        },
+        "fields": "pixelSize"
+      }
     }
   ]
 }
