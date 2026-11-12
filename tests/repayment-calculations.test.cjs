@@ -8,7 +8,7 @@ vm.runInContext(source, context);
 const day = (year, month, date = 1) => context.repaymentDay(year, month - 1, date);
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-7, `${actual} != ${expected}`);
 const loan = (overrides = {}) => ({row: 4, name: 'Loan', priority: 1, date: day(2026, 1), rate: 0, draws: [100], interestRepaymentStart: day(2026, 1), ...overrides});
-const model = (overrides = {}) => ({months: [day(2026, 1)], loans: [loan()], receipts: [0], expenses: [0], reserve: 0, principalRepaymentStart: day(2026, 1), ...overrides});
+const model = (overrides = {}) => ({months: [day(2026, 1)], loans: [loan()], receipts: [0], expenses: [0], reserve: 0, principalRepaymentStart: day(2026, 1), timelineColumn: 11, ...overrides});
 const calc = value => context.calculateIncomingRepayments(value);
 const state = (overrides = {}) => ({principal: 0, interest: 0, capitalized: 0, interestPaid: 0, ...overrides});
 
@@ -175,11 +175,12 @@ test('server action writes incoming payments and the In Loans timestamp, then re
     Utilities: {formatDate: () => '11 Nov 15:00'}
   });
   vm.runInContext(source, server);
-  server.readIncomingRepaymentModel = () => model();
+  server.readIncomingRepaymentModel = () => model({timelineColumn: 14});
   server.calculateRepaymentsWithCompanyTax = value => server.calculateIncomingRepayments(value);
   server.writeCompanyTaxResults = () => {};
   server.recalculateIncomingLoanRepayments();
   assert.deepEqual(writes.filter(x => x.row).map(x => x.row), [10, 13]);
+  assert.deepEqual(writes.filter(x => x.row).map(x => x.column), [14, 14]);
   assert.ok(writes.at(-1).status.startsWith('Last Repayment Calculation Time\n'));
   assert.equal(released, true);
 });
@@ -194,4 +195,44 @@ test('input failure causes no writes and releases the lock', () => {
   server.readIncomingRepaymentModel = () => {throw new Error('Bad input');};
   assert.throws(() => server.recalculateIncomingLoanRepayments(), /Bad input/);
   assert.equal(released, true);
+});
+
+test('display columns do not change loan inputs or repayment calculations', () => {
+  const date = new Date('2026-01-01T00:00:00Z');
+  const labels = ['start balance', 'loan draw', 'interest generated', 'loan paid', 'end balance',
+    'principal owed', 'principal paid', 'principal carried forward', 'interest owed', 'interest paid',
+    'interest carried forward', 'interest capitalization month', 'capitalized interest', 'balance bearing interest'];
+  const cashLabels = ['land expenses', 'pre const. expenses', 'units const. expenses', 'other const. expenses',
+    'direct operating expenses', 'other operating expenses', 'outgoing loans - funds disbursed',
+    'revenue', 'setup depreciation', 'operating profit'];
+  function read(extraColumns) {
+    const grid = [['Name', 'Priority', 'Date', 'Lender', 'Amount', 'Interest', 'Years', 'Maturity', 'Status',
+      ...Array(extraColumns).fill('Loan details'), 'Param', date],
+    ...labels.map((label, i) => [...(i ? Array(9).fill('') : ['Loan', 1, date, 'Lender', 100, 0.07, 0, 5, 'Received']),
+      ...Array(extraColumns).fill('display only'), label, i === 1 ? 100 : 0])];
+    const sheets = {
+      'In Loans': grid,
+      Params: [['principal loan repayment start month', date], ['minimum cash reserve', 0],
+        ['company tax rate', 0.2], ['financial year-end month', 12]],
+      'Cash Flow': [['Param', date], ...cashLabels.map(label => [label, 0])],
+      'Out Loans': [['Param', date], ['total loan paid', 0]]
+    };
+    const reader = vm.createContext({Date, Utilities: {formatDate: value => value.toISOString().slice(0, 10)}});
+    vm.runInContext(source, reader);
+    reader.readUnitDepreciation = () => [0];
+    return reader.readIncomingRepaymentModel({getSpreadsheetTimeZone: () => 'UTC', getSheetByName: name => ({
+      getLastRow: () => sheets[name].length + 2,
+      getLastColumn: () => sheets[name][0].length,
+      getRange: () => ({getValues: () => sheets[name]})
+    })});
+  }
+  const original = read(0);
+  assert.equal(original.timelineColumn, 11);
+  const normalize = value => JSON.parse(JSON.stringify(value));
+  for (const addedColumns of [2, 3]) {
+    const expanded = read(addedColumns);
+    assert.equal(expanded.timelineColumn, 11 + addedColumns);
+    assert.deepEqual(normalize({...original, timelineColumn: 11 + addedColumns}), normalize(expanded));
+    assert.deepEqual(normalize(calc(original)), normalize(calc(expanded)));
+  }
 });
