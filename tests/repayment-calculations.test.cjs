@@ -158,21 +158,18 @@ test('invalid calculated amounts fail before any output is returned', () => {
   assert.throws(() => calc(model({receipts: [NaN]})), /invalid amount/);
 });
 
-test('server action writes incoming payments and the Cash Flow timestamp, then releases its lock', () => {
+test('server action writes incoming payments and the In Loans timestamp, then releases its lock', () => {
   const writes = [];
   let released = false;
   const incoming = {getRange(row, column, height, width) {
+    if (row === 'A1') return {setValue(value) {writes.push({status: value}); return this;}, setNote() {return this;}};
     assert.equal(typeof row, 'number');
     return {setValues(values) {writes.push({row, column, height, width, values});}};
   }};
-  const cashFlow = {getRange(address) {
-    assert.equal(address, 'A1');
-    return {setValue(value) {writes.push({status: value}); return this;}, setNote() {return this;}};
-  }};
   const server = vm.createContext({Date,
     SpreadsheetApp: {getActiveSpreadsheet: () => ({getSheetByName(name) {
-      assert.ok(['In Loans', 'Cash Flow'].includes(name));
-      return name === 'In Loans' ? incoming : cashFlow;
+      assert.equal(name, 'In Loans');
+      return incoming;
     }, getSpreadsheetTimeZone: () => 'Asia/Bangkok'}), flush() {}},
     LockService: {getDocumentLock: () => ({tryLock: () => true, releaseLock() {released = true;}})},
     Utilities: {formatDate: () => '11 Nov 15:00'}

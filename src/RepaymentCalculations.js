@@ -100,7 +100,7 @@ function recalculateIncomingLoanRepayments() {
     });
     SpreadsheetApp.flush();
     const timestamp = Utilities.formatDate(new Date(), spreadsheet.getSpreadsheetTimeZone(), 'dd MMM HH:mm');
-    spreadsheet.getSheetByName('Cash Flow').getRange('A1').setValue('Last Repayment Calculation Time\n' + timestamp)
+    sheet.getRange('A1').setValue('Last Repayment Calculation Time\n' + timestamp)
       .setNote('Last successful repayment and company-tax calculation. Run SOL → Recalculate Loan Payments and Tax after changing loans, cash flow, unit costs, useful lives, or tax inputs.');
     return 'Loan repayments and tax updated.';
   } finally {
