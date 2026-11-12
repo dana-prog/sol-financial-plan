@@ -1,0 +1,81 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 0,
+          "endRowIndex": 1,
+          "startColumnIndex": 0,
+          "endColumnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Last Repayment Calculation Time\n12 Nov 07:13"
+                },
+                "note": "Last successful repayment and company-tax calculation. Run SOL → Recalculate Loan Payments and Tax after changing loans, cash flow, unit costs, useful lives, or tax inputs.",
+                "userEnteredFormat": {
+                  "backgroundColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  },
+                  "horizontalAlignment": "CENTER",
+                  "verticalAlignment": "MIDDLE",
+                  "wrapStrategy": "WRAP",
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    },
+                    "fontFamily": "Arial",
+                    "bold": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.4,
+                        "green": 0.4,
+                        "blue": 0.4
+                      }
+                    }
+                  },
+                  "backgroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.9372549,
+                      "green": 0.9372549,
+                      "blue": 0.9372549
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note,userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1346380865,
+          "startRowIndex": 0,
+          "endRowIndex": 1,
+          "startColumnIndex": 3,
+          "endColumnIndex": 4
+        },
+        "rows": [
+          {
+            "values": [
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    }
+  ]
+}
