@@ -211,7 +211,7 @@ test('display columns do not change loan inputs or repayment calculations', () =
   const labels = ['start balance', 'loan draw', 'interest generated', 'loan paid', 'end balance',
     'principal owed', 'principal paid', 'principal carried forward', 'interest owed', 'interest paid',
     'interest carried forward', 'interest capitalization month', 'capitalized interest', 'balance bearing interest'];
-  const cashLabels = ['land expenses', 'planning expenses', 'construction expenses', 'infra expenses',
+  const cashLabels = ['land expenses', 'setup expenses', 'construction expenses', 'infra expenses',
     'direct operating expenses', 'other operating expenses', 'outgoing loans - funds disbursed',
     'revenue', 'setup depreciation', 'operating profit'];
   function read(extraColumns) {
@@ -223,7 +223,7 @@ test('display columns do not change loan inputs or repayment calculations', () =
       'In Loans': grid,
       Params: [['principal loan repayment start month', date], ['minimum cash reserve', 0],
         ['company tax rate', 0.2], ['financial year-end month', 12]],
-      'Cash Flow': [['Param', date], ...cashLabels.map(label => [label, 0])],
+      'Cash Flow': [['Param', date], ...cashLabels.map(label => [label, label === 'setup expenses' ? 7 : 0])],
       'Out Loans': [['Param', date], ['total loan paid', 0]]
     };
     const reader = vm.createContext({Date, Utilities: {formatDate: value => value.toISOString().slice(0, 10)}});
@@ -233,6 +233,7 @@ test('display columns do not change loan inputs or repayment calculations', () =
     return reader.readIncomingRepaymentModel({});
   }
   const original = read(0);
+  assert.equal(original.expenses[0], 7);
   assert.equal(original.timelineColumn, 12);
   const normalize = value => JSON.parse(JSON.stringify(value));
   for (const addedColumns of [2, 3]) {

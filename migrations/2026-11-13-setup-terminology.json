@@ -1,0 +1,26 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "status": "Applied and verified on 2026-11-13",
+  "sheets": {
+    "Planning Exp (P)": "Setup Exp (P)",
+    "Planning Exp (A)": "Setup Exp (A)"
+  },
+  "labels": {
+    "Planning": "Setup",
+    "planning expenses": "setup expenses"
+  },
+  "notes": [
+    "Updated the Project Overview card, Budget category labels, and both expense category labels.",
+    "Updated the Cash Flow expense lookup argument and Apps Script repayment input reader.",
+    "Preserved all existing named-function calls and named-range identifiers; Google Sheets updated sheet references automatically.",
+    "Retained the generic annual PLANNING heading in the hidden _budget sheet, which describes budgeting rather than the expense category.",
+    "Synchronized Apps Script through the repository clasp configuration."
+  ],
+  "verification": {
+    "numericCellsCompared": 51764,
+    "numericDifferences": 0,
+    "newFormulaErrors": 0,
+    "remainingPlanningTextLabels": 0,
+    "testsPassed": 39
+  }
+}
