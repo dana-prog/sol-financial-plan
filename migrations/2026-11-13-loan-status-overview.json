@@ -16,10 +16,11 @@
         88
       ],
       "columns": [
-        "Loan / lender",
+        "Loan",
+        "Lender",
         "Amount (THB)",
         "Funding",
-        "Repayment status"
+        "Repayment projection"
       ],
       "total": 286688144.5884,
       "received": 16688144.5884
@@ -32,14 +33,20 @@
         18
       ],
       "columns": [
-        "Loan / debtor",
+        "Loan",
+        "Debtor",
         "Amount (THB)",
         "Funding"
       ],
       "total": 40000000,
       "pending": 40000000
     },
-    "behavior": "Amounts and statuses link directly to the source cells. Loan labels hyperlink to their source rows. Conditional formatting tracks changing statuses.",
+    "behavior": "Amounts and funding statuses link directly to the source cells. Loan labels hyperlink to their source rows. Lenders and debtors occupy their own columns. Repayment labels are mapped to explicit expectations in the overview; source calculations are unchanged. Conditional formatting tracks changing statuses.",
+    "repaymentLabels": {
+      "On time": "Expected on time",
+      "Late principal payment": "Expected late principal payment",
+      "Late interest payment": "Expected late interest payment"
+    },
     "layout": "Compact merged-cell dashboard sections matching the existing overview. Existing column widths retained. Titles and totals 36px high; loan rows 48px high."
   },
   "outLoans": {
