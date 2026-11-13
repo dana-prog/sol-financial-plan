@@ -8,7 +8,7 @@
     "background": "#e0ede5",
     "text": "#173b36",
     "bold": true,
-    "fontSize": 12
+    "fontSize": 14
   },
   "verification": {
     "titleAndMergedRangePreserved": true,
