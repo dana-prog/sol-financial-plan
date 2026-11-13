@@ -41,7 +41,7 @@
       "total": 40000000,
       "pending": 40000000
     },
-    "behavior": "Amounts and funding statuses link directly to the source cells. Loan labels hyperlink to their source rows. Lenders and debtors occupy their own columns. Repayment labels are mapped to explicit expectations in the overview; source calculations are unchanged. Conditional formatting tracks changing statuses.",
+    "behavior": "Amounts and funding statuses link to the source cells. The overview displays Funds Received as Received, with matching total criteria and conditional formatting. Loan labels hyperlink to their source rows. Lenders and debtors occupy their own columns. Repayment labels are mapped to explicit expectations in the overview; source calculations are unchanged. Conditional formatting tracks changing statuses.",
     "repaymentLabels": {
       "On time": "Expected on time",
       "Late principal payment": "Expected late principal payment",
