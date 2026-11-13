@@ -1,0 +1,467 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Remove pax capacity per room from Project Overview only. User explicitly chose to retain 1.5 in Params. Store that value in Params!C77, preserve all dependent named-function calls, shift remaining Pax inputs up, and clear the unused input row.",
+  "requests": [
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 76,
+          "columnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "numberValue": 1.5
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 12,
+          "columnIndex": 6
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Pax occupancy initial rate"
+                },
+                "userEnteredFormat": {
+                  "backgroundColor": {
+                    "red": 0.9529412,
+                    "green": 0.9647059,
+                    "blue": 0.98039216
+                  },
+                  "padding": {
+                    "top": 5,
+                    "right": 10,
+                    "bottom": 5,
+                    "left": 10
+                  },
+                  "verticalAlignment": "MIDDLE",
+                  "wrapStrategy": "WRAP",
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.2,
+                      "green": 0.30588236,
+                      "blue": 0.40784314
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.2,
+                        "green": 0.30588236,
+                        "blue": 0.40784314
+                      }
+                    }
+                  },
+                  "backgroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.9529412,
+                      "green": 0.9647059,
+                      "blue": 0.98039216
+                    }
+                  }
+                }
+              },
+              {},
+              {},
+              {},
+              {
+                "userEnteredValue": {
+                  "numberValue": 0.35
+                },
+                "userEnteredFormat": {
+                  "numberFormat": {
+                    "type": "PERCENT",
+                    "pattern": "0%"
+                  },
+                  "backgroundColor": {
+                    "red": 0.9098039,
+                    "green": 0.94509804,
+                    "blue": 0.9882353
+                  },
+                  "padding": {
+                    "top": 5,
+                    "right": 6,
+                    "bottom": 5,
+                    "left": 4
+                  },
+                  "horizontalAlignment": "RIGHT",
+                  "verticalAlignment": "MIDDLE",
+                  "wrapStrategy": "WRAP",
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.14117648,
+                      "green": 0.3529412,
+                      "blue": 0.5058824
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.14117648,
+                        "green": 0.3529412,
+                        "blue": 0.5058824
+                      }
+                    }
+                  },
+                  "backgroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.9098039,
+                      "green": 0.94509804,
+                      "blue": 0.9882353
+                    }
+                  }
+                },
+                "dataValidation": {
+                  "condition": {
+                    "type": "NUMBER_BETWEEN",
+                    "values": [
+                      {
+                        "userEnteredValue": "0"
+                      },
+                      {
+                        "userEnteredValue": "1"
+                      }
+                    ]
+                  },
+                  "inputMessage": "Enter a percentage from 0% to 100%.",
+                  "strict": true
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Pax occupancy growth per month"
+                },
+                "userEnteredFormat": {
+                  "backgroundColor": {
+                    "red": 0.9529412,
+                    "green": 0.9647059,
+                    "blue": 0.98039216
+                  },
+                  "padding": {
+                    "top": 5,
+                    "right": 10,
+                    "bottom": 5,
+                    "left": 10
+                  },
+                  "verticalAlignment": "MIDDLE",
+                  "wrapStrategy": "WRAP",
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.2,
+                      "green": 0.30588236,
+                      "blue": 0.40784314
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.2,
+                        "green": 0.30588236,
+                        "blue": 0.40784314
+                      }
+                    }
+                  },
+                  "backgroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.9529412,
+                      "green": 0.9647059,
+                      "blue": 0.98039216
+                    }
+                  }
+                }
+              },
+              {},
+              {},
+              {},
+              {
+                "userEnteredValue": {
+                  "numberValue": 0.01
+                },
+                "userEnteredFormat": {
+                  "numberFormat": {
+                    "type": "PERCENT",
+                    "pattern": "0%"
+                  },
+                  "backgroundColor": {
+                    "red": 0.9098039,
+                    "green": 0.94509804,
+                    "blue": 0.9882353
+                  },
+                  "padding": {
+                    "top": 5,
+                    "right": 6,
+                    "bottom": 5,
+                    "left": 4
+                  },
+                  "horizontalAlignment": "RIGHT",
+                  "verticalAlignment": "MIDDLE",
+                  "wrapStrategy": "WRAP",
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.14117648,
+                      "green": 0.3529412,
+                      "blue": 0.5058824
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.14117648,
+                        "green": 0.3529412,
+                        "blue": 0.5058824
+                      }
+                    }
+                  },
+                  "backgroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.9098039,
+                      "green": 0.94509804,
+                      "blue": 0.9882353
+                    }
+                  }
+                },
+                "dataValidation": {
+                  "condition": {
+                    "type": "NUMBER_BETWEEN",
+                    "values": [
+                      {
+                        "userEnteredValue": "0"
+                      },
+                      {
+                        "userEnteredValue": "1"
+                      }
+                    ]
+                  },
+                  "inputMessage": "Enter a percentage from 0% to 100%.",
+                  "strict": true
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Pax occupancy final rate"
+                },
+                "userEnteredFormat": {
+                  "backgroundColor": {
+                    "red": 0.9529412,
+                    "green": 0.9647059,
+                    "blue": 0.98039216
+                  },
+                  "padding": {
+                    "top": 5,
+                    "right": 10,
+                    "bottom": 5,
+                    "left": 10
+                  },
+                  "verticalAlignment": "MIDDLE",
+                  "wrapStrategy": "WRAP",
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.2,
+                      "green": 0.30588236,
+                      "blue": 0.40784314
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.2,
+                        "green": 0.30588236,
+                        "blue": 0.40784314
+                      }
+                    }
+                  },
+                  "backgroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.9529412,
+                      "green": 0.9647059,
+                      "blue": 0.98039216
+                    }
+                  }
+                }
+              },
+              {},
+              {},
+              {},
+              {
+                "userEnteredValue": {
+                  "numberValue": 0.8
+                },
+                "userEnteredFormat": {
+                  "numberFormat": {
+                    "type": "PERCENT",
+                    "pattern": "0%"
+                  },
+                  "backgroundColor": {
+                    "red": 0.9098039,
+                    "green": 0.94509804,
+                    "blue": 0.9882353
+                  },
+                  "padding": {
+                    "top": 5,
+                    "right": 6,
+                    "bottom": 5,
+                    "left": 4
+                  },
+                  "horizontalAlignment": "RIGHT",
+                  "verticalAlignment": "MIDDLE",
+                  "wrapStrategy": "WRAP",
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.14117648,
+                      "green": 0.3529412,
+                      "blue": 0.5058824
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.14117648,
+                        "green": 0.3529412,
+                        "blue": 0.5058824
+                      }
+                    }
+                  },
+                  "backgroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.9098039,
+                      "green": 0.94509804,
+                      "blue": 0.9882353
+                    }
+                  }
+                },
+                "dataValidation": {
+                  "condition": {
+                    "type": "NUMBER_BETWEEN",
+                    "values": [
+                      {
+                        "userEnteredValue": "0"
+                      },
+                      {
+                        "userEnteredValue": "1"
+                      }
+                    ]
+                  },
+                  "inputMessage": "Enter a percentage from 0% to 100%.",
+                  "strict": true
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat,note,dataValidation"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 15,
+          "endRowIndex": 16,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "cell": {},
+        "fields": "userEnteredValue,note,dataValidation"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 15,
+          "endRowIndex": 16,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.9529412,
+              "green": 0.9647059,
+              "blue": 0.98039216
+            },
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 10
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.2,
+                "green": 0.30588236,
+                "blue": 0.40784314
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.2,
+                  "green": 0.30588236,
+                  "blue": 0.40784314
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9529412,
+                "green": 0.9647059,
+                "blue": 0.98039216
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    }
+  ],
+  "validation": {
+    "numericCellsUnchanged": 197,
+    "differences": [],
+    "remainingOverviewInputs": [
+      {
+        "label": "Pax occupancy initial rate",
+        "value": 0.35
+      },
+      {
+        "label": "Pax occupancy growth per month",
+        "value": 0.01
+      },
+      {
+        "label": "Pax occupancy final rate",
+        "value": 0.8
+      }
+    ],
+    "paramsCapacity": 1.5,
+    "visualReview": "Three occupancy inputs are aligned and readable; unused row has no input styling.",
+    "appsScriptChanged": false
+  }
+}
