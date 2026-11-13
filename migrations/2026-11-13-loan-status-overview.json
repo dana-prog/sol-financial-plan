@@ -66,7 +66,7 @@
       "Late principal payment": "Expected late principal payment",
       "Late interest payment": "Expected late interest payment"
     },
-    "layout": "Existing overview column widths retained. Incoming: Loan B, Priority C, Lender D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N, Repayment projection O:P. Outgoing: Loan B:C, Debtor D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N. Incoming ends at P; outgoing ends at N. Daily accrued-interest totals and dated explanatory footers are included. See 2026-11-13-loan-funding-dates-accrued-interest.json for formulas and validation.",
+    "layout": "Existing overview column widths retained. Incoming: Loan B, Priority C, Lender D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N, Repayment projection O:P. Outgoing: Loan B:C, Debtor D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N. Incoming ends at P; outgoing ends at N. Accrued-interest totals through the previous month-end and dated explanatory footers are included. See 2026-11-13-loan-funding-dates-accrued-interest.json for formulas and validation.",
     "style": {
       "ranges": [
         "B22:P32",
