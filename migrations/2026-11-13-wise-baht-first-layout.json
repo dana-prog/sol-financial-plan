@@ -1,0 +1,215 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Baht equivalent first in large bold gold type, USD balance beside it in smaller muted type; expanded card without changing sheet column widths.",
+  "requests": [
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 5,
+          "endRowIndex": 9,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        }
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 7,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 6,
+          "columnIndex": 5
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 7,
+          "endRowIndex": 8,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 6,
+          "columnIndex": 1
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 5,
+          "endRowIndex": 6,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 8,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 8,
+          "startColumnIndex": 5,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 8,
+          "endRowIndex": 9,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 5,
+          "endRowIndex": 9,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat.backgroundColorStyle"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 8,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 24,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6039215686274509,
+                  "green": 0.403921568627451,
+                  "blue": 0
+                }
+              }
+            },
+            "padding": {
+              "top": 0,
+              "bottom": 0,
+              "left": 12,
+              "right": 12
+            },
+            "verticalAlignment": "MIDDLE",
+            "horizontalAlignment": "LEFT",
+            "wrapStrategy": "CLIP"
+          }
+        },
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment,userEnteredFormat.horizontalAlignment,userEnteredFormat.wrapStrategy"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 8,
+          "startColumnIndex": 5,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 14,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.3411764705882353,
+                  "green": 0.4196078431372549,
+                  "blue": 0.396078431372549
+                }
+              }
+            },
+            "padding": {
+              "top": 0,
+              "bottom": 0,
+              "left": 12,
+              "right": 12
+            },
+            "verticalAlignment": "MIDDLE",
+            "horizontalAlignment": "LEFT",
+            "wrapStrategy": "CLIP"
+          }
+        },
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment,userEnteredFormat.horizontalAlignment,userEnteredFormat.wrapStrategy"
+      }
+    }
+  ],
+  "verification": {
+    "baht": {
+      "cell": "B7",
+      "display": "≈ ฿4,922 K",
+      "fontSize": 24,
+      "bold": true
+    },
+    "usd": {
+      "cell": "F7",
+      "display": "USD 145 K",
+      "fontSize": 14
+    },
+    "balancesAndTimestampUnchanged": true,
+    "conversionNotePreserved": true,
+    "visualInspection": "Verified in native Google Sheets at 100% zoom: both amounts fit on one line with ample separation; baht is first in 24-point bold gold and USD is 14-point muted text.",
+    "wiseTestsPassed": 15,
+    "scriptSync": "clasp push succeeded (16 files)"
+  }
+}
