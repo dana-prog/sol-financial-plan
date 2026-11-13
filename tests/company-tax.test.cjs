@@ -122,13 +122,12 @@ test('tax deducts accrued interest even when repayments have not started', () =>
 });
 
 test('tax output updates only Cash Flow and needs no Company Tax sheet', () => {
-  const writes = [];
   const labels = Array(43).fill('');
-  for (const [row, label] of [[11, 'company tax paid'], [36, 'construction depreciation'],
-    [41, 'loss carryforward'], [42, 'taxable profit'], [43, 'company tax expense']]) labels[row - 1] = label;
-  const cash = {getLastRow: () => 43, getRange(row, column, height, width) {
+  for (const [row, label] of [[11, 'company tax'], [36, 'construction depreciation'],
+    [41, 'loss carryforward'], [42, 'taxable profit'], [43, 'monthly company tax']]) labels[row - 1] = label;
+  const cash = {getSheetId: () => 456, getLastRow: () => 43, getRange(row, column, height, width) {
     if (column === 2) return {getValues: () => labels.map(label => [label])};
-    return {setValues(values) {writes.push({sheet: 'Cash Flow', row, column, height, width, values});}};
+    return {canEdit: () => true};
   }};
   const spreadsheet = {getSheetByName(name) {
     assert.equal(name, 'Cash Flow');
@@ -136,12 +135,11 @@ test('tax output updates only Cash Flow and needs no Company Tax sheet', () => {
   }};
   const months = timeline(12);
   const tax = context.calculateCompanyTax(months, months.map(() => 100), 0.2, 12);
-  context.writeCompanyTaxResults(spreadsheet, {months, tax: {depreciation: months.map(() => 10)}}, {tax});
-  assert.deepEqual(writes.filter(w => w.sheet === 'Cash Flow').map(w => w.row), [11, 36, 41, 42, 43]);
+  const writes = context.companyTaxWriteRequests(spreadsheet, {months, tax: {depreciation: months.map(() => 10)}}, {tax});
+  assert.deepEqual(Array.from(writes, w => w.updateCells.range.startRowIndex + 1), [11, 36, 41, 42, 43]);
   assert.equal(writes.length, 5);
-  near(sum(writes.at(-1).values[0]), 240);
-  writes.length = 0;
+  near(sum(writes.at(-1).updateCells.rows[0].values.map(v => v.userEnteredValue.numberValue)), 240);
   labels[10] = 'Unexpected label';
-  assert.throws(() => context.writeCompanyTaxResults(spreadsheet, {months, tax: {depreciation: []}}, {tax}), /Expected one Cash Flow row/);
-  assert.equal(writes.length, 0);
+  assert.throws(() => context.companyTaxWriteRequests(spreadsheet, {months, tax: {depreciation: []}}, {tax}), /Expected one Cash Flow row/);
+
 });

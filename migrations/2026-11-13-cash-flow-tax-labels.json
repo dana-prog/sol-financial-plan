@@ -1,0 +1,17 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "status": "Approved; apply with the matching script changes",
+  "cells": {
+    "'Cash Flow'!B11": "company tax",
+    "'Cash Flow'!B43": "monthly company tax",
+    "'Cash Flow'!C22": "=ARRAYFORMULA(\n  CASH_FLOW_PARAM_VALUES(\"land expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"pre const. expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"units const. expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"other const. expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"direct operating expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"other operating expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"company tax\") +\n  CASH_FLOW_PARAM_VALUES(\"outgoing loans - funds disbursed\")\n)",
+    "'Cash Flow'!C24": "=ARRAYFORMULA(LET(available_cash,CASH_FLOW_PARAM_VALUES(\"cash before debt service\")-PARAM(\"minimum cash reserve\"),IF(available_cash>0,available_cash,0)))"
+  },
+  "namedRange": {
+    "name": "S_CASH_FLOW",
+    "oldRange": "'Cash Flow'!A3:CT42",
+    "newRange": "'Cash Flow'!A3:CT43",
+    "namedRangeId": "klx73l8s185v"
+  },
+  "verificationRun": "One approved Recalculate Loan Payments and Tax run, updating its normal tax, depreciation, repayment and timestamp outputs."
+}

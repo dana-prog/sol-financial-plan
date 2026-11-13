@@ -10,6 +10,8 @@ function updateUnits(editEvent) {
     return;
   }
 
+  if (editEvent.range.getNumRows() !== 1 || editEvent.range.getNumColumns() !== 1 || typeof editEvent.value !== 'string' || !editEvent.value.trim()) return;
+
   const rowNum = editEvent.range.getRow();
   const numberFormat = getCountNumberFormat(editEvent.value);
   [UNITS_UNIT_COUNT_COLUMN_HEADER, UNITS_MISSING_UNITS_COLUMN_HEADER].forEach(colHeader => {

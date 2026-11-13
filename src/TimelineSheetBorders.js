@@ -16,6 +16,14 @@ function setTimelineSheetBorders() {
   const firstDateCol = _getFirstNumericColumn(sheet, YEARS_ROW_NUM);
   const lastCol = sheet.getLastColumn();
 
+  if (firstDateCol < 1 || lastRow < FIRST_CATEGORY_ROW) throw new Error('Select a populated timeline sheet. No borders were changed.');
+  if (sheet.getName() === 'In Loans' || sheet.getName() === 'Out Loans') {
+    const headers = sheet.getRange(HEADER_ROW, 1, 1, lastCol).getValues()[0];
+    if (!headers.some(value => String(value).trim().toLowerCase() === 'param')) {
+      throw new Error('Could not find the Param column. No borders were changed.');
+    }
+  }
+
   // clear all existing borders
   sheet
     .getRange(1, 1, lastRow, lastCol)

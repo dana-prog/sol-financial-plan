@@ -71,7 +71,7 @@ function repaymentMonthStart(day) {
 function interestRepaymentStartMonth(date, rate, years, name) {
   if (rate === 0 || date === null) return null;
   if (typeof years !== 'number' || !Number.isInteger(years) || years < 0) {
-    throw new Error('Enter a non-negative whole number of years in column G for ' + name + '. Nothing was written.');
+    throw new Error('Enter a non-negative whole number of years in the Interest repayment start deadline (years) field for ' + name + '. Nothing was written.');
   }
   const loanDate = new Date((date - 25569) * 86400000);
   const start = repaymentDay(loanDate.getUTCFullYear() + years, loanDate.getUTCMonth(), 1);
@@ -82,7 +82,7 @@ function interestRepaymentStartMonth(date, rate, years, name) {
 function showRepaymentCalculation() {
   const template = HtmlService.createTemplateFromFile('RepaymentProgress');
   template.action = 'Calculating repayments and tax…';
-  SpreadsheetApp.getUi().showModalDialog(template.evaluate().setWidth(420).setHeight(70), 'Recalculate Loan Payments and Tax');
+  SpreadsheetApp.getUi().showModalDialog(template.evaluate().setWidth(460).setHeight(160), 'Recalculate Loan Payments and Tax');
 }
 
 function recalculateIncomingLoanRepayments() {
@@ -92,16 +92,28 @@ function recalculateIncomingLoanRepayments() {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const model = readIncomingRepaymentModel(spreadsheet);
     const result = calculateRepaymentsWithCompanyTax(model);
-    writeCompanyTaxResults(spreadsheet, model, result);
-    const sheet = spreadsheet.getSheetByName('In Loans');
+    const sheet = repaymentSheet(spreadsheet, 'In Loans');
+    const requests = companyTaxWriteRequests(spreadsheet, model, result);
     result.payments.forEach(payment => {
-      sheet.getRange(payment.row + 6, model.timelineColumn, 1, model.months.length).setValues([payment.principal]);
-      sheet.getRange(payment.row + 9, model.timelineColumn, 1, model.months.length).setValues([payment.interest]);
+      requests.push(repaymentRowWrite(sheet, payment.row + 6, model.timelineColumn, payment.principal, model.months.length));
+      requests.push(repaymentRowWrite(sheet, payment.row + 9, model.timelineColumn, payment.interest, model.months.length));
     });
-    SpreadsheetApp.flush();
     const timestamp = Utilities.formatDate(new Date(), spreadsheet.getSpreadsheetTimeZone(), 'dd MMM HH:mm');
-    sheet.getRange('A1').setValue('Last Repayment Calculation Time\n' + timestamp)
-      .setNote('Last successful repayment and company-tax calculation. Run SOL → Recalculate Loan Payments and Tax after changing loans, cash flow, unit costs, useful lives, or tax inputs.');
+    requests.push({updateCells: {
+      range: {sheetId: sheet.getSheetId(), startRowIndex: 0, endRowIndex: 1, startColumnIndex: 0, endColumnIndex: 1},
+      rows: [{values: [{userEnteredValue: {stringValue: 'Last Repayment Calculation Time\n' + timestamp},
+        note: 'Last successful repayment and company-tax calculation. Run SOL → Recalculate Loan Payments and Tax after changing loans, cash flow, unit costs, useful lives, or tax inputs.'}]}],
+      fields: 'userEnteredValue,note'
+    }});
+    // One Sheets batch prevents a failed repayment write from leaving new tax values beside old repayments.
+    const response = UrlFetchApp.fetch('https://sheets.googleapis.com/v4/spreadsheets/' + spreadsheet.getId() + ':batchUpdate', {
+      method: 'post', contentType: 'application/json',
+      headers: {Authorization: 'Bearer ' + ScriptApp.getOAuthToken()},
+      payload: JSON.stringify({requests}), muteHttpExceptions: true
+    });
+    if (response.getResponseCode() !== 200) {
+      throw new Error('Could not save repayments and tax (HTTP ' + response.getResponseCode() + '). ' + response.getContentText());
+    }
     return 'Loan repayments and tax updated.';
   } finally {
     lock.releaseLock();
@@ -113,7 +125,9 @@ function readIncomingRepaymentModel(spreadsheet) {
   const incoming = repaymentSheet(spreadsheet, 'In Loans');
   const grid = incoming.getRange(3, 1, incoming.getLastRow() - 2, incoming.getLastColumn()).getValues();
   const headers = grid[0];
-  const paramIndex = headers.indexOf('Param');
+  const columns = Object.fromEntries(['Name', 'Priority', 'Date', 'Interest',
+    'Interest repayment start deadline (years)'].map(name => [name, repaymentHeaderIndex(headers, name)]));
+  const paramIndex = repaymentHeaderIndex(headers, 'Param');
   if (paramIndex < 9 || headers.lastIndexOf('Param') !== paramIndex) {
     throw new Error('Expected one In Loans Param header after the loan input columns.');
   }
@@ -143,21 +157,21 @@ function readIncomingRepaymentModel(spreadsheet) {
     'interest capitalization month', 'capitalized interest', 'balance bearing interest'];
   grid.forEach((row, index) => {
     if (row[paramIndex] !== 'start balance') return;
-    if (!row[0]) throw new Error('Missing loan name at In Loans row ' + (index + 3));
+    if (!row[columns.Name]) throw new Error('Missing loan name at In Loans row ' + (index + 3));
     labels.forEach((label, offset) => {
-      if (grid[index + offset]?.[paramIndex] !== label) throw new Error('Unexpected schedule layout for ' + row[0] + ': ' + label);
+      if (grid[index + offset]?.[paramIndex] !== label) throw new Error('Unexpected schedule layout for ' + row[columns.Name] + ': ' + label);
     });
-    const draws = grid[index + 1].slice(timelineIndex, timelineIndex + months.length).map(value => repaymentNumber(value, row[0] + ' loan draw'));
-    const date = row[2] === '' ? null : repaymentDate(row[2], timezone, row[0] + ' date');
-    if (date === null && draws.some(Boolean)) throw new Error('A loan with draw amounts must have a date: ' + row[0]);
-    const rate = repaymentNumber(row[5], row[0] + ' interest');
-    if (rate < 0 || draws.some(value => value < 0)) throw new Error('Negative loan draws or interest rates are unsupported: ' + row[0]);
-    const interestRepaymentStart = interestRepaymentStartMonth(date, rate, row[6], row[0]);
-    loans.push({row: index + 3, name: row[0], priority: repaymentNumber(row[1], row[0] + ' priority'),
+    const draws = grid[index + 1].slice(timelineIndex, timelineIndex + months.length).map(value => repaymentNumber(value, row[columns.Name] + ' loan draw'));
+    const date = row[columns.Date] === '' ? null : repaymentDate(row[columns.Date], timezone, row[columns.Name] + ' date');
+    if (date === null && draws.some(Boolean)) throw new Error('A loan with draw amounts must have a date: ' + row[columns.Name]);
+    const rate = repaymentNumber(row[columns.Interest], row[columns.Name] + ' interest');
+    if (rate < 0 || draws.some(value => value < 0)) throw new Error('Negative loan draws or interest rates are unsupported: ' + row[columns.Name]);
+    const interestRepaymentStart = interestRepaymentStartMonth(date, rate, row[columns['Interest repayment start deadline (years)']], row[columns.Name]);
+    loans.push({row: index + 3, name: row[columns.Name], priority: repaymentNumber(row[columns.Priority], row[columns.Name] + ' priority'),
       date, rate, draws, interestRepaymentStart});
   });
   if (!loans.length) throw new Error('No incoming loan schedules were found.');
-  const cash = repaymentSheet(spreadsheet, 'Cash Flow').getRange(3, 2, 40, months.length + 1).getValues();
+  const cash = repaymentSheet(spreadsheet, 'Cash Flow').getRange(3, 2, repaymentSheet(spreadsheet, 'Cash Flow').getLastRow() - 2, months.length + 1).getValues();
   checkRepaymentTimeline(cash[0].slice(1), months, timezone, 'Cash Flow');
   const cashRow = name => {
     const rows = cash.slice(1).filter(row => row[0] === name);
@@ -207,4 +221,27 @@ function checkRepaymentTimeline(dates, months, timezone, sheet) {
   if (dates.length !== months.length || dates.some((date, i) => repaymentDate(date, timezone, sheet + ' timeline') !== months[i])) {
     throw new Error(sheet + ' and In Loans must use the same monthly timeline. Nothing was written.');
   }
+}
+
+
+function repaymentHeaderIndex(headers, name) {
+  const index = headers.indexOf(name);
+  if (index < 0 || headers.lastIndexOf(name) !== index) {
+    throw new Error('Expected exactly one In Loans header: ' + name + '. Nothing was written.');
+  }
+  return index;
+}
+
+function repaymentRowWrite(sheet, row, column, values, monthCount) {
+  if (values.length !== monthCount || !values.every(Number.isFinite)) {
+    throw new Error('Invalid result for ' + sheet.getName() + ' row ' + row + '. Nothing was written.');
+  }
+  const range = sheet.getRange(row, column, 1, values.length);
+  if (!range.canEdit()) throw new Error('Cannot edit ' + sheet.getName() + '!' + range.getA1Notation() + '. Nothing was written.');
+  return {updateCells: {
+    range: {sheetId: sheet.getSheetId(), startRowIndex: row - 1, endRowIndex: row,
+      startColumnIndex: column - 1, endColumnIndex: column - 1 + values.length},
+    rows: [{values: values.map(numberValue => ({userEnteredValue: {numberValue}}))}],
+    fields: 'userEnteredValue'
+  }};
 }

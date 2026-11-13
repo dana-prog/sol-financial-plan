@@ -107,19 +107,18 @@ function readUnitDepreciation(spreadsheet, months, timezone) {
   return calculateUnitDepreciation(assets, months.length);
 }
 
-function writeCompanyTaxResults(spreadsheet, model, result) {
+function companyTaxWriteRequests(spreadsheet, model, result) {
   const cash = repaymentSheet(spreadsheet, 'Cash Flow');
   const labels = cash.getRange(1, 2, cash.getLastRow(), 1).getValues().flat();
   const outputs = {
-    'company tax paid': result.tax.cashPayments,
+    'company tax': result.tax.cashPayments,
     'construction depreciation': model.tax.depreciation,
     'loss carryforward': result.tax.lossCarryforward,
     'taxable profit': result.tax.taxableProfit,
-    'company tax expense': result.tax.taxExpense
+    'monthly company tax': result.tax.taxExpense
   };
-  const ranges = Object.keys(outputs).map(label => {
+  return Object.keys(outputs).map(label => {
     if (labels.filter(value => value === label).length !== 1) throw new Error('Expected one Cash Flow row: ' + label);
-    return cash.getRange(labels.indexOf(label) + 1, 3, 1, model.months.length);
+    return repaymentRowWrite(cash, labels.indexOf(label) + 1, 3, outputs[label], model.months.length);
   });
-  Object.values(outputs).forEach((values, i) => ranges[i].setValues([values]));
 }

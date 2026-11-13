@@ -51,7 +51,8 @@ const SYNC_MAPPINGS = [
   {
     source: {
       sheetId: SETUP_SHEET_ID,
-      columnHeader: TIMELINE_CATEGORY_COLUMN_HEADER
+      columnHeader: TIMELINE_CATEGORY_COLUMN_HEADER,
+      headerRow: 3
     },
     target: {
       sheetId: OPERATIONS_SHEET_ID,
@@ -82,53 +83,38 @@ function updateTimelineParamNames(editEvent) {
     return;
   }
 
+  if (editEvent.range.getNumRows() !== 1 || editEvent.range.getNumColumns() !== 1 ||
+      typeof oldValue !== 'string' || typeof newValue !== 'string' || !oldValue.trim() || !newValue.trim()) {
+    SpreadsheetApp.getActiveSpreadsheet().toast('Rename one existing label at a time; cleared or pasted labels were not synced.', 'Rename not synced', 8);
+    return;
+  }
   const targetSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetById(syncMapping.target.sheetId);
-
-  // for each target category, update the param name in the target sheet
-  Object.values(syncMapping.target.categories).forEach(category => {
-    this._updateTimelineParamName(
-      targetSheet,
-      oldValue + category.paramPostfix,
-      newValue + category.paramPostfix,
-      category.numberFormatCallback && category.numberFormatCallback(newValue)
-    );
+  const changes = syncMapping.target.categories.map(category => {
+    const oldName = oldValue.trim().toLowerCase() + category.paramPostfix;
+    const newName = newValue.trim().toLowerCase() + category.paramPostfix;
+    const row = _getTimelineParamRowNumber(targetSheet, oldName);
+    if (row < 0) throw new Error('Cannot sync rename: missing target ' + oldName);
+    const duplicate = _getTimelineParamRowNumber(targetSheet, newName);
+    if (duplicate >= 0 && duplicate !== row) throw new Error('Cannot sync duplicate target: ' + newName);
+    return {row, newName, numberFormat: category.numberFormatCallback && category.numberFormatCallback(newValue)};
+  });
+  changes.forEach(change => {
+    targetSheet.getRange(change.row, TIMELINE_PARAM_NAME_COLUMN_NUMBER).setValue(change.newName);
+    if (change.numberFormat) targetSheet.getRange(change.row, 3, 1, targetSheet.getLastColumn() - 2).setNumberFormat(change.numberFormat);
   });
 }
 
 function _findSyncMapping(srcSheetId, srcCol) {
-  const srcSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetById(srcSheetId);
-  const srcColHeader = (typeof srcCol === 'number') ? SOLLibrary.getColHeaderByNum(srcSheet, srcCol) : srcCol;
-  return SYNC_MAPPINGS.find(mapping => {
-    return mapping.source.sheetId === srcSheetId &&
-      mapping.source.columnHeader === srcColHeader;
-  });
-}
-
-function _updateTimelineParamName(sheet, oldName, newName, numberFormat) {
-  const paramRowNum = this._getTimelineParamRowNumber(sheet, oldName);
-
-  if (paramRowNum === -1) {
-    SOLLibrary.log('TimelineParamsSync', '_updateTimelineParam', `param '${oldName}' does not exist`, 'WARN');
-    return;
-  }
-
-  SOLLibrary.logArgs('TimelineParamsSync', '_updateTimelineParamName', {
-    oldName,
-    newName,
-    paramRowNum
-  });
-
-  const paramNameRange = sheet.getRange(paramRowNum, TIMELINE_PARAM_NAME_COLUMN_NUMBER);
-  paramNameRange.setValue(newName);
-
-  if (numberFormat) {
-    const paramRange = sheet.getRange(`${paramRowNum}:${paramRowNum}`);
-    paramRange.setNumberFormat(numberFormat);
-  }
+  const mapping = SYNC_MAPPINGS.find(item => item.source.sheetId === srcSheetId);
+  if (!mapping) return null;
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetById(srcSheetId);
+  const header = typeof srcCol === 'number'
+    ? sheet.getRange(mapping.source.headerRow || 1, srcCol).getValue() : srcCol;
+  return String(header).trim().toLowerCase() === mapping.source.columnHeader.toLowerCase() ? mapping : null;
 }
 
 function _getTimelineParamRowNumber(sheet, paramName) {
-  const cell = this._getParamsRange(sheet).createTextFinder(paramName).findNext();
+  const cell = this._getParamsRange(sheet).createTextFinder(paramName).matchEntireCell(true).useRegularExpression(false).findNext();
   return cell ? cell.getRow() : -1;
 }
 
@@ -136,7 +122,6 @@ function _getParamsRange(sheet) {
   return sheet.getRange(
     TIMELINE_HEADER_ROW_NUM + 1,
     TIMELINE_PARAM_NAME_COLUMN_NUMBER,
-    sheet.getLastRow() - TIMELINE_HEADER_ROW_NUM - 1
+    sheet.getLastRow() - TIMELINE_HEADER_ROW_NUM
   );
 }
-

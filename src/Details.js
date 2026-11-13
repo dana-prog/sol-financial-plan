@@ -8,6 +8,12 @@ const params = [
 ];
 
 function showDetails(param, month) {
+  const aliases = {'pre const. expenses': 'setup expenses', 'units const. expenses': 'construction expenses'};
+  param = aliases[param] || param;
+  if (!(month instanceof Date) || !Number.isFinite(month.getTime())) {
+    SpreadsheetApp.getUi().alert('Select a monthly value in a supported expense row.');
+    return;
+  }
   if (!params.find((value) => param === value)) {
     SpreadsheetApp.getUi().alert(
       `"${param}" does not have a details view.`

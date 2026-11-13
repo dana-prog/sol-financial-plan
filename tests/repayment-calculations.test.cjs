@@ -84,7 +84,7 @@ test('contract interest starts in the anniversary month, including leap-day loan
 
 test('missing or invalid interest terms fail instead of silently skipping payments', () => {
   for (const years of ['', '2', -1, 0.5, NaN, Infinity]) {
-    assert.throws(() => context.interestRepaymentStartMonth(day(2026, 1), 0.07, years, 'Contract A'), /column G for Contract A/);
+    assert.throws(() => context.interestRepaymentStartMonth(day(2026, 1), 0.07, years, 'Contract A'), /Interest repayment start deadline \(years\) field for Contract A/);
   }
 });
 
@@ -158,30 +158,39 @@ test('invalid calculated amounts fail before any output is returned', () => {
   assert.throws(() => calc(model({receipts: [NaN]})), /invalid amount/);
 });
 
-test('server action writes incoming payments and the In Loans timestamp, then releases its lock', () => {
-  const writes = [];
+test('server action saves payments, tax and timestamp in one batch and releases its lock', () => {
+  const requests = [];
   let released = false;
-  const incoming = {getRange(row, column, height, width) {
-    if (row === 'A1') return {setValue(value) {writes.push({status: value}); return this;}, setNote() {return this;}};
-    assert.equal(typeof row, 'number');
-    return {setValues(values) {writes.push({row, column, height, width, values});}};
-  }};
+  let fetches = 0;
+  const incoming = {getSheetId: () => 123, getRange: () => ({canEdit: () => true})};
   const server = vm.createContext({Date,
-    SpreadsheetApp: {getActiveSpreadsheet: () => ({getSheetByName(name) {
-      assert.equal(name, 'In Loans');
-      return incoming;
-    }, getSpreadsheetTimeZone: () => 'Asia/Bangkok'}), flush() {}},
+    SpreadsheetApp: {getActiveSpreadsheet: () => ({getSheetByName: () => incoming,
+      getId: () => 'test', getSpreadsheetTimeZone: () => 'Asia/Bangkok'})},
     LockService: {getDocumentLock: () => ({tryLock: () => true, releaseLock() {released = true;}})},
-    Utilities: {formatDate: () => '11 Nov 15:00'}
+    Utilities: {formatDate: () => '11 Nov 15:00'},
+    ScriptApp: {getOAuthToken: () => 'test-token'},
+    UrlFetchApp: {fetch(url, options) {
+      assert.equal(url, 'https://sheets.googleapis.com/v4/spreadsheets/test:batchUpdate');
+      requests.push(...JSON.parse(options.payload).requests);
+      fetches++;
+      return {getResponseCode: () => 200};
+    }}
   });
   vm.runInContext(source, server);
   server.readIncomingRepaymentModel = () => model({timelineColumn: 14});
   server.calculateRepaymentsWithCompanyTax = value => server.calculateIncomingRepayments(value);
-  server.writeCompanyTaxResults = () => {};
+  const taxRequest = {updateCells: {fields: 'userEnteredValue'}};
+  server.companyTaxWriteRequests = () => [taxRequest];
   server.recalculateIncomingLoanRepayments();
-  assert.deepEqual(writes.filter(x => x.row).map(x => x.row), [10, 13]);
-  assert.deepEqual(writes.filter(x => x.row).map(x => x.column), [14, 14]);
-  assert.ok(writes.at(-1).status.startsWith('Last Repayment Calculation Time\n'));
+  assert.equal(fetches, 1);
+  assert.deepEqual(requests[0], taxRequest);
+  assert.deepEqual(requests.slice(1, 3).map(x => x.updateCells.range.startRowIndex), [9, 12]);
+  assert.deepEqual(requests.slice(1, 3).map(x => x.updateCells.range.startColumnIndex), [13, 13]);
+  assert.ok(requests.at(-1).updateCells.rows[0].values[0].userEnteredValue.stringValue.startsWith('Last Repayment Calculation Time'));
+  assert.equal(released, true);
+  released = false;
+  server.UrlFetchApp.fetch = () => ({getResponseCode: () => 403, getContentText: () => 'Protected range'});
+  assert.throws(() => server.recalculateIncomingLoanRepayments(), /HTTP 403/);
   assert.equal(released, true);
 });
 
@@ -206,9 +215,9 @@ test('display columns do not change loan inputs or repayment calculations', () =
     'direct operating expenses', 'other operating expenses', 'outgoing loans - funds disbursed',
     'revenue', 'setup depreciation', 'operating profit'];
   function read(extraColumns) {
-    const grid = [['Name', 'Priority', 'Date', 'Lender', 'Amount', 'Interest', 'Years', 'Maturity', 'Status',
+    const grid = [['Name', 'Priority', 'Date', 'Maturity date', 'Lender', 'Amount', 'Interest', 'Interest repayment start deadline (years)', 'Maturity', 'Status',
       ...Array(extraColumns).fill('Loan details'), 'Param', date],
-    ...labels.map((label, i) => [...(i ? Array(9).fill('') : ['Loan', 1, date, 'Lender', 100, 0.07, 0, 5, 'Received']),
+    ...labels.map((label, i) => [...(i ? Array(10).fill('') : ['Loan', 1, date, date, 'Lender', 100, 0.07, 0, 5, 'Received']),
       ...Array(extraColumns).fill('display only'), label, i === 1 ? 100 : 0])];
     const sheets = {
       'In Loans': grid,
@@ -227,12 +236,24 @@ test('display columns do not change loan inputs or repayment calculations', () =
     })});
   }
   const original = read(0);
-  assert.equal(original.timelineColumn, 11);
+  assert.equal(original.timelineColumn, 12);
   const normalize = value => JSON.parse(JSON.stringify(value));
   for (const addedColumns of [2, 3]) {
     const expanded = read(addedColumns);
-    assert.equal(expanded.timelineColumn, 11 + addedColumns);
-    assert.deepEqual(normalize({...original, timelineColumn: 11 + addedColumns}), normalize(expanded));
+    assert.equal(expanded.timelineColumn, 12 + addedColumns);
+    assert.deepEqual(normalize({...original, timelineColumn: 12 + addedColumns}), normalize(expanded));
     assert.deepEqual(normalize(calc(original)), normalize(calc(expanded)));
   }
+});
+
+test('missing or duplicate required headers fail before calculation', () => {
+  assert.throws(() => context.repaymentHeaderIndex(['Name'], 'Interest'), /exactly one/);
+  assert.throws(() => context.repaymentHeaderIndex(['Interest', 'Interest'], 'Interest'), /exactly one/);
+});
+
+test('invalid or protected result rows are rejected before saving', () => {
+  const sheet = {getName: () => 'In Loans', getRange: () => ({canEdit: () => false, getA1Notation: () => 'N10'})};
+  assert.throws(() => context.repaymentRowWrite(sheet, 10, 14, [NaN], 1), /Invalid result/);
+  assert.throws(() => context.repaymentRowWrite(sheet, 10, 14, [1], 2), /Invalid result/);
+  assert.throws(() => context.repaymentRowWrite(sheet, 10, 14, [1], 1), /Cannot edit/);
 });
