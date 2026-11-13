@@ -1,0 +1,27 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Remove the Loans navigation link from Other Sheets at G41, preserving other links and layout.",
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link,textFormatRuns"
+      }
+    }
+  ],
+  "verification": "Read back G41: no value, formula, hyperlink or rich-text link remains."
+}
