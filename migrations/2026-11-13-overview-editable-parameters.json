@@ -1,0 +1,1812 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Add editable Project Plan and Pax inputs above expenses. Params uses existing LOOKUP_BY_NAME named function with new input regions, bypassing Dashboard for all seven inputs. EIA displays and protects existing calculated results. Preserve model values and expense links while inserting seven rows.",
+  "authorization": "User requested editable inputs and clarified that original values belong in Project Overview and Params should read them there, ignoring Dashboard.",
+  "requests": [
+    {
+      "insertDimension": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 11,
+          "endIndex": 18
+        },
+        "inheritFromBefore": false
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 16,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9529411764705882,
+                "green": 0.9647058823529412,
+                "blue": 0.9803921568627451
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.2,
+                  "green": 0.3058823529411765,
+                  "blue": 0.40784313725490196
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 10,
+              "right": 10,
+              "top": 5,
+              "bottom": 5
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 1,
+          "endColumnIndex": 6
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.1411764705882353,
+                "green": 0.23137254901960785,
+                "blue": 0.3254901960784314
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 10,
+              "right": 10,
+              "top": 5,
+              "bottom": 5
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.1411764705882353,
+                "green": 0.23137254901960785,
+                "blue": 0.3254901960784314
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 10,
+              "right": 10,
+              "top": 5,
+              "bottom": 5
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.1411764705882353,
+                "green": 0.23137254901960785,
+                "blue": 0.3254901960784314
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 10,
+              "right": 10,
+              "top": 5,
+              "bottom": 5
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 4,
+          "endColumnIndex": 6
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 11,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Project Plan"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 11,
+          "columnIndex": 4
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Value"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 11,
+          "columnIndex": 6
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Pax"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 11,
+          "columnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Value"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 11,
+          "columnIndex": 11
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "EIA · Read only"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 4,
+          "endColumnIndex": 6
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 12,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Land acquisition month"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 12,
+          "columnIndex": 4
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "numberValue": 46701
+                },
+                "note": "Editable project input. Initial value preserves the existing calculated land-acquisition date: 11 Nov 2027. Params reads this input directly through the named lookup."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 4,
+          "endColumnIndex": 6
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9098039215686274,
+                "green": 0.9450980392156862,
+                "blue": 0.9882352941176471
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.35294117647058826,
+                  "blue": 0.5058823529411764
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 4,
+              "right": 6,
+              "top": 5,
+              "bottom": 5
+            },
+            "horizontalAlignment": "RIGHT",
+            "numberFormat": {
+              "type": "DATE",
+              "pattern": "mmm yyyy"
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 4,
+          "endColumnIndex": 6
+        },
+        "rule": {
+          "condition": {
+            "type": "DATE_IS_VALID"
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a valid date; displayed as month and year."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 10,
+          "columnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LOOKUP_BY_NAME(PROJECT_PLAN_INPUTS, \"Value\", \"Project Plan\", B11)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 4,
+          "endColumnIndex": 6
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 13,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Construction start month"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 13,
+          "columnIndex": 4
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "numberValue": 46753
+                },
+                "note": "Editable project input. Used by Params and the financial model."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 4,
+          "endColumnIndex": 6
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9098039215686274,
+                "green": 0.9450980392156862,
+                "blue": 0.9882352941176471
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.35294117647058826,
+                  "blue": 0.5058823529411764
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 4,
+              "right": 6,
+              "top": 5,
+              "bottom": 5
+            },
+            "horizontalAlignment": "RIGHT",
+            "numberFormat": {
+              "type": "DATE",
+              "pattern": "mmm yyyy"
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 4,
+          "endColumnIndex": 6
+        },
+        "rule": {
+          "condition": {
+            "type": "DATE_IS_VALID"
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a valid date; displayed as month and year."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 11,
+          "columnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LOOKUP_BY_NAME(PROJECT_PLAN_INPUTS, \"Value\", \"Project Plan\", B12)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 4,
+          "endColumnIndex": 6
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 14,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Operations start month"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 14,
+          "columnIndex": 4
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "numberValue": 46935
+                },
+                "note": "Editable project input. Used by Params and the financial model."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 4,
+          "endColumnIndex": 6
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9098039215686274,
+                "green": 0.9450980392156862,
+                "blue": 0.9882352941176471
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.35294117647058826,
+                  "blue": 0.5058823529411764
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 4,
+              "right": 6,
+              "top": 5,
+              "bottom": 5
+            },
+            "horizontalAlignment": "RIGHT",
+            "numberFormat": {
+              "type": "DATE",
+              "pattern": "mmm yyyy"
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 4,
+          "endColumnIndex": 6
+        },
+        "rule": {
+          "condition": {
+            "type": "DATE_IS_VALID"
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a valid date; displayed as month and year."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 16,
+          "columnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LOOKUP_BY_NAME(PROJECT_PLAN_INPUTS, \"Value\", \"Project Plan\", B17)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 12,
+          "columnIndex": 6
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Pax capacity per room"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 12,
+          "columnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "numberValue": 1.5
+                },
+                "note": "Editable project input. Used by Params and the financial model."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 10,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9098039215686274,
+                "green": 0.9450980392156862,
+                "blue": 0.9882352941176471
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.35294117647058826,
+                  "blue": 0.5058823529411764
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 4,
+              "right": 6,
+              "top": 5,
+              "bottom": 5
+            },
+            "horizontalAlignment": "RIGHT",
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "0.0 \"pax\""
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 10,
+          "endColumnIndex": 11
+        },
+        "rule": {
+          "condition": {
+            "type": "NUMBER_GREATER",
+            "values": [
+              {
+                "userEnteredValue": "0"
+              }
+            ]
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a positive pax capacity."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 76,
+          "columnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LOOKUP_BY_NAME(PAX_INPUTS, \"Value\", \"Pax\", B77)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 13,
+          "columnIndex": 6
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Pax occupancy initial rate"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 13,
+          "columnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "numberValue": 0.35
+                },
+                "note": "Editable project input. Used by Params and the financial model."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 10,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9098039215686274,
+                "green": 0.9450980392156862,
+                "blue": 0.9882352941176471
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.35294117647058826,
+                  "blue": 0.5058823529411764
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 4,
+              "right": 6,
+              "top": 5,
+              "bottom": 5
+            },
+            "horizontalAlignment": "RIGHT",
+            "numberFormat": {
+              "type": "PERCENT",
+              "pattern": "0%"
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 10,
+          "endColumnIndex": 11
+        },
+        "rule": {
+          "condition": {
+            "type": "NUMBER_BETWEEN",
+            "values": [
+              {
+                "userEnteredValue": "0"
+              },
+              {
+                "userEnteredValue": "1"
+              }
+            ]
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a percentage from 0% to 100%."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 77,
+          "columnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LOOKUP_BY_NAME(PAX_INPUTS, \"Value\", \"Pax\", B78)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 14,
+          "columnIndex": 6
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Pax occupancy growth per month"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 14,
+          "columnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "numberValue": 0.01
+                },
+                "note": "Editable project input. Used by Params and the financial model."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 10,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9098039215686274,
+                "green": 0.9450980392156862,
+                "blue": 0.9882352941176471
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.35294117647058826,
+                  "blue": 0.5058823529411764
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 4,
+              "right": 6,
+              "top": 5,
+              "bottom": 5
+            },
+            "horizontalAlignment": "RIGHT",
+            "numberFormat": {
+              "type": "PERCENT",
+              "pattern": "0%"
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 10,
+          "endColumnIndex": 11
+        },
+        "rule": {
+          "condition": {
+            "type": "NUMBER_BETWEEN",
+            "values": [
+              {
+                "userEnteredValue": "0"
+              },
+              {
+                "userEnteredValue": "1"
+              }
+            ]
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a percentage from 0% to 100%."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 78,
+          "columnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LOOKUP_BY_NAME(PAX_INPUTS, \"Value\", \"Pax\", B79)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 15,
+          "endRowIndex": 16,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 15,
+          "columnIndex": 6
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Pax occupancy final rate"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 15,
+          "columnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "numberValue": 0.8
+                },
+                "note": "Editable project input. Used by Params and the financial model."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 15,
+          "endRowIndex": 16,
+          "startColumnIndex": 10,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9098039215686274,
+                "green": 0.9450980392156862,
+                "blue": 0.9882352941176471
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.35294117647058826,
+                  "blue": 0.5058823529411764
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 4,
+              "right": 6,
+              "top": 5,
+              "bottom": 5
+            },
+            "horizontalAlignment": "RIGHT",
+            "numberFormat": {
+              "type": "PERCENT",
+              "pattern": "0%"
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 15,
+          "endRowIndex": 16,
+          "startColumnIndex": 10,
+          "endColumnIndex": 11
+        },
+        "rule": {
+          "condition": {
+            "type": "NUMBER_BETWEEN",
+            "values": [
+              {
+                "userEnteredValue": "0"
+              },
+              {
+                "userEnteredValue": "1"
+              }
+            ]
+          },
+          "strict": true,
+          "showCustomUi": true,
+          "inputMessage": "Enter a percentage from 0% to 100%."
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 79,
+          "columnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LOOKUP_BY_NAME(PAX_INPUTS, \"Value\", \"Pax\", B80)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "addNamedRange": {
+        "namedRange": {
+          "name": "PROJECT_PLAN_INPUTS",
+          "range": {
+            "sheetId": 190902611,
+            "startRowIndex": 11,
+            "endRowIndex": 15,
+            "startColumnIndex": 1,
+            "endColumnIndex": 6
+          }
+        }
+      }
+    },
+    {
+      "addNamedRange": {
+        "namedRange": {
+          "name": "PAX_INPUTS",
+          "range": {
+            "sheetId": 190902611,
+            "startRowIndex": 11,
+            "endRowIndex": 16,
+            "startColumnIndex": 6,
+            "endColumnIndex": 11
+          }
+        }
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 11,
+          "endColumnIndex": 14
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 14,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 12,
+          "columnIndex": 11
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "SQM for EIA"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 12,
+          "columnIndex": 14
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=DASHBOARD_PARAM(\"SQM for EIA\")"
+                },
+                "note": "Read-only calculated result from the existing EIA calculation."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 14,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9529411764705882,
+                "green": 0.9647058823529412,
+                "blue": 0.9803921568627451
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 12,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.3215686274509804,
+                  "green": 0.4,
+                  "blue": 0.47843137254901963
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 10,
+              "right": 10,
+              "top": 5,
+              "bottom": 5
+            },
+            "horizontalAlignment": "RIGHT",
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "#,##0.0"
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 11,
+          "endColumnIndex": 14
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 14,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 13,
+          "columnIndex": 11
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Rai needed"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 13,
+          "columnIndex": 14
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=DASHBOARD_PARAM(\"Rai needed\")"
+                },
+                "note": "Read-only calculated result from the existing EIA calculation."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 14,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9529411764705882,
+                "green": 0.9647058823529412,
+                "blue": 0.9803921568627451
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 12,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.3215686274509804,
+                  "green": 0.4,
+                  "blue": 0.47843137254901963
+                }
+              }
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "padding": {
+              "left": 10,
+              "right": 10,
+              "top": 5,
+              "bottom": 5
+            },
+            "horizontalAlignment": "RIGHT",
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "0.00"
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "addProtectedRange": {
+        "protectedRange": {
+          "range": {
+            "sheetId": 190902611,
+            "startRowIndex": 12,
+            "endRowIndex": 14,
+            "startColumnIndex": 14,
+            "endColumnIndex": 16
+          },
+          "description": "Calculated EIA outputs — edit source unit data instead",
+          "warningOnly": false,
+          "editors": {
+            "users": [
+              "danashalev100@gmail.com"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 11,
+          "endIndex": 12
+        },
+        "properties": {
+          "pixelSize": 36
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 12,
+          "endIndex": 16
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 16,
+          "endIndex": 18
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 16,
+          "endRowIndex": 18,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 25,
+          "columnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=190902611&range=H21:H25\",SUM(H21:H25))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 25,
+          "columnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=190902611&range=J21:J25\",SUM(J21:J25))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    }
+  ],
+  "verification": {
+    "checkedUnchangedNumericCells": 58,
+    "numericDifferences": [],
+    "formulaErrors": [],
+    "paramsNowReadOverview": true,
+    "eiaProtectedRangeId": 935296858,
+    "visualReview": "Confirmed all inputs and EIA outputs fit; new section is above Project Expenses.",
+    "landInitialValue": {
+      "serial": 46701,
+      "date": "2027-11-11",
+      "display": "Nov 2027"
+    },
+    "eia": {
+      "sqm": 9397.2,
+      "rai": 19.5775
+    },
+    "scriptSourceChanged": false
+  }
+}
