@@ -161,7 +161,7 @@ function readBorrowingRepaymentModel(spreadsheet) {
     if (matches.length !== 1) throw new Error('Expected exactly one parameter: ' + name);
     return matches[0][1];
   };
-  const principalRepaymentStart = repaymentMonthStart(repaymentDate(parameter('principal loan repayment start month'), timezone, 'principal loan repayment start month'));
+  const principalRepaymentStart = repaymentMonthStart(repaymentDate(parameter('principal loan repayment start date'), timezone, 'principal loan repayment start date'));
   const reserve = repaymentNumber(parameter('minimum cash reserve'), 'minimum cash reserve');
   if (reserve < 0) throw new Error('Minimum cash reserve cannot be negative.');
   const loans = [];

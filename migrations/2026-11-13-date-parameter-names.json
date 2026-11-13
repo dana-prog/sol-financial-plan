@@ -1,0 +1,4806 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "status": "applied-and-verified",
+  "description": "Rename only date-valued parameters ending in month to date; retain monthly rates/costs and the numeric financial year-end month.",
+  "parameterNames": [
+    {
+      "old": "project start month",
+      "new": "project start date"
+    },
+    {
+      "old": "current month",
+      "new": "current date"
+    },
+    {
+      "old": "land acquisition month",
+      "new": "land acquisition date"
+    },
+    {
+      "old": "construction start month",
+      "new": "construction start date"
+    },
+    {
+      "old": "principal loan repayment start month",
+      "new": "principal loan repayment start date"
+    },
+    {
+      "old": "operations start month",
+      "new": "operations start date"
+    },
+    {
+      "old": "project end month",
+      "new": "project end date"
+    },
+    {
+      "old": "store openning month",
+      "new": "store openning date"
+    }
+  ],
+  "labels": [
+    {
+      "sheet": "Project Overview",
+      "row": 13,
+      "old": "Land acquisition month",
+      "new": "Land acquisition date"
+    },
+    {
+      "sheet": "Project Overview",
+      "row": 14,
+      "old": "Construction start month",
+      "new": "Construction start date"
+    },
+    {
+      "sheet": "Project Overview",
+      "row": 15,
+      "old": "Operations start month",
+      "new": "Operations start date"
+    },
+    {
+      "sheet": "Project Plan",
+      "row": 5,
+      "old": "project start month",
+      "new": "project start date"
+    },
+    {
+      "sheet": "Project Plan",
+      "row": 6,
+      "old": "current month",
+      "new": "current date"
+    },
+    {
+      "sheet": "Project Plan",
+      "row": 7,
+      "old": "land acquisition month",
+      "new": "land acquisition date"
+    },
+    {
+      "sheet": "Project Plan",
+      "row": 8,
+      "old": "construction start month",
+      "new": "construction start date"
+    },
+    {
+      "sheet": "Project Plan",
+      "row": 8,
+      "old": "land acquisition month",
+      "new": "land acquisition date"
+    },
+    {
+      "sheet": "Project Plan",
+      "row": 9,
+      "old": "operations start month",
+      "new": "operations start date"
+    },
+    {
+      "sheet": "Project Plan",
+      "row": 11,
+      "old": "project end month",
+      "new": "project end date"
+    },
+    {
+      "sheet": "Project Plan",
+      "row": 20,
+      "old": "construction start month",
+      "new": "construction start date"
+    },
+    {
+      "sheet": "Project Plan",
+      "row": 21,
+      "old": "operations start month",
+      "new": "operations start date"
+    },
+    {
+      "sheet": "Dashboard",
+      "row": 3,
+      "old": "land acquisition month",
+      "new": "land acquisition date"
+    },
+    {
+      "sheet": "Dashboard",
+      "row": 4,
+      "old": "construction start month",
+      "new": "construction start date"
+    },
+    {
+      "sheet": "Dashboard",
+      "row": 5,
+      "old": "operations start month",
+      "new": "operations start date"
+    },
+    {
+      "sheet": "Params",
+      "row": 2,
+      "old": "project start month",
+      "new": "project start date"
+    },
+    {
+      "sheet": "Params",
+      "row": 3,
+      "old": "current month",
+      "new": "current date"
+    },
+    {
+      "sheet": "Params",
+      "row": 11,
+      "old": "land acquisition month",
+      "new": "land acquisition date"
+    },
+    {
+      "sheet": "Params",
+      "row": 12,
+      "old": "construction start month",
+      "new": "construction start date"
+    },
+    {
+      "sheet": "Params",
+      "row": 13,
+      "old": "principal loan repayment start month",
+      "new": "principal loan repayment start date"
+    },
+    {
+      "sheet": "Params",
+      "row": 17,
+      "old": "operations start month",
+      "new": "operations start date"
+    },
+    {
+      "sheet": "Params",
+      "row": 19,
+      "old": "project end month",
+      "new": "project end date"
+    },
+    {
+      "sheet": "Params",
+      "row": 87,
+      "old": "store openning month",
+      "new": "store openning date"
+    }
+  ],
+  "requests": [
+    {
+      "findReplace": {
+        "find": "\"project start month\"",
+        "replacement": "\"project start date\"",
+        "allSheets": true,
+        "includeFormulas": true,
+        "matchCase": false,
+        "matchEntireCell": false
+      }
+    },
+    {
+      "findReplace": {
+        "find": "\"current month\"",
+        "replacement": "\"current date\"",
+        "allSheets": true,
+        "includeFormulas": true,
+        "matchCase": false,
+        "matchEntireCell": false
+      }
+    },
+    {
+      "findReplace": {
+        "find": "\"land acquisition month\"",
+        "replacement": "\"land acquisition date\"",
+        "allSheets": true,
+        "includeFormulas": true,
+        "matchCase": false,
+        "matchEntireCell": false
+      }
+    },
+    {
+      "findReplace": {
+        "find": "\"construction start month\"",
+        "replacement": "\"construction start date\"",
+        "allSheets": true,
+        "includeFormulas": true,
+        "matchCase": false,
+        "matchEntireCell": false
+      }
+    },
+    {
+      "findReplace": {
+        "find": "\"principal loan repayment start month\"",
+        "replacement": "\"principal loan repayment start date\"",
+        "allSheets": true,
+        "includeFormulas": true,
+        "matchCase": false,
+        "matchEntireCell": false
+      }
+    },
+    {
+      "findReplace": {
+        "find": "\"operations start month\"",
+        "replacement": "\"operations start date\"",
+        "allSheets": true,
+        "includeFormulas": true,
+        "matchCase": false,
+        "matchEntireCell": false
+      }
+    },
+    {
+      "findReplace": {
+        "find": "\"project end month\"",
+        "replacement": "\"project end date\"",
+        "allSheets": true,
+        "includeFormulas": true,
+        "matchCase": false,
+        "matchEntireCell": false
+      }
+    },
+    {
+      "findReplace": {
+        "find": "\"store openning month\"",
+        "replacement": "\"store openning date\"",
+        "allSheets": true,
+        "includeFormulas": true,
+        "matchCase": false,
+        "matchEntireCell": false
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 12,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Land acquisition date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 13,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Construction start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 14,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Operations start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 1817132026,
+          "rowIndex": 4,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "project start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 1817132026,
+          "rowIndex": 5,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "current date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 1817132026,
+          "rowIndex": 6,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "land acquisition date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 1817132026,
+          "rowIndex": 7,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "construction start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 1817132026,
+          "rowIndex": 7,
+          "columnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "land acquisition date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 1817132026,
+          "rowIndex": 8,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "operations start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 1817132026,
+          "rowIndex": 10,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "project end date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 1817132026,
+          "rowIndex": 19,
+          "columnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "construction start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 1817132026,
+          "rowIndex": 20,
+          "columnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "operations start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 394690290,
+          "rowIndex": 2,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "land acquisition date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 394690290,
+          "rowIndex": 3,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "construction start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 394690290,
+          "rowIndex": 4,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "operations start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 1,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "project start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 2,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "current date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 10,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "land acquisition date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 11,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "construction start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 12,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "principal loan repayment start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 16,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "operations start date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 18,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "project end date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 280690834,
+          "rowIndex": 86,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "store openning date"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 706577296,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 706577296,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 120
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 < DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 706577296,
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 706577296,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 120
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 706577296,
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 706577296,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 120
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 < DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 706577296,
+        "index": 3,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 706577296,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 120
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9764706,
+                "green": 0.79607844,
+                "blue": 0.6117647
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9764706,
+                  "green": 0.79607844,
+                  "blue": 0.6117647
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 706577296,
+        "index": 4,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 706577296,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 120
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 < DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 706577296,
+        "index": 5,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 706577296,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 120
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.6431373,
+                "green": 0.7607843,
+                "blue": 0.95686275
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6431373,
+                  "green": 0.7607843,
+                  "blue": 0.95686275
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1304432573,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1304432573,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(E$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1304432573,
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1304432573,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1304432573,
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1304432573,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(E$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1304432573,
+        "index": 3,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1304432573,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9764706,
+                "green": 0.79607844,
+                "blue": 0.6117647
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9764706,
+                  "green": 0.79607844,
+                  "blue": 0.6117647
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1304432573,
+        "index": 4,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1304432573,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(E$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1304432573,
+        "index": 5,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1304432573,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.6431373,
+                "green": 0.7607843,
+                "blue": 0.95686275
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6431373,
+                  "green": 0.7607843,
+                  "blue": 0.95686275
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2082967509,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2082967509,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(E$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2082967509,
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2082967509,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2082967509,
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2082967509,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(E$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2082967509,
+        "index": 3,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2082967509,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9764706,
+                "green": 0.79607844,
+                "blue": 0.6117647
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9764706,
+                  "green": 0.79607844,
+                  "blue": 0.6117647
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2082967509,
+        "index": 4,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2082967509,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(E$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2082967509,
+        "index": 5,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2082967509,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 4,
+              "endColumnIndex": 100
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=E$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.6431373,
+                "green": 0.7607843,
+                "blue": 0.95686275
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6431373,
+                  "green": 0.7607843,
+                  "blue": 0.95686275
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 462995266,
+        "index": 6,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 462995266,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 < DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 462995266,
+        "index": 7,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 462995266,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 462995266,
+        "index": 8,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 462995266,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 462995266,
+        "index": 9,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 462995266,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9764706,
+                "green": 0.79607844,
+                "blue": 0.6117647
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9764706,
+                  "green": 0.79607844,
+                  "blue": 0.6117647
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 462995266,
+        "index": 10,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 462995266,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 462995266,
+        "index": 11,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 462995266,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.6431373,
+                "green": 0.7607843,
+                "blue": 0.95686275
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6431373,
+                  "green": 0.7607843,
+                  "blue": 0.95686275
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1754072773,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1754072773,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(F$3 < DATE(YEAR(TODAY()),MONTH(TODAY()),1), F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1754072773,
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1754072773,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1754072773,
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1754072773,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(F$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1754072773,
+        "index": 3,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1754072773,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9764706,
+                "green": 0.79607844,
+                "blue": 0.6117647
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9764706,
+                  "green": 0.79607844,
+                  "blue": 0.6117647
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1754072773,
+        "index": 4,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1754072773,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(F$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1754072773,
+        "index": 5,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1754072773,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.6431373,
+                "green": 0.7607843,
+                "blue": 0.95686275
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6431373,
+                  "green": 0.7607843,
+                  "blue": 0.95686275
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1093991711,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1093991711,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1093991711,
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1093991711,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1093991711,
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1093991711,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1093991711,
+        "index": 3,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1093991711,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9764706,
+                "green": 0.79607844,
+                "blue": 0.6117647
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9764706,
+                  "green": 0.79607844,
+                  "blue": 0.6117647
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1093991711,
+        "index": 4,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1093991711,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1093991711,
+        "index": 5,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1093991711,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.6431373,
+                "green": 0.7607843,
+                "blue": 0.95686275
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6431373,
+                  "green": 0.7607843,
+                  "blue": 0.95686275
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1675897452,
+        "index": 6,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1675897452,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(F$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1675897452,
+        "index": 7,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1675897452,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1675897452,
+        "index": 8,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1675897452,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(F$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1675897452,
+        "index": 9,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1675897452,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9764706,
+                "green": 0.79607844,
+                "blue": 0.6117647
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9764706,
+                  "green": 0.79607844,
+                  "blue": 0.6117647
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1675897452,
+        "index": 10,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1675897452,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(F$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1675897452,
+        "index": 11,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1675897452,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 5,
+              "endColumnIndex": 101
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=F$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.6431373,
+                "green": 0.7607843,
+                "blue": 0.95686275
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6431373,
+                  "green": 0.7607843,
+                  "blue": 0.95686275
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 198423991,
+        "index": 6,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 198423991,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 9,
+              "endColumnIndex": 105
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(J$3 < DATE(YEAR(TODAY()),MONTH(TODAY()),1), J$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 198423991,
+        "index": 7,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 198423991,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 9,
+              "endColumnIndex": 105
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=J$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 198423991,
+        "index": 8,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 198423991,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 9,
+              "endColumnIndex": 105
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(J$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), J$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 198423991,
+        "index": 9,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 198423991,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 9,
+              "endColumnIndex": 105
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=J$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9764706,
+                "green": 0.79607844,
+                "blue": 0.6117647
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9764706,
+                  "green": 0.79607844,
+                  "blue": 0.6117647
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 198423991,
+        "index": 10,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 198423991,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 9,
+              "endColumnIndex": 105
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(J$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), J$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 198423991,
+        "index": 11,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 198423991,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 9,
+              "endColumnIndex": 105
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=J$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.6431373,
+                "green": 0.7607843,
+                "blue": 0.95686275
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6431373,
+                  "green": 0.7607843,
+                  "blue": 0.95686275
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1346380865,
+        "index": 37,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 13,
+              "endColumnIndex": 109
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(N$3 < DATE(YEAR(TODAY()),MONTH(TODAY()),1), N$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1346380865,
+        "index": 38,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 13,
+              "endColumnIndex": 109
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=N$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1346380865,
+        "index": 39,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 13,
+              "endColumnIndex": 109
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(N$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), N$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1346380865,
+        "index": 40,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1346380865,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 13,
+              "endColumnIndex": 109
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=N$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9764706,
+                "green": 0.79607844,
+                "blue": 0.6117647
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9764706,
+                  "green": 0.79607844,
+                  "blue": 0.6117647
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 173849536,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 173849536,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 < DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 173849536,
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 173849536,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 173849536,
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 173849536,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 173849536,
+        "index": 3,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 173849536,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9764706,
+                "green": 0.79607844,
+                "blue": 0.6117647
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9764706,
+                  "green": 0.79607844,
+                  "blue": 0.6117647
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 173849536,
+        "index": 4,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 173849536,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 173849536,
+        "index": 5,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 173849536,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.6431373,
+                "green": 0.7607843,
+                "blue": 0.95686275
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6431373,
+                  "green": 0.7607843,
+                  "blue": 0.95686275
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2109063306,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2109063306,
+              "startRowIndex": 1,
+              "endRowIndex": 2,
+              "startColumnIndex": 1,
+              "endColumnIndex": 2
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=B2 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2109063306,
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2109063306,
+              "startRowIndex": 1,
+              "endRowIndex": 2,
+              "startColumnIndex": 1,
+              "endColumnIndex": 2
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=$B$2 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2109063306,
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2109063306,
+              "startRowIndex": 1,
+              "endRowIndex": 2,
+              "startColumnIndex": 1,
+              "endColumnIndex": 2
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=$B$2 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1875367343,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1875367343,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1875367343,
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1875367343,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1875367343,
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1875367343,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1875367343,
+        "index": 3,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1875367343,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9764706,
+                "green": 0.79607844,
+                "blue": 0.6117647
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9764706,
+                  "green": 0.79607844,
+                  "blue": 0.6117647
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1875367343,
+        "index": 4,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1875367343,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(C$3 <= DATE(YEAR(TODAY()),MONTH(TODAY()),1), C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1875367343,
+        "index": 5,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1875367343,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 2,
+              "endColumnIndex": 98
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=C$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.6431373,
+                "green": 0.7607843,
+                "blue": 0.95686275
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6431373,
+                  "green": 0.7607843,
+                  "blue": 0.95686275
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1418937795,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1418937795,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 0,
+              "endColumnIndex": 96
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=A$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1418937795,
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1418937795,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 0,
+              "endColumnIndex": 96
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=A$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 1418937795,
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1418937795,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 0,
+              "endColumnIndex": 96
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=A$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 971259236,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 971259236,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 0,
+              "endColumnIndex": 96
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=A$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 971259236,
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 971259236,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 0,
+              "endColumnIndex": 96
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=A$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 971259236,
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 971259236,
+              "startRowIndex": 0,
+              "endRowIndex": 3,
+              "startColumnIndex": 0,
+              "endColumnIndex": 96
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=A$3 < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "namedFunctionsToUpdate": [
+    "LAND_EXPENSES_D",
+    "TIMELINE_PARAM_PERIOD_VALUES",
+    "GENERATE_TIMELINE"
+  ],
+  "validation": {
+    "repaymentAndTaxTestsPassed": 35,
+    "conditionalRulesPrepared": 73,
+    "numericCellsCompared": 51369,
+    "numericChanges": [
+      {
+        "sheet": "Project Overview",
+        "row": 13,
+        "col": 15,
+        "before": {
+          "numberValue": 9397.2
+        },
+        "after": {
+          "errorValue": {
+            "type": "N_A",
+            "message": "Argument must be a range."
+          }
+        }
+      }
+    ],
+    "formulaErrors": [
+      {
+        "sheet": "Project Overview",
+        "row": 13,
+        "col": 15,
+        "error": {
+          "type": "N_A",
+          "message": "Argument must be a range."
+        }
+      }
+    ],
+    "oldReferences": [],
+    "unrelatedConcurrentEdit": {
+      "cell": "Project Overview!O13",
+      "before": "=DASHBOARD_PARAM(\"SQM for EIA\")",
+      "after": "=SUMIF(COL_VALUES(S_UNITS, \"EIA\"), true, COL_VALUES(S_UNITS, \"Total Type Size\"))",
+      "message": "Unrelated concurrent user edit returns N_A; preserved without modification."
+    },
+    "namedFunctionsVerified": 3,
+    "staleFormulaAndConditionalRuleReferences": 0,
+    "scriptSynchronized": true
+  }
+}

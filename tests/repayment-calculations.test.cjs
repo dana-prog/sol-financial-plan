@@ -221,7 +221,7 @@ test('display columns do not change loan inputs or repayment calculations', () =
       ...Array(extraColumns).fill('display only'), label, i === 1 ? 100 : 0])];
     const sheets = {
       'Borrowings': grid,
-      Params: [['principal loan repayment start month', date], ['minimum cash reserve', 0],
+      Params: [['principal loan repayment start date', date], ['minimum cash reserve', 0],
         ['company tax rate', 0.2], ['financial year-end month', 12]],
       'Cash Flow': [['Param', date], ...cashLabels.map(label => [label, label === 'setup expenses' ? 7 : label === 'loans disbursed' ? 3 : 0])],
       'Loans': [['Param', date], ['total loan paid', 0]]
