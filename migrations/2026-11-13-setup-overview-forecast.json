@@ -1,0 +1,19 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "status": "Applied and verified on 2026-11-13",
+  "sheet": "Project Overview",
+  "cell": "J15",
+  "description": "Setup Total Planned uses actual total costs before the current month and planned total costs from the current month through the end of the project.",
+  "previousFormula": "=SUM(PLANNING_PLANNED_PARAM_VALUES(\"total costs\"))",
+  "formula": "=SUM(CASH_FLOW_PARAM_VALUES(\"setup expenses\"))",
+  "implementation": "Reuse the existing Cash Flow setup expenses calculation, whose monthly cutoff is EOMONTH(TODAY(), -1) + 1. Existing named functions are retained; no direct-range replacement or named-function definition edits.",
+  "verification": {
+    "cutoff": "2026-11-01",
+    "actualBeforeCutoff": 1833170,
+    "plannedFromCutoff": 8103840,
+    "setupTotal": 9937010,
+    "otherExpenseRowsUnchanged": true,
+    "grandTotalUpdatedAutomatically": true
+  },
+  "appsScript": "No source changes or clasp synchronization required."
+}
