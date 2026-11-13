@@ -1,0 +1,63 @@
+{
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 7,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "numberFormat": {
+                    "type": "NUMBER",
+                    "pattern": "\"USD \" #,##0.00;[Red](\"USD \" #,##0.00)"
+                  }
+                },
+                "note": "Available balance of the Wise USD account, refreshed daily. Other currencies are not included."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.numberFormat,note"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 8,
+          "endRowIndex": 9,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "numberFormat": {
+                    "type": "DATE_TIME",
+                    "pattern": "\"Updated \"dd mmm yyyy, hh:mm"
+                  }
+                },
+                "note": "Last successful Wise sync, shown in Bangkok time."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.numberFormat,note"
+      }
+    },
+    {
+      "deleteSheet": {
+        "sheetId": 288141906
+      }
+    }
+  ]
+}

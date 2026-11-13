@@ -26,7 +26,7 @@ test('malformed amounts, currencies, dates and account IDs fail before writing',
   const ctx = load();
   assert.throws(() => ctx.wiseTransactionRows_([transaction({amount: {value: 3, currency: 'EUR'}})], balance, '20'), /currency/);
   assert.throws(() => ctx.wiseTransactionRows_([transaction({date: 'invalid'})], balance, '20'), /incomplete/);
-  assert.throws(() => ctx.wiseBalanceRows_([{...balance, amount: {value: NaN, currency: 'USD'}}], '20', new Date()), /amount/);
+  assert.throws(() => ctx.wiseMoney_({value: NaN, currency: 'USD'}, 'USD'), /amount/);
   assert.throws(() => ctx.wiseId_('../profiles'), /ID/);
   assert.throws(() => ctx.wiseStart_('2026-02-30', new Date('2026-11-13')), /date/);
   assert.throws(() => ctx.wiseStart_('2027-01-01', new Date('2026-11-13')), /date/);
@@ -74,44 +74,90 @@ test('long rate limits are reported without an early retry', () => {
   assert.throws(() => ctx.wiseGet_('/profiles'), /rate limit/);
   assert.equal(calls, 1);
 });
-test('failed statement fetch leaves outputs and checkpoint unchanged and releases lock', () => {
-  let writes = 0, released = false;
-  const props = {getProperty: () => null, setProperties: () => writes++};
+function syncFixture() {
+  const events = [];
+  const saved = {WISE_PROFILE_ID:'20', WISE_START_DATE:'2026-01-01'};
+  const overview = {getRange: cell => ({
+    getValue: () => cell === 'B6' ? 'Wise Balance' : '', getFormula: () => '',
+    setValue: value => events.push([cell,value]),
+  })};
+  const spreadsheet = {getSheetById: () => overview, getSheetByName: () => null, toast() {}};
   const ctx = load({
-    PropertiesService: {getScriptProperties: () => props},
-    LockService: {getScriptLock: () => ({tryLock: () => true, releaseLock: () => {released = true;}})},
-    SpreadsheetApp: {openById: () => ({getSheetByName: () => null, insertSheet: () => writes++})},
+    PropertiesService: {getScriptProperties: () => ({getProperty: key => saved[key]})},
+    SpreadsheetApp: {openById: () => spreadsheet, flush: () => events.push(['flush'])},
+    LockService: {getScriptLock: () => ({tryLock: () => true, releaseLock: () => events.push(['release'])})},
   });
-  ctx.wiseBusinessProfiles_ = () => [{id:'20', name:'Business'}];
+  ctx.wiseWriteTransactions_ = (_, __, rows) => events.push(['transactions',rows]);
+  ctx.wiseGet_ = path => path.includes('statement.json') ? {transactions:[]} : path.endsWith('STANDARD') ? [balance] : [];
+  return {ctx,events,overview,spreadsheet};
+}
+test('failed statement fetch leaves balance, timestamp and transaction history unchanged', () => {
+  const {ctx,events} = syncFixture();
   ctx.wiseGet_ = path => {
     if (path.includes('statement.json')) throw new Error('Wise HTTP 403');
     return path.endsWith('STANDARD') ? [balance] : [];
   };
-  assert.throws(() => ctx.syncWiseAccount({profileId:'20', startDate:'2026-01-01'}), /403/);
-  assert.equal(writes, 0); assert.equal(released, true);
+  assert.throws(() => ctx.syncWiseScheduled(), /403/);
+  assert.deepEqual(events,[['release']]);
 });
-test('history requests split into at most 365 days and save checkpoint after both writes', () => {
-  const events = [], requests = [];
-  const props = {getProperty: () => null, setProperties: values => events.push(['checkpoint',values]), deleteProperty() {}};
-  const ctx = load({
-    PropertiesService: {getScriptProperties: () => props},
-    SpreadsheetApp: {openById: () => ({getSheetByName: () => null, getSpreadsheetTimeZone: () => 'Asia/Bangkok'}), flush: () => events.push(['flush'])},
-    Utilities: {formatDate: () => 'now'},
-  });
-  ctx.wiseBusinessProfiles_ = () => [{id:'20', name:'Business'}];
+test('successful daily/manual sync updates the overview only after importing transactions', () => {
+  const {ctx,events,spreadsheet} = syncFixture();
+  const now = new Date('2026-11-13T10:00:00Z');
+  ctx.wiseSync_(spreadsheet,now);
+  assert.deepEqual(events.map(event => event[0]), ['transactions','B7','B9','flush']);
+  assert.equal(events[1][1],400);
+  assert.equal(events[2][1],now);
+});
+test('overview formulas are preserved and failed transaction writes do not advance the update time', () => {
+  const {ctx,events,overview,spreadsheet} = syncFixture();
+  ctx.wiseWriteTransactions_ = () => {throw new Error('write failed');};
+  assert.throws(() => ctx.wiseSync_(spreadsheet,new Date('2026-11-13')), /write failed/);
+  assert.equal(events.length,0);
+  overview.getRange = cell => ({getValue: () => 'Wise Balance', getFormula: () => cell === 'B7' ? '=NAMED_BALANCE()' : ''});
+  assert.throws(() => ctx.wiseSync_(spreadsheet,new Date('2026-11-13')), /No formula was overwritten/);
+  assert.equal(events.length,0);
+});
+test('each balance resumes from its latest imported transaction, independently of row order', () => {
+  const ctx = load();
+  const row = ctx.wiseTransactionRows_([transaction()], balance, '20')[0];
+  const latest = [...row]; latest[0] = new Date('2026-11-05T10:23:45.678Z');
+  const other = [...row]; other[10] = '11'; other[0] = new Date('2026-11-10T10:00:00Z');
+  const otherProfile = [...latest]; otherProfile[11] = '21'; otherProfile[0] = new Date('2026-11-12');
+  const start = new Date('2026-01-01'), now = new Date('2026-11-13');
+  assert.equal(ctx.wiseImportStart_([latest,row,other,otherProfile],'10','20',start,now), Date.parse('2026-11-05T10:23:45Z'));
+  assert.equal(ctx.wiseImportStart_([latest,row,other],'11','20',start,now), other[0].getTime());
+  assert.equal(ctx.wiseImportStart_([latest,row,other],'12','20',start,now), start.getTime());
+  const invalid = [...row]; invalid[0] = new Date('2027-01-01');
+  assert.throws(() => ctx.wiseImportStart_([invalid],'10','20',start,now), /invalid or future/);
+});
+test('API history requests start at the latest transaction and split only long gaps', () => {
+  const ctx = load(), requests = [];
+  const row = ctx.wiseTransactionRows_([transaction()], balance, '20')[0];
   ctx.wiseGet_ = path => {
-    if (!path.includes('statement.json')) return path.endsWith('STANDARD') ? [balance] : [];
     const query = new URL('https://example.test' + path).searchParams;
-    const start = Date.parse(query.get('intervalStart')), end = Date.parse(query.get('intervalEnd'));
-    requests.push({start,end});
-    assert.ok(end - start <= 365 * 86400000);
+    requests.push({start:Date.parse(query.get('intervalStart')), end:Date.parse(query.get('intervalEnd'))});
     return {transactions:[]};
   };
-  ctx.wiseWriteSheet_ = (_, __, name) => events.push(['write',name]);
-  ctx.wiseSync_({profileId:'20', startDate:'2024-01-01'});
+  const now = new Date('2026-11-13T10:00:00Z');
+  ctx.wiseFetchTransactions_([balance],'20',[row],new Date('2024-01-01'),now);
+  assert.equal(requests.length,1);
+  assert.equal(requests[0].start,row[0].getTime());
+  assert.equal(requests[0].end,now.getTime());
+  requests.length = 0;
+  ctx.wiseFetchTransactions_([balance],'20',[],new Date('2024-01-01'),now);
   assert.ok(requests.length > 1);
-  for (let i = 1; i < requests.length; i++) assert.equal(requests[i].start, requests[i-1].end);
-  assert.deepEqual(events.map(event => event[0]), ['write','write','flush','checkpoint']);
+  requests.forEach(request => assert.ok(request.end - request.start <= 365 * 86400000));
+  for (let i = 1; i < requests.length; i++) assert.equal(requests[i].start,requests[i-1].end);
+});
+test('reimporting the boundary replaces it without duplicating history and keeps same-time transactions', () => {
+  const ctx = load();
+  const boundary = ctx.wiseTransactionRows_([transaction()], balance, '20')[0];
+  const sameTime = ctx.wiseTransactionRows_([transaction({referenceNumber:'TRANSFER-2'})], balance, '20')[0];
+  const older = [...boundary]; older[0] = new Date('2026-10-01');
+  const part = {balanceId:'10', profileId:'20', start:boundary[0].getTime(),end:Date.parse('2026-11-13'),rows:[boundary,sameTime]};
+  const result = ctx.wiseMergeTransactions_([older,boundary],[part]);
+  assert.equal(result.length,3);
+  assert.equal(ctx.wiseMergeTransactions_(result,[part]).length,3);
 });
 test('text formatting is applied before writing numeric-looking payment references', () => {
   const events = [];
@@ -121,46 +167,8 @@ test('text formatting is applied before writing numeric-looking payment referenc
     getRange: (...args) => {events.push({range:args}); return range;}, getFilter: () => null, autoResizeRows() {}};
   const ctx = load();
   const row = ctx.wiseTransactionRows_([transaction({details:{paymentReference:'026073154018474'}})], balance, '20')[0];
-  ctx.wiseWriteSheet_({}, sheet, 'Wise Transactions', Array(12).fill('header'), [row]);
+  ctx.wiseWriteTransactions_({}, sheet, [row]);
   const writeIndex = events.findIndex(event => event.write);
-  assert.ok(events.slice(0, writeIndex).some(event => event.range?.[1] === 8));
   assert.equal(events[writeIndex].write[1][7], '026073154018474');
   assert.equal(events.slice(0,writeIndex).filter(event => event.format === '@').length, 8);
-});
-test('every refresh reconciles the selected history for existing and new balances', () => {
-  const saved = {WISE_PROFILE_ID:'20', WISE_START_DATE:'2026-01-01',
-    WISE_LAST_SYNC:'2026-11-12T10:00:00Z', WISE_BALANCE_IDS:'["10"]'};
-  const requests = [];
-  const ctx = load({
-    PropertiesService: {getScriptProperties: () => ({getProperty: key => saved[key], setProperties() {}, deleteProperty() {}})},
-    SpreadsheetApp: {openById: () => ({getSpreadsheetTimeZone: () => 'Asia/Bangkok'}), flush() {}},
-    Utilities: {formatDate: () => 'now'},
-  });
-  ctx.wiseBusinessProfiles_ = () => [{id:'20', name:'Business'}];
-  ctx.wiseSheet_ = () => ({getLastRow: () => 1});
-  ctx.wiseWriteSheet_ = () => {};
-  ctx.wiseGet_ = path => {
-    if (!path.includes('statement.json')) return path.endsWith('STANDARD') ? [balance,{...balance,id:11}] : [];
-    const url = new URL('https://example.test' + path);
-    requests.push([url.pathname, url.searchParams.get('intervalStart')]);
-    return {transactions:[]};
-  };
-  ctx.wiseSync_({profileId:'20', startDate:'2026-01-01'});
-  assert.equal(requests.find(([path]) => path.includes('/10/'))[1], '2026-01-01T00:00:00.000Z');
-  assert.equal(requests.find(([path]) => path.includes('/11/'))[1], '2026-01-01T00:00:00.000Z');
-});
-test('daily schedule is idempotent and disabling it preserves unrelated triggers', () => {
-  const triggers = [{getHandlerFunction: () => 'onInstallableEdit'}];
-  let created = 0;
-  const builder = {timeBased() {return this;}, everyDays() {return this;}, atHour() {return this;}, inTimezone() {return this;},
-    create() {created++; triggers.push({getHandlerFunction: () => 'syncWiseScheduled'});}};
-  const ctx = load({
-    PropertiesService: {getScriptProperties: () => ({getProperty: () => 'last sync'})},
-    ScriptApp: {getProjectTriggers: () => triggers, newTrigger: () => builder,
-      deleteTrigger: trigger => triggers.splice(triggers.indexOf(trigger),1)},
-  });
-  ctx.enableWiseDailySync(); ctx.enableWiseDailySync();
-  assert.equal(created,1);
-  ctx.disableWiseDailySync();
-  assert.equal(triggers.length,1); assert.equal(triggers[0].getHandlerFunction(),'onInstallableEdit');
 });

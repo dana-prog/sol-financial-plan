@@ -21,7 +21,7 @@ function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     .addItem('Set Timeline Borders', '_onSetTimelineBorders')
     .addItem('Recalculate Loan Payments and Tax', 'showRepaymentCalculation')
-    .addItem('Wise connection', 'showWiseConnection')
+    .addItem('Sync Wise transactions now', 'syncWiseScheduled')
     // .addSeparator()
     // .addItem('Show Details', '_onShowDetails')
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
