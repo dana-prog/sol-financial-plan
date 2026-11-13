@@ -96,7 +96,18 @@
         "background": "#F1F5F9",
         "text": "#64748B"
       },
-      "statusColors": "Existing conditional formatting retained so green, amber, and red status values stand out against the neutral table."
+      "statusColors": "Existing conditional formatting retained so green, amber, and red status values stand out against the neutral table.",
+      "matchingExpenseBreakdown": {
+        "range": "Project Overview!B12:L19",
+        "titleRow": 12,
+        "headerRow": 13,
+        "bodyRows": [
+          14,
+          18
+        ],
+        "totalRow": 19,
+        "palette": "Same titleRows, columnHeaders, body, and totals styles as the loan tables."
+      }
     }
   },
   "outLoans": {
@@ -148,6 +159,12 @@
       "statusColorsPreserved": true,
       "visualInspection": "Both table titles, column headers, body rows, and status colors verified in native Google Sheets at 100% zoom.",
       "scope": "Only background, text emphasis/colors, and body bottom-border colors; no data, dimensions, merges, or Apps Script changes."
+    },
+    "expenseTableRestyle": {
+      "valuesAndFormulasUnchanged": true,
+      "namedFunctionCallsPreserved": true,
+      "formattingVerified": "Read back all target formatting; title, header, body, and total colors match the loan-table palette. Total row also visible in the native browser. Full visual navigation deferred because the user was actively editing conditional formatting.",
+      "scope": "Only formatting in B12:L19; dimensions, merged cells, links, and formulas retained."
     }
   }
 }
