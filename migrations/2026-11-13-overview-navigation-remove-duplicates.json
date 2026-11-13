@@ -1,0 +1,446 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Remove Other Sheets links whose destinations are already referenced in the expenses breakdown, and compact remaining links into three rows.",
+  "removed": [
+    {
+      "sheetId": 1304432573,
+      "formula": "=HYPERLINK(\"#gid=1304432573\",\"Setup Exp (P)\")",
+      "title": "Setup Exp (P)"
+    },
+    {
+      "sheetId": 2082967509,
+      "formula": "=HYPERLINK(\"#gid=2082967509\",\"Setup Exp (A)\")",
+      "title": "Setup Exp (A)"
+    },
+    {
+      "sheetId": 462995266,
+      "formula": "=HYPERLINK(\"#gid=462995266\",\"Construction Exp (P)\")",
+      "title": "Construction Exp (P)"
+    },
+    {
+      "sheetId": 1754072773,
+      "formula": "=HYPERLINK(\"#gid=1754072773\",\"Infra Exp (P)\")",
+      "title": "Infra Exp (P)"
+    },
+    {
+      "sheetId": 1675897452,
+      "formula": "=HYPERLINK(\"#gid=1675897452\",\"Obligations (P)\")",
+      "title": "Obligations (P)"
+    },
+    {
+      "sheetId": 1346380865,
+      "formula": "=HYPERLINK(\"#gid=1346380865\",\"In Loans\")",
+      "title": "In Loans"
+    }
+  ],
+  "remaining": [
+    {
+      "sheetId": 1093991711,
+      "formula": "=HYPERLINK(\"#gid=1093991711\",\"Operational Exp (P)\")",
+      "title": "Operational Exp (P)"
+    },
+    {
+      "sheetId": 198423991,
+      "formula": "=HYPERLINK(\"#gid=198423991\",\"Out Loans\")",
+      "title": "Out Loans"
+    },
+    {
+      "sheetId": 173849536,
+      "formula": "=HYPERLINK(\"#gid=173849536\",\"Revenue\")",
+      "title": "Revenue"
+    },
+    {
+      "sheetId": 280690834,
+      "formula": "=HYPERLINK(\"#gid=280690834\",\"Params\")",
+      "title": "Params"
+    },
+    {
+      "sheetId": 1436796628,
+      "formula": "=HYPERLINK(\"#gid=1436796628\",\"Units\")",
+      "title": "Units"
+    },
+    {
+      "sheetId": 1162211165,
+      "formula": "=HYPERLINK(\"#gid=1162211165\",\"Staff Roles\")",
+      "title": "Staff Roles"
+    },
+    {
+      "sheetId": 1875367343,
+      "formula": "=HYPERLINK(\"#gid=1875367343\",\"Occuppancy\")",
+      "title": "Occuppancy"
+    }
+  ],
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 41,
+          "endRowIndex": 42,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1093991711\",\"Operational Exp (P)\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 41,
+          "endRowIndex": 42,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=198423991\",\"Out Loans\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 41,
+          "endRowIndex": 42,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=173849536\",\"Revenue\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 42,
+          "endRowIndex": 43,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=280690834\",\"Params\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 42,
+          "endRowIndex": 43,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1436796628\",\"Units\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 42,
+          "endRowIndex": 43,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1162211165\",\"Staff Roles\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 43,
+          "endRowIndex": 44,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1875367343\",\"Occuppancy\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 43,
+          "endRowIndex": 44,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 43,
+          "endRowIndex": 44,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 44,
+          "endRowIndex": 45,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 44,
+          "endRowIndex": 45,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 44,
+          "endRowIndex": 45,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 45,
+          "endRowIndex": 46,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 45,
+          "endRowIndex": 46,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 45,
+          "endRowIndex": 46,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 44,
+          "endRowIndex": 46,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        }
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 44,
+          "endRowIndex": 46,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9568627450980393,
+                "green": 0.9686274509803922,
+                "blue": 0.9647058823529412
+              }
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 44,
+          "endIndex": 46
+        },
+        "properties": {
+          "pixelSize": 21
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "verification": {
+    "remainingLinksVerified": 7,
+    "expenseLinksUnchanged": true,
+    "removedDuplicateLinks": 6,
+    "layout": "Remaining links compacted into rows 42–44; unused rows 45–46 cleared and restored to background. API readback verified links and unchanged expense section. Native screenshot timed out while user was working in conditional formatting."
+  }
+}
