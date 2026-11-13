@@ -3,7 +3,8 @@
   "status": "Applied and verified on 2026-11-13",
   "sheet": "Project Overview",
   "range": "B12:L12",
-  "description": "Style Setup Expenses Breakdown as a section bar matching the Total row.",
+  "description": "Rename the section to Project Expenses Breakdown and style it as a section bar matching the Total row.",
+  "title": "Project Expenses Breakdown",
   "format": {
     "background": "#e0ede5",
     "text": "#173b36",
@@ -12,10 +13,10 @@
     "rowHeightPixels": 36
   },
   "verification": {
-    "titleAndMergedRangePreserved": true,
+    "titleVerifiedAndMergedRangePreserved": true,
     "colorsMatchTotalRow": true,
     "setupNavigationLinksPreserved": true,
     "titleRowHeightMatchesTotalRow": true
   },
-  "appsScript": "No source changes or clasp synchronization required; formatting only."
+  "appsScript": "No source changes or clasp synchronization required; title text and formatting only."
 }
