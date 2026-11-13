@@ -1,0 +1,215 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Keep Wise Balance beside the title with its label above side-by-side THB and USD values. Place Cash Flow immediately beneath the Project Overview title; preserve the as-of subtitle beneath that link.",
+  "requests": [
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 5,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        }
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 3,
+          "endRowIndex": 4,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 4,
+          "columnIndex": 1
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 4,
+          "endRowIndex": 5,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 3,
+          "columnIndex": 1
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 3,
+          "endRowIndex": 4,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 4,
+          "columnIndex": 9
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 2,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 2,
+          "columnIndex": 9
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 2,
+          "startColumnIndex": 14,
+          "endColumnIndex": 15
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 2,
+          "columnIndex": 13
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 3,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 3,
+          "endRowIndex": 4,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 4,
+          "endRowIndex": 5,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 2,
+          "startColumnIndex": 9,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 9,
+          "endColumnIndex": 12
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 13,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 4,
+          "endRowIndex": 5,
+          "startColumnIndex": 9,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 3,
+          "endRowIndex": 4,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "padding": {
+              "top": 0,
+              "bottom": 0,
+              "left": 0,
+              "right": 0
+            }
+          }
+        },
+        "fields": "userEnteredFormat.padding"
+      }
+    }
+  ],
+  "verification": {
+    "valuesFormulasAndNotePreserved": true,
+    "visualLayoutVerified": true,
+    "wiseTestsPassed": 15,
+    "scriptSync": "clasp push succeeded (16 files)"
+  }
+}

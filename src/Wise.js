@@ -114,7 +114,7 @@ function wiseSync_(spreadsheet, now) {
   if (!overview || overview.getRange('J2').getValue() !== 'Wise Balance') {
     throw new Error('The Wise Balance field could not be located in Project Overview.');
   }
-  if (['L2', 'O2', 'J4'].some(cell => overview.getRange(cell).getFormula())) {
+  if (['J3', 'N3', 'J5'].some(cell => overview.getRange(cell).getFormula())) {
     throw new Error('The Wise balance or update-time field contains a formula. No formula was overwritten.');
   }
   const transactionSheet = wiseSheet_(spreadsheet);
@@ -131,10 +131,10 @@ function wiseSync_(spreadsheet, now) {
   const imports = wiseFetchTransactions_(balances, profileId, previousRows, historyStart, now);
   const transactions = wiseMergeTransactions_(previousRows, imports);
   wiseWriteTransactions_(spreadsheet, transactionSheet, transactions);
-  overview.getRange('O2').setValue(available);
-  overview.getRange('L2').setValue(thb.amount).setNote('USD balance converted at 1 USD = ' + thb.rate
+  overview.getRange('N3').setValue(available);
+  overview.getRange('J3').setValue(thb.amount).setNote('USD balance converted at 1 USD = ' + thb.rate
     + ' THB. Wise rate timestamp: ' + thb.time + '. Indicative equivalent before conversion fees.');
-  overview.getRange('J4').setValue(now);
+  overview.getRange('J5').setValue(now);
   SpreadsheetApp.flush();
   return transactions.length;
 }
