@@ -1,0 +1,361 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "status": "Applied and verified on 2026-11-13",
+  "sheet": "Project Overview",
+  "sheetId": 190902611,
+  "range": "B30:L56",
+  "description": "Add the selected workstream cards below the existing overview. Preserve all existing dashboard content. Exclude principal loan repayment start month.",
+  "source": "Params!A2:C25",
+  "cards": [
+    {
+      "title": "Project horizon",
+      "range": "B32:F39",
+      "parameters": [
+        {
+          "name": "project start month",
+          "labelCell": "B33",
+          "valueCell": "F33",
+          "formula": "=PARAM(\"project start month\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "current month",
+          "labelCell": "B34",
+          "valueCell": "F34",
+          "formula": "=PARAM(\"current month\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "land acquisition month",
+          "labelCell": "B35",
+          "valueCell": "F35",
+          "formula": "=PARAM(\"land acquisition month\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "construction start month",
+          "labelCell": "B36",
+          "valueCell": "F36",
+          "formula": "=PARAM(\"construction start month\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "operations start month",
+          "labelCell": "B37",
+          "valueCell": "F37",
+          "formula": "=PARAM(\"operations start month\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "project end year",
+          "labelCell": "B38",
+          "valueCell": "F38",
+          "formula": "=PARAM(\"project end year\")",
+          "numberFormat": {
+            "type": "NUMBER",
+            "pattern": "\"YEAR\" 0"
+          }
+        },
+        {
+          "name": "project end month",
+          "labelCell": "B39",
+          "valueCell": "F39",
+          "formula": "=PARAM(\"project end month\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Land acquisition",
+      "range": "H32:L43",
+      "parameters": [
+        {
+          "name": "65M land debt start date",
+          "labelCell": "H33",
+          "valueCell": "L33",
+          "formula": "=PARAM(\"65M land debt start date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "45M land loan - emetway to sol - loan date",
+          "labelCell": "H34",
+          "valueCell": "L34",
+          "formula": "=PARAM(\"45M land loan - emetway to sol - loan date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "45M land purchase - sol to land owner - date",
+          "labelCell": "H35",
+          "valueCell": "L35",
+          "formula": "=PARAM(\"45M land purchase - sol to land owner - date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "land acquisition month",
+          "labelCell": "H36",
+          "valueCell": "L36",
+          "formula": "=PARAM(\"land acquisition month\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "40M land payment - emetway to treehouse - date",
+          "labelCell": "H37",
+          "valueCell": "L37",
+          "formula": "=PARAM(\"40M land payment - emetway to treehouse - date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "land rai count",
+          "labelCell": "H38",
+          "valueCell": "L38",
+          "formula": "=PARAM(\"land rai count\")",
+          "numberFormat": {
+            "type": "NUMBER",
+            "pattern": "0 \"rai\""
+          }
+        },
+        {
+          "name": "land sqm count",
+          "labelCell": "H39",
+          "valueCell": "L39",
+          "formula": "=PARAM(\"land sqm count\")",
+          "numberFormat": {
+            "type": "NUMBER",
+            "pattern": "0 \"sqm\""
+          }
+        },
+        {
+          "name": "land cost per rai",
+          "labelCell": "H40",
+          "valueCell": "L40",
+          "formula": "=PARAM(\"land cost per rai\")",
+          "numberFormat": {
+            "type": "NUMBER",
+            "pattern": "฿ #,##0,\"K\""
+          }
+        },
+        {
+          "name": "land cost",
+          "labelCell": "H41",
+          "valueCell": "L41",
+          "formula": "=PARAM(\"land cost\")",
+          "numberFormat": {
+            "type": "NUMBER",
+            "pattern": "฿ #,##0,\"K\""
+          }
+        },
+        {
+          "name": "land debt interest rate",
+          "labelCell": "H42",
+          "valueCell": "L42",
+          "formula": "=PARAM(\"land debt interest rate\")",
+          "numberFormat": {
+            "type": "PERCENT",
+            "pattern": "0%"
+          }
+        },
+        {
+          "name": "land debt",
+          "labelCell": "H43",
+          "valueCell": "L43",
+          "formula": "=PARAM(\"land debt\")",
+          "numberFormat": {
+            "type": "NUMBER",
+            "pattern": "฿ #,##0,\"K\""
+          }
+        }
+      ]
+    },
+    {
+      "title": "Funding & repayments",
+      "range": "B46:F54",
+      "parameters": [
+        {
+          "name": "65M land debt start date",
+          "labelCell": "B47",
+          "valueCell": "F47",
+          "formula": "=PARAM(\"65M land debt start date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "10M loan - emetway to treehouse - loan date",
+          "labelCell": "B48",
+          "valueCell": "F48",
+          "formula": "=PARAM(\"10M loan - emetway to treehouse - loan date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "70M loan - rosenfeld to emetway - loan date",
+          "labelCell": "B49",
+          "valueCell": "F49",
+          "formula": "=PARAM(\"70M loan - rosenfeld to emetway - loan date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "30M loan - emetway to treehouse - loan date",
+          "labelCell": "B50",
+          "valueCell": "F50",
+          "formula": "=PARAM(\"30M loan - emetway to treehouse - loan date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "45M land loan - emetway to sol - loan date",
+          "labelCell": "B51",
+          "valueCell": "F51",
+          "formula": "=PARAM(\"45M land loan - emetway to sol - loan date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "10M loan - emetway to treehouse - repayment date",
+          "labelCell": "B52",
+          "valueCell": "F52",
+          "formula": "=PARAM(\"10M loan - emetway to treehouse - repayment date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "30M loan - emetway to treehouse - repayment date",
+          "labelCell": "B53",
+          "valueCell": "F53",
+          "formula": "=PARAM(\"30M loan - emetway to treehouse - repayment date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "40M land payment - emetway to treehouse - date",
+          "labelCell": "B54",
+          "valueCell": "F54",
+          "formula": "=PARAM(\"40M land payment - emetway to treehouse - date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Delivery & operations",
+      "range": "H46:L49",
+      "parameters": [
+        {
+          "name": "BOI approval date",
+          "labelCell": "H47",
+          "valueCell": "L47",
+          "formula": "=PARAM(\"BOI approval date\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "construction start month",
+          "labelCell": "H48",
+          "valueCell": "L48",
+          "formula": "=PARAM(\"construction start month\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        },
+        {
+          "name": "operations start month",
+          "labelCell": "H49",
+          "valueCell": "L49",
+          "formula": "=PARAM(\"operations start month\")",
+          "numberFormat": {
+            "type": "DATE",
+            "pattern": "mmm yyyy"
+          }
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "heading": "B30:L30",
+    "subtitle": "B31:L31",
+    "sourceLink": "B56:L56",
+    "columnWidths": "Unchanged",
+    "rowHeights": {
+      "30": 40,
+      "31": 28,
+      "32": 36,
+      "46": 36,
+      "55": 16,
+      "56": 28,
+      "33:43": 44,
+      "44:45": 16,
+      "47:54": 44
+    },
+    "colors": {
+      "background": "#f4f7f6",
+      "card": "#ffffff",
+      "header": "#eaf2ee",
+      "text": "#183c36",
+      "border": "#dce6e1"
+    }
+  },
+  "verification": {
+    "displayedValuesCompared": 29,
+    "distinctParameters": 23,
+    "allValuesMatchParams": true,
+    "allValueFormulasUseExistingPARAM": true,
+    "sourceNumberFormatsPreserved": true,
+    "sourceParamsUnchanged": true,
+    "existingDashboardContentAndFormattingUnchanged": true,
+    "mergesAndDimensionsVerified": true,
+    "googleSheetsVisualInspection": "All four cards inspected in Chrome at 100% sheet zoom; labels, dates, currency and units fit."
+  },
+  "appsScript": "No source changes or clasp synchronization required; native spreadsheet formulas and formatting only."
+}
