@@ -1,0 +1,87 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Reorder Other Sheets: Operational Exp (P), Revenue, Occuppancy on the first row; retain Params, Units, Staff Roles on the second row.",
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=173849536\",\"Revenue\")"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "link": {
+                      "uri": "#gid=173849536"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1875367343\",\"Occuppancy\")"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "link": {
+                      "uri": "#gid=1875367343"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 42,
+          "endRowIndex": 43,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link"
+      }
+    }
+  ],
+  "verification": "Read back all six links and verified their order visually in native Google Sheets. Original destinations and formatting preserved."
+}
