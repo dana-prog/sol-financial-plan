@@ -24,10 +24,10 @@ function _createMenu() {
     .addItem('Show Details', '_onShowDetails')
     .addItem('Set Timeline Borders', '_onSetTimelineBorders')
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
-    // .addSeparator()
+    .addSeparator()
     // .addItem('Toggle Write Logs To File', '_onToggleWriteLogsToFile')
-    // .addItem('Export Named Functions', '_onExportNamedFunctions')
-    // .addItem('Export Formulas', '_onExportFormulas')
+    .addItem('Export Named Functions', '_onExportNamedFunctions')
+    .addItem('Export Formulas', '_onExportFormulas')
     .addToUi();
 }
 

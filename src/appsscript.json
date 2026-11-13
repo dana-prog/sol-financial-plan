@@ -1,13 +1,15 @@
 {
   "timeZone": "Asia/Bangkok",
-  "dependencies": {
-    "libraries": [{
-      "userSymbol": "SOLLibrary",
-      "libraryId": "1LtXhayclFpUquRSb4BZpNm6ufo03N7DMyeIMrLZAx5TcSpp0Zb1mVSvY",
-      "version": "0",
-      "developmentMode": true
-    }]
-  },
   "exceptionLogging": "STACKDRIVER",
-  "runtimeVersion": "V8"
+  "runtimeVersion": "V8",
+  "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "SOLLibrary",
+        "version": "0",
+        "libraryId": "1OlA4IjXB56DhQAYHHycAVoSPU1Cjvth5gkpXrf-32qDevkF5t6M8ZhC8",
+        "developmentMode": true
+      }
+    ]
+  }
 }

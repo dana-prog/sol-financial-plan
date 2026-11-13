@@ -72,6 +72,55 @@ function setTimelineSheetBorders() {
         .setBorder(true, null, null, null, null, null, BORDER_COLOR, SpreadsheetApp.BorderStyle.SOLID_THICK);
     }
   }
+
+
+  if (sheet.getName() === "In Loans" || sheet.getName() === "Out Loans") {
+    setLoanSectionBorders(sheet, lastRow, lastCol);
+  }
+}
+
+function setLoanSectionBorders(sheet, lastRow, lastCol) {
+  const headers = sheet.getRange(HEADER_ROW, 1, 1, lastCol).getValues()[0];
+  const paramCol = headers.findIndex(
+    value => String(value).trim().toLowerCase() === "param"
+  ) + 1;
+
+  if (paramCol === 0) {
+    throw new Error('Could not find the "Param" column.');
+  }
+
+  const rows = sheet
+    .getRange(FIRST_CATEGORY_ROW, 1, lastRow - FIRST_CATEGORY_ROW + 1, paramCol)
+    .getValues();
+
+  const borderAfter = new Set([
+    "end balance",
+    "principal carried forward",
+    "interest carried forward"
+  ]);
+
+  let inLoanSection = false;
+
+  rows.forEach((row, index) => {
+    const category = String(row[CATEGORY_COL - 1]).trim().toLowerCase();
+    const param = String(row[paramCol - 1]).trim().toLowerCase();
+
+    if (category === "totals") {
+      inLoanSection = false;
+    } else if (param === "start balance") {
+      inLoanSection = true;
+    }
+
+    if (inLoanSection && borderAfter.has(param)) {
+      sheet
+        .getRange(FIRST_CATEGORY_ROW + index, paramCol, 1, lastCol - paramCol + 1)
+        .setBorder(
+          null, null, true, null, null, null,
+          BORDER_COLOR,
+          SpreadsheetApp.BorderStyle.SOLID
+        );
+    }
+  });
 }
 
 function _getFirstNumericColumn(sheet, rowNum) {
