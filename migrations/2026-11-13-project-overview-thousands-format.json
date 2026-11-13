@@ -1,0 +1,302 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Display all monetary amounts in thousands, preserving full stored values, dates, percentages, priorities, and named functions.",
+  "requests": [
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 7,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "\"USD \"#,##0, \"K\";[Red](\"USD \"#,##0, \"K\")"
+            }
+          }
+        },
+        "fields": "userEnteredFormat.numberFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 7,
+          "endRowIndex": 8,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "\"≈ ฿\"#,##0, \"K\";[Red](\"≈ ฿\"#,##0, \"K\")"
+            }
+          }
+        },
+        "fields": "userEnteredFormat.numberFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 19,
+          "startColumnIndex": 7,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "\"฿\"#,##0, \"K\";[Red](\"฿\"#,##0, \"K\")"
+            }
+          }
+        },
+        "fields": "userEnteredFormat.numberFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 23,
+          "endRowIndex": 31,
+          "startColumnIndex": 7,
+          "endColumnIndex": 12
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "\"฿\"#,##0, \"K\";[Red](\"฿\"#,##0, \"K\")"
+            }
+          }
+        },
+        "fields": "userEnteredFormat.numberFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 35,
+          "endRowIndex": 38,
+          "startColumnIndex": 7,
+          "endColumnIndex": 12
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "\"฿\"#,##0, \"K\";[Red](\"฿\"#,##0, \"K\")"
+            }
+          }
+        },
+        "fields": "userEnteredFormat.numberFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 12,
+          "endColumnIndex": 13
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=\"Received: \"&TEXT(SUMIF(M24:M30,\"Received\",H24:H30),\"฿#,##0, \"\"K\"\"\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 37,
+          "endRowIndex": 38,
+          "startColumnIndex": 12,
+          "endColumnIndex": 13
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=\"Planned:\"&TEXT(SUMIF(M36:M37,\"Planned\",H36:H37),\"฿#,##0, \"\"K\"\"\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    }
+  ],
+  "formulaChanges": [
+    {
+      "cell": "M31",
+      "before": "=\"Received: \"&TEXT(SUMIF(M24:M30,\"Received\",H24:H30),\"฿ #,##0\")",
+      "after": "=\"Received: \"&TEXT(SUMIF(M24:M30,\"Received\",H24:H30),\"฿#,##0, \"\"K\"\"\")"
+    },
+    {
+      "cell": "M38",
+      "before": "=\"Planned:\"&TEXT(SUMIF(M36:M37,\"Planned\",H36:H37),\"฿ #,##0\")",
+      "after": "=\"Planned:\"&TEXT(SUMIF(M36:M37,\"Planned\",H36:H37),\"฿#,##0, \"\"K\"\"\")"
+    }
+  ],
+  "verification": {
+    "numericValuesUnchanged": true,
+    "otherFormulasAndValuesUnchanged": true,
+    "noFormulaErrors": true,
+    "displayChanges": [
+      {
+        "cell": "B7",
+        "before": "USD 145,230.96",
+        "after": "USD 145 K"
+      },
+      {
+        "cell": "B8",
+        "before": "≈ THB 4,922,240.31",
+        "after": "≈ ฿4,922 K"
+      },
+      {
+        "cell": "H24",
+        "before": "฿ 20,645",
+        "after": "฿21 K"
+      },
+      {
+        "cell": "K24",
+        "before": "฿ 0",
+        "after": "฿0 K"
+      },
+      {
+        "cell": "H25",
+        "before": "฿ 1,667,500",
+        "after": "฿1,668 K"
+      },
+      {
+        "cell": "K25",
+        "before": "฿ 66,197",
+        "after": "฿66 K"
+      },
+      {
+        "cell": "H26",
+        "before": "฿ 5,000,000",
+        "after": "฿5,000 K"
+      },
+      {
+        "cell": "K26",
+        "before": "฿ 79,589",
+        "after": "฿80 K"
+      },
+      {
+        "cell": "H27",
+        "before": "฿ 10,000,000",
+        "after": "฿10,000 K"
+      },
+      {
+        "cell": "K27",
+        "before": "฿ 1,918",
+        "after": "฿2 K"
+      },
+      {
+        "cell": "H28",
+        "before": "฿ 70,000,000",
+        "after": "฿70,000 K"
+      },
+      {
+        "cell": "K28",
+        "before": "฿ 0",
+        "after": "฿0 K"
+      },
+      {
+        "cell": "H29",
+        "before": "฿ 100,000,000",
+        "after": "฿100,000 K"
+      },
+      {
+        "cell": "K29",
+        "before": "฿ 0",
+        "after": "฿0 K"
+      },
+      {
+        "cell": "H30",
+        "before": "฿ 100,000,000",
+        "after": "฿100,000 K"
+      },
+      {
+        "cell": "K30",
+        "before": "฿ 0",
+        "after": "฿0 K"
+      },
+      {
+        "cell": "H31",
+        "before": "฿ 286,688,145",
+        "after": "฿286,688 K"
+      },
+      {
+        "cell": "K31",
+        "before": "฿ 147,704",
+        "after": "฿148 K"
+      },
+      {
+        "cell": "M31",
+        "before": "Received: ฿ 16,688,145",
+        "after": "Received: ฿16,688 K"
+      },
+      {
+        "cell": "H36",
+        "before": "฿ 10,000,000",
+        "after": "฿10,000 K"
+      },
+      {
+        "cell": "K36",
+        "before": "฿ 0",
+        "after": "฿0 K"
+      },
+      {
+        "cell": "H37",
+        "before": "฿ 30,000,000",
+        "after": "฿30,000 K"
+      },
+      {
+        "cell": "K37",
+        "before": "฿ 0",
+        "after": "฿0 K"
+      },
+      {
+        "cell": "H38",
+        "before": "฿ 40,000,000",
+        "after": "฿40,000 K"
+      },
+      {
+        "cell": "K38",
+        "before": "฿ 0",
+        "after": "฿0 K"
+      },
+      {
+        "cell": "M38",
+        "before": "Planned:฿ 40,000,000",
+        "after": "Planned:฿40,000 K"
+      }
+    ]
+  }
+}
