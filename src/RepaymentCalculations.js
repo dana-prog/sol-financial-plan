@@ -1,5 +1,5 @@
-/** Calculates incoming repayments in memory so cash and debt never depend on each other in Sheets. */
-function calculateIncomingRepayments(model) {
+/** Calculates borrowing repayments in memory so cash and debt never depend on each other in Sheets. */
+function calculateBorrowingRepayments(model) {
   const states = model.loans.map(() => ({principal: 0, interest: 0, capitalized: 0, interestPaid: 0}));
   const payments = model.loans.map(loan => ({row: loan.row, principal: [], interest: []}));
   const order = model.loans.map((loan, index) => ({index, priority: loan.priority, row: loan.row}))
@@ -8,7 +8,7 @@ function calculateIncomingRepayments(model) {
   const interestAccrued = [];
   let balance = 0;
   model.months.forEach((month, index) => {
-    const accrued = model.loans.map((loan, i) => accrueIncomingLoanMonth(loan, states[i], month, loan.draws[index]));
+    const accrued = model.loans.map((loan, i) => accrueBorrowingMonth(loan, states[i], month, loan.draws[index]));
     interestAccrued.push(accrued.reduce((sum, state, i) => sum + state.interest - states[i].interest, 0));
     const draws = model.loans.reduce((sum, loan) => sum + loan.draws[index], 0);
     const beforeRepayments = balance + model.receipts[index] + draws - model.expenses[index];
@@ -37,7 +37,7 @@ function calculateIncomingRepayments(model) {
   return {payments, cash, interestAccrued};
 }
 
-function accrueIncomingLoanMonth(loan, previous, month, draw) {
+function accrueBorrowingMonth(loan, previous, month, draw) {
   const principal = previous.principal + draw;
   if (loan.date === null || month < repaymentMonthStart(loan.date)) {
     return {principal, interest: previous.interest, capitalized: 0};
@@ -85,7 +85,7 @@ function showRepaymentCalculation() {
   SpreadsheetApp.getUi().showModalDialog(template.evaluate().setWidth(460).setHeight(160), 'Recalculate Loan Payments and Tax');
 }
 
-function recalculateIncomingLoanRepayments() {
+function recalculateBorrowingRepayments() {
   const started = Date.now();
   const timings = {};
   const lock = LockService.getDocumentLock();
@@ -94,13 +94,13 @@ function recalculateIncomingLoanRepayments() {
     timings.lockMs = Date.now() - started;
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     let phase = Date.now();
-    const model = readIncomingRepaymentModel(spreadsheet);
+    const model = readBorrowingRepaymentModel(spreadsheet);
     timings.readMs = Date.now() - phase;
     phase = Date.now();
     const result = calculateRepaymentsWithCompanyTax(model);
     timings.calculateMs = Date.now() - phase;
     phase = Date.now();
-    const sheet = repaymentSheet(spreadsheet, 'In Loans');
+    const sheet = repaymentSheet(spreadsheet, 'Borrowings');
     const requests = companyTaxWriteRequests(spreadsheet, model, result);
     result.payments.forEach(payment => {
       requests.push(repaymentRowWrite(sheet, payment.row + 6, model.timelineColumn, payment.principal, model.months.length));
@@ -133,22 +133,22 @@ function recalculateIncomingLoanRepayments() {
   }
 }
 
-function readIncomingRepaymentModel(spreadsheet) {
+function readBorrowingRepaymentModel(spreadsheet) {
   const inputs = readRepaymentInputs(spreadsheet);
   // API date serials represent the spreadsheet's local calendar, not a UTC instant.
   const timezone = 'UTC';
-  const grid = inputs['In Loans'];
+  const grid = inputs['Borrowings'];
   const headers = grid[0];
   const columns = Object.fromEntries(['Name', 'Priority', 'Date', 'Interest',
     'Interest repayment start deadline (years)'].map(name => [name, repaymentHeaderIndex(headers, name)]));
   const paramIndex = repaymentHeaderIndex(headers, 'Param');
   if (paramIndex < 9 || headers.lastIndexOf('Param') !== paramIndex) {
-    throw new Error('Expected one In Loans Param header after the loan input columns.');
+    throw new Error('Expected one Borrowings Param header after the loan input columns.');
   }
   const timelineIndex = paramIndex + 1;
   const months = [];
-  for (let c = timelineIndex; headers[c] instanceof Date; c++) months.push(repaymentDate(headers[c], timezone, 'In Loans timeline'));
-  if (!months.length) throw new Error('The In Loans monthly timeline is missing.');
+  for (let c = timelineIndex; headers[c] instanceof Date; c++) months.push(repaymentDate(headers[c], timezone, 'Borrowings timeline'));
+  if (!months.length) throw new Error('The Borrowings monthly timeline is missing.');
   months.forEach((day, i) => {
     const previous = new Date(((months[i - 1] || day) - 25569) * 86400000);
     if (day !== repaymentMonthStart(day) || (i && day !== repaymentDay(previous.getUTCFullYear(), previous.getUTCMonth() + 1, 1))) {
@@ -170,7 +170,7 @@ function readIncomingRepaymentModel(spreadsheet) {
     'interest capitalization month', 'capitalized interest', 'balance bearing interest'];
   grid.forEach((row, index) => {
     if (row[paramIndex] !== 'start balance') return;
-    if (!row[columns.Name]) throw new Error('Missing loan name at In Loans row ' + (index + 3));
+    if (!row[columns.Name]) throw new Error('Missing loan name at Borrowings row ' + (index + 3));
     labels.forEach((label, offset) => {
       if (grid[index + offset]?.[paramIndex] !== label) throw new Error('Unexpected schedule layout for ' + row[columns.Name] + ': ' + label);
     });
@@ -183,7 +183,7 @@ function readIncomingRepaymentModel(spreadsheet) {
     loans.push({row: index + 3, name: row[columns.Name], priority: repaymentNumber(row[columns.Priority], row[columns.Name] + ' priority'),
       date, rate, draws, interestRepaymentStart});
   });
-  if (!loans.length) throw new Error('No incoming loan schedules were found.');
+  if (!loans.length) throw new Error('No borrowing schedules were found.');
   const cash = inputs['Cash Flow'].map(row => row.slice(0, months.length + 1));
   checkRepaymentTimeline(cash[0].slice(1), months, timezone, 'Cash Flow');
   const cashRow = name => {
@@ -195,17 +195,17 @@ function readIncomingRepaymentModel(spreadsheet) {
   ['land expenses', 'setup expenses', 'construction expenses', 'infra expenses',
     'direct operating expenses', 'other operating expenses', 'loans disbursed']
     .forEach(name => cashRow(name).forEach((value, i) => { expenses[i] += value; }));
-  const outgoingRows = inputs['Out Loans'].map(row => row.slice(0, months.length + 1));
-  checkRepaymentTimeline(outgoingRows[0].slice(1), months, timezone, 'Out Loans');
+  const outgoingRows = inputs['Loans'].map(row => row.slice(0, months.length + 1));
+  checkRepaymentTimeline(outgoingRows[0].slice(1), months, timezone, 'Loans');
   const receiptsRows = outgoingRows.filter(row => row[0] === 'total loan paid');
-  if (receiptsRows.length !== 1) throw new Error('Expected one total loan paid row in Out Loans.');
+  if (receiptsRows.length !== 1) throw new Error('Expected one total loan paid row in Loans.');
   const revenue = cashRow('revenue');
-  const receipts = receiptsRows[0].slice(1).map((value, i) => repaymentNumber(value, 'Out Loans repayments') + revenue[i]);
+  const receipts = receiptsRows[0].slice(1).map((value, i) => repaymentNumber(value, 'Loans repayments') + revenue[i]);
   const depreciation = readUnitDepreciation(inputs, months, timezone);
   const otherDepreciation = cashRow('setup depreciation');
   const operatingProfit = cashRow('operating profit');
   const interestIncome = months.map((_, i) => outgoingRows.filter(row => row[0] === 'interest generated')
-    .reduce((sum, row) => sum + repaymentNumber(row[i + 1], 'Out Loans interest income'), 0));
+    .reduce((sum, row) => sum + repaymentNumber(row[i + 1], 'Loans interest income'), 0));
   const tax = {rate: repaymentNumber(parameter('company tax rate'), 'company tax rate'),
     yearEndMonth: repaymentNumber(parameter('financial year-end month'), 'financial year-end month'), depreciation,
     profitBeforeInterest: operatingProfit.map((profit, i) => profit + interestIncome[i] - depreciation[i] - otherDepreciation[i])};
@@ -216,10 +216,10 @@ function readIncomingRepaymentModel(spreadsheet) {
 /** Read calculated inputs together; date formats preserve the existing date validation. */
 function readRepaymentInputs(spreadsheet) {
   const ranges = [
-    {name: 'In Loans', row: 3, column: 1},
+    {name: 'Borrowings', row: 3, column: 1},
     {name: 'Params', row: 2, column: 2, width: 2},
     {name: 'Cash Flow', row: 3, column: 2},
-    {name: 'Out Loans', row: 3, column: 9},
+    {name: 'Loans', row: 3, column: 9},
     {name: 'Construction Exp (P)', row: 3, column: 2},
     {name: 'Units', row: 2, column: 4, width: 13}
   ].map(input => {
@@ -282,7 +282,7 @@ function repaymentDate(value, timezone, label) {
 
 function checkRepaymentTimeline(dates, months, timezone, sheet) {
   if (dates.length !== months.length || dates.some((date, i) => repaymentDate(date, timezone, sheet + ' timeline') !== months[i])) {
-    throw new Error(sheet + ' and In Loans must use the same monthly timeline. Nothing was written.');
+    throw new Error(sheet + ' and Borrowings must use the same monthly timeline. Nothing was written.');
   }
 }
 
@@ -290,7 +290,7 @@ function checkRepaymentTimeline(dates, months, timezone, sheet) {
 function repaymentHeaderIndex(headers, name) {
   const index = headers.indexOf(name);
   if (index < 0 || headers.lastIndexOf(name) !== index) {
-    throw new Error('Expected exactly one In Loans header: ' + name + '. Nothing was written.');
+    throw new Error('Expected exactly one Borrowings header: ' + name + '. Nothing was written.');
   }
   return index;
 }

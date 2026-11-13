@@ -17,7 +17,7 @@ function setTimelineSheetBorders() {
   const lastCol = sheet.getLastColumn();
 
   if (firstDateCol < 1 || lastRow < FIRST_CATEGORY_ROW) throw new Error('Select a populated timeline sheet. No borders were changed.');
-  if (sheet.getName() === 'In Loans' || sheet.getName() === 'Out Loans') {
+  if (sheet.getName() === 'Borrowings' || sheet.getName() === 'Loans') {
     const headers = sheet.getRange(HEADER_ROW, 1, 1, lastCol).getValues()[0];
     if (!headers.some(value => String(value).trim().toLowerCase() === 'param')) {
       throw new Error('Could not find the Param column. No borders were changed.');
@@ -74,7 +74,7 @@ function setTimelineSheetBorders() {
   }
 
 
-  if (sheet.getName() === "In Loans" || sheet.getName() === "Out Loans") {
+  if (sheet.getName() === "Borrowings" || sheet.getName() === "Loans") {
     setLoanSectionBorders(sheet, lastRow, lastCol);
   }
 }

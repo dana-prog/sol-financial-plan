@@ -9,7 +9,7 @@ const day = (year, month, date = 1) => context.repaymentDay(year, month - 1, dat
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-7, `${actual} != ${expected}`);
 const loan = (overrides = {}) => ({row: 4, name: 'Loan', priority: 1, date: day(2026, 1), rate: 0, draws: [100], interestRepaymentStart: day(2026, 1), ...overrides});
 const model = (overrides = {}) => ({months: [day(2026, 1)], loans: [loan()], receipts: [0], expenses: [0], reserve: 0, principalRepaymentStart: day(2026, 1), timelineColumn: 11, ...overrides});
-const calc = value => context.calculateIncomingRepayments(value);
+const calc = value => context.calculateBorrowingRepayments(value);
 const state = (overrides = {}) => ({principal: 0, interest: 0, capitalized: 0, interestPaid: 0, ...overrides});
 
 test('preserves the reserve and caps principal payments at the debt owed', () => {
@@ -109,27 +109,27 @@ test('a loan with zero draws produces no debt or repayments', () => {
 });
 
 test('prorates initial interest including the draw date', () => {
-  const result = context.accrueIncomingLoanMonth(loan({date: day(2026, 1, 20), rate: 0.365}), state(), day(2026, 1), 1000);
+  const result = context.accrueBorrowingMonth(loan({date: day(2026, 1, 20), rate: 0.365}), state(), day(2026, 1), 1000);
   near(result.interest, 12);
 });
 
 test('capitalizes interest on the anniversary and compounds only the remaining days', () => {
-  const result = context.accrueIncomingLoanMonth(loan({date: day(2025, 1, 20), rate: 0.365}),
+  const result = context.accrueBorrowingMonth(loan({date: day(2025, 1, 20), rate: 0.365}),
     state({principal: 1000, interest: 100, capitalized: 80, interestPaid: 30}), day(2026, 1), 0);
   near(result.capitalized, 119.95);
   near(result.interest, 100 + 1050 * 31 / 1000 + (119.95 - 50) * 12 / 1000);
 });
 
 test('clamps leap-day anniversary to February 28 and uses Actual/365', () => {
-  const result = context.accrueIncomingLoanMonth(loan({date: day(2024, 2, 29), rate: 0.365}),
+  const result = context.accrueBorrowingMonth(loan({date: day(2024, 2, 29), rate: 0.365}),
     state({principal: 1000, interest: 10}), day(2025, 2), 0);
   near(result.capitalized, 37);
   near(result.interest, 10 + 28 + 0.037);
 });
 
 test('no interest is generated before the draw month or without a loan date', () => {
-  near(context.accrueIncomingLoanMonth(loan({date: day(2026, 2), rate: 0.1}), state(), day(2026, 1), 0).interest, 0);
-  near(context.accrueIncomingLoanMonth(loan({date: null}), state(), day(2026, 1), 0).interest, 0);
+  near(context.accrueBorrowingMonth(loan({date: day(2026, 2), rate: 0.1}), state(), day(2026, 1), 0).interest, 0);
+  near(context.accrueBorrowingMonth(loan({date: null}), state(), day(2026, 1), 0).interest, 0);
 });
 
 test('repeated calculations are deterministic and do not mutate inputs', () => {
@@ -177,11 +177,11 @@ test('server action saves payments, tax and timestamp in one batch and releases 
     }}
   });
   vm.runInContext(source, server);
-  server.readIncomingRepaymentModel = () => model({timelineColumn: 14});
-  server.calculateRepaymentsWithCompanyTax = value => server.calculateIncomingRepayments(value);
+  server.readBorrowingRepaymentModel = () => model({timelineColumn: 14});
+  server.calculateRepaymentsWithCompanyTax = value => server.calculateBorrowingRepayments(value);
   const taxRequest = {updateCells: {fields: 'userEnteredValue'}};
   server.companyTaxWriteRequests = () => [taxRequest];
-  server.recalculateIncomingLoanRepayments();
+  server.recalculateBorrowingRepayments();
   assert.equal(fetches, 1);
   assert.deepEqual(requests[0], taxRequest);
   assert.deepEqual(requests.slice(1, 3).map(x => x.updateCells.range.startRowIndex), [9, 12]);
@@ -190,7 +190,7 @@ test('server action saves payments, tax and timestamp in one batch and releases 
   assert.equal(released, true);
   released = false;
   server.UrlFetchApp.fetch = () => ({getResponseCode: () => 403, getContentText: () => 'Protected range'});
-  assert.throws(() => server.recalculateIncomingLoanRepayments(), /HTTP 403/);
+  assert.throws(() => server.recalculateBorrowingRepayments(), /HTTP 403/);
   assert.equal(released, true);
 });
 
@@ -201,8 +201,8 @@ test('input failure causes no writes and releases the lock', () => {
     LockService: {getDocumentLock: () => ({tryLock: () => true, releaseLock() {released = true;}})}
   });
   vm.runInContext(source, server);
-  server.readIncomingRepaymentModel = () => {throw new Error('Bad input');};
-  assert.throws(() => server.recalculateIncomingLoanRepayments(), /Bad input/);
+  server.readBorrowingRepaymentModel = () => {throw new Error('Bad input');};
+  assert.throws(() => server.recalculateBorrowingRepayments(), /Bad input/);
   assert.equal(released, true);
 });
 
@@ -220,17 +220,17 @@ test('display columns do not change loan inputs or repayment calculations', () =
     ...labels.map((label, i) => [...(i ? Array(10).fill('') : ['Loan', 1, date, date, 'Lender', 100, 0.07, 0, 5, 'Received']),
       ...Array(extraColumns).fill('display only'), label, i === 1 ? 100 : 0])];
     const sheets = {
-      'In Loans': grid,
+      'Borrowings': grid,
       Params: [['principal loan repayment start month', date], ['minimum cash reserve', 0],
         ['company tax rate', 0.2], ['financial year-end month', 12]],
       'Cash Flow': [['Param', date], ...cashLabels.map(label => [label, label === 'setup expenses' ? 7 : label === 'loans disbursed' ? 3 : 0])],
-      'Out Loans': [['Param', date], ['total loan paid', 0]]
+      'Loans': [['Param', date], ['total loan paid', 0]]
     };
     const reader = vm.createContext({Date, Utilities: {formatDate: value => value.toISOString().slice(0, 10)}});
     vm.runInContext(source, reader);
     reader.readUnitDepreciation = () => [0];
     reader.readRepaymentInputs = () => sheets;
-    return reader.readIncomingRepaymentModel({});
+    return reader.readBorrowingRepaymentModel({});
   }
   const original = read(0);
   assert.equal(original.expenses[0], 10);
@@ -250,7 +250,7 @@ test('missing or duplicate required headers fail before calculation', () => {
 });
 
 test('invalid result rows are rejected before saving; valid writes use the atomic batch permission check', () => {
-  const sheet = {getName: () => 'In Loans', getSheetId: () => 123};
+  const sheet = {getName: () => 'Borrowings', getSheetId: () => 123};
   assert.throws(() => context.repaymentRowWrite(sheet, 10, 14, [NaN], 1), /Invalid result/);
   assert.throws(() => context.repaymentRowWrite(sheet, 10, 14, [1], 2), /Invalid result/);
   assert.equal(context.repaymentRowWrite(sheet, 10, 14, [1], 1).updateCells.range.sheetId, 123);
@@ -273,7 +273,7 @@ test('batch inputs retain unrounded amounts, booleans, errors and local calendar
 });
 
 test('batch reader maps sheets by name and restores omitted empty rows and cells', () => {
-  const names = ['In Loans', 'Params', 'Cash Flow', 'Out Loans', 'Construction Exp (P)', 'Units'];
+  const names = ['Borrowings', 'Params', 'Cash Flow', 'Loans', 'Construction Exp (P)', 'Units'];
   const book = {getId: () => 'test', getSheetByName: name => ({
     getLastRow: () => 4, getLastColumn: () => 16,
     getRange: () => ({getA1Notation: () => 'A1:P4'})
@@ -295,7 +295,7 @@ test('batch reader maps sheets by name and restores omitted empty rows and cells
   assert.equal(actual.Params.length, 3);
   assert.equal(actual.Params[2].length, 2);
   assert.deepEqual(Array.from(actual.Params[2]), ['', '']);
-  assert.equal(actual['Out Loans'][0].length, 8);
+  assert.equal(actual['Loans'][0].length, 8);
   response.sheets.pop();
   assert.throws(() => reader.readRepaymentInputs(book), /Missing repayment inputs/);
   reader.UrlFetchApp.fetch = () => ({getResponseCode: () => 403, getContentText: () => 'Denied'});

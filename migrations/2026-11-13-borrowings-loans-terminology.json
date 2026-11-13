@@ -1,0 +1,51 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Rename incoming loans to borrowings and outgoing loans to loans without changing calculations.",
+  "sheets": [
+    {"sheetId": 1346380865, "from": "In Loans", "to": "Borrowings"},
+    {"sheetId": 198423991, "from": "Out Loans", "to": "Loans"}
+  ],
+  "namedRanges": [
+    {"from": "S_IN_LOANS", "to": "S_BORROWINGS", "range": "Borrowings!A3:DI109"},
+    {"from": "S_OUT_LOANS", "to": "S_LOANS", "range": "Loans!A3:DE39"}
+  ],
+  "namedFunctions": {
+    "IN_LOAN_COL_VALUE": "BORROWING_COL_VALUE",
+    "IN_LOAN_NAME": "BORROWING_NAME",
+    "IN_LOAN_PARAM_VALUE": "BORROWING_PARAM_VALUE",
+    "IN_LOAN_PARAM_VALUE_BY_LOAN": "BORROWING_PARAM_VALUE_BY_BORROWING",
+    "IN_LOAN_PARAM_VALUES": "BORROWING_PARAM_VALUES",
+    "IN_LOAN_PARAM_VALUES_BY_LOAN": "BORROWING_PARAM_VALUES_BY_BORROWING",
+    "IN_LOANS_EXPENSES_D": "BORROWINGS_EXPENSES_D",
+    "IN_LOANS_PARAM_SUM": "BORROWINGS_PARAM_SUM",
+    "IN_LOANS_PARAM_SUMS": "BORROWINGS_PARAM_SUMS",
+    "OUT_LOAN_COL_VALUE": "LOAN_COL_VALUE",
+    "OUT_LOAN_PARAM_VALUE_BY_LOAN": "LOAN_PARAM_VALUE_BY_LOAN",
+    "OUT_LOAN_PARAM_VALUES": "LOAN_PARAM_VALUES",
+    "OUT_LOAN_PARAM_VALUES_BY_LOAN": "LOAN_PARAM_VALUES_BY_LOAN",
+    "OUT_LOANS_PARAM_SUMS": "LOANS_PARAM_SUMS"
+  },
+  "scriptFunctions": {
+    "calculateIncomingRepayments": "calculateBorrowingRepayments",
+    "accrueIncomingLoanMonth": "accrueBorrowingMonth",
+    "recalculateIncomingLoanRepayments": "recalculateBorrowingRepayments",
+    "readIncomingRepaymentModel": "readBorrowingRepaymentModel"
+  },
+  "application": [
+    "Renamed functions and ranges through Google Sheets native editors, preserving named-function calls and updating their dependencies.",
+    "Renamed sheet titles, Project Overview section headings and navigation label; updated six affected cell notes.",
+    "Updated Apps Script references and HTML RPC caller locally, then synchronized with clasp push."
+  ],
+  "verification": {
+    "numericCellsCompared": 51776,
+    "numericCellsChanged": 0,
+    "newFormulaErrors": 0,
+    "oldSheetOrFunctionNamesInCellValuesOrFormulas": 0,
+    "namedFunctionDefinitionsCompared": 66,
+    "namedRangeBoundsCompared": 18,
+    "definitionsAndBoundsPreservedExceptForRenames": true,
+    "testsPassed": 54,
+    "notesReadBack": 6,
+    "nativeOverviewAndNamedRangesVisuallyVerified": true
+  }
+}

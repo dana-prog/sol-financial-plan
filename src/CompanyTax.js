@@ -79,7 +79,7 @@ function calculateCompanyTax(months, profits, rate, yearEndMonth) {
 function calculateRepaymentsWithCompanyTax(model) {
   let taxPayments = model.months.map(() => 0);
   for (let attempt = 0; attempt < 100; attempt++) {
-    const repayments = calculateIncomingRepayments({...model,
+    const repayments = calculateBorrowingRepayments({...model,
       expenses: model.expenses.map((expense, i) => expense + taxPayments[i])});
     const profits = model.tax.profitBeforeInterest.map((profit, i) => profit - repayments.interestAccrued[i]);
     const tax = calculateCompanyTax(model.months, profits, model.tax.rate, model.tax.yearEndMonth);

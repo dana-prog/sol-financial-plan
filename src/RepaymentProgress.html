@@ -43,7 +43,7 @@
       google.script.run
         .withSuccessHandler(finish)
         .withFailureHandler(error => finish(error.message || String(error)))
-        .recalculateIncomingLoanRepayments();
+        .recalculateBorrowingRepayments();
     }));
   </script>
 </body>
