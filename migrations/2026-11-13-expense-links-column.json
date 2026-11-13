@@ -8,7 +8,8 @@
     "B:C": "Expense type",
     "D:G": "Links",
     "H:I": "Paid",
-    "J:L": "Total"
+    "J:K": "Total",
+    "L": "% Paid"
   },
   "rowHeights": {
     "title12": 36,
@@ -70,6 +71,24 @@
     "amountsAndNamedFunctionsPreserved": true,
     "allLinksPreserved": true,
     "visualInspection": "Full expense table and neighboring incoming loan table inspected in Google Sheets at 100% zoom. Section titles and column headers match; links sit beside expense labels without wrapping; amounts and totals fit.",
-    "appsScriptSync": "Not required; no Apps Script source changes."
+    "appsScriptSync": "Not required; no Apps Script source changes.",
+    "percentPaid": {
+      "allSixMatchPaidDividedByTotal": true,
+      "setup": 0.18447903343158556,
+      "overall": 0.004993764443624304,
+      "existingCellsUnchanged": true,
+      "display": "Setup 18.4%; overall 0.5%; other expense rows 0.0%.",
+      "layoutCheck": "Verified matching 11-point formatting, percentage formats, and unchanged overall width via Sheets metadata. Native visual inspection was unavailable because the user navigated to Cash Flow during verification."
+    }
+  },
+  "percentPaid": {
+    "header": "L13",
+    "range": "L14:L19",
+    "formula": "=IF(J14=0,\"\",H14/J14)",
+    "fill": "One row-specific formula per row, including the total row.",
+    "numberFormat": "0.0%",
+    "zeroTotal": "Blank to avoid an undefined percentage.",
+    "totalSemantics": "Total paid divided by total expenses, not the average of row percentages.",
+    "layout": "Split the existing J:L Total area into J:K Total and L % Paid; preserve overall table width and column dimensions."
   }
 }
