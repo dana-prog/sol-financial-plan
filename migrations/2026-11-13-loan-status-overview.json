@@ -19,7 +19,7 @@
         "Loan",
         "Priority",
         "Lender",
-        "Amount (THB)",
+        "Amount",
         "Funding",
         "Repayment projection"
       ],
@@ -50,7 +50,7 @@
       "columns": [
         "Loan",
         "Debtor",
-        "Amount (THB)",
+        "Amount",
         "Funding"
       ],
       "total": 40000000,
