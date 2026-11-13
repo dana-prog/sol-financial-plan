@@ -1,0 +1,75 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "sheetId": 190902611,
+  "range": "B12:L19",
+  "status": "Applied and verified on 2026-11-13",
+  "columns": {
+    "B:C": "Expense type",
+    "D:G": "Links",
+    "H:I": "Paid",
+    "J:L": "Total"
+  },
+  "rowHeights": {
+    "title12": 36,
+    "columnHeader13": 42,
+    "data14To18": 48,
+    "total19": 36
+  },
+  "change": "Separate expense labels from existing Planned / Actual rich-text links. Preserve exact link destinations and named-function formulas. Move Paid values from F14:F18 to H14:H18 and update the total to SUM(H14:H18). Keep existing overall width and column dimensions.",
+  "verification": {
+    "links": [
+      {
+        "row": 14,
+        "before": [
+          "#gid=1675897452&range=A4:G6"
+        ],
+        "after": [
+          "#gid=1675897452&range=A4:G6"
+        ]
+      },
+      {
+        "row": 15,
+        "before": [
+          "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1304432573",
+          "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=2082967509"
+        ],
+        "after": [
+          "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1304432573",
+          "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=2082967509"
+        ]
+      },
+      {
+        "row": 16,
+        "before": [
+          "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=462995266"
+        ],
+        "after": [
+          "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=462995266"
+        ]
+      },
+      {
+        "row": 17,
+        "before": [
+          "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1754072773"
+        ],
+        "after": [
+          "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1754072773"
+        ]
+      },
+      {
+        "row": 18,
+        "before": [
+          "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1346380865&range=M107%3ADE107"
+        ],
+        "after": [
+          "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1346380865&range=M107%3ADE107"
+        ]
+      }
+    ],
+    "amountsAndNamedFunctionsPreserved": true,
+    "allLinksPreserved": true,
+    "visualInspection": "Full expense table and neighboring incoming loan table inspected in Google Sheets at 100% zoom. Section titles and column headers match; links sit beside expense labels without wrapping; amounts and totals fit.",
+    "appsScriptSync": "Not required; no Apps Script source changes."
+  }
+}
