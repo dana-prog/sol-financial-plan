@@ -14,13 +14,15 @@
     "Updated the Cash Flow expense lookup argument and Apps Script repayment input reader.",
     "Preserved all existing named-function calls and named-range identifiers; Google Sheets updated sheet references automatically.",
     "Retained the generic annual PLANNING heading in the hidden _budget sheet, which describes budgeting rather than the expense category.",
-    "Synchronized Apps Script through the repository clasp configuration."
+    "Synchronized Apps Script through the repository clasp configuration.",
+    "Restored Project Overview!B15 rich-text links after the label edit cleared them: Planned (characters 6–12) links to Setup Exp (P), gid 1304432573; Actual (characters 18–23) links to Setup Exp (A), gid 2082967509. Link styling matches neighboring expense labels. Only textFormatRuns and hyperlinkDisplayType were updated."
   ],
   "verification": {
     "numericCellsCompared": 51764,
     "numericDifferences": 0,
     "newFormulaErrors": 0,
     "remainingPlanningTextLabels": 0,
-    "testsPassed": 39
+    "testsPassed": 39,
+    "setupOverviewLinksVerified": true
   }
 }
