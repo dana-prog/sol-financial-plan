@@ -1,0 +1,116 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Move USD balance from M3:P4 to L3:P4, use the $ symbol, and compact the THB display to J3:K4 with 20pt type so both amounts sit close together. Update Wise sync destination and formula protection to L3.",
+  "requests": [
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 9,
+          "endColumnIndex": 16
+        }
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 3,
+          "startColumnIndex": 12,
+          "endColumnIndex": 13
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 2,
+          "columnIndex": 11
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 9,
+          "endColumnIndex": 11
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 9,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontSize": 20
+            },
+            "padding": {
+              "left": 24,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.fontSize,userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "\"$\"#,##0, \"K\";[Red](\"$\"#,##0, \"K\")"
+            },
+            "padding": {
+              "left": 12,
+              "right": 12,
+              "top": 0,
+              "bottom": 0
+            }
+          }
+        },
+        "fields": "userEnteredFormat.numberFormat,userEnteredFormat.padding"
+      }
+    }
+  ],
+  "verification": {
+    "balancesAndTimestampUnchanged": true,
+    "visualReview": "Verified at 100% in Google Sheets: both balances fit on one line with a small gap; USD displays as $145 K.",
+    "wiseTestsPassed": 15,
+    "claspPush": "16 files synchronized"
+  }
+}
