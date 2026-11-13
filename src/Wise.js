@@ -114,7 +114,7 @@ function wiseSync_(spreadsheet, now) {
   if (!overview || overview.getRange('B6').getValue() !== 'Wise Balance') {
     throw new Error('The Wise Balance field could not be located in Project Overview.');
   }
-  if (overview.getRange('B7').getFormula() || overview.getRange('B9').getFormula()) {
+  if (['B7', 'B8', 'B9'].some(cell => overview.getRange(cell).getFormula())) {
     throw new Error('The Wise balance or update-time field contains a formula. No formula was overwritten.');
   }
   const transactionSheet = wiseSheet_(spreadsheet);
@@ -127,13 +127,26 @@ function wiseSync_(spreadsheet, now) {
   });
   const usd = balances.find(balance => balance.currency === 'USD' && balance.type === 'STANDARD');
   const available = wiseMoney_(usd && usd.amount, 'USD');
+  const thb = wiseThbEquivalent_(available, wiseGet_('/rates?source=USD&target=THB'));
   const imports = wiseFetchTransactions_(balances, profileId, previousRows, historyStart, now);
   const transactions = wiseMergeTransactions_(previousRows, imports);
   wiseWriteTransactions_(spreadsheet, transactionSheet, transactions);
   overview.getRange('B7').setValue(available);
+  overview.getRange('B8').setValue(thb.amount).setNote('USD balance converted at 1 USD = ' + thb.rate
+    + ' THB. Wise rate timestamp: ' + thb.time + '. Indicative equivalent before conversion fees.');
   overview.getRange('B9').setValue(now);
   SpreadsheetApp.flush();
   return transactions.length;
+}
+
+function wiseThbEquivalent_(usd, rates) {
+  const rate = Array.isArray(rates) && rates.length === 1 ? rates[0] : null;
+  if (!rate || rate.source !== 'USD' || rate.target !== 'THB' || typeof rate.rate !== 'number'
+    || !Number.isFinite(rate.rate) || rate.rate <= 0 || !Number.isFinite(Date.parse(rate.time))
+    || !Number.isFinite(usd * rate.rate)) {
+    throw new Error('Wise returned an invalid USD/THB exchange rate. Nothing was written.');
+  }
+  return {amount: usd * rate.rate, rate: rate.rate, time: rate.time};
 }
 
 function wiseImportStart_(rows, balanceId, profileId, historyStart, now) {

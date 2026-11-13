@@ -79,7 +79,7 @@ function syncFixture() {
   const saved = {WISE_PROFILE_ID:'20', WISE_START_DATE:'2026-01-01'};
   const overview = {getRange: cell => ({
     getValue: () => cell === 'B6' ? 'Wise Balance' : '', getFormula: () => '',
-    setValue: value => events.push([cell,value]),
+    setValue: value => {events.push([cell,value]); return {setNote() {}};},
   })};
   const spreadsheet = {getSheetById: () => overview, getSheetByName: () => null, toast() {}};
   const ctx = load({
@@ -88,13 +88,15 @@ function syncFixture() {
     LockService: {getScriptLock: () => ({tryLock: () => true, releaseLock: () => events.push(['release'])})},
   });
   ctx.wiseWriteTransactions_ = (_, __, rows) => events.push(['transactions',rows]);
-  ctx.wiseGet_ = path => path.includes('statement.json') ? {transactions:[]} : path.endsWith('STANDARD') ? [balance] : [];
+  ctx.wiseGet_ = path => path.startsWith('/rates?') ? [{source:'USD',target:'THB',rate:35,time:'2026-11-13T10:00:00Z'}]
+    : path.includes('statement.json') ? {transactions:[]} : path.endsWith('STANDARD') ? [balance] : [];
   return {ctx,events,overview,spreadsheet};
 }
 test('failed statement fetch leaves balance, timestamp and transaction history unchanged', () => {
   const {ctx,events} = syncFixture();
   ctx.wiseGet_ = path => {
     if (path.includes('statement.json')) throw new Error('Wise HTTP 403');
+    if (path.startsWith('/rates?')) return [{source:'USD',target:'THB',rate:35,time:'2026-11-13T10:00:00Z'}];
     return path.endsWith('STANDARD') ? [balance] : [];
   };
   assert.throws(() => ctx.syncWiseScheduled(), /403/);
@@ -104,9 +106,10 @@ test('successful daily/manual sync updates the overview only after importing tra
   const {ctx,events,spreadsheet} = syncFixture();
   const now = new Date('2026-11-13T10:00:00Z');
   ctx.wiseSync_(spreadsheet,now);
-  assert.deepEqual(events.map(event => event[0]), ['transactions','B7','B9','flush']);
+  assert.deepEqual(events.map(event => event[0]), ['transactions','B7','B8','B9','flush']);
   assert.equal(events[1][1],400);
-  assert.equal(events[2][1],now);
+  assert.equal(events[2][1],14000);
+  assert.equal(events[3][1],now);
 });
 test('overview formulas are preserved and failed transaction writes do not advance the update time', () => {
   const {ctx,events,overview,spreadsheet} = syncFixture();
@@ -171,4 +174,20 @@ test('text formatting is applied before writing numeric-looking payment referenc
   const writeIndex = events.findIndex(event => event.write);
   assert.equal(events[writeIndex].write[1][7], '026073154018474');
   assert.equal(events.slice(0,writeIndex).filter(event => event.format === '@').length, 8);
+});
+test('THB equivalent uses the requested rate direction and rejects invalid rate responses', () => {
+  const ctx = load();
+  const rate = {source:'USD',target:'THB',rate:33.5,time:'2026-11-13T10:00:00Z'};
+  assert.equal(ctx.wiseThbEquivalent_(100,[rate]).amount,3350);
+  assert.equal(ctx.wiseThbEquivalent_(0,[rate]).amount,0);
+  for (const invalid of [[],[{...rate,source:'THB',target:'USD'}],[{...rate,rate:0}],[{...rate,rate:-1}],
+    [{...rate,rate:'33.5'}],[{...rate,time:'invalid'}]]) {
+    assert.throws(() => ctx.wiseThbEquivalent_(100,invalid), /invalid USD\/THB/);
+  }
+});
+test('failed exchange-rate retrieval leaves both balances and the update time untouched', () => {
+  const {ctx,events,spreadsheet} = syncFixture();
+  ctx.wiseGet_ = path => path.startsWith('/rates?') ? [] : path.endsWith('STANDARD') ? [balance] : [];
+  assert.throws(() => ctx.wiseSync_(spreadsheet,new Date('2026-11-13')), /invalid USD\/THB/);
+  assert.equal(events.length,0);
 });

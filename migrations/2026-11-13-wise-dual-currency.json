@@ -1,0 +1,136 @@
+{
+  "requests": [
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 8,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        }
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 7,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 7,
+          "endRowIndex": 8,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 7,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "\"USD \"#,##0.00;[Red](\"USD \"#,##0.00)"
+            },
+            "padding": {
+              "top": 0,
+              "bottom": 0,
+              "left": 12,
+              "right": 12
+            }
+          }
+        },
+        "fields": "userEnteredFormat.numberFormat,userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 7,
+          "endRowIndex": 8,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "\"≈ THB \"#,##0.00;[Red](\"≈ THB \"#,##0.00)"
+            },
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "padding": {
+              "top": 0,
+              "bottom": 0,
+              "left": 12,
+              "right": 12
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 14,
+              "bold": false,
+              "foregroundColor": {
+                "red": 0.34117648,
+                "green": 0.41960785,
+                "blue": 0.39607844
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 6,
+          "endIndex": 7
+        },
+        "properties": {
+          "pixelSize": 30
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 7,
+          "endIndex": 8
+        },
+        "properties": {
+          "pixelSize": 26
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ]
+}
