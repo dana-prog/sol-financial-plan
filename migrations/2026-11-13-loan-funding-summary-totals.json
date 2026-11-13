@@ -1,0 +1,216 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Show Received and combined Pending/Planned funding totals in both loan tables, with labels above K-formatted amounts.",
+  "formulas": {
+    "M31": "=\"Received:\"&CHAR(10)&TEXT(SUMIF(M24:M30,\"Received\",H24:H30),\"฿#,##0, \"\"K\"\"\")",
+    "O31": "=\"Pending/Planned:\"&CHAR(10)&TEXT(SUMIF(M24:M30,\"Pending\",H24:H30)+SUMIF(M24:M30,\"Planned\",H24:H30),\"฿#,##0, \"\"K\"\"\")",
+    "M38": "=\"Received:\"&CHAR(10)&TEXT(SUMIF(M36:M37,\"Received\",H36:H37),\"฿#,##0, \"\"K\"\"\")",
+    "O38": "=\"Pending/Planned:\"&CHAR(10)&TEXT(SUMIF(M36:M37,\"Pending\",H36:H37)+SUMIF(M36:M37,\"Planned\",H36:H37),\"฿#,##0, \"\"K\"\"\")"
+  },
+  "requests": [
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 12,
+          "endColumnIndex": 16
+        }
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 12,
+          "endColumnIndex": 14
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 14,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 12,
+          "endColumnIndex": 13
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=\"Received:\"&CHAR(10)&TEXT(SUMIF(M24:M30,\"Received\",H24:H30),\"฿#,##0, \"\"K\"\"\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 14,
+          "endColumnIndex": 15
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=\"Pending/Planned:\"&CHAR(10)&TEXT(SUMIF(M24:M30,\"Pending\",H24:H30)+SUMIF(M24:M30,\"Planned\",H24:H30),\"฿#,##0, \"\"K\"\"\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 37,
+          "endRowIndex": 38,
+          "startColumnIndex": 12,
+          "endColumnIndex": 13
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=\"Received:\"&CHAR(10)&TEXT(SUMIF(M36:M37,\"Received\",H36:H37),\"฿#,##0, \"\"K\"\"\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 37,
+          "endRowIndex": 38,
+          "startColumnIndex": 14,
+          "endColumnIndex": 15
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=\"Pending/Planned:\"&CHAR(10)&TEXT(SUMIF(M36:M37,\"Pending\",H36:H37)+SUMIF(M36:M37,\"Planned\",H36:H37),\"฿#,##0, \"\"K\"\"\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 12,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "wrapStrategy": "WRAP",
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat.wrapStrategy,userEnteredFormat.horizontalAlignment,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 37,
+          "endRowIndex": 38,
+          "startColumnIndex": 12,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "wrapStrategy": "WRAP",
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat.wrapStrategy,userEnteredFormat.horizontalAlignment,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 30,
+          "endIndex": 31
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "verification": {
+    "displayValues": [
+      {
+        "cell": "M31",
+        "display": "Received:\n฿16,688 K"
+      },
+      {
+        "cell": "O31",
+        "display": "Pending/Planned:\n฿270,000 K"
+      },
+      {
+        "cell": "M38",
+        "display": "Received:\n฿0 K"
+      },
+      {
+        "cell": "O38",
+        "display": "Pending/Planned:\n฿40,000 K"
+      }
+    ],
+    "otherFormulasAndValuesUnchanged": true,
+    "noFormulaErrors": true,
+    "visualInspection": "Incoming total labels and amounts fit at 100% zoom. Outgoing uses the same two-line layout, retained separate M:N and O:P merges and 48-pixel row; verified formatting through the API. Further browser navigation stopped when the user switched to Cash Flow.",
+    "appsScriptSync": "Not required; spreadsheet formulas and layout only."
+  }
+}
