@@ -1,6 +1,6 @@
 {
   "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
-  "status": "Approved; apply with the matching script changes",
+  "status": "Applied and verified on 2026-11-13",
   "cells": {
     "'Cash Flow'!B11": "company tax",
     "'Cash Flow'!B43": "monthly company tax",
@@ -13,5 +13,13 @@
     "newRange": "'Cash Flow'!A3:CT43",
     "namedRangeId": "klx73l8s185v"
   },
-  "verificationRun": "One approved Recalculate Loan Payments and Tax run, updating its normal tax, depreciation, repayment and timestamp outputs."
+  "verificationRun": "One approved Recalculate Loan Payments and Tax run, updating its normal tax, depreciation, repayment and timestamp outputs.",
+  "verification": {
+    "repositoryTestsPassed": 41,
+    "liveRecalculation": "Loan repayments and tax updated.",
+    "outputCellsCompared": 1824,
+    "maximumDifference": 0,
+    "formulaErrorsInCashFlowAndInLoans": 0,
+    "namedFunctionCallsPreserved": true
+  }
 }
