@@ -1,0 +1,81 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "status": "Applied and verified on 2026-11-13",
+  "overview": {
+    "sheetId": 190902611,
+    "incoming": {
+      "range": "B22:L32",
+      "source": "In Loans",
+      "sourceRows": [
+        4,
+        18,
+        32,
+        46,
+        60,
+        74,
+        88
+      ],
+      "columns": [
+        "Loan / lender",
+        "Amount (THB)",
+        "Funding",
+        "Repayment status"
+      ],
+      "total": 286688144.5884,
+      "received": 16688144.5884
+    },
+    "outgoing": {
+      "range": "B34:L38",
+      "source": "Out Loans",
+      "sourceRows": [
+        4,
+        18
+      ],
+      "columns": [
+        "Loan / debtor",
+        "Amount (THB)",
+        "Funding"
+      ],
+      "total": 40000000,
+      "pending": 40000000
+    },
+    "behavior": "Amounts and statuses link directly to the source cells. Loan labels hyperlink to their source rows. Conditional formatting tracks changing statuses.",
+    "layout": "Compact merged-cell dashboard sections matching the existing overview. Existing column widths retained. Titles and totals 36px high; loan rows 48px high."
+  },
+  "outLoans": {
+    "status": "H3",
+    "pendingInputs": [
+      "H4",
+      "H18"
+    ],
+    "mergedStatusRanges": [
+      "H4:H17",
+      "H18:H31"
+    ],
+    "statusHelper": "DB3",
+    "helperFormulas": {
+      "DB4:DB17": "=$H$4",
+      "DB18:DB31": "=$H$18"
+    },
+    "helperValues": "Pending on both loan blocks",
+    "paramColumn": "I",
+    "timeline": "J3:DA3",
+    "notes": [
+      "Inserted Status before Param and _status before existing helper columns; native references and named ranges adjust with the insertions.",
+      "_status mirrors Status; it is not a separate repayment status.",
+      "No outgoing repayment status was invented, and funding statuses do not change the projected payment schedules."
+    ]
+  },
+  "appsScript": "Updated readRepaymentInputs Out Loans starting column from H (8) to I (9); synchronized with clasp.",
+  "verification": {
+    "testsPassed": 54,
+    "numericCellsCompared": 7762,
+    "numericDifferences": 0,
+    "newFormulaErrors": 0,
+    "overviewTotalsMatchSources": true,
+    "allLoansIncluded": true,
+    "loanLinksVerified": true,
+    "visualInspection": "Both overview sections and the outgoing Status input inspected in Google Sheets at 100% zoom; no clipping.",
+    "concurrentEdits": "Preserved independently updated expense column headings Paid and Total."
+  }
+}

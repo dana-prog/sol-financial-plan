@@ -295,7 +295,7 @@ test('batch reader maps sheets by name and restores omitted empty rows and cells
   assert.equal(actual.Params.length, 3);
   assert.equal(actual.Params[2].length, 2);
   assert.deepEqual(Array.from(actual.Params[2]), ['', '']);
-  assert.equal(actual['Out Loans'][0].length, 9);
+  assert.equal(actual['Out Loans'][0].length, 8);
   response.sheets.pop();
   assert.throws(() => reader.readRepaymentInputs(book), /Missing repayment inputs/);
   reader.UrlFetchApp.fetch = () => ({getResponseCode: () => 403, getContentText: () => 'Denied'});

@@ -219,7 +219,7 @@ function readRepaymentInputs(spreadsheet) {
     {name: 'In Loans', row: 3, column: 1},
     {name: 'Params', row: 2, column: 2, width: 2},
     {name: 'Cash Flow', row: 3, column: 2},
-    {name: 'Out Loans', row: 3, column: 8},
+    {name: 'Out Loans', row: 3, column: 9},
     {name: 'Construction Exp (P)', row: 3, column: 2},
     {name: 'Units', row: 2, column: 4, width: 13}
   ].map(input => {
