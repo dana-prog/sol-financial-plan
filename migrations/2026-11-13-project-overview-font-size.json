@@ -1,0 +1,25 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "sheetId": 190902611,
+  "range": "A1:P44",
+  "status": "Applied and verified on 2026-11-13",
+  "change": "Change existing 10-point cell text to 11 points throughout Project Overview, including blank editable cells. Preserve all other sizes, formulas, rich-text links, and formatting.",
+  "verification": {
+    "changedCells": 410,
+    "unmodifiedMergedInteriorDefaults": 276,
+    "unexpectedChanges": [],
+    "valuesAndFormulasUnchanged": true,
+    "richTextLinksUnchanged": true,
+    "otherFontSizesPreserved": [
+      9,
+      11,
+      14,
+      19,
+      28
+    ],
+    "visualInspection": "Visible expense rows and incoming loan table verified at 100% zoom; headers and data fit. Preserved the user's concurrent conditional-formatting changes.",
+    "mergedCells": "Google Sheets returns default formatting for non-anchor merged interiors; all visible merged anchors have the intended font size."
+  },
+  "appsScript": "No source changes or clasp synchronization required."
+}
