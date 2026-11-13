@@ -193,7 +193,7 @@ function readIncomingRepaymentModel(spreadsheet) {
   };
   const expenses = Array(months.length).fill(0);
   ['land expenses', 'setup expenses', 'construction expenses', 'infra expenses',
-    'direct operating expenses', 'other operating expenses', 'outgoing loans - funds disbursed']
+    'direct operating expenses', 'other operating expenses', 'loans disbursed']
     .forEach(name => cashRow(name).forEach((value, i) => { expenses[i] += value; }));
   const outgoingRows = inputs['Out Loans'].map(row => row.slice(0, months.length + 1));
   checkRepaymentTimeline(outgoingRows[0].slice(1), months, timezone, 'Out Loans');

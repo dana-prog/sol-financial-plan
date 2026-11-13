@@ -1,0 +1,205 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "mapping": {
+    "outgoing loans - funds disbursed": "loans disbursed",
+    "incoming loans - funds repaid": "borrowings repaid",
+    "incoming loans - funds received": "borrowings received",
+    "outgoing loans - funds repaid": "loan repayments received"
+  },
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "loans disbursed"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "borrowings repaid"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "borrowings received"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "loan repayments received"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 20,
+          "endRowIndex": 21,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=ARRAYFORMULA(CASH_FLOW_PARAM_VALUES(\"borrowings received\") + CASH_FLOW_PARAM_VALUES(\"loan repayments received\") +CASH_FLOW_PARAM_VALUES(\"revenue\"))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 21,
+          "endRowIndex": 22,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=ARRAYFORMULA(\n  CASH_FLOW_PARAM_VALUES(\"land expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"setup expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"construction expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"infra expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"direct operating expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"other operating expenses\") +\n  CASH_FLOW_PARAM_VALUES(\"company tax\") +\n  CASH_FLOW_PARAM_VALUES(\"loans disbursed\")\n)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 24,
+          "endRowIndex": 25,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "borrowings repaid"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 25,
+          "endRowIndex": 26,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=ARRAYFORMULA(CASH_FLOW_PARAM_VALUES(\"cash outflows before debt service\") + CASH_FLOW_PARAM_VALUES(\"borrowings repaid\"))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    }
+  ],
+  "verification": {
+    "numericCompared": 51776,
+    "numericChanges": [],
+    "newErrors": [],
+    "remainingOldNames": [],
+    "testsPassed": 54,
+    "scriptSync": "clasp push succeeded",
+    "namedFunctionCallsPreserved": true,
+    "visualInspection": "All four labels and the repeated borrowings repaid label fit at 100% zoom in Cash Flow."
+  }
+}
