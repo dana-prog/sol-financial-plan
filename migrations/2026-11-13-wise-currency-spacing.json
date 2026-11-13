@@ -1,0 +1,111 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Move USD balance from N3:P4 to M3:P4 and remove its 24px left padding, moving the amount 48px closer to the THB value. Keep THB location and styling unchanged. Update Wise synchronization destination and formula guard to M3.",
+  "requests": [
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 13,
+          "endColumnIndex": 16
+        }
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 3,
+          "startColumnIndex": 13,
+          "endColumnIndex": 14
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 2,
+          "columnIndex": 12
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 12,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 12,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "\"USD \"#,##0, \"K\";[Red](\"USD \"#,##0, \"K\")"
+            },
+            "backgroundColor": {
+              "red": 0.14117648,
+              "green": 0.23137255,
+              "blue": 0.3254902
+            },
+            "padding": {
+              "left": 0,
+              "right": 12,
+              "top": 0,
+              "bottom": 0
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.78039217,
+                "green": 0.8352941,
+                "blue": 0.8745098
+              },
+              "fontFamily": "Arial",
+              "fontSize": 14,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.78039217,
+                  "green": 0.8352941,
+                  "blue": 0.8745098
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.14117648,
+                "green": 0.23137255,
+                "blue": 0.3254902
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    }
+  ],
+  "verification": {
+    "balancesUnchanged": true,
+    "visualReview": "Both amounts remain on one line without clipping; gap reduced by approximately half.",
+    "wiseTestsPassed": 15,
+    "claspPush": "16 files synchronized"
+  }
+}
