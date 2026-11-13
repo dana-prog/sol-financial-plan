@@ -66,7 +66,38 @@
       "Late principal payment": "Expected late principal payment",
       "Late interest payment": "Expected late interest payment"
     },
-    "layout": "Existing overview column widths retained. Incoming: Loan B, Priority C, Lender D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N, Repayment projection O:P. Outgoing: Loan B:C, Debtor D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N. Incoming ends at P; outgoing ends at N. Daily accrued-interest totals and dated explanatory footers are included. See 2026-11-13-loan-funding-dates-accrued-interest.json for formulas and validation."
+    "layout": "Existing overview column widths retained. Incoming: Loan B, Priority C, Lender D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N, Repayment projection O:P. Outgoing: Loan B:C, Debtor D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N. Incoming ends at P; outgoing ends at N. Daily accrued-interest totals and dated explanatory footers are included. See 2026-11-13-loan-funding-dates-accrued-interest.json for formulas and validation.",
+    "style": {
+      "ranges": [
+        "B22:P32",
+        "B34:N39"
+      ],
+      "titleRows": {
+        "background": "#243B53",
+        "text": "#FFFFFF",
+        "bold": true,
+        "fontSize": 14
+      },
+      "columnHeaders": {
+        "background": "#E2E8F0",
+        "text": "#334155",
+        "bold": true
+      },
+      "body": {
+        "background": "#F8FAFC",
+        "bottomBorder": "#E2E8F0"
+      },
+      "totals": {
+        "background": "#E8EEF5",
+        "text": "#243B53",
+        "bold": true
+      },
+      "footnotes": {
+        "background": "#F1F5F9",
+        "text": "#64748B"
+      },
+      "statusColors": "Existing conditional formatting retained so green, amber, and red status values stand out against the neutral table."
+    }
   },
   "outLoans": {
     "status": "H3",
@@ -111,6 +142,12 @@
       "columnWidthsUnchanged": true,
       "visualInspection": "Both overview tables inspected in native Google Sheets at 100% zoom; priority, loan labels, and wrapped outgoing total fit without clipping.",
       "appsScriptSync": "Not required: spreadsheet display formulas and formatting only; no Apps Script source changes."
+    },
+    "tableRestyle": {
+      "valuesAndFormulasUnchanged": true,
+      "statusColorsPreserved": true,
+      "visualInspection": "Both table titles, column headers, body rows, and status colors verified in native Google Sheets at 100% zoom.",
+      "scope": "Only background, text emphasis/colors, and body bottom-border colors; no data, dimensions, merges, or Apps Script changes."
     }
   }
 }
