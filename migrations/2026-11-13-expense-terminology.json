@@ -1,0 +1,29 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "status": "Applied and verified on 2026-11-13",
+  "namedFunctions": {
+    "PRE_CONST_ACTUAL_PARAM_VALUES": "PLANNING_ACTUAL_PARAM_VALUES",
+    "PRE_CONST_PLANNED_PARAM_VALUES": "PLANNING_PLANNED_PARAM_VALUES",
+    "PRE_CONST_EXPENSES_D": "PLANNING_EXPENSES_D",
+    "UNIT_CONST_PARAM_VALUES": "CONSTRUCTION_PARAM_VALUES",
+    "UNIT_CONST_PARAM_NAME": "CONSTRUCTION_PARAM_NAME",
+    "UNIT_CONST_EXPENSES_D": "CONSTRUCTION_EXPENSES_D",
+    "OTHER_CONST_PARAM_VALUES": "INFRA_PARAM_VALUES"
+  },
+  "cashFlowParameters": {
+    "pre const. expenses": "planning expenses",
+    "units const. expenses": "construction expenses",
+    "other const. expenses": "infra expenses"
+  },
+  "notes": [
+    "Named functions renamed through the native Sheets editor; dependent formulas updated by Google Sheets.",
+    "Existing named range identifiers and per-unit UNIT_CONSTRUCTION_COST function preserved.",
+    "Repayment and depreciation readers updated to Construction Exp (P); planning details retain their existing setup view."
+  ],
+  "verification": {
+    "numericCellsCompared": 50335,
+    "numericDifferences": 0,
+    "newFormulaErrors": 0,
+    "oldFunctionCallsOrCashFlowLabelsInVisibleSheets": 0
+  }
+}

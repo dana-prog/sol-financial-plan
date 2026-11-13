@@ -192,7 +192,7 @@ function readIncomingRepaymentModel(spreadsheet) {
     return rows[0].slice(1).map(value => repaymentNumber(value, 'Cash Flow: ' + name));
   };
   const expenses = Array(months.length).fill(0);
-  ['land expenses', 'pre const. expenses', 'units const. expenses', 'other const. expenses',
+  ['land expenses', 'planning expenses', 'construction expenses', 'infra expenses',
     'direct operating expenses', 'other operating expenses', 'outgoing loans - funds disbursed']
     .forEach(name => cashRow(name).forEach((value, i) => { expenses[i] += value; }));
   const outgoingRows = inputs['Out Loans'].map(row => row.slice(0, months.length + 1));
@@ -220,7 +220,7 @@ function readRepaymentInputs(spreadsheet) {
     {name: 'Params', row: 2, column: 2, width: 2},
     {name: 'Cash Flow', row: 3, column: 2},
     {name: 'Out Loans', row: 3, column: 8},
-    {name: 'Units Const.', row: 3, column: 2},
+    {name: 'Construction Exp (P)', row: 3, column: 2},
     {name: 'Units', row: 2, column: 4, width: 13}
   ].map(input => {
     const sheet = repaymentSheet(spreadsheet, input.name);

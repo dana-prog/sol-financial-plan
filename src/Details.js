@@ -8,7 +8,7 @@ const params = [
 ];
 
 function showDetails(param, month) {
-  const aliases = {'pre const. expenses': 'setup expenses', 'units const. expenses': 'construction expenses'};
+  const aliases = {'planning expenses': 'setup expenses'};
   param = aliases[param] || param;
   if (!(month instanceof Date) || !Number.isFinite(month.getTime())) {
     SpreadsheetApp.getUi().alert('Select a monthly value in a supported expense row.');

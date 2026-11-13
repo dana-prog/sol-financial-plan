@@ -17,6 +17,34 @@ function evalFiles(names, globals = {}) {
   return ctx;
 }
 
+test("renamed cash flow expenses retain their existing details views", () => {
+  for (const [parameter, view] of [
+    ["planning expenses", "setup expenses"],
+    ["construction expenses", "construction expenses"],
+  ]) {
+    const values = {};
+    let activated = false;
+    const month = new Date("2026-11-01T00:00:00Z");
+    const ctx = evalFiles(["Details.js"], {
+      Date,
+      SOLLibrary: { capitalize: value => value },
+      SpreadsheetApp: {
+        getActive: () => ({
+          getSheetById: () => ({
+            getRange: cell => ({ setValue: value => { values[cell] = value; } }),
+            activate: () => { activated = true; },
+          }),
+        }),
+        getUi: () => ({ alert: message => { throw new Error(message); } }),
+      },
+    });
+    ctx.showDetails(parameter, month);
+    assert.equal(values.B1, view);
+    assert.equal(values.B2, month);
+    assert.equal(activated, true);
+  }
+});
+
 test("timeline label range includes final row", () => {
   let args;
   const ctx = evalFiles([

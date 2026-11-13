@@ -91,8 +91,8 @@ function calculateRepaymentsWithCompanyTax(model) {
 }
 
 function readUnitDepreciation(inputs, months, timezone) {
-  const grid = inputs['Units Const.'].map(row => row.slice(0, months.length + 1));
-  checkRepaymentTimeline(grid[0].slice(1), months, timezone, 'Units Const.');
+  const grid = inputs['Construction Exp (P)'].map(row => row.slice(0, months.length + 1));
+  checkRepaymentTimeline(grid[0].slice(1), months, timezone, 'Construction Exp (P)');
   const rows = inputs.Units;
   const assets = rows.filter(row => row[0] !== '').map(row => {
     const name = String(row[0]);

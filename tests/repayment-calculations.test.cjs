@@ -211,7 +211,7 @@ test('display columns do not change loan inputs or repayment calculations', () =
   const labels = ['start balance', 'loan draw', 'interest generated', 'loan paid', 'end balance',
     'principal owed', 'principal paid', 'principal carried forward', 'interest owed', 'interest paid',
     'interest carried forward', 'interest capitalization month', 'capitalized interest', 'balance bearing interest'];
-  const cashLabels = ['land expenses', 'pre const. expenses', 'units const. expenses', 'other const. expenses',
+  const cashLabels = ['land expenses', 'planning expenses', 'construction expenses', 'infra expenses',
     'direct operating expenses', 'other operating expenses', 'outgoing loans - funds disbursed',
     'revenue', 'setup depreciation', 'operating profit'];
   function read(extraColumns) {
@@ -272,7 +272,7 @@ test('batch inputs retain unrounded amounts, booleans, errors and local calendar
 });
 
 test('batch reader maps sheets by name and restores omitted empty rows and cells', () => {
-  const names = ['In Loans', 'Params', 'Cash Flow', 'Out Loans', 'Units Const.', 'Units'];
+  const names = ['In Loans', 'Params', 'Cash Flow', 'Out Loans', 'Construction Exp (P)', 'Units'];
   const book = {getId: () => 'test', getSheetByName: name => ({
     getLastRow: () => 4, getLastColumn: () => 16,
     getRange: () => ({getA1Notation: () => 'A1:P4'})
