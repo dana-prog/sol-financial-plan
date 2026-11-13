@@ -1,0 +1,297 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Move Wise balance alongside the title; retain THB first and bold, USD on the same line, timestamp and Cash Flow link below. Compact vacated rows without shifting table addresses.",
+  "requests": [
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 4,
+          "startColumnIndex": 1,
+          "endColumnIndex": 12
+        }
+      }
+    },
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 5,
+          "endRowIndex": 10,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        }
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 5,
+          "endRowIndex": 6,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 1,
+          "columnIndex": 9
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 7,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 1,
+          "columnIndex": 11
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 7,
+          "startColumnIndex": 5,
+          "endColumnIndex": 6
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 1,
+          "columnIndex": 14
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 8,
+          "endRowIndex": 9,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 3,
+          "columnIndex": 9
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 9,
+          "endRowIndex": 10,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 4,
+          "columnIndex": 9
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 3,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 3,
+          "endRowIndex": 4,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 3,
+          "startColumnIndex": 9,
+          "endColumnIndex": 11
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 3,
+          "startColumnIndex": 11,
+          "endColumnIndex": 14
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 3,
+          "startColumnIndex": 14,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 3,
+          "endRowIndex": 4,
+          "startColumnIndex": 9,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 4,
+          "endRowIndex": 5,
+          "startColumnIndex": 9,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 5,
+          "endRowIndex": 10,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.95686275,
+              "green": 0.96862745,
+              "blue": 0.9647059
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.09411765,
+                "green": 0.23529412,
+                "blue": 0.21176471
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.09411765,
+                  "green": 0.23529412,
+                  "blue": 0.21176471
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.95686275,
+                "green": 0.96862745,
+                "blue": 0.9647059
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 5,
+          "startColumnIndex": 9,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "wrapStrategy": "CLIP",
+            "verticalAlignment": "MIDDLE",
+            "padding": {
+              "top": 0,
+              "bottom": 0,
+              "left": 12,
+              "right": 12
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.95686275,
+                "green": 0.96862745,
+                "blue": 0.9647059
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat.wrapStrategy,userEnteredFormat.verticalAlignment,userEnteredFormat.padding,userEnteredFormat.backgroundColorStyle"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 5,
+          "endIndex": 10
+        },
+        "properties": {
+          "pixelSize": 4
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "verification": {
+    "valuesAndFormulasPreserved": true,
+    "conversionNotePreserved": true,
+    "visualFit": "Verified in native Google Sheets at 100% zoom: title, Wise label, THB and USD are on one line without clipping.",
+    "wiseTestsPassed": 15,
+    "scriptSync": "clasp push succeeded (16 files)"
+  }
+}

@@ -78,7 +78,7 @@ function syncFixture() {
   const events = [];
   const saved = {WISE_PROFILE_ID:'20', WISE_START_DATE:'2026-01-01'};
   const overview = {getRange: cell => ({
-    getValue: () => cell === 'B6' ? 'Wise Balance' : '', getFormula: () => '',
+    getValue: () => cell === 'J2' ? 'Wise Balance' : '', getFormula: () => '',
     setValue: value => {events.push([cell,value]); return {setNote() {}};},
   })};
   const spreadsheet = {getSheetById: () => overview, getSheetByName: () => null, toast() {}};
@@ -106,7 +106,7 @@ test('successful daily/manual sync updates the overview only after importing tra
   const {ctx,events,spreadsheet} = syncFixture();
   const now = new Date('2026-11-13T10:00:00Z');
   ctx.wiseSync_(spreadsheet,now);
-  assert.deepEqual(events.map(event => event[0]), ['transactions','F7','B7','B9','flush']);
+  assert.deepEqual(events.map(event => event[0]), ['transactions','O2','L2','J4','flush']);
   assert.equal(events[1][1],400);
   assert.equal(events[2][1],14000);
   assert.equal(events[3][1],now);
@@ -116,7 +116,7 @@ test('overview formulas are preserved and failed transaction writes do not advan
   ctx.wiseWriteTransactions_ = () => {throw new Error('write failed');};
   assert.throws(() => ctx.wiseSync_(spreadsheet,new Date('2026-11-13')), /write failed/);
   assert.equal(events.length,0);
-  for (const protectedCell of ['B7', 'F7', 'B9']) {
+  for (const protectedCell of ['L2', 'O2', 'J4']) {
     overview.getRange = cell => ({getValue: () => 'Wise Balance', getFormula: () => cell === protectedCell ? '=NAMED_BALANCE()' : ''});
     assert.throws(() => ctx.wiseSync_(spreadsheet,new Date('2026-11-13')), /No formula was overwritten/);
   }
