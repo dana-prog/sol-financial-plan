@@ -1,0 +1,277 @@
+{
+  "description": "Separate the Project Plan, Pax and Finance argument/value groups with white vertical borders and additional label padding.",
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "range": "B12:P16",
+  "requests": [
+    {
+      "updateBorders": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 16,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "left": {
+          "style": "SOLID_THICK",
+          "colorStyle": {
+            "rgbColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 15,
+          "endRowIndex": 16,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.padding"
+      }
+    },
+    {
+      "updateBorders": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 16,
+          "startColumnIndex": 11,
+          "endColumnIndex": 14
+        },
+        "left": {
+          "style": "SOLID_THICK",
+          "colorStyle": {
+            "rgbColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 11,
+          "endColumnIndex": 14
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 11,
+          "endColumnIndex": 14
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 11,
+          "endColumnIndex": 14
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 11,
+          "endColumnIndex": 14
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 15,
+          "endRowIndex": 16,
+          "startColumnIndex": 11,
+          "endColumnIndex": 14
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.padding"
+      }
+    }
+  ],
+  "verification": {
+    "status": "Applied and verified on 2026-11-14",
+    "allOverviewValuesFormulasAndValidationUnchanged": true,
+    "unexpectedCellChanges": [],
+    "visualReview": "Verified in Google Sheets at 100% zoom: two visible white separators; headings, labels and values fit without wrapping or clipping.",
+    "appsScriptChanged": false
+  }
+}
