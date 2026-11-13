@@ -1,0 +1,268 @@
+{
+  "description": "Replace Project Overview EIA section with the existing monthly interest rate as an editable input.",
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "requests": [
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 11,
+          "columnIndex": 11
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Finance"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 12,
+          "columnIndex": 11
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Monthly interest rate"
+                }
+              },
+              {},
+              {},
+              {
+                "userEnteredValue": {
+                  "numberValue": 0.005833333333333334
+                },
+                "note": "Monthly loan interest rate. Used by the financial model through Dashboard and Params. Run SOL → Recalculate Loan Repayments after changing loan inputs."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 14,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "PERCENT",
+              "pattern": "0.0000%"
+            },
+            "backgroundColor": {
+              "red": 0.9098039,
+              "green": 0.94509804,
+              "blue": 0.9882353
+            },
+            "padding": {
+              "top": 5,
+              "right": 6,
+              "bottom": 5,
+              "left": 4
+            },
+            "horizontalAlignment": "RIGHT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.14117648,
+                "green": 0.3529412,
+                "blue": 0.5058824
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.14117648,
+                  "green": 0.3529412,
+                  "blue": 0.5058824
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9098039,
+                "green": 0.94509804,
+                "blue": 0.9882353
+              }
+            }
+          },
+          "dataValidation": {
+            "condition": {
+              "type": "NUMBER_BETWEEN",
+              "values": [
+                {
+                  "userEnteredValue": "0"
+                },
+                {
+                  "userEnteredValue": "1"
+                }
+              ]
+            },
+            "inputMessage": "Enter the monthly interest rate as a percentage from 0% to 100%.",
+            "strict": true
+          }
+        },
+        "fields": "userEnteredFormat,dataValidation"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "cell": {},
+        "fields": "userEnteredValue,note,dataValidation"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.9529412,
+              "green": 0.9647059,
+              "blue": 0.98039216
+            },
+            "padding": {
+              "top": 5,
+              "right": 10,
+              "bottom": 5,
+              "left": 10
+            },
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.2,
+                "green": 0.30588236,
+                "blue": 0.40784314
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.2,
+                  "green": 0.30588236,
+                  "blue": 0.40784314
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9529412,
+                "green": 0.9647059,
+                "blue": 0.98039216
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 394690290,
+          "rowIndex": 10,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "='Project Overview'!O13"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    }
+  ],
+  "before": {
+    "rate": 0.005833333333333334,
+    "eiaRows": [
+      [
+        {
+          "userEnteredValue": {
+            "stringValue": "EIA · Read only"
+          }
+        }
+      ],
+      [
+        {
+          "userEnteredValue": {
+            "stringValue": "Units SQM (EIA)"
+          }
+        },
+        {},
+        {},
+        {
+          "userEnteredValue": {
+            "formulaValue": "=SUM(FILTER(COL_VALUES(S_UNITS,\"Total Type Size\"),COL_VALUES(S_UNITS,\"EIA\")=TRUE))"
+          }
+        }
+      ],
+      [
+        {
+          "userEnteredValue": {
+            "stringValue": "Rai for Units"
+          }
+        },
+        {},
+        {},
+        {
+          "userEnteredValue": {
+            "formulaValue": "=O13 / 480"
+          },
+          "note": "480 - allowed buiding area per rai"
+        }
+      ]
+    ]
+  },
+  "validation": {
+    "appsScriptChanged": false,
+    "rateUnchanged": 0.005833333333333334,
+    "overviewDisplay": "0.5833%",
+    "paramsNamedFunctionPreserved": true,
+    "dashboardEiaValuesUnchanged": [
+      9397.2,
+      480,
+      19.5775
+    ],
+    "visualReview": "Verified in Google Sheets at 100% zoom: Finance header, monthly interest rate label and blue editable percentage are aligned and readable; removed EIA row is blank."
+  }
+}
