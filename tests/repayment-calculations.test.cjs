@@ -229,11 +229,8 @@ test('display columns do not change loan inputs or repayment calculations', () =
     const reader = vm.createContext({Date, Utilities: {formatDate: value => value.toISOString().slice(0, 10)}});
     vm.runInContext(source, reader);
     reader.readUnitDepreciation = () => [0];
-    return reader.readIncomingRepaymentModel({getSpreadsheetTimeZone: () => 'UTC', getSheetByName: name => ({
-      getLastRow: () => sheets[name].length + 2,
-      getLastColumn: () => sheets[name][0].length,
-      getRange: () => ({getValues: () => sheets[name]})
-    })});
+    reader.readRepaymentInputs = () => sheets;
+    return reader.readIncomingRepaymentModel({});
   }
   const original = read(0);
   assert.equal(original.timelineColumn, 12);
@@ -251,9 +248,55 @@ test('missing or duplicate required headers fail before calculation', () => {
   assert.throws(() => context.repaymentHeaderIndex(['Interest', 'Interest'], 'Interest'), /exactly one/);
 });
 
-test('invalid or protected result rows are rejected before saving', () => {
-  const sheet = {getName: () => 'In Loans', getRange: () => ({canEdit: () => false, getA1Notation: () => 'N10'})};
+test('invalid result rows are rejected before saving; valid writes use the atomic batch permission check', () => {
+  const sheet = {getName: () => 'In Loans', getSheetId: () => 123};
   assert.throws(() => context.repaymentRowWrite(sheet, 10, 14, [NaN], 1), /Invalid result/);
   assert.throws(() => context.repaymentRowWrite(sheet, 10, 14, [1], 2), /Invalid result/);
-  assert.throws(() => context.repaymentRowWrite(sheet, 10, 14, [1], 1), /Cannot edit/);
+  assert.equal(context.repaymentRowWrite(sheet, 10, 14, [1], 1).updateCells.range.sheetId, 123);
+});
+
+test('batch inputs retain unrounded amounts, booleans, errors and local calendar dates', () => {
+  const value = (effectiveValue, type) => context.repaymentInputValue({effectiveValue,
+    effectiveFormat: {numberFormat: {type}}});
+  assert.equal(value({numberValue: 58850}, 'NUMBER'), 58850);
+  assert.equal(value({boolValue: false}), false);
+  assert.equal(value({stringValue: '001'}), '001');
+  assert.equal(value({errorValue: {type: 'REF'}}), '#REF');
+  assert.equal(context.repaymentInputValue(undefined), '');
+  const serial = day(2028, 2, 29);
+  for (const type of ['DATE', 'DATE_TIME']) {
+    const date = value({numberValue: serial + 0.75}, type);
+    assert.equal(context.repaymentDate(date, 'UTC', 'Loan'), serial);
+  }
+  assert.throws(() => context.repaymentDate(value({numberValue: serial}, 'NUMBER'), 'UTC', 'Loan'), /Expected a date/);
+});
+
+test('batch reader maps sheets by name and restores omitted empty rows and cells', () => {
+  const names = ['In Loans', 'Params', 'Cash Flow', 'Out Loans', 'Units Const.', 'Units'];
+  const book = {getId: () => 'test', getSheetByName: name => ({
+    getLastRow: () => 4, getLastColumn: () => 16,
+    getRange: () => ({getA1Notation: () => 'A1:P4'})
+  })};
+  let reads = 0;
+  const response = {sheets: names.slice().reverse().map(name => ({properties: {title: name},
+    data: [{rowData: [{values: [{effectiveValue: {stringValue: name}}]}]}]}))};
+  const reader = vm.createContext({Date, ScriptApp: {getOAuthToken: () => 'token'},
+    UrlFetchApp: {fetch(url, options) {
+      reads++;
+      assert.equal(new URL(url).searchParams.getAll('ranges').length, 6);
+      assert.equal(options.headers.Authorization, 'Bearer token');
+      return {getResponseCode: () => 200, getContentText: () => JSON.stringify(response)};
+    }}});
+  vm.runInContext(source, reader);
+  const actual = reader.readRepaymentInputs(book);
+  assert.equal(reads, 1);
+  for (const name of names) assert.equal(actual[name][0][0], name);
+  assert.equal(actual.Params.length, 3);
+  assert.equal(actual.Params[2].length, 2);
+  assert.deepEqual(Array.from(actual.Params[2]), ['', '']);
+  assert.equal(actual['Out Loans'][0].length, 9);
+  response.sheets.pop();
+  assert.throws(() => reader.readRepaymentInputs(book), /Missing repayment inputs/);
+  reader.UrlFetchApp.fetch = () => ({getResponseCode: () => 403, getContentText: () => 'Denied'});
+  assert.throws(() => reader.readRepaymentInputs(book), /HTTP 403.*Nothing was written/);
 });

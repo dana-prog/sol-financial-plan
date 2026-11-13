@@ -86,12 +86,20 @@ function showRepaymentCalculation() {
 }
 
 function recalculateIncomingLoanRepayments() {
+  const started = Date.now();
+  const timings = {};
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(10000)) throw new Error('Another repayment calculation is running. Please try again shortly.');
   try {
+    timings.lockMs = Date.now() - started;
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    let phase = Date.now();
     const model = readIncomingRepaymentModel(spreadsheet);
+    timings.readMs = Date.now() - phase;
+    phase = Date.now();
     const result = calculateRepaymentsWithCompanyTax(model);
+    timings.calculateMs = Date.now() - phase;
+    phase = Date.now();
     const sheet = repaymentSheet(spreadsheet, 'In Loans');
     const requests = companyTaxWriteRequests(spreadsheet, model, result);
     result.payments.forEach(payment => {
@@ -105,7 +113,10 @@ function recalculateIncomingLoanRepayments() {
         note: 'Last successful repayment and company-tax calculation. Run SOL → Recalculate Loan Payments and Tax after changing loans, cash flow, unit costs, useful lives, or tax inputs.'}]}],
       fields: 'userEnteredValue,note'
     }});
+    timings.prepareWriteMs = Date.now() - phase;
+    phase = Date.now();
     // One Sheets batch prevents a failed repayment write from leaving new tax values beside old repayments.
+    // Sheets checks permissions for every target as part of this atomic write.
     const response = UrlFetchApp.fetch('https://sheets.googleapis.com/v4/spreadsheets/' + spreadsheet.getId() + ':batchUpdate', {
       method: 'post', contentType: 'application/json',
       headers: {Authorization: 'Bearer ' + ScriptApp.getOAuthToken()},
@@ -114,16 +125,19 @@ function recalculateIncomingLoanRepayments() {
     if (response.getResponseCode() !== 200) {
       throw new Error('Could not save repayments and tax (HTTP ' + response.getResponseCode() + '). ' + response.getContentText());
     }
-    return 'Loan repayments and tax updated.';
+    timings.saveMs = Date.now() - phase;
+    return 'Loan repayments and tax updated in ' + ((Date.now() - started) / 1000).toFixed(1) + ' seconds.';
   } finally {
     lock.releaseLock();
+    console.log('Repayment calculation timings (ms): ' + JSON.stringify({...timings, totalMs: Date.now() - started}));
   }
 }
 
 function readIncomingRepaymentModel(spreadsheet) {
-  const timezone = spreadsheet.getSpreadsheetTimeZone();
-  const incoming = repaymentSheet(spreadsheet, 'In Loans');
-  const grid = incoming.getRange(3, 1, incoming.getLastRow() - 2, incoming.getLastColumn()).getValues();
+  const inputs = readRepaymentInputs(spreadsheet);
+  // API date serials represent the spreadsheet's local calendar, not a UTC instant.
+  const timezone = 'UTC';
+  const grid = inputs['In Loans'];
   const headers = grid[0];
   const columns = Object.fromEntries(['Name', 'Priority', 'Date', 'Interest',
     'Interest repayment start deadline (years)'].map(name => [name, repaymentHeaderIndex(headers, name)]));
@@ -141,8 +155,7 @@ function readIncomingRepaymentModel(spreadsheet) {
       throw new Error('The loan timeline must contain consecutive month-start dates.');
     }
   });
-  const params = repaymentSheet(spreadsheet, 'Params');
-  const paramRows = params.getRange(2, 2, params.getLastRow() - 1, 2).getValues();
+  const paramRows = inputs.Params;
   const parameter = name => {
     const matches = paramRows.filter(row => row[0] === name);
     if (matches.length !== 1) throw new Error('Expected exactly one parameter: ' + name);
@@ -171,7 +184,7 @@ function readIncomingRepaymentModel(spreadsheet) {
       date, rate, draws, interestRepaymentStart});
   });
   if (!loans.length) throw new Error('No incoming loan schedules were found.');
-  const cash = repaymentSheet(spreadsheet, 'Cash Flow').getRange(3, 2, repaymentSheet(spreadsheet, 'Cash Flow').getLastRow() - 2, months.length + 1).getValues();
+  const cash = inputs['Cash Flow'].map(row => row.slice(0, months.length + 1));
   checkRepaymentTimeline(cash[0].slice(1), months, timezone, 'Cash Flow');
   const cashRow = name => {
     const rows = cash.slice(1).filter(row => row[0] === name);
@@ -182,14 +195,13 @@ function readIncomingRepaymentModel(spreadsheet) {
   ['land expenses', 'pre const. expenses', 'units const. expenses', 'other const. expenses',
     'direct operating expenses', 'other operating expenses', 'outgoing loans - funds disbursed']
     .forEach(name => cashRow(name).forEach((value, i) => { expenses[i] += value; }));
-  const outgoing = repaymentSheet(spreadsheet, 'Out Loans');
-  const outgoingRows = outgoing.getRange(3, 8, outgoing.getLastRow() - 2, months.length + 1).getValues();
+  const outgoingRows = inputs['Out Loans'].map(row => row.slice(0, months.length + 1));
   checkRepaymentTimeline(outgoingRows[0].slice(1), months, timezone, 'Out Loans');
   const receiptsRows = outgoingRows.filter(row => row[0] === 'total loan paid');
   if (receiptsRows.length !== 1) throw new Error('Expected one total loan paid row in Out Loans.');
   const revenue = cashRow('revenue');
   const receipts = receiptsRows[0].slice(1).map((value, i) => repaymentNumber(value, 'Out Loans repayments') + revenue[i]);
-  const depreciation = readUnitDepreciation(spreadsheet, months, timezone);
+  const depreciation = readUnitDepreciation(inputs, months, timezone);
   const otherDepreciation = cashRow('setup depreciation');
   const operatingProfit = cashRow('operating profit');
   const interestIncome = months.map((_, i) => outgoingRows.filter(row => row[0] === 'interest generated')
@@ -197,7 +209,57 @@ function readIncomingRepaymentModel(spreadsheet) {
   const tax = {rate: repaymentNumber(parameter('company tax rate'), 'company tax rate'),
     yearEndMonth: repaymentNumber(parameter('financial year-end month'), 'financial year-end month'), depreciation,
     profitBeforeInterest: operatingProfit.map((profit, i) => profit + interestIncome[i] - depreciation[i] - otherDepreciation[i])};
-  return {months, loans, principalRepaymentStart, reserve, receipts, expenses, tax, timelineColumn: timelineIndex + 1};
+  return {months, loans, principalRepaymentStart, reserve, receipts, expenses, tax, timelineColumn: timelineIndex + 1,
+    cashLabels: ['', '', ...cash.map(row => row[0])]};
+}
+
+/** Read calculated inputs together; date formats preserve the existing date validation. */
+function readRepaymentInputs(spreadsheet) {
+  const ranges = [
+    {name: 'In Loans', row: 3, column: 1},
+    {name: 'Params', row: 2, column: 2, width: 2},
+    {name: 'Cash Flow', row: 3, column: 2},
+    {name: 'Out Loans', row: 3, column: 8},
+    {name: 'Units Const.', row: 3, column: 2},
+    {name: 'Units', row: 2, column: 4, width: 13}
+  ].map(input => {
+    const sheet = repaymentSheet(spreadsheet, input.name);
+    const height = sheet.getLastRow() - input.row + 1;
+    const width = input.width || sheet.getLastColumn() - input.column + 1;
+    if (height < 1 || width < 1) throw new Error('Missing repayment inputs in ' + input.name + '. Nothing was written.');
+    const address = sheet.getRange(input.row, input.column, height, width).getA1Notation();
+    return {...input, height, width, address: "'" + input.name.replace(/'/g, "''") + "'!" + address};
+  });
+  const fields = 'sheets(properties(title),data(rowData(values(effectiveValue,effectiveFormat(numberFormat(type))))))';
+  const query = ranges.map(input => 'ranges=' + encodeURIComponent(input.address)).join('&');
+  const response = UrlFetchApp.fetch('https://sheets.googleapis.com/v4/spreadsheets/' + spreadsheet.getId()
+    + '?' + query + '&fields=' + encodeURIComponent(fields), {
+    headers: {Authorization: 'Bearer ' + ScriptApp.getOAuthToken()}, muteHttpExceptions: true
+  });
+  if (response.getResponseCode() !== 200) {
+    throw new Error('Could not read repayment inputs (HTTP ' + response.getResponseCode() + '). Nothing was written. ' + response.getContentText());
+  }
+  const sheets = JSON.parse(response.getContentText()).sheets || [];
+  return Object.fromEntries(ranges.map(input => {
+    const sheet = sheets.find(item => item.properties.title === input.name);
+    if (!sheet) throw new Error('Missing repayment inputs in ' + input.name + '. Nothing was written.');
+    const rows = sheet.data?.[0]?.rowData || [];
+    // The API omits trailing empty rows/cells; restore the rectangular getValues shape.
+    return [input.name, Array.from({length: input.height}, (_, r) =>
+      Array.from({length: input.width}, (_, c) => repaymentInputValue(rows[r]?.values?.[c])))];
+  }));
+}
+
+function repaymentInputValue(cell) {
+  const value = cell?.effectiveValue;
+  if (!value) return '';
+  if (value.errorValue) return '#' + value.errorValue.type;
+  if (typeof value.numberValue === 'number') {
+    const type = cell.effectiveFormat?.numberFormat?.type;
+    return type === 'DATE' || type === 'DATE_TIME'
+      ? new Date(Math.round((value.numberValue - 25569) * 86400000)) : value.numberValue;
+  }
+  return value.stringValue ?? value.boolValue ?? '';
 }
 
 function repaymentSheet(spreadsheet, name) {
@@ -213,6 +275,7 @@ function repaymentNumber(value, label) {
 
 function repaymentDate(value, timezone, label) {
   if (!(value instanceof Date) || !Number.isFinite(value.getTime())) throw new Error('Expected a date for ' + label + '. Nothing was written.');
+  if (timezone === 'UTC') return repaymentDay(value.getUTCFullYear(), value.getUTCMonth(), value.getUTCDate());
   const [year, month, day] = Utilities.formatDate(value, timezone, 'yyyy-MM-dd').split('-').map(Number);
   return repaymentDay(year, month - 1, day);
 }
@@ -236,8 +299,6 @@ function repaymentRowWrite(sheet, row, column, values, monthCount) {
   if (values.length !== monthCount || !values.every(Number.isFinite)) {
     throw new Error('Invalid result for ' + sheet.getName() + ' row ' + row + '. Nothing was written.');
   }
-  const range = sheet.getRange(row, column, 1, values.length);
-  if (!range.canEdit()) throw new Error('Cannot edit ' + sheet.getName() + '!' + range.getA1Notation() + '. Nothing was written.');
   return {updateCells: {
     range: {sheetId: sheet.getSheetId(), startRowIndex: row - 1, endRowIndex: row,
       startColumnIndex: column - 1, endColumnIndex: column - 1 + values.length},

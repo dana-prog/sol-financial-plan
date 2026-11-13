@@ -90,12 +90,10 @@ function calculateRepaymentsWithCompanyTax(model) {
   throw new Error('Tax and repayments did not reconcile. Nothing was written.');
 }
 
-function readUnitDepreciation(spreadsheet, months, timezone) {
-  const units = repaymentSheet(spreadsheet, 'Units');
-  const construction = repaymentSheet(spreadsheet, 'Units Const.');
-  const grid = construction.getRange(3, 2, construction.getLastRow() - 2, months.length + 1).getValues();
+function readUnitDepreciation(inputs, months, timezone) {
+  const grid = inputs['Units Const.'].map(row => row.slice(0, months.length + 1));
   checkRepaymentTimeline(grid[0].slice(1), months, timezone, 'Units Const.');
-  const rows = units.getRange(2, 4, units.getLastRow() - 1, 13).getValues();
+  const rows = inputs.Units;
   const assets = rows.filter(row => row[0] !== '').map(row => {
     const name = String(row[0]);
     const matches = grid.filter(item => item[0] === name.toLowerCase() + ' const. cost');
@@ -109,7 +107,7 @@ function readUnitDepreciation(spreadsheet, months, timezone) {
 
 function companyTaxWriteRequests(spreadsheet, model, result) {
   const cash = repaymentSheet(spreadsheet, 'Cash Flow');
-  const labels = cash.getRange(1, 2, cash.getLastRow(), 1).getValues().flat();
+  const labels = model.cashLabels;
   const outputs = {
     'company tax': result.tax.cashPayments,
     'construction depreciation': model.tax.depreciation,
