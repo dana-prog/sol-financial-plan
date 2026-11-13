@@ -10,10 +10,11 @@
     "interestTotal": "K31"
   },
   "outgoing": {
-    "range": "B34:N39",
+    "range": "B34:P39",
     "fundingDates": "F36:F37",
     "accruedInterest": "K36:K37",
-    "interestTotal": "K38"
+    "interestTotal": "K38",
+    "repaymentDates": "O36:O37"
   },
   "dateSemantics": "Existing source date: actual funding for funded loans; scheduled funding for pending/planned loans. Exact day shown as d mmm yyyy.",
   "interestSemantics": "Total interest generated before the first day of the current month, including interest already paid. A single SUMIF sums the existing monthly interest-generated row and excludes the current and future months. No daily accrual is calculated in the overview. The displayed cutoff is the last day of the previous month and advances automatically.",

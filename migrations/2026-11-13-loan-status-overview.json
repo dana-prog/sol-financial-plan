@@ -43,7 +43,7 @@
       }
     },
     "outgoing": {
-      "range": "B34:N39",
+      "range": "B34:P39",
       "source": "Out Loans",
       "sourceRows": [
         4,
@@ -55,10 +55,32 @@
         "Funding date",
         "Amount",
         "Accrued interest",
-        "Funding"
+        "Funding",
+        "Repayment date"
       ],
       "total": 40000000,
-      "pending": 40000000
+      "pending": 40000000,
+      "repaymentDates": {
+        "header": "O35:P35",
+        "cells": [
+          "O36",
+          "O37"
+        ],
+        "parameters": [
+          "10M loan - emetway to treehouse - repayment date",
+          "30M loan - emetway to treehouse - repayment date"
+        ],
+        "formulas": {
+          "O36": "=LET(repayment_date,PARAM(\"10M loan - emetway to treehouse - repayment date\"),IF(repayment_date=\"\",\"\",repayment_date))",
+          "O37": "=LET(repayment_date,PARAM(\"30M loan - emetway to treehouse - repayment date\"),IF(repayment_date=\"\",\"\",repayment_date))"
+        },
+        "semantics": "Scheduled repayment date used by Out Loans; not confirmation of a completed repayment.",
+        "valuesAtVerification": [
+          "2028-04-01",
+          "2028-04-01"
+        ],
+        "format": "d mmm yyyy"
+      }
     },
     "behavior": "Amounts and funding statuses link to the source cells. The overview displays Funds Received as Received, with matching total criteria and conditional formatting. Loan labels hyperlink to their source rows. Lenders and debtors occupy their own columns. Repayment labels are mapped to explicit expectations in the overview; source calculations are unchanged. Conditional formatting tracks changing statuses.",
     "repaymentLabels": {
@@ -66,11 +88,11 @@
       "Late principal payment": "Expected late principal payment",
       "Late interest payment": "Expected late interest payment"
     },
-    "layout": "Existing overview column widths retained. Incoming: Loan B, Priority C, Lender D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N, Repayment projection O:P. Outgoing: Loan B:C, Debtor D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N. Incoming ends at P; outgoing ends at N. Accrued-interest totals through the previous month-end and dated explanatory footers are included. See 2026-11-13-loan-funding-dates-accrued-interest.json for formulas and validation.",
+    "layout": "Existing overview column widths retained. Incoming: Loan B, Priority C, Lender D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N, Repayment projection O:P. Outgoing: Loan B:C, Debtor D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N, Repayment date O:P. Both tables end at P. Accrued-interest totals through the previous month-end and dated explanatory footers are included. See 2026-11-13-loan-funding-dates-accrued-interest.json for formulas and validation.",
     "style": {
       "ranges": [
         "B22:P32",
-        "B34:N39"
+        "B34:P39"
       ],
       "titleRows": {
         "background": "#243B53",
@@ -165,6 +187,13 @@
       "namedFunctionCallsPreserved": true,
       "formattingVerified": "Read back all target formatting; title, header, body, and total colors match the loan-table palette. Total row also visible in the native browser. Full visual navigation deferred because the user was actively editing conditional formatting.",
       "scope": "Only formatting in B12:L19; dimensions, merged cells, links, and formulas retained."
+    },
+    "outgoingRepaymentDates": {
+      "bothMatchParams": true,
+      "existingValuesAndFormulasUnchanged": true,
+      "namedFunctionUsed": "PARAM",
+      "visualInspection": "Both dates and header fit at 100% zoom. Existing 11-point text and table styles retained; no column resizing.",
+      "appsScriptSync": "Not required; no Apps Script source changes."
     }
   }
 }
