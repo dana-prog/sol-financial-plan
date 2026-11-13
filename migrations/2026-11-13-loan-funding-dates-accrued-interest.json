@@ -1,0 +1,64 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "sheetId": 190902611,
+  "status": "Applied and verified on 2026-11-13",
+  "incoming": {
+    "range": "B22:P32",
+    "fundingDates": "F24:F30",
+    "accruedInterest": "K24:K30",
+    "interestTotal": "K31"
+  },
+  "outgoing": {
+    "range": "B34:N39",
+    "fundingDates": "F36:F37",
+    "accruedInterest": "K36:K37",
+    "interestTotal": "K38"
+  },
+  "dateSemantics": "Existing source date: actual funding for funded loans; scheduled funding for pending/planned loans. Exact day shown as d mmm yyyy.",
+  "interestSemantics": "Total interest generated through TODAY(), including interest already paid. Completed months use the source interest-generated row. Current month uses Actual/365 through today and the existing anniversary-capitalization values. Future loan dates return zero; blank dates remain blank; dates beyond the forecast return #N/A. Repayments are reflected in the source principal and capitalized balance, but paid interest is not deducted from cumulative interest.",
+  "formulas": {
+    "incoming": [
+      "=LET(as_of,TODAY(),loan_date,'In Loans'!$C$4,months,'In Loans'!$N$3:$DE$3,month_start,EOMONTH(as_of,-1)+1,IF(loan_date=\"\",\"\",IF(as_of<loan_date,0,IF(as_of>EOMONTH(MAX(months),0),NA(),LET(prior_month,EDATE(month_start,-1),principal,XLOOKUP(month_start,months,'In Loans'!$N$9:$DE$9,0),prior_cap,MAX(0,XLOOKUP(prior_month,months,'In Loans'!$N$16:$DE$16,0)-XLOOKUP(prior_month,months,'In Loans'!$N$13:$DE$13,0)),new_cap,XLOOKUP(month_start,months,'In Loans'!$N$16:$DE$16,0),anniversary,EDATE(loan_date,12*(YEAR(as_of)-YEAR(loan_date))),is_anniversary,AND(month_start>EOMONTH(loan_date,-1)+1,MONTH(month_start)=MONTH(loan_date)),SUMIF(months,\"<\"&month_start,'In Loans'!$N$6:$DE$6)+((principal+prior_cap)*MAX(0,as_of-MAX(month_start,loan_date)+1)+IF(is_anniversary,(new_cap-prior_cap)*MAX(0,as_of-anniversary+1),0))*'In Loans'!$G$4/365)))))",
+      "=LET(as_of,TODAY(),loan_date,'In Loans'!$C$18,months,'In Loans'!$N$3:$DE$3,month_start,EOMONTH(as_of,-1)+1,IF(loan_date=\"\",\"\",IF(as_of<loan_date,0,IF(as_of>EOMONTH(MAX(months),0),NA(),LET(prior_month,EDATE(month_start,-1),principal,XLOOKUP(month_start,months,'In Loans'!$N$23:$DE$23,0),prior_cap,MAX(0,XLOOKUP(prior_month,months,'In Loans'!$N$30:$DE$30,0)-XLOOKUP(prior_month,months,'In Loans'!$N$27:$DE$27,0)),new_cap,XLOOKUP(month_start,months,'In Loans'!$N$30:$DE$30,0),anniversary,EDATE(loan_date,12*(YEAR(as_of)-YEAR(loan_date))),is_anniversary,AND(month_start>EOMONTH(loan_date,-1)+1,MONTH(month_start)=MONTH(loan_date)),SUMIF(months,\"<\"&month_start,'In Loans'!$N$20:$DE$20)+((principal+prior_cap)*MAX(0,as_of-MAX(month_start,loan_date)+1)+IF(is_anniversary,(new_cap-prior_cap)*MAX(0,as_of-anniversary+1),0))*'In Loans'!$G$18/365)))))",
+      "=LET(as_of,TODAY(),loan_date,'In Loans'!$C$32,months,'In Loans'!$N$3:$DE$3,month_start,EOMONTH(as_of,-1)+1,IF(loan_date=\"\",\"\",IF(as_of<loan_date,0,IF(as_of>EOMONTH(MAX(months),0),NA(),LET(prior_month,EDATE(month_start,-1),principal,XLOOKUP(month_start,months,'In Loans'!$N$37:$DE$37,0),prior_cap,MAX(0,XLOOKUP(prior_month,months,'In Loans'!$N$44:$DE$44,0)-XLOOKUP(prior_month,months,'In Loans'!$N$41:$DE$41,0)),new_cap,XLOOKUP(month_start,months,'In Loans'!$N$44:$DE$44,0),anniversary,EDATE(loan_date,12*(YEAR(as_of)-YEAR(loan_date))),is_anniversary,AND(month_start>EOMONTH(loan_date,-1)+1,MONTH(month_start)=MONTH(loan_date)),SUMIF(months,\"<\"&month_start,'In Loans'!$N$34:$DE$34)+((principal+prior_cap)*MAX(0,as_of-MAX(month_start,loan_date)+1)+IF(is_anniversary,(new_cap-prior_cap)*MAX(0,as_of-anniversary+1),0))*'In Loans'!$G$32/365)))))",
+      "=LET(as_of,TODAY(),loan_date,'In Loans'!$C$46,months,'In Loans'!$N$3:$DE$3,month_start,EOMONTH(as_of,-1)+1,IF(loan_date=\"\",\"\",IF(as_of<loan_date,0,IF(as_of>EOMONTH(MAX(months),0),NA(),LET(prior_month,EDATE(month_start,-1),principal,XLOOKUP(month_start,months,'In Loans'!$N$51:$DE$51,0),prior_cap,MAX(0,XLOOKUP(prior_month,months,'In Loans'!$N$58:$DE$58,0)-XLOOKUP(prior_month,months,'In Loans'!$N$55:$DE$55,0)),new_cap,XLOOKUP(month_start,months,'In Loans'!$N$58:$DE$58,0),anniversary,EDATE(loan_date,12*(YEAR(as_of)-YEAR(loan_date))),is_anniversary,AND(month_start>EOMONTH(loan_date,-1)+1,MONTH(month_start)=MONTH(loan_date)),SUMIF(months,\"<\"&month_start,'In Loans'!$N$48:$DE$48)+((principal+prior_cap)*MAX(0,as_of-MAX(month_start,loan_date)+1)+IF(is_anniversary,(new_cap-prior_cap)*MAX(0,as_of-anniversary+1),0))*'In Loans'!$G$46/365)))))",
+      "=LET(as_of,TODAY(),loan_date,'In Loans'!$C$60,months,'In Loans'!$N$3:$DE$3,month_start,EOMONTH(as_of,-1)+1,IF(loan_date=\"\",\"\",IF(as_of<loan_date,0,IF(as_of>EOMONTH(MAX(months),0),NA(),LET(prior_month,EDATE(month_start,-1),principal,XLOOKUP(month_start,months,'In Loans'!$N$65:$DE$65,0),prior_cap,MAX(0,XLOOKUP(prior_month,months,'In Loans'!$N$72:$DE$72,0)-XLOOKUP(prior_month,months,'In Loans'!$N$69:$DE$69,0)),new_cap,XLOOKUP(month_start,months,'In Loans'!$N$72:$DE$72,0),anniversary,EDATE(loan_date,12*(YEAR(as_of)-YEAR(loan_date))),is_anniversary,AND(month_start>EOMONTH(loan_date,-1)+1,MONTH(month_start)=MONTH(loan_date)),SUMIF(months,\"<\"&month_start,'In Loans'!$N$62:$DE$62)+((principal+prior_cap)*MAX(0,as_of-MAX(month_start,loan_date)+1)+IF(is_anniversary,(new_cap-prior_cap)*MAX(0,as_of-anniversary+1),0))*'In Loans'!$G$60/365)))))",
+      "=LET(as_of,TODAY(),loan_date,'In Loans'!$C$74,months,'In Loans'!$N$3:$DE$3,month_start,EOMONTH(as_of,-1)+1,IF(loan_date=\"\",\"\",IF(as_of<loan_date,0,IF(as_of>EOMONTH(MAX(months),0),NA(),LET(prior_month,EDATE(month_start,-1),principal,XLOOKUP(month_start,months,'In Loans'!$N$79:$DE$79,0),prior_cap,MAX(0,XLOOKUP(prior_month,months,'In Loans'!$N$86:$DE$86,0)-XLOOKUP(prior_month,months,'In Loans'!$N$83:$DE$83,0)),new_cap,XLOOKUP(month_start,months,'In Loans'!$N$86:$DE$86,0),anniversary,EDATE(loan_date,12*(YEAR(as_of)-YEAR(loan_date))),is_anniversary,AND(month_start>EOMONTH(loan_date,-1)+1,MONTH(month_start)=MONTH(loan_date)),SUMIF(months,\"<\"&month_start,'In Loans'!$N$76:$DE$76)+((principal+prior_cap)*MAX(0,as_of-MAX(month_start,loan_date)+1)+IF(is_anniversary,(new_cap-prior_cap)*MAX(0,as_of-anniversary+1),0))*'In Loans'!$G$74/365)))))",
+      "=LET(as_of,TODAY(),loan_date,'In Loans'!$C$88,months,'In Loans'!$N$3:$DE$3,month_start,EOMONTH(as_of,-1)+1,IF(loan_date=\"\",\"\",IF(as_of<loan_date,0,IF(as_of>EOMONTH(MAX(months),0),NA(),LET(prior_month,EDATE(month_start,-1),principal,XLOOKUP(month_start,months,'In Loans'!$N$93:$DE$93,0),prior_cap,MAX(0,XLOOKUP(prior_month,months,'In Loans'!$N$100:$DE$100,0)-XLOOKUP(prior_month,months,'In Loans'!$N$97:$DE$97,0)),new_cap,XLOOKUP(month_start,months,'In Loans'!$N$100:$DE$100,0),anniversary,EDATE(loan_date,12*(YEAR(as_of)-YEAR(loan_date))),is_anniversary,AND(month_start>EOMONTH(loan_date,-1)+1,MONTH(month_start)=MONTH(loan_date)),SUMIF(months,\"<\"&month_start,'In Loans'!$N$90:$DE$90)+((principal+prior_cap)*MAX(0,as_of-MAX(month_start,loan_date)+1)+IF(is_anniversary,(new_cap-prior_cap)*MAX(0,as_of-anniversary+1),0))*'In Loans'!$G$88/365)))))"
+    ],
+    "outgoing": [
+      "=LET(as_of,TODAY(),loan_date,'Out Loans'!$B$4,months,'Out Loans'!$J$3:$DA$3,month_start,EOMONTH(as_of,-1)+1,IF(loan_date=\"\",\"\",IF(as_of<loan_date,0,IF(as_of>EOMONTH(MAX(months),0),NA(),LET(prior_month,EDATE(month_start,-1),principal,XLOOKUP(month_start,months,'Out Loans'!$J$9:$DA$9,0),prior_cap,MAX(0,XLOOKUP(prior_month,months,'Out Loans'!$J$16:$DA$16,0)-XLOOKUP(prior_month,months,'Out Loans'!$J$13:$DA$13,0)),new_cap,XLOOKUP(month_start,months,'Out Loans'!$J$16:$DA$16,0),anniversary,EDATE(loan_date,12*(YEAR(as_of)-YEAR(loan_date))),is_anniversary,AND(month_start>EOMONTH(loan_date,-1)+1,MONTH(month_start)=MONTH(loan_date)),SUMIF(months,\"<\"&month_start,'Out Loans'!$J$6:$DA$6)+((principal+prior_cap)*MAX(0,as_of-MAX(month_start,loan_date)+1)+IF(is_anniversary,(new_cap-prior_cap)*MAX(0,as_of-anniversary+1),0))*'Out Loans'!$E$4/365)))))",
+      "=LET(as_of,TODAY(),loan_date,'Out Loans'!$B$18,months,'Out Loans'!$J$3:$DA$3,month_start,EOMONTH(as_of,-1)+1,IF(loan_date=\"\",\"\",IF(as_of<loan_date,0,IF(as_of>EOMONTH(MAX(months),0),NA(),LET(prior_month,EDATE(month_start,-1),principal,XLOOKUP(month_start,months,'Out Loans'!$J$23:$DA$23,0),prior_cap,MAX(0,XLOOKUP(prior_month,months,'Out Loans'!$J$30:$DA$30,0)-XLOOKUP(prior_month,months,'Out Loans'!$J$27:$DA$27,0)),new_cap,XLOOKUP(month_start,months,'Out Loans'!$J$30:$DA$30,0),anniversary,EDATE(loan_date,12*(YEAR(as_of)-YEAR(loan_date))),is_anniversary,AND(month_start>EOMONTH(loan_date,-1)+1,MONTH(month_start)=MONTH(loan_date)),SUMIF(months,\"<\"&month_start,'Out Loans'!$J$20:$DA$20)+((principal+prior_cap)*MAX(0,as_of-MAX(month_start,loan_date)+1)+IF(is_anniversary,(new_cap-prior_cap)*MAX(0,as_of-anniversary+1),0))*'Out Loans'!$E$18/365)))))"
+    ]
+  },
+  "verification": {
+    "asOf": "2026-11-13",
+    "expectedIncoming": [
+      0,
+      70354.79452054795,
+      92054.79452054796,
+      26849.315068493157,
+      0,
+      0,
+      0
+    ],
+    "actualIncoming": [
+      0,
+      70354.79452054796,
+      92054.79452054796,
+      26849.31506849315,
+      0,
+      0,
+      0
+    ],
+    "incomingInterestTotal": 189258.9041095891,
+    "outgoingInterestTotal": 0,
+    "allIncomingWithinOneCent": true,
+    "existingIncomingFormulasPreserved": true,
+    "formulaErrors": [],
+    "columnWidthsUnchanged": true,
+    "visualInspection": "Both tables inspected in native Google Sheets at 100% zoom; dates, amounts, interest, and status labels fit. Outgoing table ends at N, incoming at P. No column dimensions changed by this migration; the user subsequently widened P during verification and that change was preserved.",
+    "appsScriptSync": "Not required: no Apps Script source changes."
+  }
+}

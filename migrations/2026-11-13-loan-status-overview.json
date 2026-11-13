@@ -4,7 +4,7 @@
   "overview": {
     "sheetId": 190902611,
     "incoming": {
-      "range": "B22:L32",
+      "range": "B22:P32",
       "source": "In Loans",
       "sourceRows": [
         4,
@@ -19,7 +19,9 @@
         "Loan",
         "Priority",
         "Lender",
+        "Funding date",
         "Amount",
+        "Accrued interest",
         "Funding",
         "Repayment projection"
       ],
@@ -41,7 +43,7 @@
       }
     },
     "outgoing": {
-      "range": "B34:I38",
+      "range": "B34:N39",
       "source": "Out Loans",
       "sourceRows": [
         4,
@@ -50,7 +52,9 @@
       "columns": [
         "Loan",
         "Debtor",
+        "Funding date",
         "Amount",
+        "Accrued interest",
         "Funding"
       ],
       "total": 40000000,
@@ -62,7 +66,7 @@
       "Late principal payment": "Expected late principal payment",
       "Late interest payment": "Expected late interest payment"
     },
-    "layout": "Existing overview column widths retained. Incoming Loan and Priority occupy separate B and C cells, with 6px horizontal padding. Outgoing Funding occupies H:I; J:L is outside the table, with the overview background restored. Outgoing title and totals stop at I. Funding conditional formatting is restricted to H36:I37. Titles are 36px high, loan rows 48px, incoming total 36px, and outgoing total 48px to fit its wrapped pending amount."
+    "layout": "Existing overview column widths retained. Incoming: Loan B, Priority C, Lender D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N, Repayment projection O:P. Outgoing: Loan B:C, Debtor D:E, Funding date F:G, Amount H:J, Accrued interest K:L, Funding M:N. Incoming ends at P; outgoing ends at N. Daily accrued-interest totals and dated explanatory footers are included. See 2026-11-13-loan-funding-dates-accrued-interest.json for formulas and validation."
   },
   "outLoans": {
     "status": "H3",
