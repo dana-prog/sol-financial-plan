@@ -1,0 +1,287 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Apply the selected Unified banner design: navy header, white title and Cash Flow link, Wise label above side-by-side gold THB and muted USD amounts, update time below, subtle vertical divider.",
+  "requests": [
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 6,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.1411764705882353,
+                "green": 0.23137254901960785,
+                "blue": 0.3254901960784314
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat.backgroundColorStyle"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 3,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9686274509803922,
+                  "green": 0.9803921568627451,
+                  "blue": 0.9882352941176471
+                }
+              },
+              "fontSize": 28
+            },
+            "padding": {
+              "top": 8,
+              "bottom": 0,
+              "left": 20,
+              "right": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.foregroundColorStyle,userEnteredFormat.textFormat.fontSize,userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 4,
+          "endRowIndex": 5,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9686274509803922,
+                  "green": 0.9803921568627451,
+                  "blue": 0.9882352941176471
+                }
+              }
+            },
+            "padding": {
+              "top": 0,
+              "bottom": 0,
+              "left": 20,
+              "right": 20
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.foregroundColorStyle,userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 2,
+          "startColumnIndex": 9,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.7803921568627451,
+                  "green": 0.8352941176470589,
+                  "blue": 0.8745098039215686
+                }
+              }
+            },
+            "padding": {
+              "top": 0,
+              "bottom": 0,
+              "left": 24,
+              "right": 12
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.foregroundColorStyle,userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 13,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.7803921568627451,
+                  "green": 0.8352941176470589,
+                  "blue": 0.8745098039215686
+                }
+              }
+            },
+            "padding": {
+              "top": 0,
+              "bottom": 0,
+              "left": 24,
+              "right": 12
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.foregroundColorStyle,userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 4,
+          "endRowIndex": 5,
+          "startColumnIndex": 9,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.7803921568627451,
+                  "green": 0.8352941176470589,
+                  "blue": 0.8745098039215686
+                }
+              }
+            },
+            "padding": {
+              "top": 0,
+              "bottom": 0,
+              "left": 24,
+              "right": 12
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.foregroundColorStyle,userEnteredFormat.padding"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 2,
+          "endRowIndex": 4,
+          "startColumnIndex": 9,
+          "endColumnIndex": 12
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9294117647058824,
+                  "green": 0.7764705882352941,
+                  "blue": 0.42745098039215684
+                }
+              },
+              "bold": true
+            },
+            "padding": {
+              "top": 0,
+              "bottom": 0,
+              "left": 24,
+              "right": 12
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.foregroundColorStyle,userEnteredFormat.textFormat.bold,userEnteredFormat.padding"
+      }
+    },
+    {
+      "updateBorders": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 5,
+          "startColumnIndex": 9,
+          "endColumnIndex": 16
+        },
+        "left": {
+          "style": "SOLID",
+          "colorStyle": {
+            "rgbColor": {
+              "red": 0.3803921568627451,
+              "green": 0.4549019607843137,
+              "blue": 0.5294117647058824
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 1,
+          "endIndex": 2
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 4,
+          "endIndex": 5
+        },
+        "properties": {
+          "pixelSize": 28
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 5,
+          "endIndex": 6
+        },
+        "properties": {
+          "pixelSize": 16
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "verification": {
+    "headerCellsPreserved": 6,
+    "valuesFormulasNotesAndNumberFormatsUnchanged": true,
+    "wiseSyncCellAddressesUnchanged": true,
+    "visualCheck": "Native Google Sheets at 100% zoom; all header text and both currencies fit without clipping."
+  }
+}
