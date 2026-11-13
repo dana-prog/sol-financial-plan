@@ -17,16 +17,31 @@
       ],
       "columns": [
         "Loan",
+        "Priority",
         "Lender",
         "Amount (THB)",
         "Funding",
         "Repayment projection"
       ],
       "total": 286688144.5884,
-      "received": 16688144.5884
+      "received": 16688144.5884,
+      "priority": {
+        "range": "C23:C30",
+        "source": "In Loans!B at the existing sourceRows",
+        "valuesAtVerification": [
+          7,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "behavior": "Live formulas display existing repayment priority; lower numbers are repaid first. Loan and Priority use separate B and C cells."
+      }
     },
     "outgoing": {
-      "range": "B34:L38",
+      "range": "B34:I38",
       "source": "Out Loans",
       "sourceRows": [
         4,
@@ -47,7 +62,7 @@
       "Late principal payment": "Expected late principal payment",
       "Late interest payment": "Expected late interest payment"
     },
-    "layout": "Compact merged-cell dashboard sections matching the existing overview. Existing column widths retained. Titles and totals 36px high; loan rows 48px high."
+    "layout": "Existing overview column widths retained. Incoming Loan and Priority occupy separate B and C cells, with 6px horizontal padding. Outgoing Funding occupies H:I; J:L is outside the table, with the overview background restored. Outgoing title and totals stop at I. Funding conditional formatting is restricted to H36:I37. Titles are 36px high, loan rows 48px, incoming total 36px, and outgoing total 48px to fit its wrapped pending amount."
   },
   "outLoans": {
     "status": "H3",
@@ -83,6 +98,15 @@
     "allLoansIncluded": true,
     "loanLinksVerified": true,
     "visualInspection": "Both overview sections and the outgoing Status input inspected in Google Sheets at 100% zoom; no clipping.",
-    "concurrentEdits": "Preserved independently updated expense column headings Paid and Total."
+    "concurrentEdits": "Preserved independently updated expense column headings Paid and Total.",
+    "priorityAndLayout": {
+      "allSevenPrioritiesMatchSources": true,
+      "existingValuesAndFormulasUnchanged": true,
+      "formulaErrors": 0,
+      "outgoingMergesBeyondColumnI": 0,
+      "columnWidthsUnchanged": true,
+      "visualInspection": "Both overview tables inspected in native Google Sheets at 100% zoom; priority, loan labels, and wrapped outgoing total fit without clipping.",
+      "appsScriptSync": "Not required: spreadsheet display formulas and formatting only; no Apps Script source changes."
+    }
   }
 }
