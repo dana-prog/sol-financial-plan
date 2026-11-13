@@ -1,0 +1,350 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "description": "Link formula-backed Paid and Total amounts in Project Expenses Breakdown to their source calculations. Preserve original expressions inside HYPERLINK; manually entered Paid zeros have no calculation link.",
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=2082967509&range=E33:CV33\",SUM(TIMELINE_PARAM_VALUES(S_SETUP_ACTUAL, \"total costs\")))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=706577296&range=C5:CT5\",SUM(CASH_FLOW_PARAM_VALUES(\"land expenses\")))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=706577296&range=C6:CT6\",SUM(CASH_FLOW_PARAM_VALUES(\"setup expenses\")))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 15,
+          "endRowIndex": 16,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=706577296&range=C7:CT7\",SUM(CASH_FLOW_PARAM_VALUES(\"construction expenses\")))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 16,
+          "endRowIndex": 17,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=706577296&range=C8:CT8\",SUM(CASH_FLOW_PARAM_VALUES(\"infra expenses\")))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 17,
+          "endRowIndex": 18,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=706577296&range=C33:CT33\",SUM(CASH_FLOW_PARAM_VALUES(\"interest paid\")))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 18,
+          "endRowIndex": 19,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=190902611&range=H14:H18\",SUM(H14:H18))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 18,
+          "endRowIndex": 19,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=190902611&range=J14:J18\",SUM(J14:J18))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "underline": true
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.underline"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 13,
+          "endRowIndex": 14,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "underline": true
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.underline"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 14,
+          "endRowIndex": 15,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "underline": true
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.underline"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 15,
+          "endRowIndex": 16,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "underline": true
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.underline"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 16,
+          "endRowIndex": 17,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "underline": true
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.underline"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 17,
+          "endRowIndex": 18,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "underline": true
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.underline"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 18,
+          "endRowIndex": 19,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "underline": true
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.underline"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 18,
+          "endRowIndex": 19,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "underline": true
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.underline"
+      }
+    }
+  ],
+  "verification": {
+    "linksAdded": 8,
+    "numericAmountsAndPercentagesCompared": 18,
+    "valuesAndFormattedDisplaysUnchanged": true,
+    "namedFunctionCallsPreserved": true,
+    "visualCheck": "Native Google Sheets at 100% zoom; linked values underlined, K formats intact, no clipping."
+  }
+}
