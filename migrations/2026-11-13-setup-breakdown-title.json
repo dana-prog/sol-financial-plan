@@ -8,12 +8,14 @@
     "background": "#e0ede5",
     "text": "#173b36",
     "bold": true,
-    "fontSize": 14
+    "fontSize": 14,
+    "rowHeightPixels": 36
   },
   "verification": {
     "titleAndMergedRangePreserved": true,
     "colorsMatchTotalRow": true,
-    "setupNavigationLinksPreserved": true
+    "setupNavigationLinksPreserved": true,
+    "titleRowHeightMatchesTotalRow": true
   },
   "appsScript": "No source changes or clasp synchronization required; formatting only."
 }
