@@ -1,0 +1,1548 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Links",
+  "sheetId": 1936111402,
+  "status": "Applied and verified on 2026-11-14",
+  "description": "Apply compact blue link styling across Cash Flow/Budget/Wise, Operations, Funding, Lists, and Workspace. Match the expense strip's 32px link rows and 24px description rows, with smaller section headings and tighter section spacing.",
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 1,
+          "endRowIndex": 3,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=706577296"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 1,
+          "endRowIndex": 3,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=530781649"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 1,
+          "endRowIndex": 3,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=2089007372"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 1,
+          "endIndex": 2
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 2,
+          "endIndex": 3
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 9,
+          "endRowIndex": 11,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=1093991711"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 9,
+          "endRowIndex": 11,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=173849536"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 9,
+          "endRowIndex": 11,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=1875367343"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 9,
+          "endIndex": 10
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 10,
+          "endIndex": 11
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 13,
+          "endRowIndex": 15,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=1060825517"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 13,
+          "endRowIndex": 15,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=1346380865"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 13,
+          "endRowIndex": 15,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=198423991"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 13,
+          "endIndex": 14
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 14,
+          "endIndex": 15
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 17,
+          "endRowIndex": 19,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=280690834"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 17,
+          "endRowIndex": 19,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=1436796628"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 17,
+          "endRowIndex": 19,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=1162211165"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 17,
+          "endIndex": 18
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 18,
+          "endIndex": 19
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 21,
+          "endRowIndex": 23,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=190902611"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 21,
+          "endRowIndex": 23,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=1936111401"
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "bold": false,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    }
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 21,
+          "endIndex": 22
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 22,
+          "endIndex": 23
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 4,
+          "endRowIndex": 5,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 16,
+              "bold": false,
+              "underline": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.23137254901960785,
+                  "blue": 0.3254901960784314
+                }
+              }
+            },
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 6,
+              "left": 0
+            },
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 4,
+          "endIndex": 5
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 8,
+          "endRowIndex": 9,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 16,
+              "bold": false,
+              "underline": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.23137254901960785,
+                  "blue": 0.3254901960784314
+                }
+              }
+            },
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 6,
+              "left": 0
+            },
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 8,
+          "endIndex": 9
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 16,
+              "bold": false,
+              "underline": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.23137254901960785,
+                  "blue": 0.3254901960784314
+                }
+              }
+            },
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 6,
+              "left": 0
+            },
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 12,
+          "endIndex": 13
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 16,
+          "endRowIndex": 17,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 16,
+              "bold": false,
+              "underline": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.23137254901960785,
+                  "blue": 0.3254901960784314
+                }
+              }
+            },
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 6,
+              "left": 0
+            },
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 16,
+          "endIndex": 17
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 20,
+          "endRowIndex": 21,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 16,
+              "bold": false,
+              "underline": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.1411764705882353,
+                  "green": 0.23137254901960785,
+                  "blue": 0.3254901960784314
+                }
+              }
+            },
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 6,
+              "left": 0
+            },
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 20,
+          "endIndex": 21
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 3,
+          "endIndex": 4
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 7,
+          "endIndex": 8
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 11,
+          "endIndex": 12
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 15,
+          "endIndex": 16
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 19,
+          "endIndex": 20
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 23,
+          "endIndex": 24
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 24,
+          "endIndex": 25
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 25,
+          "endIndex": 26
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "verification": "Verified all cell values and formulas in B1:P26 are unchanged and all 14 formula-based link destinations are preserved. Native screenshot at 100% shows all sections and descriptions fitting within one screen."
+}
