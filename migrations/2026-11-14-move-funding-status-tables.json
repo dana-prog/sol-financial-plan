@@ -1,0 +1,1071 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "status": "Applied and verified on 2026-11-14",
+  "description": "Move Borrowings Status and Loans Status from Project Overview into existing empty Funding Status sheet, preserving formulas and styling. Remove the vacated overview rows.",
+  "source": {
+    "sheet": "Project Overview",
+    "sheetId": 190902611,
+    "range": "B29:P44"
+  },
+  "destination": {
+    "sheet": "Funding Status",
+    "sheetId": 1060825517,
+    "borrowings": "B2:P11",
+    "loans": "B13:P17"
+  },
+  "requests": [
+    {
+      "updateSheetProperties": {
+        "properties": {
+          "sheetId": 1060825517,
+          "gridProperties": {
+            "hideGridlines": true
+          }
+        },
+        "fields": "gridProperties.hideGridlines"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 28,
+          "endRowIndex": 44,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "destination": {
+          "sheetId": 1060825517,
+          "rowIndex": 1,
+          "columnIndex": 1
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 1,
+          "endIndex": 2
+        },
+        "properties": {
+          "pixelSize": 91
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 2,
+          "endIndex": 3
+        },
+        "properties": {
+          "pixelSize": 78
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 3,
+          "endIndex": 4
+        },
+        "properties": {
+          "pixelSize": 78
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 4,
+          "endIndex": 5
+        },
+        "properties": {
+          "pixelSize": 16
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 5,
+          "endIndex": 6
+        },
+        "properties": {
+          "pixelSize": 78
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 6,
+          "endIndex": 7
+        },
+        "properties": {
+          "pixelSize": 78
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 7,
+          "endIndex": 8
+        },
+        "properties": {
+          "pixelSize": 78
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 8,
+          "endIndex": 9
+        },
+        "properties": {
+          "pixelSize": 16
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 9,
+          "endIndex": 10
+        },
+        "properties": {
+          "pixelSize": 78
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 10,
+          "endIndex": 11
+        },
+        "properties": {
+          "pixelSize": 78
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 11,
+          "endIndex": 12
+        },
+        "properties": {
+          "pixelSize": 78
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 12,
+          "endIndex": 13
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 13,
+          "endIndex": 14
+        },
+        "properties": {
+          "pixelSize": 141
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 14,
+          "endIndex": 15
+        },
+        "properties": {
+          "pixelSize": 100
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "COLUMNS",
+          "startIndex": 15,
+          "endIndex": 16
+        },
+        "properties": {
+          "pixelSize": 73
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 1,
+          "endIndex": 2
+        },
+        "properties": {
+          "pixelSize": 36
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 2,
+          "endIndex": 3
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 3,
+          "endIndex": 4
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 4,
+          "endIndex": 5
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 5,
+          "endIndex": 6
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 6,
+          "endIndex": 7
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 7,
+          "endIndex": 8
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 8,
+          "endIndex": 9
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 9,
+          "endIndex": 10
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 10,
+          "endIndex": 11
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 11,
+          "endIndex": 12
+        },
+        "properties": {
+          "pixelSize": 21
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 12,
+          "endIndex": 13
+        },
+        "properties": {
+          "pixelSize": 36
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 13,
+          "endIndex": 14
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 14,
+          "endIndex": 15
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 15,
+          "endIndex": 16
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1060825517,
+          "dimension": "ROWS",
+          "startIndex": 16,
+          "endIndex": 17
+        },
+        "properties": {
+          "pixelSize": 48
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "deleteConditionalFormatRule": {
+        "sheetId": 1060825517,
+        "index": 8
+      }
+    },
+    {
+      "deleteConditionalFormatRule": {
+        "sheetId": 1060825517,
+        "index": 7
+      }
+    },
+    {
+      "deleteConditionalFormatRule": {
+        "sheetId": 1060825517,
+        "index": 6
+      }
+    },
+    {
+      "deleteConditionalFormatRule": {
+        "sheetId": 1060825517,
+        "index": 5
+      }
+    },
+    {
+      "deleteConditionalFormatRule": {
+        "sheetId": 1060825517,
+        "index": 4
+      }
+    },
+    {
+      "deleteConditionalFormatRule": {
+        "sheetId": 1060825517,
+        "index": 3
+      }
+    },
+    {
+      "deleteConditionalFormatRule": {
+        "sheetId": 1060825517,
+        "index": 2
+      }
+    },
+    {
+      "deleteConditionalFormatRule": {
+        "sheetId": 1060825517,
+        "index": 1
+      }
+    },
+    {
+      "deleteConditionalFormatRule": {
+        "sheetId": 1060825517,
+        "index": 0
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 3,
+              "endRowIndex": 10,
+              "startColumnIndex": 12,
+              "endColumnIndex": 14
+            },
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 14,
+              "endRowIndex": 16,
+              "startColumnIndex": 12,
+              "endColumnIndex": 14
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=$M4=\"Received\""
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.62352943,
+                "green": 0.77254903,
+                "blue": 0.9098039
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.62352943,
+                  "green": 0.77254903,
+                  "blue": 0.9098039
+                }
+              }
+            }
+          }
+        },
+        "index": 0
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 3,
+              "endRowIndex": 10,
+              "startColumnIndex": 12,
+              "endColumnIndex": 14
+            },
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 14,
+              "endRowIndex": 16,
+              "startColumnIndex": 12,
+              "endColumnIndex": 14
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=$M4=\"Pending\""
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.7058824,
+                "green": 0.654902,
+                "blue": 0.8392157
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.7058824,
+                  "green": 0.654902,
+                  "blue": 0.8392157
+                }
+              }
+            }
+          }
+        },
+        "index": 1
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 3,
+              "endRowIndex": 10,
+              "startColumnIndex": 12,
+              "endColumnIndex": 14
+            },
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 14,
+              "endRowIndex": 16,
+              "startColumnIndex": 12,
+              "endColumnIndex": 14
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=$M4=\"Planned\""
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.6,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.6,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        },
+        "index": 2
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 3,
+              "endRowIndex": 10,
+              "startColumnIndex": 14,
+              "endColumnIndex": 16
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=$O4=\"Expected on time\""
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.7137255,
+                "green": 0.84313726,
+                "blue": 0.65882355
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.7137255,
+                  "green": 0.84313726,
+                  "blue": 0.65882355
+                }
+              }
+            }
+          }
+        },
+        "index": 3
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 3,
+              "endRowIndex": 10,
+              "startColumnIndex": 14,
+              "endColumnIndex": 16
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=LEFT($O4,13)=\"Expected late\""
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.91764706,
+                "green": 0.6,
+                "blue": 0.6
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.91764706,
+                  "green": 0.6,
+                  "blue": 0.6
+                }
+              }
+            }
+          }
+        },
+        "index": 4
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 14,
+              "endRowIndex": 16,
+              "startColumnIndex": 12,
+              "endColumnIndex": 14
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=$M15=\"Pending\""
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9882353,
+                "green": 0.9411765,
+                "blue": 0.85882354
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.5019608,
+                  "green": 0.32941177,
+                  "blue": 0.08627451
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.5019608,
+                    "green": 0.32941177,
+                    "blue": 0.08627451
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9882353,
+                  "green": 0.9411765,
+                  "blue": 0.85882354
+                }
+              }
+            }
+          }
+        },
+        "index": 5
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 14,
+              "endRowIndex": 16,
+              "startColumnIndex": 12,
+              "endColumnIndex": 14
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=$M15=\"Funds Disbursed\""
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8980392,
+                "green": 0.9490196,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.08627451,
+                  "green": 0.4,
+                  "blue": 0.28627452
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.08627451,
+                    "green": 0.4,
+                    "blue": 0.28627452
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8980392,
+                  "green": 0.9490196,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        },
+        "index": 6
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 14,
+              "endRowIndex": 16,
+              "startColumnIndex": 12,
+              "endColumnIndex": 14
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=$M15=\"Planned\""
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.95686275,
+                "green": 0.96862745,
+                "blue": 0.9647059
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.34117648,
+                  "green": 0.41960785,
+                  "blue": 0.39607844
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.34117648,
+                    "green": 0.41960785,
+                    "blue": 0.39607844
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.9647059
+                }
+              }
+            }
+          }
+        },
+        "index": 7
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 3,
+              "endRowIndex": 10,
+              "startColumnIndex": 7,
+              "endColumnIndex": 12
+            },
+            {
+              "sheetId": 1060825517,
+              "startRowIndex": 14,
+              "endRowIndex": 17,
+              "startColumnIndex": 7,
+              "endColumnIndex": 12
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "NUMBER_EQ",
+              "values": [
+                {
+                  "userEnteredValue": "0"
+                }
+              ]
+            },
+            "format": {
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 0.8,
+                  "green": 0.8,
+                  "blue": 0.8
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.8,
+                    "green": 0.8,
+                    "blue": 0.8
+                  }
+                }
+              }
+            }
+          }
+        },
+        "index": 8
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 27,
+          "endIndex": 45
+        }
+      }
+    }
+  ],
+  "verification": {
+    "movedNonemptyCells": 97,
+    "preservedFormulas": 76,
+    "allEffectiveValuesMatch": true,
+    "conditionalFormattingRules": 9,
+    "unchangedCellFormatting": true,
+    "mergedRangesPreserved": 81,
+    "sourceGapRemoved": true,
+    "nativeVisualInspection": "Inspected both tables including totals at 100% Google Sheets zoom; columns and wrapped status text fit."
+  },
+  "appsScript": "No source changes or clasp synchronization required; native Sheets move."
+}
