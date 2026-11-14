@@ -1,0 +1,249 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "status": "Applied and verified on 2026-11-14",
+  "description": "Rename Operations card to Planned Expenses. Expand Project Expenses link labels to Planned Expenses and Actual Expenses, preserving every destination. Stack Setup's two links and increase only that row height to fit.",
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 20,
+          "endRowIndex": 21,
+          "startColumnIndex": 3,
+          "endColumnIndex": 4
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Planned Expenses"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "link": {
+                      "uri": "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1675897452"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 22,
+          "endRowIndex": 23,
+          "startColumnIndex": 3,
+          "endColumnIndex": 4
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Planned Expenses"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "link": {
+                      "uri": "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=462995266"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 23,
+          "endRowIndex": 24,
+          "startColumnIndex": 3,
+          "endColumnIndex": 4
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Planned Expenses"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "link": {
+                      "uri": "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1754072773"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 24,
+          "endRowIndex": 25,
+          "startColumnIndex": 3,
+          "endColumnIndex": 4
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Planned Expenses"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "link": {
+                      "uri": "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1346380865"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 21,
+          "endRowIndex": 22,
+          "startColumnIndex": 3,
+          "endColumnIndex": 4
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Planned Expenses\nActual Expenses"
+                },
+                "textFormatRuns": [
+                  {
+                    "startIndex": 0,
+                    "format": {
+                      "foregroundColor": {
+                        "red": 0.27058825,
+                        "green": 0.42352942,
+                        "blue": 0.5647059
+                      },
+                      "underline": true,
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.27058825,
+                          "green": 0.42352942,
+                          "blue": 0.5647059
+                        }
+                      },
+                      "link": {
+                        "uri": "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1304432573"
+                      }
+                    }
+                  },
+                  {
+                    "startIndex": 16,
+                    "format": {}
+                  },
+                  {
+                    "startIndex": 17,
+                    "format": {
+                      "foregroundColor": {
+                        "red": 0.27058825,
+                        "green": 0.42352942,
+                        "blue": 0.5647059
+                      },
+                      "underline": true,
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.27058825,
+                          "green": 0.42352942,
+                          "blue": 0.5647059
+                        }
+                      },
+                      "link": {
+                        "uri": "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=2082967509"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,textFormatRuns"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 21,
+          "endIndex": 22
+        },
+        "properties": {
+          "pixelSize": 56
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1093991711\",\"Planned Expenses ↗\")"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "link": {
+                      "uri": "#gid=1093991711"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link"
+      }
+    }
+  ],
+  "verification": {
+    "expenseLinkDestinationsPreserved": 6,
+    "operationsDestinationPreserved": true,
+    "otherFormulasPreserved": 16,
+    "nativeVisualInspection": "All updated labels and both Setup links fit at 100% zoom."
+  }
+}
