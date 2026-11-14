@@ -1,0 +1,199 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "sheetId": 190902611,
+  "status": "Applied and verified on 2026-11-14",
+  "description": "Remove Budget from Funding and arrange Funding Status, Borrowings, and Loans in one row of three matching cards. Remove the two redundant card rows; Static Sheet moves to rows 37–39. Keep the top Budget card.",
+  "requests": [
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 37,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        }
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 37,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {},
+        "fields": "userEnteredValue,userEnteredFormat,textFormatRuns,note,dataValidation"
+      }
+    },
+    {
+      "copyPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 29,
+          "endRowIndex": 31,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 35,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "pasteType": "PASTE_NORMAL",
+        "pasteOrientation": "NORMAL"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 35,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1060825517\",\"Funding Status ↗\")"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "link": {
+                      "uri": "#gid=1060825517"
+                    },
+                    "fontSize": 15
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Funding progress and balances"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontSize": 11
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link,userEnteredFormat.textFormat.fontSize"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 35,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1346380865\",\"Borrowings ↗\")"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "link": {
+                      "uri": "#gid=1346380865"
+                    },
+                    "fontSize": 15
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Incoming funds and repayments"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontSize": 11
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link,userEnteredFormat.textFormat.fontSize"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 35,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=198423991\",\"Loans ↗\")"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "link": {
+                      "uri": "#gid=198423991"
+                    },
+                    "fontSize": 15
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Outgoing loans and repayments"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontSize": 11
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link,userEnteredFormat.textFormat.fontSize"
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 35,
+          "endIndex": 37
+        }
+      }
+    }
+  ],
+  "verification": "Verified all three Funding formulas and link destinations; Operations and Static Sheet contents preserved; top Budget link retained. Native visual check at 100% zoom confirms card labels and descriptions fit."
+}
