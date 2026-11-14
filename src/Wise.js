@@ -206,7 +206,8 @@ function wiseSheet_(spreadsheet) {
 
 function wiseHeaders_(sheet) {
   const width = sheet.getLastColumn();
-  const headers = width ? sheet.getRange(1, 1, 1, width).getValues()[0] : [];
+  const headers = width ? sheet.getRange(1, 1, 1, width).getValues()[0]
+    .map(header => ['New Balance', 'Balance'].includes(header) ? 'Running balance' : header) : [];
   if (headers.some(header => typeof header !== 'string' || !header.trim())
     || new Set(headers).size !== headers.length
     || WISE_TRANSACTION_HEADERS.some(header => !headers.includes(header))) {

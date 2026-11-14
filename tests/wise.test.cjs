@@ -241,6 +241,15 @@ test('missing tab or invalid headers fail before requesting Wise or writing anyt
 test('no new transactions causes no sheet mutation', () => {
   load().wiseWriteTransactions_({},headers,[]);
 });
+test('user balance header names map to the statement balance without renaming the sheet column', () => {
+  const ctx = load();
+  for (const name of ['New Balance','Balance','Running balance']) {
+    const renamed = headers.map(header => header === 'Running balance' ? name : header);
+    const sheet = {getLastColumn: () => renamed.length,getRange: () => ({getValues: () => [renamed]})};
+    assert.deepEqual(Array.from(ctx.wiseHeaders_(sheet)),headers);
+    assert.equal(renamed[11],name);
+  }
+});
 test('THB equivalent uses the requested rate direction and rejects invalid rate responses', () => {
   const ctx = load();
   const rate = {source:'USD',target:'THB',rate:33.5,time:'2026-11-13T10:00:00Z'};
