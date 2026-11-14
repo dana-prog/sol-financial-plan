@@ -1,0 +1,3494 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "sheetId": 190902611,
+  "status": "Applied and verified on 2026-11-14",
+  "description": "Remove the Financial Sheets heading. Replace Other Sheets with Operations, Funding, and Static Sheet navigation cards using the existing blue palette. User clarified Status means Funding Status. Preserve existing top navigation, Configuration, expense calculations and all expense links.",
+  "layout": {
+    "operations": "B29:P31",
+    "funding": "B33:P37",
+    "staticSheet": "B39:P41"
+  },
+  "links": [
+    {
+      "row": 30,
+      "start": 1,
+      "end": 6,
+      "title": "Operational Expenses",
+      "desc": "Planned operating costs",
+      "gid": 1093991711
+    },
+    {
+      "row": 30,
+      "start": 6,
+      "end": 11,
+      "title": "Revenue",
+      "desc": "Income projections",
+      "gid": 173849536
+    },
+    {
+      "row": 30,
+      "start": 11,
+      "end": 16,
+      "title": "Occupancy",
+      "desc": "Occupancy forecast",
+      "gid": 1875367343
+    },
+    {
+      "row": 34,
+      "start": 1,
+      "end": 8,
+      "title": "Funding Status",
+      "desc": "Funding progress and balances",
+      "gid": 1060825517
+    },
+    {
+      "row": 34,
+      "start": 8,
+      "end": 16,
+      "title": "Budget",
+      "desc": "Planned project spending",
+      "gid": 530781649
+    },
+    {
+      "row": 36,
+      "start": 1,
+      "end": 8,
+      "title": "Borrowings",
+      "desc": "Incoming funds and repayments",
+      "gid": 1346380865
+    },
+    {
+      "row": 36,
+      "start": 8,
+      "end": 16,
+      "title": "Loans",
+      "desc": "Outgoing loans and repayments",
+      "gid": 198423991
+    },
+    {
+      "row": 40,
+      "start": 1,
+      "end": 6,
+      "title": "Params",
+      "desc": "Model parameters",
+      "gid": 280690834
+    },
+    {
+      "row": 40,
+      "start": 6,
+      "end": 11,
+      "title": "Units",
+      "desc": "Unit types and inventory",
+      "gid": 1436796628
+    },
+    {
+      "row": 40,
+      "start": 11,
+      "end": 16,
+      "title": "Staff Roles",
+      "desc": "Staffing roles and costs",
+      "gid": 1162211165
+    }
+  ],
+  "requests": [
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 6,
+          "endRowIndex": 7,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {},
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 6,
+          "endIndex": 7
+        },
+        "properties": {
+          "pixelSize": 10
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "appendDimension": {
+        "sheetId": 190902611,
+        "dimension": "ROWS",
+        "length": 9
+      }
+    },
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 28,
+          "endRowIndex": 44,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        }
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 28,
+          "endRowIndex": 44,
+          "startColumnIndex": 0,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.95686275,
+              "green": 0.96862745,
+              "blue": 0.98039216
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.95686275,
+                "green": 0.96862745,
+                "blue": 0.98039216
+              }
+            }
+          }
+        },
+        "fields": "userEnteredValue,userEnteredFormat,textFormatRuns,note,dataValidation"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 28,
+          "endIndex": 44
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 28,
+          "endRowIndex": 29,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 28,
+          "endRowIndex": 29,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.95686275,
+              "green": 0.96862745,
+              "blue": 0.98039216
+            },
+            "padding": {
+              "bottom": 10
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.14117648,
+                "green": 0.23137255,
+                "blue": 0.3254902
+              },
+              "fontFamily": "Arial",
+              "fontSize": 20,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.14117648,
+                  "green": 0.23137255,
+                  "blue": 0.3254902
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.95686275,
+                "green": 0.96862745,
+                "blue": 0.98039216
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 28,
+          "endRowIndex": 29,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Operations"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 28,
+          "endIndex": 29
+        },
+        "properties": {
+          "pixelSize": 54
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 32,
+          "endRowIndex": 33,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 32,
+          "endRowIndex": 33,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.95686275,
+              "green": 0.96862745,
+              "blue": 0.98039216
+            },
+            "padding": {
+              "bottom": 10
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.14117648,
+                "green": 0.23137255,
+                "blue": 0.3254902
+              },
+              "fontFamily": "Arial",
+              "fontSize": 20,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.14117648,
+                  "green": 0.23137255,
+                  "blue": 0.3254902
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.95686275,
+                "green": 0.96862745,
+                "blue": 0.98039216
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 32,
+          "endRowIndex": 33,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Funding"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 32,
+          "endIndex": 33
+        },
+        "properties": {
+          "pixelSize": 54
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 38,
+          "endRowIndex": 39,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 38,
+          "endRowIndex": 39,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.95686275,
+              "green": 0.96862745,
+              "blue": 0.98039216
+            },
+            "padding": {
+              "bottom": 10
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.14117648,
+                "green": 0.23137255,
+                "blue": 0.3254902
+              },
+              "fontFamily": "Arial",
+              "fontSize": 20,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.14117648,
+                  "green": 0.23137255,
+                  "blue": 0.3254902
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.95686275,
+                "green": 0.96862745,
+                "blue": 0.98039216
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 38,
+          "endRowIndex": 39,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Static Sheet"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 38,
+          "endIndex": 39
+        },
+        "properties": {
+          "pixelSize": 54
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 1,
+          "endColumnIndex": 6
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 1,
+          "endColumnIndex": 6
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "bottom": {
+                "style": "NONE"
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 10,
+              "right": 18,
+              "bottom": 2,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.27058825,
+                "green": 0.42352942,
+                "blue": 0.5647059
+              },
+              "fontFamily": "Arial",
+              "fontSize": 14,
+              "bold": true,
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058825,
+                  "green": 0.42352942,
+                  "blue": 0.5647059
+                }
+              },
+              "link": {
+                "uri": "#gid=1093991711"
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1093991711\",\"Operational Expenses ↗\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 1,
+          "endColumnIndex": 6
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 1,
+          "endColumnIndex": 6
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "NONE"
+              },
+              "bottom": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 2,
+              "right": 18,
+              "bottom": 10,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Planned operating costs"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "bottom": {
+                "style": "NONE"
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 10,
+              "right": 18,
+              "bottom": 2,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.27058825,
+                "green": 0.42352942,
+                "blue": 0.5647059
+              },
+              "fontFamily": "Arial",
+              "fontSize": 15,
+              "bold": true,
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058825,
+                  "green": 0.42352942,
+                  "blue": 0.5647059
+                }
+              },
+              "link": {
+                "uri": "#gid=173849536"
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=173849536\",\"Revenue ↗\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "NONE"
+              },
+              "bottom": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 2,
+              "right": 18,
+              "bottom": 10,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Income projections"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "bottom": {
+                "style": "NONE"
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 10,
+              "right": 18,
+              "bottom": 2,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.27058825,
+                "green": 0.42352942,
+                "blue": 0.5647059
+              },
+              "fontFamily": "Arial",
+              "fontSize": 15,
+              "bold": true,
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058825,
+                  "green": 0.42352942,
+                  "blue": 0.5647059
+                }
+              },
+              "link": {
+                "uri": "#gid=1875367343"
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1875367343\",\"Occupancy ↗\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "NONE"
+              },
+              "bottom": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 2,
+              "right": 18,
+              "bottom": 10,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 30,
+          "endRowIndex": 31,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Occupancy forecast"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 34,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 34,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "bottom": {
+                "style": "NONE"
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 10,
+              "right": 18,
+              "bottom": 2,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.27058825,
+                "green": 0.42352942,
+                "blue": 0.5647059
+              },
+              "fontFamily": "Arial",
+              "fontSize": 15,
+              "bold": true,
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058825,
+                  "green": 0.42352942,
+                  "blue": 0.5647059
+                }
+              },
+              "link": {
+                "uri": "#gid=1060825517"
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 34,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1060825517\",\"Funding Status ↗\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 34,
+          "endRowIndex": 35,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 34,
+          "endRowIndex": 35,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "NONE"
+              },
+              "bottom": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 2,
+              "right": 18,
+              "bottom": 10,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 34,
+          "endRowIndex": 35,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Funding progress and balances"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 34,
+          "startColumnIndex": 8,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 34,
+          "startColumnIndex": 8,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "bottom": {
+                "style": "NONE"
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 10,
+              "right": 18,
+              "bottom": 2,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.27058825,
+                "green": 0.42352942,
+                "blue": 0.5647059
+              },
+              "fontFamily": "Arial",
+              "fontSize": 15,
+              "bold": true,
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058825,
+                  "green": 0.42352942,
+                  "blue": 0.5647059
+                }
+              },
+              "link": {
+                "uri": "#gid=530781649"
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 33,
+          "endRowIndex": 34,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=530781649\",\"Budget ↗\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 34,
+          "endRowIndex": 35,
+          "startColumnIndex": 8,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 34,
+          "endRowIndex": 35,
+          "startColumnIndex": 8,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "NONE"
+              },
+              "bottom": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 2,
+              "right": 18,
+              "bottom": 10,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 34,
+          "endRowIndex": 35,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Planned project spending"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 35,
+          "endRowIndex": 36,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 35,
+          "endRowIndex": 36,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "bottom": {
+                "style": "NONE"
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 10,
+              "right": 18,
+              "bottom": 2,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.27058825,
+                "green": 0.42352942,
+                "blue": 0.5647059
+              },
+              "fontFamily": "Arial",
+              "fontSize": 15,
+              "bold": true,
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058825,
+                  "green": 0.42352942,
+                  "blue": 0.5647059
+                }
+              },
+              "link": {
+                "uri": "#gid=1346380865"
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 35,
+          "endRowIndex": 36,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1346380865\",\"Borrowings ↗\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 36,
+          "endRowIndex": 37,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 36,
+          "endRowIndex": 37,
+          "startColumnIndex": 1,
+          "endColumnIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "NONE"
+              },
+              "bottom": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 2,
+              "right": 18,
+              "bottom": 10,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 36,
+          "endRowIndex": 37,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Incoming funds and repayments"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 35,
+          "endRowIndex": 36,
+          "startColumnIndex": 8,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 35,
+          "endRowIndex": 36,
+          "startColumnIndex": 8,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "bottom": {
+                "style": "NONE"
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 10,
+              "right": 18,
+              "bottom": 2,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.27058825,
+                "green": 0.42352942,
+                "blue": 0.5647059
+              },
+              "fontFamily": "Arial",
+              "fontSize": 15,
+              "bold": true,
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058825,
+                  "green": 0.42352942,
+                  "blue": 0.5647059
+                }
+              },
+              "link": {
+                "uri": "#gid=198423991"
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 35,
+          "endRowIndex": 36,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=198423991\",\"Loans ↗\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 36,
+          "endRowIndex": 37,
+          "startColumnIndex": 8,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 36,
+          "endRowIndex": 37,
+          "startColumnIndex": 8,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "NONE"
+              },
+              "bottom": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 2,
+              "right": 18,
+              "bottom": 10,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 36,
+          "endRowIndex": 37,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Outgoing loans and repayments"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 39,
+          "endRowIndex": 40,
+          "startColumnIndex": 1,
+          "endColumnIndex": 6
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 39,
+          "endRowIndex": 40,
+          "startColumnIndex": 1,
+          "endColumnIndex": 6
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "bottom": {
+                "style": "NONE"
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 10,
+              "right": 18,
+              "bottom": 2,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.27058825,
+                "green": 0.42352942,
+                "blue": 0.5647059
+              },
+              "fontFamily": "Arial",
+              "fontSize": 15,
+              "bold": true,
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058825,
+                  "green": 0.42352942,
+                  "blue": 0.5647059
+                }
+              },
+              "link": {
+                "uri": "#gid=280690834"
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 39,
+          "endRowIndex": 40,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=280690834\",\"Params ↗\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 1,
+          "endColumnIndex": 6
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 1,
+          "endColumnIndex": 6
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "NONE"
+              },
+              "bottom": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 2,
+              "right": 18,
+              "bottom": 10,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Model parameters"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 39,
+          "endRowIndex": 40,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 39,
+          "endRowIndex": 40,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "bottom": {
+                "style": "NONE"
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 10,
+              "right": 18,
+              "bottom": 2,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.27058825,
+                "green": 0.42352942,
+                "blue": 0.5647059
+              },
+              "fontFamily": "Arial",
+              "fontSize": 15,
+              "bold": true,
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058825,
+                  "green": 0.42352942,
+                  "blue": 0.5647059
+                }
+              },
+              "link": {
+                "uri": "#gid=1436796628"
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 39,
+          "endRowIndex": 40,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1436796628\",\"Units ↗\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "NONE"
+              },
+              "bottom": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 2,
+              "right": 18,
+              "bottom": 10,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Unit types and inventory"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 39,
+          "endRowIndex": 40,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 39,
+          "endRowIndex": 40,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "bottom": {
+                "style": "NONE"
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 10,
+              "right": 18,
+              "bottom": 2,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.27058825,
+                "green": 0.42352942,
+                "blue": 0.5647059
+              },
+              "fontFamily": "Arial",
+              "fontSize": 15,
+              "bold": true,
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058825,
+                  "green": 0.42352942,
+                  "blue": 0.5647059
+                }
+              },
+              "link": {
+                "uri": "#gid=1162211165"
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 39,
+          "endRowIndex": 40,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1162211165\",\"Staff Roles ↗\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "NONE"
+              },
+              "bottom": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 2,
+              "right": 18,
+              "bottom": 10,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 40,
+          "endRowIndex": 41,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Staffing roles and costs"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 29,
+          "endIndex": 30
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 30,
+          "endIndex": 31
+        },
+        "properties": {
+          "pixelSize": 34
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 33,
+          "endIndex": 34
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 34,
+          "endIndex": 35
+        },
+        "properties": {
+          "pixelSize": 34
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 35,
+          "endIndex": 36
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 36,
+          "endIndex": 37
+        },
+        "properties": {
+          "pixelSize": 34
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 39,
+          "endIndex": 40
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 40,
+          "endIndex": 41
+        },
+        "properties": {
+          "pixelSize": 34
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "verification": {
+    "unexpectedChangesAboveNavigation": [],
+    "preservedFormulas": 17,
+    "preservedValidations": 7,
+    "cardChecks": [
+      {
+        "title": "Operational Expenses",
+        "formula": true,
+        "link": true
+      },
+      {
+        "title": "Revenue",
+        "formula": true,
+        "link": true
+      },
+      {
+        "title": "Occupancy",
+        "formula": true,
+        "link": true
+      },
+      {
+        "title": "Funding Status",
+        "formula": true,
+        "link": true
+      },
+      {
+        "title": "Budget",
+        "formula": true,
+        "link": true
+      },
+      {
+        "title": "Borrowings",
+        "formula": true,
+        "link": true
+      },
+      {
+        "title": "Loans",
+        "formula": true,
+        "link": true
+      },
+      {
+        "title": "Params",
+        "formula": true,
+        "link": true
+      },
+      {
+        "title": "Units",
+        "formula": true,
+        "link": true
+      },
+      {
+        "title": "Staff Roles",
+        "formula": true,
+        "link": true
+      }
+    ],
+    "financialSheetsTitleRemoved": true,
+    "nativeVisualInspection": "Verified at 100% zoom: Financial Sheets heading removed, all three sections and ten cards fit without clipping.",
+    "setupRichTextLinksPreserved": true
+  },
+  "appsScript": "No source changes or clasp synchronization needed; native spreadsheet layout only."
+}
