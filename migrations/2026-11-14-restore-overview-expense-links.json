@@ -1,0 +1,152 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "sheetId": 190902611,
+  "status": "Applied and verified on 2026-11-14",
+  "description": "Restore missing Planned expense links removed during the overview layout formatting. Preserve the labels and all calculation formulas, and retain Setup's existing Planned and Actual rich-text links.",
+  "links": [
+    {
+      "cell": "D21",
+      "sheet": "Obligations (P)",
+      "sheetId": 1675897452
+    },
+    {
+      "cell": "D23",
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266
+    },
+    {
+      "cell": "D24",
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773
+    },
+    {
+      "cell": "D25",
+      "sheet": "Borrowings",
+      "sheetId": 1346380865
+    }
+  ],
+  "requests": [
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 20,
+          "endRowIndex": 21,
+          "startColumnIndex": 3,
+          "endColumnIndex": 7
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "link": {
+                "uri": "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1675897452"
+              },
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058823529411763,
+                  "green": 0.4235294117647059,
+                  "blue": 0.5647058823529412
+                }
+              }
+            },
+            "hyperlinkDisplayType": "LINKED"
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.link,userEnteredFormat.textFormat.underline,userEnteredFormat.textFormat.foregroundColorStyle,userEnteredFormat.hyperlinkDisplayType"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 22,
+          "endRowIndex": 23,
+          "startColumnIndex": 3,
+          "endColumnIndex": 7
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "link": {
+                "uri": "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=462995266"
+              },
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058823529411763,
+                  "green": 0.4235294117647059,
+                  "blue": 0.5647058823529412
+                }
+              }
+            },
+            "hyperlinkDisplayType": "LINKED"
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.link,userEnteredFormat.textFormat.underline,userEnteredFormat.textFormat.foregroundColorStyle,userEnteredFormat.hyperlinkDisplayType"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 23,
+          "endRowIndex": 24,
+          "startColumnIndex": 3,
+          "endColumnIndex": 7
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "link": {
+                "uri": "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1754072773"
+              },
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058823529411763,
+                  "green": 0.4235294117647059,
+                  "blue": 0.5647058823529412
+                }
+              }
+            },
+            "hyperlinkDisplayType": "LINKED"
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.link,userEnteredFormat.textFormat.underline,userEnteredFormat.textFormat.foregroundColorStyle,userEnteredFormat.hyperlinkDisplayType"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 24,
+          "endRowIndex": 25,
+          "startColumnIndex": 3,
+          "endColumnIndex": 7
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "link": {
+                "uri": "https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=1346380865"
+              },
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058823529411763,
+                  "green": 0.4235294117647059,
+                  "blue": 0.5647058823529412
+                }
+              }
+            },
+            "hyperlinkDisplayType": "LINKED"
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.link,userEnteredFormat.textFormat.underline,userEnteredFormat.textFormat.foregroundColorStyle,userEnteredFormat.hyperlinkDisplayType"
+      }
+    }
+  ],
+  "verification": "Read back all four restored link URLs, checked all six expense link destinations against live sheet metadata, and verified underlined blue links in native Google Sheets. All 24 formulas, user values, notes and validation rules unchanged."
+}
