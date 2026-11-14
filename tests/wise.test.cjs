@@ -14,6 +14,8 @@ function transaction(overrides = {}) {
     amount: {value: -100, currency: 'USD'}, totalFees: {value: 2, currency: 'USD'},
     runningBalance: {value: 400, currency: 'USD'}, details: {description: '=malicious()', paymentReference: 'Invoice 1'}, ...overrides};
 }
+const headers = ['Date', 'Currency', 'Counterparty', 'Item', 'Amount', 'Fees', 'Fee currency',
+  'Direction', 'Description', 'Payment reference', 'Wise reference', 'Running balance', 'Balance ID', 'Profile ID'];
 test('statement amounts retain debit and credit signs without subtracting fees twice', () => {
   const ctx = load();
   const debit = ctx.wiseTransactionRows_([transaction()], balance, '20')[0];
@@ -31,24 +33,24 @@ test('malformed amounts, currencies, dates and account IDs fail before writing',
   assert.throws(() => ctx.wiseStart_('2026-02-30', new Date('2026-11-13')), /date/);
   assert.throws(() => ctx.wiseStart_('2027-01-01', new Date('2026-11-13')), /date/);
 });
-test('period replacement updates corrections, removes stale rows and preserves other balances and older history', () => {
+test('existing history is retained when Wise corrects or removes transactions', () => {
   const ctx = load();
   const row = ctx.wiseTransactionRows_([transaction()], balance, '20')[0];
   const older = [...row]; older[0] = new Date('2026-01-01');
   const other = [...row]; other[10] = '11';
   const corrected = [...row]; corrected[2] = -120;
   const part = {balanceId:'10', profileId:'20', start:Date.parse('2026-11-01'), end:Date.parse('2026-11-03'), rows:[corrected]};
-  const result = ctx.wiseMergeTransactions_([row,older,other], [part,part]);
-  assert.equal(result.length, 3);
-  assert.equal(result.filter(item => item[2] === -120).length, 1);
-  assert.equal(ctx.wiseMergeTransactions_([row], [{...part,rows:[]}]).length, 0);
+  const result = ctx.wiseNewTransactions_([row,older,other], [part,part]);
+  assert.equal(result.length, 0);
+  assert.equal(row[2], -100);
+  assert.equal(ctx.wiseNewTransactions_([row], [{...part,rows:[]}]).length, 0);
 });
 test('identical references on opposite sides of a conversion and refund remain separate', () => {
   const ctx = load();
   const debit = ctx.wiseTransactionRows_([transaction()], balance, '20')[0];
   const credit = ctx.wiseTransactionRows_([transaction({type:'CREDIT'})], balance, '20')[0];
   const otherBalance = [...debit]; otherBalance[10] = '11';
-  assert.equal(ctx.wiseMergeTransactions_([], [{rows:[debit,credit,otherBalance]}]).length, 3);
+  assert.equal(ctx.wiseNewTransactions_([], [{rows:[debit,credit,otherBalance]}]).length, 3);
 });
 test('API requests are read-only, use a header token, and never expose response bodies', () => {
   let request;
@@ -81,7 +83,9 @@ function syncFixture() {
     getValue: () => cell === 'J2' ? 'Wise Balance' : '', getFormula: () => '',
     setValue: value => {events.push([cell,value]); return {setNote() {}};},
   })};
-  const spreadsheet = {getSheetById: () => overview, getSheetByName: () => null, toast() {}};
+  const transactionSheet = {getLastRow: () => 1, getLastColumn: () => 14,
+    getRange: () => ({getValues: () => [headers]})};
+  const spreadsheet = {getSheetById: id => id === 190902611 ? overview : transactionSheet, toast() {}};
   const ctx = load({
     PropertiesService: {getScriptProperties: () => ({getProperty: key => saved[key]})},
     SpreadsheetApp: {openById: () => spreadsheet, flush: () => events.push(['flush'])},
@@ -154,15 +158,16 @@ test('API history requests start at the latest transaction and split only long g
   requests.forEach(request => assert.ok(request.end - request.start <= 365 * 86400000));
   for (let i = 1; i < requests.length; i++) assert.equal(requests[i].start,requests[i-1].end);
 });
-test('reimporting the boundary replaces it without duplicating history and keeps same-time transactions', () => {
+test('reimporting the boundary skips existing history and keeps same-time new transactions', () => {
   const ctx = load();
   const boundary = ctx.wiseTransactionRows_([transaction()], balance, '20')[0];
   const sameTime = ctx.wiseTransactionRows_([transaction({referenceNumber:'TRANSFER-2'})], balance, '20')[0];
   const older = [...boundary]; older[0] = new Date('2026-10-01');
   const part = {balanceId:'10', profileId:'20', start:boundary[0].getTime(),end:Date.parse('2026-11-13'),rows:[boundary,sameTime]};
-  const result = ctx.wiseMergeTransactions_([older,boundary],[part]);
-  assert.equal(result.length,3);
-  assert.equal(ctx.wiseMergeTransactions_(result,[part]).length,3);
+  const result = ctx.wiseNewTransactions_([older,boundary],[part]);
+  assert.equal(result.length,1);
+  assert.equal(result[0][8],'TRANSFER-2');
+  assert.equal(ctx.wiseNewTransactions_([older,boundary,...result],[part]).length,0);
 });
 test('text formatting is applied before writing numeric-looking payment references', () => {
   const events = [];
@@ -172,10 +177,69 @@ test('text formatting is applied before writing numeric-looking payment referenc
     getRange: (...args) => {events.push({range:args}); return range;}, getFilter: () => null, autoResizeRows() {}};
   const ctx = load();
   const row = ctx.wiseTransactionRows_([transaction({details:{paymentReference:'026073154018474'}})], balance, '20')[0];
-  ctx.wiseWriteTransactions_({}, sheet, [row]);
+  ctx.wiseWriteTransactions_(sheet, headers, [row]);
   const writeIndex = events.findIndex(event => event.write);
-  assert.equal(events[writeIndex].write[1][7], '026073154018474');
+  assert.equal(events[writeIndex].write[0][9], '026073154018474');
   assert.equal(events.slice(0,writeIndex).filter(event => event.format === '@').length, 8);
+});
+test('sync appends under reordered headers without touching existing cells, formatting or manual entries', () => {
+  const {ctx,spreadsheet} = syncFixture();
+  const reordered = [...headers].reverse();
+  const original = ctx.wiseTransactionRows_([transaction()], balance, '20')[0];
+  const canonical = headers.filter(header => !['Counterparty','Item'].includes(header));
+  const existing = reordered.map(header => header === 'Counterparty' ? 'Edited supplier'
+    : header === 'Item' ? '=NAMED_ITEM()' : original[canonical.indexOf(header)]);
+  const data = [reordered,existing];
+  const before = structuredClone(data);
+  let maxRows = 2;
+  const sheet = {
+    getLastColumn: () => reordered.length, getLastRow: () => data.length,
+    getMaxRows: () => maxRows,
+    insertRowsAfter: (after, count) => {assert.equal(after,maxRows); maxRows += count;},
+    getRange: (row,col,height,width) => ({
+      getValues: () => data.slice(row - 1,row - 1 + height).map(values => values.slice(col - 1,col - 1 + width)),
+      setNumberFormat: () => assert.ok(row > 2, 'existing formatting must remain untouched'),
+      setValues: values => {
+        assert.equal(row,3); assert.equal(col,1); assert.equal(width,14);
+        data.push(...values.map(values => Array.from(values)));
+      },
+    }),
+  };
+  const overview = spreadsheet.getSheetById(190902611);
+  spreadsheet.getSheetById = id => id === 190902611 ? overview : id === 2089007372 ? sheet : null;
+  ctx.wiseWriteTransactions_ = load().wiseWriteTransactions_;
+  const get = ctx.wiseGet_;
+  ctx.wiseGet_ = path => path.includes('statement.json') ? {transactions:[
+    transaction({amount:{value:-120,currency:'USD'}}),
+    transaction({referenceNumber:'TRANSFER-2',date:'2026-11-02T12:00:00Z'}),
+    transaction({referenceNumber:'TRANSFER-2',date:'2026-11-02T12:00:00Z'}),
+  ]} : get(path);
+  const now = new Date('2026-11-13');
+  assert.equal(ctx.wiseSync_(spreadsheet,now),2);
+  assert.deepEqual(data.slice(0,2),before);
+  assert.equal(data[2][reordered.indexOf('Counterparty')],'');
+  assert.equal(data[2][reordered.indexOf('Item')],'');
+  assert.equal(data[2][reordered.indexOf('Amount')],-100);
+  assert.equal(data[2][reordered.indexOf('Wise reference')],'TRANSFER-2');
+  assert.equal(ctx.wiseSync_(spreadsheet,now),2);
+  assert.equal(data.length,3);
+  assert.deepEqual(data.slice(0,2),before);
+});
+test('missing tab or invalid headers fail before requesting Wise or writing anything', () => {
+  const {ctx,spreadsheet,events} = syncFixture();
+  const overview = spreadsheet.getSheetById(190902611);
+  ctx.wiseGet_ = () => assert.fail('invalid layout must stop before fetching');
+  spreadsheet.getSheetById = id => id === 190902611 ? overview : null;
+  assert.throws(() => ctx.wiseSync_(spreadsheet,new Date('2026-11-13')), /could not be located/);
+  for (const invalid of [[],headers.slice(0,-1),[...headers,'Item'],[...headers,'']]) {
+    const sheet = {getLastColumn: () => invalid.length,getRange: () => ({getValues: () => [invalid]})};
+    spreadsheet.getSheetById = id => id === 190902611 ? overview : sheet;
+    assert.throws(() => ctx.wiseSync_(spreadsheet,new Date('2026-11-13')), /column headers/);
+  }
+  assert.equal(events.length,0);
+});
+test('no new transactions causes no sheet mutation', () => {
+  load().wiseWriteTransactions_({},headers,[]);
 });
 test('THB equivalent uses the requested rate direction and rejects invalid rate responses', () => {
   const ctx = load();

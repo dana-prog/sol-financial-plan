@@ -1,5 +1,6 @@
 const WISE_API_BASE = 'https://api.wise.com/2026Q4';
 const WISE_SPREADSHEET_ID = '1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4';
+const WISE_TRANSACTION_SHEET_ID = 2089007372;
 const WISE_DAY_MS = 86400000;
 const WISE_TRANSACTION_HEADERS = ['Date', 'Currency', 'Amount', 'Fees', 'Fee currency', 'Direction', 'Description', 'Payment reference', 'Wise reference', 'Running balance', 'Balance ID', 'Profile ID'];
 
@@ -81,15 +82,22 @@ function wiseTransactionRows_(transactions, balance, profileId) {
   });
 }
 
-/** Replace fetched periods to pick up corrections and removals, while preserving older history. */
-function wiseMergeTransactions_(existing, imports) {
-  const retained = existing.filter(row => !imports.some(part =>
-    String(row[10]) === part.balanceId && String(row[11]) === part.profileId &&
-    new Date(row[0]).getTime() >= part.start && new Date(row[0]).getTime() <= part.end));
-  const rows = retained.concat(imports.flatMap(part => part.rows));
-  // Adjacent statement requests may both include the transaction at their shared boundary.
-  const unique = new Map(rows.map(row => [JSON.stringify(row), row]));
-  return [...unique.values()].sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime() || String(a[8]).localeCompare(String(b[8])));
+function wiseTransactionKey_(row) {
+  // References can be shared by refunds and the two sides of a currency conversion.
+  return JSON.stringify([row[11], row[10], row[1], row[8], row[5]].map(String));
+}
+
+/** Existing transactions are user-maintained history, even if Wise later changes them. */
+function wiseNewTransactions_(existing, imports) {
+  const seen = new Set(existing.map(wiseTransactionKey_));
+  const rows = [];
+  for (const row of imports.flatMap(part => part.rows)) {
+    const key = wiseTransactionKey_(row);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    rows.push(row);
+  }
+  return rows.sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime() || String(a[8]).localeCompare(String(b[8])));
 }
 
 /** Shared by the daily trigger and the manual menu item. */
@@ -118,8 +126,10 @@ function wiseSync_(spreadsheet, now) {
     throw new Error('The Wise balance or update-time field contains a formula. No formula was overwritten.');
   }
   const transactionSheet = wiseSheet_(spreadsheet);
-  const previousRows = transactionSheet && transactionSheet.getLastRow() > 1
-    ? transactionSheet.getRange(2, 1, transactionSheet.getLastRow() - 1, WISE_TRANSACTION_HEADERS.length).getValues() : [];
+  const headers = wiseHeaders_(transactionSheet);
+  const previousRows = transactionSheet.getLastRow() > 1
+    ? transactionSheet.getRange(2, 1, transactionSheet.getLastRow() - 1, headers.length).getValues()
+      .map(row => WISE_TRANSACTION_HEADERS.map(header => row[headers.indexOf(header)])) : [];
   const balances = ['STANDARD', 'SAVINGS'].flatMap(type => {
     const result = wiseGet_('/profiles/' + profileId + '/balances?types=' + type);
     if (!Array.isArray(result)) throw new Error('Wise returned an invalid balance list.');
@@ -129,14 +139,14 @@ function wiseSync_(spreadsheet, now) {
   const available = wiseMoney_(usd && usd.amount, 'USD');
   const thb = wiseThbEquivalent_(available, wiseGet_('/rates?source=USD&target=THB'));
   const imports = wiseFetchTransactions_(balances, profileId, previousRows, historyStart, now);
-  const transactions = wiseMergeTransactions_(previousRows, imports);
-  wiseWriteTransactions_(spreadsheet, transactionSheet, transactions);
+  const transactions = wiseNewTransactions_(previousRows, imports);
+  wiseWriteTransactions_(transactionSheet, headers, transactions);
   overview.getRange('L3').setValue(available);
   overview.getRange('J3').setValue(thb.amount).setNote('USD balance converted at 1 USD = ' + thb.rate
     + ' THB. Wise rate timestamp: ' + thb.time + '. Indicative equivalent before conversion fees.');
   overview.getRange('J5').setValue(now);
   SpreadsheetApp.flush();
-  return transactions.length;
+  return previousRows.length + transactions.length;
 }
 
 function wiseThbEquivalent_(usd, rates) {
@@ -159,7 +169,7 @@ function wiseImportStart_(rows, balanceId, profileId, historyStart, now) {
     }
     latest = Math.max(latest, date.getTime());
   }
-  // Sheets can round stored dates by a millisecond. Include the boundary second and reconcile it.
+  // Sheets can round stored dates by a millisecond. Include the boundary second and deduplicate it.
   return Math.floor(latest / 1000) * 1000;
 }
 
@@ -187,17 +197,22 @@ function wiseFetchTransactions_(balances, profileId, previousRows, historyStart,
   return imports;
 }
 
-/** Refuse to overwrite a pre-existing tab unless its schema belongs to this integration. */
 function wiseSheet_(spreadsheet) {
-  const name = 'Wise Transactions';
-  const headers = WISE_TRANSACTION_HEADERS;
-  const sheet = spreadsheet.getSheetByName(name);
-  if (!sheet) return null;
-  const existing = sheet.getRange(1, 1, 1, headers.length).getValues()[0];
-  if (JSON.stringify(existing) !== JSON.stringify(headers) || sheet.getLastColumn() > headers.length) {
-    throw new Error('The ' + name + ' tab has an unexpected layout. Nothing was overwritten.');
-  }
+  // The tab may be renamed without changing its identity.
+  const sheet = spreadsheet.getSheetById(WISE_TRANSACTION_SHEET_ID);
+  if (!sheet) throw new Error('The Wise transaction tab could not be located. Nothing was written.');
   return sheet;
+}
+
+function wiseHeaders_(sheet) {
+  const width = sheet.getLastColumn();
+  const headers = width ? sheet.getRange(1, 1, 1, width).getValues()[0] : [];
+  if (headers.some(header => typeof header !== 'string' || !header.trim())
+    || new Set(headers).size !== headers.length
+    || WISE_TRANSACTION_HEADERS.some(header => !headers.includes(header))) {
+    throw new Error('The Wise transaction tab has missing or duplicate column headers. Nothing was written.');
+  }
+  return headers;
 }
 
 function wiseCell_(value) {
@@ -205,36 +220,21 @@ function wiseCell_(value) {
   return typeof value === 'string' && /^[=+\-@]/.test(value) ? "'" + value : value;
 }
 
-function wiseWriteTransactions_(spreadsheet, existing, rows) {
-  const headers = WISE_TRANSACTION_HEADERS;
-  const sheet = existing || spreadsheet.insertSheet('Wise Transactions');
-  const rowCount = rows.length + 1;
-  const oldLastRow = sheet.getLastRow();
+function wiseWriteTransactions_(sheet, headers, rows) {
+  if (!rows.length) return;
+  const firstRow = sheet.getLastRow() + 1;
+  const rowCount = firstRow + rows.length - 1;
   if (sheet.getMaxRows() < rowCount) sheet.insertRowsAfter(sheet.getMaxRows(), rowCount - sheet.getMaxRows());
-  if (sheet.getMaxColumns() < headers.length) sheet.insertColumnsAfter(sheet.getMaxColumns(), headers.length - sheet.getMaxColumns());
+  const columnRange = header => sheet.getRange(firstRow, headers.indexOf(header) + 1, rows.length, 1);
   // Preserve numeric-looking identifiers and leading zeroes before Sheets parses the values.
-  [2, 5, 6, 7, 8, 9, 11, 12].forEach(column => sheet.getRange(1, column, rowCount, 1).setNumberFormat('@'));
-  sheet.getRange(1, 1, rowCount, headers.length).setValues([headers, ...rows].map(row => row.map(wiseCell_)));
-  if (oldLastRow > rowCount) sheet.getRange(rowCount + 1, 1, oldLastRow - rowCount, headers.length).clearContent();
-  if (!existing) {
-    sheet.setFrozenRows(1);
-    sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#f1f3f4').setWrap(true);
-    sheet.setRowHeight(1, 42);
-    sheet.setColumnWidths(1, headers.length, 140);
-    sheet.setColumnWidth(1, 165);
-    sheet.setColumnWidth(7, 380);
-    sheet.setColumnWidth(8, 220);
-    sheet.getRange('A1').setNote('Dates are displayed in the spreadsheet time zone. History start dates use UTC.');
-    sheet.getRange('C1').setNote('Signed statement movement: credits positive, debits negative. Fees are shown separately as reported by Wise; do not subtract them again from the statement amount.');
-  }
-  if (rows.length) {
-    sheet.getRange(2, 1, rows.length, 1).setNumberFormat('yyyy-mm-dd hh:mm');
-    sheet.getRange(2, 3, rows.length, 2).setNumberFormat('#,##0.00;[Red](#,##0.00)');
-    sheet.getRange(2, 10, rows.length, 1).setNumberFormat('#,##0.00;[Red](#,##0.00)');
-    sheet.getRange(2, 7, rows.length, 3).setWrap(true);
-    sheet.autoResizeRows(2, rows.length);
-  }
-  const filter = sheet.getFilter();
-  if (filter) filter.remove();
-  if (rows.length) sheet.getRange(1, 1, rowCount, headers.length).createFilter();
+  ['Currency', 'Fee currency', 'Direction', 'Description', 'Payment reference', 'Wise reference', 'Balance ID', 'Profile ID']
+    .forEach(header => columnRange(header).setNumberFormat('@'));
+  columnRange('Date').setNumberFormat('yyyy-mm-dd hh:mm');
+  ['Amount', 'Fees', 'Running balance'].forEach(header => columnRange(header).setNumberFormat('#,##0.00;[Red](#,##0.00)'));
+  // Manual columns, including Counterparty and Item, start empty for every new transaction.
+  const values = rows.map(row => headers.map(header => {
+    const index = WISE_TRANSACTION_HEADERS.indexOf(header);
+    return index < 0 ? '' : wiseCell_(row[index]);
+  }));
+  sheet.getRange(firstRow, 1, rows.length, headers.length).setValues(values);
 }
