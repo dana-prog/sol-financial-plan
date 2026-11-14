@@ -1,0 +1,498 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Links",
+  "sheetId": 1936111402,
+  "status": "Applied and verified on 2026-11-14",
+  "description": "Apply the compact single-line topic-and-links strip to Project Expenses, with a short muted description below each topic. Keep all four topics in one row, preserve five original expense destinations, and use the existing blue palette.",
+  "range": "B6:P7",
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 5,
+          "endRowIndex": 7,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Land   Planned"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "bold": false,
+                    "underline": false
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                },
+                "textFormatRuns": [
+                  {
+                    "startIndex": 0,
+                    "format": {
+                      "bold": true
+                    }
+                  },
+                  {
+                    "startIndex": 4,
+                    "format": {
+                      "bold": false
+                    }
+                  },
+                  {
+                    "startIndex": 7,
+                    "format": {
+                      "bold": false,
+                      "underline": true,
+                      "link": {
+                        "uri": "#gid=1675897452"
+                      },
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.27058823529411763,
+                          "green": 0.4235294117647059,
+                          "blue": 0.5647058823529412
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Land acquisition"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    },
+                    "bold": false,
+                    "underline": false
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment,textFormatRuns"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 5,
+          "endRowIndex": 7,
+          "startColumnIndex": 5,
+          "endColumnIndex": 6
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Setup   Planned  |  Actual"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "bold": false,
+                    "underline": false
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                },
+                "textFormatRuns": [
+                  {
+                    "startIndex": 0,
+                    "format": {
+                      "bold": true
+                    }
+                  },
+                  {
+                    "startIndex": 5,
+                    "format": {
+                      "bold": false
+                    }
+                  },
+                  {
+                    "startIndex": 8,
+                    "format": {
+                      "bold": false,
+                      "underline": true,
+                      "link": {
+                        "uri": "#gid=1304432573"
+                      },
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.27058823529411763,
+                          "green": 0.4235294117647059,
+                          "blue": 0.5647058823529412
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "startIndex": 15,
+                    "format": {
+                      "bold": false,
+                      "underline": false,
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.3843137254901961,
+                          "green": 0.4666666666666667,
+                          "blue": 0.5450980392156862
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "startIndex": 20,
+                    "format": {
+                      "bold": false,
+                      "underline": true,
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.27058823529411763,
+                          "green": 0.4235294117647059,
+                          "blue": 0.5647058823529412
+                        }
+                      },
+                      "link": {
+                        "uri": "#gid=2082967509"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Project setup & opening"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    },
+                    "bold": false,
+                    "underline": false
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment,textFormatRuns"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 5,
+          "endRowIndex": 7,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Construction   Planned"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "bold": false,
+                    "underline": false
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                },
+                "textFormatRuns": [
+                  {
+                    "startIndex": 0,
+                    "format": {
+                      "bold": true
+                    }
+                  },
+                  {
+                    "startIndex": 12,
+                    "format": {
+                      "bold": false
+                    }
+                  },
+                  {
+                    "startIndex": 15,
+                    "format": {
+                      "bold": false,
+                      "underline": true,
+                      "link": {
+                        "uri": "#gid=462995266"
+                      },
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.27058823529411763,
+                          "green": 0.4235294117647059,
+                          "blue": 0.5647058823529412
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Building works"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    },
+                    "bold": false,
+                    "underline": false
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment,textFormatRuns"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 5,
+          "endRowIndex": 7,
+          "startColumnIndex": 13,
+          "endColumnIndex": 14
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Infra   Planned"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      }
+                    },
+                    "bold": false,
+                    "underline": false
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 6,
+                    "bottom": 2
+                  },
+                  "verticalAlignment": "MIDDLE"
+                },
+                "textFormatRuns": [
+                  {
+                    "startIndex": 0,
+                    "format": {
+                      "bold": true
+                    }
+                  },
+                  {
+                    "startIndex": 5,
+                    "format": {
+                      "bold": false
+                    }
+                  },
+                  {
+                    "startIndex": 8,
+                    "format": {
+                      "bold": false,
+                      "underline": true,
+                      "link": {
+                        "uri": "#gid=1754072773"
+                      },
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.27058823529411763,
+                          "green": 0.4235294117647059,
+                          "blue": 0.5647058823529412
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Infrastructure & site works"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.3843137254901961,
+                        "green": 0.4666666666666667,
+                        "blue": 0.5450980392156862
+                      }
+                    },
+                    "bold": false,
+                    "underline": false
+                  },
+                  "padding": {
+                    "left": 12,
+                    "right": 12,
+                    "top": 0,
+                    "bottom": 6
+                  },
+                  "verticalAlignment": "MIDDLE"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat,userEnteredFormat.padding,userEnteredFormat.verticalAlignment,textFormatRuns"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 5,
+          "endIndex": 6
+        },
+        "properties": {
+          "pixelSize": 32
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 6,
+          "endIndex": 7
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "verification": "Verified all five rich-text link destinations, all four descriptions, and native rendering at 100% zoom. The card content occupies 56px total height (32px links and 24px descriptions)."
+}
