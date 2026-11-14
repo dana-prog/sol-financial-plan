@@ -1,0 +1,210 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Links",
+  "sheetId": 1936111402,
+  "status": "Applied and verified on 2026-11-14",
+  "description": "Reduce all five section headings from 16pt to 12pt bold, with 24px rows and 4px bottom padding, to match the scale of 11pt links and 10pt descriptions.",
+  "requests": [
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 4,
+          "endRowIndex": 5,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontSize": 12,
+              "bold": true
+            },
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 4,
+              "left": 0
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.fontSize,userEnteredFormat.textFormat.bold,userEnteredFormat.padding"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 4,
+          "endIndex": 5
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 8,
+          "endRowIndex": 9,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontSize": 12,
+              "bold": true
+            },
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 4,
+              "left": 0
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.fontSize,userEnteredFormat.textFormat.bold,userEnteredFormat.padding"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 8,
+          "endIndex": 9
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 12,
+          "endRowIndex": 13,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontSize": 12,
+              "bold": true
+            },
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 4,
+              "left": 0
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.fontSize,userEnteredFormat.textFormat.bold,userEnteredFormat.padding"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 12,
+          "endIndex": 13
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 16,
+          "endRowIndex": 17,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontSize": 12,
+              "bold": true
+            },
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 4,
+              "left": 0
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.fontSize,userEnteredFormat.textFormat.bold,userEnteredFormat.padding"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 16,
+          "endIndex": 17
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 20,
+          "endRowIndex": 21,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontSize": 12,
+              "bold": true
+            },
+            "padding": {
+              "top": 0,
+              "right": 0,
+              "bottom": 4,
+              "left": 0
+            }
+          }
+        },
+        "fields": "userEnteredFormat.textFormat.fontSize,userEnteredFormat.textFormat.bold,userEnteredFormat.padding"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 20,
+          "endIndex": 21
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "verification": "Verified all five heading labels are unchanged, typography and row heights match the intended values, and native rendering at 100% has no clipping."
+}
