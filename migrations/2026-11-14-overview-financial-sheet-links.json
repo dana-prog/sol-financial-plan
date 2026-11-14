@@ -1,0 +1,156 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Project Overview",
+  "range": "B4:H5",
+  "description": "Expand existing Cash Flow navigation into a Financial Sheets section linking Cash Flow, Budget, and Wise.",
+  "requests": [
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 3,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "FINANCIAL SHEETS"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 9,
+                    "bold": true,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.7803921568627451,
+                        "green": 0.8352941176470589,
+                        "blue": 0.8745098039215686
+                      }
+                    }
+                  },
+                  "padding": {
+                    "top": 0,
+                    "bottom": 0,
+                    "left": 20,
+                    "right": 20
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat,userEnteredFormat.padding"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 190902611,
+          "rowIndex": 4,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Cash Flow    \u00b7    Budget    \u00b7    Wise"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 11,
+                    "bold": true,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.9686274509803922,
+                        "green": 0.9803921568627451,
+                        "blue": 0.9882352941176471
+                      }
+                    }
+                  },
+                  "hyperlinkDisplayType": "LINKED"
+                },
+                "textFormatRuns": [
+                  {
+                    "startIndex": 0,
+                    "format": {
+                      "link": {
+                        "uri": "#gid=706577296"
+                      },
+                      "underline": true,
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.9686274509803922,
+                          "green": 0.9803921568627451,
+                          "blue": 0.9882352941176471
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "startIndex": 9,
+                    "format": {
+                      "underline": false
+                    }
+                  },
+                  {
+                    "startIndex": 18,
+                    "format": {
+                      "link": {
+                        "uri": "#gid=530781649"
+                      },
+                      "underline": true,
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.9686274509803922,
+                          "green": 0.9803921568627451,
+                          "blue": 0.9882352941176471
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "startIndex": 24,
+                    "format": {
+                      "underline": false
+                    }
+                  },
+                  {
+                    "startIndex": 33,
+                    "format": {
+                      "link": {
+                        "uri": "#gid=2089007372"
+                      },
+                      "underline": true,
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.9686274509803922,
+                          "green": 0.9803921568627451,
+                          "blue": 0.9882352941176471
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat,userEnteredFormat.hyperlinkDisplayType,textFormatRuns"
+      }
+    }
+  ],
+  "verification": {
+    "targetLinksVerified": true,
+    "preservedNamedFunctions": true,
+    "unchangedDimensions": true,
+    "nativeVisualInspection": "Verified at 100% in Google Sheets; heading and all three links fit in existing banner with readable contrast."
+  },
+  "appsScript": "No Apps Script source changes; no clasp synchronization required."
+}
