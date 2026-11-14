@@ -1,0 +1,90 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Links",
+  "sheetId": 1936111402,
+  "status": "Applied and verified on 2026-11-14",
+  "description": "Place Setup's Planned Expenses and Actual Expenses links on one line with a muted, unlinked vertical separator. Keep the existing card dimensions and blue link styling.",
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Planned Expenses ↗  |  Actual Expenses ↗"
+                },
+                "textFormatRuns": [
+                  {
+                    "startIndex": 0,
+                    "format": {
+                      "foregroundColor": {
+                        "red": 0.27058825,
+                        "green": 0.42352942,
+                        "blue": 0.5647059
+                      },
+                      "underline": true,
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.27058825,
+                          "green": 0.42352942,
+                          "blue": 0.5647059
+                        }
+                      },
+                      "link": {
+                        "uri": "#gid=1304432573"
+                      }
+                    }
+                  },
+                  {
+                    "startIndex": 18,
+                    "format": {
+                      "underline": false,
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.3843137254901961,
+                          "green": 0.4666666666666667,
+                          "blue": 0.5450980392156862
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "startIndex": 23,
+                    "format": {
+                      "foregroundColor": {
+                        "red": 0.27058825,
+                        "green": 0.42352942,
+                        "blue": 0.5647059
+                      },
+                      "underline": true,
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.27058825,
+                          "green": 0.42352942,
+                          "blue": 0.5647059
+                        }
+                      },
+                      "link": {
+                        "uri": "#gid=2082967509"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,textFormatRuns"
+      }
+    }
+  ],
+  "verification": "Verified both original destinations, an unlinked separator, and native rendering at 100% zoom with both labels fully visible inside the standard-width Setup card."
+}
