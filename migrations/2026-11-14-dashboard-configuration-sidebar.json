@@ -1,0 +1,949 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Dahsboard",
+  "sheetId": 190902611,
+  "status": "Applied and verified on 2026-11-14",
+  "description": "Move Configuration into a separate vertical panel to the right of navigation. Stack Project Plan, Pax and Interest in R:V with Q as a gutter. Move the left-side expense and navigation sections up eight rows. Preserve the user's renamed sheet and current Setup link labels. Move native input cells with cutPaste, update named ranges and retain named-function calls.",
+  "layout": {
+    "left": "B8:P31",
+    "configuration": "R8:V26",
+    "projectPlan": "R11:V14",
+    "pax": "R16:V20",
+    "interest": "R22:V26"
+  },
+  "requests": [
+    {
+      "appendDimension": {
+        "sheetId": 190902611,
+        "dimension": "COLUMNS",
+        "length": 6
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 0,
+          "endRowIndex": 42,
+          "startColumnIndex": 16,
+          "endColumnIndex": 22
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.95686275,
+              "green": 0.96862745,
+              "blue": 0.98039216
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.95686275,
+                "green": 0.96862745,
+                "blue": 0.98039216
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "COLUMNS",
+          "startIndex": 16,
+          "endIndex": 17
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "COLUMNS",
+          "startIndex": 17,
+          "endIndex": 18
+        },
+        "properties": {
+          "pixelSize": 96
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "COLUMNS",
+          "startIndex": 18,
+          "endIndex": 19
+        },
+        "properties": {
+          "pixelSize": 80
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "COLUMNS",
+          "startIndex": 19,
+          "endIndex": 20
+        },
+        "properties": {
+          "pixelSize": 80
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "COLUMNS",
+          "startIndex": 20,
+          "endIndex": 21
+        },
+        "properties": {
+          "pixelSize": 20
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "COLUMNS",
+          "startIndex": 21,
+          "endIndex": 22
+        },
+        "properties": {
+          "pixelSize": 84
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 1,
+          "endRowIndex": 5,
+          "startColumnIndex": 16,
+          "endColumnIndex": 22
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.27058823529411763,
+                "green": 0.4235294117647059,
+                "blue": 0.5647058823529412
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat.backgroundColorStyle"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 15,
+          "startColumnIndex": 1,
+          "endColumnIndex": 6
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 10,
+          "columnIndex": 17
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 16,
+          "startColumnIndex": 6,
+          "endColumnIndex": 11
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 15,
+          "columnIndex": 17
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 11,
+          "endRowIndex": 16,
+          "startColumnIndex": 11,
+          "endColumnIndex": 16
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 21,
+          "columnIndex": 17
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 7,
+          "endRowIndex": 9,
+          "startColumnIndex": 17,
+          "endColumnIndex": 22
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 7,
+          "endRowIndex": 8,
+          "startColumnIndex": 17,
+          "endColumnIndex": 18
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Configuration"
+                },
+                "userEnteredFormat": {
+                  "backgroundColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  },
+                  "borders": {
+                    "top": {
+                      "style": "NONE"
+                    },
+                    "left": {
+                      "style": "NONE"
+                    },
+                    "right": {
+                      "style": "NONE"
+                    }
+                  },
+                  "padding": {
+                    "bottom": 10
+                  },
+                  "horizontalAlignment": "LEFT",
+                  "verticalAlignment": "MIDDLE",
+                  "wrapStrategy": "CLIP",
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.14117648,
+                      "green": 0.23137255,
+                      "blue": 0.3254902
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 20,
+                    "bold": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.14117648,
+                        "green": 0.23137255,
+                        "blue": 0.3254902
+                      }
+                    }
+                  },
+                  "backgroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.95686275,
+                      "green": 0.96862745,
+                      "blue": 0.98039216
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat"
+      }
+    },
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 10,
+          "endRowIndex": 18,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        }
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 10,
+          "endRowIndex": 18,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.95686275,
+              "green": 0.96862745,
+              "blue": 0.98039216
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.95686275,
+                "green": 0.96862745,
+                "blue": 0.98039216
+              }
+            }
+          }
+        },
+        "fields": "userEnteredValue,userEnteredFormat,textFormatRuns,note,dataValidation"
+      }
+    },
+    {
+      "cutPaste": {
+        "source": {
+          "sheetId": 190902611,
+          "startRowIndex": 18,
+          "endRowIndex": 39,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "destination": {
+          "sheetId": 190902611,
+          "rowIndex": 10,
+          "columnIndex": 1
+        },
+        "pasteType": "PASTE_NORMAL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 31,
+          "endRowIndex": 42,
+          "startColumnIndex": 1,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.95686275,
+              "green": 0.96862745,
+              "blue": 0.98039216
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.38431373,
+                "green": 0.46666667,
+                "blue": 0.54509807
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.38431373,
+                  "green": 0.46666667,
+                  "blue": 0.54509807
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.95686275,
+                "green": 0.96862745,
+                "blue": 0.98039216
+              }
+            }
+          }
+        },
+        "fields": "userEnteredValue,userEnteredFormat,textFormatRuns,note,dataValidation"
+      }
+    },
+    {
+      "updateNamedRange": {
+        "namedRange": {
+          "namedRangeId": "1422176535",
+          "range": {
+            "sheetId": 190902611,
+            "startRowIndex": 10,
+            "endRowIndex": 14,
+            "startColumnIndex": 17,
+            "endColumnIndex": 22
+          }
+        },
+        "fields": "range"
+      }
+    },
+    {
+      "updateNamedRange": {
+        "namedRange": {
+          "namedRangeId": "1227859383",
+          "range": {
+            "sheetId": 190902611,
+            "startRowIndex": 15,
+            "endRowIndex": 20,
+            "startColumnIndex": 17,
+            "endColumnIndex": 22
+          }
+        },
+        "fields": "range"
+      }
+    },
+    {
+      "updateProtectedRange": {
+        "protectedRange": {
+          "protectedRangeId": 935296858,
+          "range": {
+            "sheetId": 190902611,
+            "startRowIndex": 22,
+            "endRowIndex": 24,
+            "startColumnIndex": 20,
+            "endColumnIndex": 22
+          }
+        },
+        "fields": "range"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 10,
+          "endIndex": 11
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 11,
+          "endIndex": 12
+        },
+        "properties": {
+          "pixelSize": 36
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 12,
+          "endIndex": 13
+        },
+        "properties": {
+          "pixelSize": 40
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 13,
+          "endIndex": 14
+        },
+        "properties": {
+          "pixelSize": 56
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 14,
+          "endIndex": 15
+        },
+        "properties": {
+          "pixelSize": 40
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 15,
+          "endIndex": 16
+        },
+        "properties": {
+          "pixelSize": 40
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 16,
+          "endIndex": 17
+        },
+        "properties": {
+          "pixelSize": 40
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 17,
+          "endIndex": 18
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 18,
+          "endIndex": 19
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 19,
+          "endIndex": 20
+        },
+        "properties": {
+          "pixelSize": 12
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 20,
+          "endIndex": 21
+        },
+        "properties": {
+          "pixelSize": 54
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 21,
+          "endIndex": 22
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 22,
+          "endIndex": 23
+        },
+        "properties": {
+          "pixelSize": 34
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 23,
+          "endIndex": 24
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 24,
+          "endIndex": 25
+        },
+        "properties": {
+          "pixelSize": 54
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 25,
+          "endIndex": 26
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 26,
+          "endIndex": 27
+        },
+        "properties": {
+          "pixelSize": 34
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 27,
+          "endIndex": 28
+        },
+        "properties": {
+          "pixelSize": 24
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 28,
+          "endIndex": 29
+        },
+        "properties": {
+          "pixelSize": 54
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 29,
+          "endIndex": 30
+        },
+        "properties": {
+          "pixelSize": 42
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 30,
+          "endIndex": 31
+        },
+        "properties": {
+          "pixelSize": 34
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 17,
+          "endRowIndex": 18,
+          "startColumnIndex": 7,
+          "endColumnIndex": 8
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=190902611&range=H13:H17\",SUM(H13:H17))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 190902611,
+          "startRowIndex": 17,
+          "endRowIndex": 18,
+          "startColumnIndex": 9,
+          "endColumnIndex": 10
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=190902611&range=J13:J17\",SUM(J13:J17))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 34,
+          "endIndex": 42
+        }
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 190902611,
+          "dimension": "ROWS",
+          "startIndex": 18,
+          "endIndex": 19
+        },
+        "properties": {
+          "pixelSize": 40
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "verification": {
+    "inputsPreserved": [
+      {
+        "from": [
+          13,
+          5
+        ],
+        "to": [
+          12,
+          21
+        ]
+      },
+      {
+        "from": [
+          14,
+          5
+        ],
+        "to": [
+          13,
+          21
+        ]
+      },
+      {
+        "from": [
+          15,
+          5
+        ],
+        "to": [
+          14,
+          21
+        ]
+      },
+      {
+        "from": [
+          13,
+          11
+        ],
+        "to": [
+          17,
+          22
+        ]
+      },
+      {
+        "from": [
+          14,
+          11
+        ],
+        "to": [
+          18,
+          22
+        ]
+      },
+      {
+        "from": [
+          15,
+          11
+        ],
+        "to": [
+          19,
+          22
+        ]
+      },
+      {
+        "from": [
+          13,
+          15
+        ],
+        "to": [
+          23,
+          21
+        ]
+      }
+    ],
+    "dependentParams": [
+      {
+        "cell": "C11",
+        "value": 46701
+      },
+      {
+        "cell": "C12",
+        "value": 46753
+      },
+      {
+        "cell": "C17",
+        "value": 46935
+      },
+      {
+        "cell": "C78",
+        "value": 0.35
+      },
+      {
+        "cell": "C79",
+        "value": 0.01
+      },
+      {
+        "cell": "C80",
+        "value": 0.8
+      }
+    ],
+    "paramsFormulasUnchanged": true,
+    "existingErrors": [
+      "Params!C73",
+      "Params!C103"
+    ],
+    "movedPopulatedCells": 56,
+    "wiseAnchorsPreserved": true,
+    "nativeVisualInspection": "Chrome native connection timed out on screenshot and reconnect. Verified layout, merged ranges, column widths, row heights, colors, input validation, named ranges and formulas through Sheets API.",
+    "setupRichTextLinksPreserved": true
+  },
+  "appsScript": "No source changes required. Wise sync still uses sheet ID 190902611 and J2/J3/L3/J5."
+}
