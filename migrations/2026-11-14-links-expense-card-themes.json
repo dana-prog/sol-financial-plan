@@ -1,0 +1,519 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Links",
+  "sheetId": 1936111402,
+  "status": "Applied and verified on 2026-11-14",
+  "description": "Use theme headings above expense links for Land, Construction, Infra, and Loan interest. Stack Setup's Actual Expenses below Planned Expenses within the shared card.",
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 10,
+          "endRowIndex": 12,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Land"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.14117648,
+                      "green": 0.23137255,
+                      "blue": 0.3254902
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 15,
+                    "bold": true,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.14117648,
+                        "green": 0.23137255,
+                        "blue": 0.3254902
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1675897452\",\"Planned Expenses ↗\")"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.27058825,
+                      "green": 0.42352942,
+                      "blue": 0.5647059
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 12,
+                    "bold": false,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058825,
+                        "green": 0.42352942,
+                        "blue": 0.5647059
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=1675897452"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 12,
+          "endRowIndex": 14,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Construction"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.14117648,
+                      "green": 0.23137255,
+                      "blue": 0.3254902
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 15,
+                    "bold": true,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.14117648,
+                        "green": 0.23137255,
+                        "blue": 0.3254902
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=462995266\",\"Planned Expenses ↗\")"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.27058825,
+                      "green": 0.42352942,
+                      "blue": 0.5647059
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 12,
+                    "bold": false,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058825,
+                        "green": 0.42352942,
+                        "blue": 0.5647059
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=462995266"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 12,
+          "endRowIndex": 14,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Infra"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.14117648,
+                      "green": 0.23137255,
+                      "blue": 0.3254902
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 15,
+                    "bold": true,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.14117648,
+                        "green": 0.23137255,
+                        "blue": 0.3254902
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1754072773\",\"Planned Expenses ↗\")"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.27058825,
+                      "green": 0.42352942,
+                      "blue": 0.5647059
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 12,
+                    "bold": false,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058825,
+                        "green": 0.42352942,
+                        "blue": 0.5647059
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=1754072773"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 12,
+          "endRowIndex": 14,
+          "startColumnIndex": 11,
+          "endColumnIndex": 12
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Loan interest"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.14117648,
+                      "green": 0.23137255,
+                      "blue": 0.3254902
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 15,
+                    "bold": true,
+                    "underline": false,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.14117648,
+                        "green": 0.23137255,
+                        "blue": 0.3254902
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1346380865\",\"Planned Expenses ↗\")"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "foregroundColor": {
+                      "red": 0.27058825,
+                      "green": 0.42352942,
+                      "blue": 0.5647059
+                    },
+                    "fontFamily": "Arial",
+                    "fontSize": 12,
+                    "bold": false,
+                    "underline": true,
+                    "foregroundColorStyle": {
+                      "rgbColor": {
+                        "red": 0.27058825,
+                        "green": 0.42352942,
+                        "blue": 0.5647059
+                      }
+                    },
+                    "link": {
+                      "uri": "#gid=1346380865"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat"
+      }
+    },
+    {
+      "unmergeCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 6,
+          "endColumnIndex": 16
+        }
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 6,
+          "endColumnIndex": 16
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 1,
+              "green": 1,
+              "blue": 1
+            },
+            "borders": {
+              "top": {
+                "style": "NONE"
+              },
+              "bottom": {
+                "style": "SOLID",
+                "color": {
+                  "red": 0.8627451,
+                  "green": 0.8980392,
+                  "blue": 0.93333334
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.8627451,
+                    "green": 0.8980392,
+                    "blue": 0.93333334
+                  }
+                }
+              },
+              "left": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              },
+              "right": {
+                "style": "SOLID_MEDIUM",
+                "color": {
+                  "red": 0.95686275,
+                  "green": 0.96862745,
+                  "blue": 0.98039216
+                },
+                "colorStyle": {
+                  "rgbColor": {
+                    "red": 0.95686275,
+                    "green": 0.96862745,
+                    "blue": 0.98039216
+                  }
+                }
+              }
+            },
+            "padding": {
+              "top": 2,
+              "right": 18,
+              "bottom": 10,
+              "left": 18
+            },
+            "horizontalAlignment": "LEFT",
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "CLIP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.27058825,
+                "green": 0.42352942,
+                "blue": 0.5647059
+              },
+              "fontFamily": "Arial",
+              "fontSize": 12,
+              "bold": false,
+              "underline": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.27058825,
+                  "green": 0.42352942,
+                  "blue": 0.5647059
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredValue,userEnteredFormat,textFormatRuns"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 6,
+          "endColumnIndex": 16
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 11,
+          "endRowIndex": 12,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Planned Expenses ↗\nActual Expenses ↗"
+                },
+                "textFormatRuns": [
+                  {
+                    "startIndex": 0,
+                    "format": {
+                      "link": {
+                        "uri": "#gid=1304432573"
+                      },
+                      "foregroundColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      },
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.27058823529411763,
+                          "green": 0.4235294117647059,
+                          "blue": 0.5647058823529412
+                        }
+                      },
+                      "underline": true
+                    }
+                  },
+                  {
+                    "startIndex": 19,
+                    "format": {
+                      "link": {
+                        "uri": "#gid=2082967509"
+                      },
+                      "foregroundColor": {
+                        "red": 0.27058823529411763,
+                        "green": 0.4235294117647059,
+                        "blue": 0.5647058823529412
+                      },
+                      "foregroundColorStyle": {
+                        "rgbColor": {
+                          "red": 0.27058823529411763,
+                          "green": 0.4235294117647059,
+                          "blue": 0.5647058823529412
+                        }
+                      },
+                      "underline": true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,textFormatRuns"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1936111402,
+          "dimension": "ROWS",
+          "startIndex": 11,
+          "endIndex": 12
+        },
+        "properties": {
+          "pixelSize": 62
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "verification": "Verified all four theme headings and planned-expense destinations. Verified both Setup rich-text link destinations and native rendering at 100% zoom, with Actual Expenses directly below Planned Expenses in the blue palette."
+}
