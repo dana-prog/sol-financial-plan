@@ -20,9 +20,10 @@ function onInstallableEdit(e) {
 function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     .addItem('Set Timeline Borders', '_onSetTimelineBorders')
+    .addSeparator()
     .addItem('Recalculate Loan Payments and Tax', 'showRepaymentCalculation')
-    .addItem('Sync Wise transactions now', 'syncWiseScheduled')
-    // .addSeparator()
+    .addItem('Sync Wise Transactions', 'syncWiseScheduled')
+    .addSeparator()
     // .addItem('Show Details', '_onShowDetails')
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
     // .addSeparator()
