@@ -2,8 +2,8 @@
 function calculateBorrowingRepayments(model) {
   const states = model.loans.map(() => ({principal: 0, interest: 0, capitalized: 0, interestPaid: 0}));
   const payments = model.loans.map(loan => ({row: loan.row, principal: [], interest: []}));
-  const order = model.loans.map((loan, index) => ({index, priority: loan.priority, row: loan.row}))
-    .sort((a, b) => a.priority - b.priority || a.row - b.row);
+  const order = model.loans.map((loan, index) => ({index, priority: loan.priority, row: loan.row}));
+  const warnings = [];
   const cash = [];
   const interestAccrued = [];
   let balance = 0;
@@ -13,9 +13,15 @@ function calculateBorrowingRepayments(model) {
     const draws = model.loans.reduce((sum, loan) => sum + loan.draws[index], 0);
     const beforeRepayments = balance + model.receipts[index] + draws - model.expenses[index];
     let available = Math.max(0, beforeRepayments - model.reserve);
-    // Pay eligible interest before principal, then use loan priority and row order.
+    // Interest is due from its start deadline. For principal, earliest maturity
+    // takes precedence; priority and sheet order break ties.
     for (const kind of ['interest', 'principal']) {
-      order.forEach(({index: i}) => {
+      const dueOrder = [...order].sort((a, b) => {
+        const dueA = kind === 'interest' ? model.loans[a.index].interestRepaymentStart : model.loans[a.index].maturity;
+        const dueB = kind === 'interest' ? model.loans[b.index].interestRepaymentStart : model.loans[b.index].maturity;
+        return (dueA ?? Infinity) - (dueB ?? Infinity) || a.priority - b.priority || a.row - b.row;
+      });
+      dueOrder.forEach(({index: i}) => {
         const start = kind === 'interest' ? model.loans[i].interestRepaymentStart : model.principalRepaymentStart;
         const payment = start !== null && month >= start
           ? Math.min(Math.max(0, accrued[i][kind]), available) : 0;
@@ -25,6 +31,15 @@ function calculateBorrowingRepayments(model) {
       });
     }
     const paid = payments.reduce((sum, payment) => sum + payment.principal[index] + payment.interest[index], 0);
+    model.loans.forEach((loan, i) => {
+      if (loan.interestRepaymentStart === month && accrued[i].interest > 0.01 &&
+          !payments[i].interest.some(value => value > 0.01)) {
+        warnings.push(loan.name + ': interest payment has not started by its deadline');
+      }
+      if (loan.maturity === month && accrued[i].principal + accrued[i].interest > 0.01) {
+        warnings.push(loan.name + ': principal or interest remains unpaid at maturity');
+      }
+    });
     balance = beforeRepayments - paid;
     cash.push(balance);
     accrued.forEach((state, i) => {
@@ -34,7 +49,7 @@ function calculateBorrowingRepayments(model) {
   if (![...cash, ...payments.flatMap(p => [...p.principal, ...p.interest])].every(Number.isFinite)) {
     throw new Error('Repayment calculation produced an invalid amount. Nothing was written.');
   }
-  return {payments, cash, interestAccrued};
+  return {payments, cash, interestAccrued, warnings};
 }
 
 function accrueBorrowingMonth(loan, previous, month, draw) {
@@ -126,7 +141,8 @@ function recalculateBorrowingRepayments() {
       throw new Error('Could not save repayments and tax (HTTP ' + response.getResponseCode() + '). ' + response.getContentText());
     }
     timings.saveMs = Date.now() - phase;
-    return 'Loan repayments and tax updated in ' + ((Date.now() - started) / 1000).toFixed(1) + ' seconds.';
+    const message = 'Borrowing payments and tax updated in ' + ((Date.now() - started) / 1000).toFixed(1) + ' seconds.';
+    return result.warnings.length ? message + '\n\nDeadlines at risk:\n' + result.warnings.join('\n') : message + '\n\nAll borrowing deadlines within the forecast are met.';
   } finally {
     lock.releaseLock();
     console.log('Repayment calculation timings (ms): ' + JSON.stringify({...timings, totalMs: Date.now() - started}));
@@ -139,7 +155,7 @@ function readBorrowingRepaymentModel(spreadsheet) {
   const timezone = 'UTC';
   const grid = inputs['Borrowings'];
   const headers = grid[0];
-  const columns = Object.fromEntries(['Name', 'Priority', 'Date', 'Interest',
+  const columns = Object.fromEntries(['Name', 'Priority', 'Date', 'Interest', 'Maturity date',
     'Interest repayment start deadline (years)'].map(name => [name, repaymentHeaderIndex(headers, name)]));
   const paramIndex = repaymentHeaderIndex(headers, 'Param');
   if (paramIndex < 9 || headers.lastIndexOf('Param') !== paramIndex) {
@@ -182,8 +198,10 @@ function readBorrowingRepaymentModel(spreadsheet) {
     const rate = repaymentNumber(row[columns.Interest], row[columns.Name] + ' interest');
     if (rate < 0 || draws.some(value => value < 0)) throw new Error('Negative loan draws or interest rates are unsupported: ' + row[columns.Name]);
     const interestRepaymentStart = interestRepaymentStartMonth(date, rate, row[columns['Interest repayment start deadline (years)']], row[columns.Name]);
+    const maturityValue = row[columns['Maturity date']];
+    const maturity = maturityValue === '' || maturityValue == null ? null : repaymentMonthStart(repaymentDate(maturityValue, timezone, row[columns.Name] + ' maturity date'));
     loans.push({row: index + 3, name: row[columns.Name], priority: repaymentNumber(row[columns.Priority], row[columns.Name] + ' priority'),
-      date, rate, draws, interestRepaymentStart});
+      date, rate, draws, interestRepaymentStart, maturity});
   });
   if (!loans.length) throw new Error('No borrowing schedules were found.');
   const cash = inputs['Cash Flow'].map(row => row.slice(0, months.length + 1));

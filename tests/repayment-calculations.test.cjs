@@ -101,6 +101,21 @@ test('negative cash produces no repayments', () => {
   near(result.payments[0].principal[0], 0);
 });
 
+test('pays earlier principal maturity first, even when another loan has higher priority', () => {
+  const result = calc(model({loans: [loan({row: 4, priority: 1, maturity: day(2031, 1)}),
+    loan({row: 18, priority: 7, maturity: day(2029, 1)})], expenses: [100]}));
+  near(result.payments[0].principal[0], 0);
+  near(result.payments[1].principal[0], 100);
+});
+
+test('reports missed interest start and maturity while respecting cash reserve', () => {
+  const result = calc(model({loans: [loan({rate: 0.365, maturity: day(2026, 1)})], reserve: 100}));
+  assert.equal(result.warnings.length, 2);
+  assert.match(result.warnings[0], /interest payment has not started/);
+  assert.match(result.warnings[1], /remains unpaid at maturity/);
+  near(result.cash[0], 100);
+});
+
 test('a loan with zero draws produces no debt or repayments', () => {
   const result = calc(model({loans: [loan({rate: 0.07, draws: [0]})], receipts: [1000]}));
   near(result.payments[0].principal[0], 0);
