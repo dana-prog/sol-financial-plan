@@ -214,17 +214,17 @@ test('display columns do not change loan inputs or repayment calculations', () =
   const cashLabels = ['land expenses', 'setup expenses', 'construction expenses', 'infra expenses',
     'direct operating expenses', 'other operating expenses', 'loans disbursed',
     'revenue', 'setup depreciation', 'operating profit'];
-  function read(extraColumns) {
+  function read(extraColumns, renamed = false) {
     const grid = [['Name', 'Priority', 'Date', 'Maturity date', 'Lender', 'Amount', 'Interest', 'Interest repayment start deadline (years)', 'Maturity', 'Status',
       ...Array(extraColumns).fill('Loan details'), 'Param', date],
     ...labels.map((label, i) => [...(i ? Array(10).fill('') : ['Loan', 1, date, date, 'Lender', 100, 0.07, 0, 5, 'Received']),
-      ...Array(extraColumns).fill('display only'), label, i === 1 ? 100 : 0])];
+      ...Array(extraColumns).fill('display only'), renamed ? ({'loan draw': 'borrowings received', 'loan paid': 'borrowings repaid', 'principal owed': 'principal outstanding', 'interest owed': 'interest outstanding'}[label] || label) : label, i === 1 ? 100 : 0])];
     const sheets = {
       'Borrowings': grid,
       Params: [['principal loan repayment start date', date], ['minimum cash reserve', 0],
         ['company tax rate', 0.2], ['financial year-end month', 12]],
-      'Cash Flow': [['Param', date], ...cashLabels.map(label => [label, label === 'setup expenses' ? 7 : label === 'loans disbursed' ? 3 : 0])],
-      'Loans': [['Param', date], ['total loan paid', 0]]
+      'Cash Flow': [['Param', date], ...cashLabels.map(label => [renamed && label === 'loans disbursed' ? 'loan disbursed' : label, label === 'setup expenses' ? 7 : label === 'loans disbursed' ? 3 : 0])],
+      'Loans': [['Param', date], [renamed ? 'total loan repayment received' : 'total loan paid', 0]]
     };
     const reader = vm.createContext({Date, Utilities: {formatDate: value => value.toISOString().slice(0, 10)}});
     vm.runInContext(source, reader);
@@ -236,6 +236,8 @@ test('display columns do not change loan inputs or repayment calculations', () =
   assert.equal(original.expenses[0], 10);
   assert.equal(original.timelineColumn, 12);
   const normalize = value => JSON.parse(JSON.stringify(value));
+  const renamed = read(0, true);
+  assert.deepEqual(normalize({...original, cashLabels: renamed.cashLabels}), normalize(renamed));
   for (const addedColumns of [2, 3]) {
     const expanded = read(addedColumns);
     assert.equal(expanded.timelineColumn, 12 + addedColumns);

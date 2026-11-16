@@ -17,7 +17,7 @@
                 "userEnteredValue": {
                   "stringValue": "Last Repayment Calculation Time\n12 Nov 07:13"
                 },
-                "note": "Last successful repayment and company-tax calculation. Run SOL → Recalculate Loan Payments and Tax after changing loans, cash flow, unit costs, useful lives, or tax inputs.",
+                "note": "Last successful repayment and company-tax calculation. Run SOL → Recalculate Borrowing Payments and Tax after changing loans, cash flow, unit costs, useful lives, or tax inputs.",
                 "userEnteredFormat": {
                   "backgroundColor": {
                     "red": 0.9372549,

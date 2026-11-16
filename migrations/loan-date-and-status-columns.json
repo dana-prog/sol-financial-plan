@@ -208,7 +208,7 @@
                 "userEnteredValue": {
                   "formulaValue": "=IF($C$4=\"\",\"\",IF(OR(AND($F$4>0,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$4,12*$G$4),0),$N$6:$DE$6)>0.01,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$4,12*$G$4),0),$N$13:$DE$13)<=0.01),SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$4,12*$H$4),0),$N$6:$DE$6)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$4,12*$H$4),0),$N$13:$DE$13)>0.01),\"Late interest payment\",IF(SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$4,12*$H$4),0),$N$5:$DE$5)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$4,12*$H$4),0),$N$10:$DE$10)>0.01,\"Late principal payment\",\"On time\")))"
                 },
-                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate loan payments after changing inputs."
+                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate borrowing payments after changing inputs."
               }
             ]
           }
@@ -297,7 +297,7 @@
                 "userEnteredValue": {
                   "formulaValue": "=IF($C$18=\"\",\"\",IF(OR(AND($F$18>0,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$18,12*$G$18),0),$N$20:$DE$20)>0.01,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$18,12*$G$18),0),$N$27:$DE$27)<=0.01),SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$18,12*$H$18),0),$N$20:$DE$20)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$18,12*$H$18),0),$N$27:$DE$27)>0.01),\"Late interest payment\",IF(SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$18,12*$H$18),0),$N$19:$DE$19)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$18,12*$H$18),0),$N$24:$DE$24)>0.01,\"Late principal payment\",\"On time\")))"
                 },
-                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate loan payments after changing inputs."
+                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate borrowing payments after changing inputs."
               }
             ]
           }
@@ -386,7 +386,7 @@
                 "userEnteredValue": {
                   "formulaValue": "=IF($C$32=\"\",\"\",IF(OR(AND($F$32>0,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$32,12*$G$32),0),$N$34:$DE$34)>0.01,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$32,12*$G$32),0),$N$41:$DE$41)<=0.01),SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$32,12*$H$32),0),$N$34:$DE$34)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$32,12*$H$32),0),$N$41:$DE$41)>0.01),\"Late interest payment\",IF(SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$32,12*$H$32),0),$N$33:$DE$33)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$32,12*$H$32),0),$N$38:$DE$38)>0.01,\"Late principal payment\",\"On time\")))"
                 },
-                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate loan payments after changing inputs."
+                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate borrowing payments after changing inputs."
               }
             ]
           }
@@ -475,7 +475,7 @@
                 "userEnteredValue": {
                   "formulaValue": "=IF($C$46=\"\",\"\",IF(OR(AND($F$46>0,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$46,12*$G$46),0),$N$48:$DE$48)>0.01,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$46,12*$G$46),0),$N$55:$DE$55)<=0.01),SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$46,12*$H$46),0),$N$48:$DE$48)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$46,12*$H$46),0),$N$55:$DE$55)>0.01),\"Late interest payment\",IF(SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$46,12*$H$46),0),$N$47:$DE$47)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$46,12*$H$46),0),$N$52:$DE$52)>0.01,\"Late principal payment\",\"On time\")))"
                 },
-                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate loan payments after changing inputs."
+                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate borrowing payments after changing inputs."
               }
             ]
           }
@@ -564,7 +564,7 @@
                 "userEnteredValue": {
                   "formulaValue": "=IF($C$60=\"\",\"\",IF(OR(AND($F$60>0,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$60,12*$G$60),0),$N$62:$DE$62)>0.01,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$60,12*$G$60),0),$N$69:$DE$69)<=0.01),SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$60,12*$H$60),0),$N$62:$DE$62)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$60,12*$H$60),0),$N$69:$DE$69)>0.01),\"Late interest payment\",IF(SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$60,12*$H$60),0),$N$61:$DE$61)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$60,12*$H$60),0),$N$66:$DE$66)>0.01,\"Late principal payment\",\"On time\")))"
                 },
-                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate loan payments after changing inputs."
+                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate borrowing payments after changing inputs."
               }
             ]
           }
@@ -653,7 +653,7 @@
                 "userEnteredValue": {
                   "formulaValue": "=IF($C$74=\"\",\"\",IF(OR(AND($F$74>0,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$74,12*$G$74),0),$N$76:$DE$76)>0.01,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$74,12*$G$74),0),$N$83:$DE$83)<=0.01),SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$74,12*$H$74),0),$N$76:$DE$76)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$74,12*$H$74),0),$N$83:$DE$83)>0.01),\"Late interest payment\",IF(SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$74,12*$H$74),0),$N$75:$DE$75)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$74,12*$H$74),0),$N$80:$DE$80)>0.01,\"Late principal payment\",\"On time\")))"
                 },
-                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate loan payments after changing inputs."
+                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate borrowing payments after changing inputs."
               }
             ]
           }
@@ -742,7 +742,7 @@
                 "userEnteredValue": {
                   "formulaValue": "=IF($C$88=\"\",\"\",IF(OR(AND($F$88>0,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$88,12*$G$88),0),$N$90:$DE$90)>0.01,SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$88,12*$G$88),0),$N$97:$DE$97)<=0.01),SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$88,12*$H$88),0),$N$90:$DE$90)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$88,12*$H$88),0),$N$97:$DE$97)>0.01),\"Late interest payment\",IF(SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$88,12*$H$88),0),$N$89:$DE$89)-SUMIF($N$3:$DE$3,\"<=\"&EOMONTH(EDATE($C$88,12*$H$88),0),$N$94:$DE$94)>0.01,\"Late principal payment\",\"On time\")))"
                 },
-                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate loan payments after changing inputs."
+                "note": "Forecast status checked at month-end: late interest means no interest payment by the interest-start month despite accrued interest, or interest remains at maturity. Late principal means principal remains at maturity. Interest lateness takes precedence when both are late. Recalculate borrowing payments after changing inputs."
               }
             ]
           }

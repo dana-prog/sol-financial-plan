@@ -13,7 +13,7 @@
     "newRange": "'Cash Flow'!A3:CT43",
     "namedRangeId": "klx73l8s185v"
   },
-  "verificationRun": "One approved Recalculate Loan Payments and Tax run, updating its normal tax, depreciation, repayment and timestamp outputs.",
+  "verificationRun": "One approved Recalculate Borrowing Payments and Tax run, updating its normal tax, depreciation, repayment and timestamp outputs.",
   "verification": {
     "repositoryTestsPassed": 41,
     "liveRecalculation": "Loan repayments and tax updated.",

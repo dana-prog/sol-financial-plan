@@ -21,7 +21,7 @@ function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     .addItem('Set Timeline Borders', '_onSetTimelineBorders')
     .addSeparator()
-    .addItem('Recalculate Loan Payments and Tax', 'showRepaymentCalculation')
+    .addItem('Recalculate Borrowing Payments and Tax', 'showRepaymentCalculation')
     .addItem('Sync Wise Transactions', 'syncWiseScheduled')
     .addSeparator()
     .addItem('Show Expenses Details', '_onShowDetails')
