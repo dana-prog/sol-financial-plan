@@ -1,0 +1,35 @@
+{
+  "spreadsheetId": "1Tnva3qBpjL7QoUstRKwiY6guULRlG-3qObAVXFZk12k",
+  "scriptId": "10i8dN1AHVyvhw1HYBPc9ibMqstG_s7fGfqYbsOAbAY1zn7Jf1l4Qj8Qe",
+  "description": "Enable the Sheets advanced service in the Budget 1 copy so its default Cloud project enables the Sheets API used by repayment reads and writes.",
+  "manifest": {
+    "timeZone": "Asia/Bangkok",
+    "dependencies": {
+      "libraries": [
+        {
+          "userSymbol": "SOLLibrary",
+          "libraryId": "1OlA4IjXB56DhQAYHHycAVoSPU1Cjvth5gkpXrf-32qDevkF5t6M8ZhC8",
+          "version": "0",
+          "developmentMode": true
+        }
+      ],
+      "enabledAdvancedServices": [
+        {
+          "userSymbol": "Sheets",
+          "serviceId": "sheets",
+          "version": "v4"
+        }
+      ]
+    },
+    "exceptionLogging": "STACKDRIVER",
+    "runtimeVersion": "V8"
+  },
+  "scope": "Copy only. Preserve all remote script files and existing library dependency.",
+  "status": "Applied and verified on 2026-11-18",
+  "verification": {
+    "remoteManifestMatches": true,
+    "otherScriptFilesUnchanged": 16,
+    "recalculation": "Successfully read inputs and saved repayment and tax results; no HTTP 403. Reported unresolved repayment deadlines, unpaid maturity balances, and cash shortfalls.",
+    "repositoryScope": "Only this migration record is committed. Existing unrelated source and test edits are excluded."
+  }
+}
