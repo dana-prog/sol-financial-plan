@@ -39,7 +39,7 @@ function showDetails(param, month) {
   const detailsSheet = SpreadsheetApp.getActive().getSheetById(DETAILS_SHEET_ID);
 
   detailsSheet.getRange('A2').setValue('Month');
-  detailsSheet.getRange('F2').setValue(SOLLibrary.capitalize(param));
+  detailsSheet.getRange('D2').setValue(SOLLibrary.capitalize(param));
   _updateDetailsPeriodSelection(detailsSheet, _detailsPeriodLabel(month, 'Month'));
   _refreshDetailsView(detailsSheet);
 
@@ -70,7 +70,7 @@ function updateDetailsView(e) {
   const sheet = range.getSheet();
   if (sheet.getSheetId() === DETAILS_SHEET_ID) {
     if (range.getRow() > 2 || range.getLastRow() < 2 ||
-        ![1, 4, 6].some(column => range.getColumn() <= column && range.getLastColumn() >= column)) return;
+        ![1, 3, 4].some(column => range.getColumn() <= column && range.getLastColumn() >= column)) return;
     _refreshDetailsView(sheet);
     return;
   }
@@ -127,7 +127,7 @@ function _resizeDetailsRows(sheet) {
   if (!formula) throw new Error('The Details table formula is missing.');
   // Count the formula result independently so a larger selection can recover
   // even when its array cannot yet spill into the trimmed sheet.
-  const counter = sheet.getRange('H1');
+  const counter = sheet.getRange('E1');
   const countFormula = `=ROWS(${formula.slice(1)})`;
   if (counter.getFormula() !== countFormula) counter.setFormula(countFormula);
   for (let attempt = 0; attempt < 10; attempt++) {
@@ -157,7 +157,7 @@ function _resizeDetailsRows(sheet) {
 function _growDetailsRows(sheet, lastRow) {
   const currentRows = sheet.getMaxRows();
   sheet.insertRowsAfter(currentRows, lastRow - currentRows);
-  sheet.getRange(5, 1, 1, 8).copyFormatToRange(sheet, 1, 8, currentRows + 1, lastRow);
+  sheet.getRange(5, 1, 1, 5).copyFormatToRange(sheet, 1, 5, currentRows + 1, lastRow);
   sheet.setRowHeights(currentRows + 1, lastRow - currentRows, sheet.getRowHeight(5));
   const rules = sheet.getConditionalFormatRules().map(rule => rule.copy().setRanges(
     rule.getRanges().map(range => range.getRow() >= 5 && range.getLastRow() === currentRows
@@ -171,7 +171,7 @@ function _detailsUnitFormats(rows, params, formats) {
   const byParam = new Map(params.map((row, index) => [String(row[0]).toLowerCase(), formats[index][0]]));
   return rows.map(row => {
     if (row[0] !== 'Construction Expenses') return ['General'];
-    const param = String(row[7]).toLowerCase().replace(/ const\. cost$/, ' const. count');
+    const param = String(row[4]).toLowerCase().replace(/ const\. cost$/, ' const. count');
     const format = byParam.get(param);
     if (!format) throw new Error(`Missing planned-unit number format for ${param}.`);
     return [format.replace(/complex room/g, 'complex home')];
@@ -182,8 +182,8 @@ function _refreshDetailsUnitFormats(sheet) {
   const rowCount = sheet.getMaxRows() - 4;
   if (rowCount <= 0) return;
   SpreadsheetApp.flush();
-  const rows = sheet.getRange(5, 1, rowCount, 8).getValues();
-  const target = sheet.getRange(5, 4, rowCount, 1);
+  const rows = sheet.getRange(5, 1, rowCount, 5).getValues();
+  const target = sheet.getRange(5, 3, rowCount, 1);
   if (!rows.some(row => row[0] === 'Construction Expenses')) {
     target.setNumberFormat('General');
     return;
@@ -220,7 +220,7 @@ function _detailsPeriodSelection(months, period, selected) {
 
 function _updateDetailsPeriodSelection(sheet, selectedValue) {
   const period = sheet.getRange('A2').getValue();
-  const selected = sheet.getRange('D2');
+  const selected = sheet.getRange('C2');
   const months = sheet.getParent().getRangeByName('R_MONTHS');
   if (!months) throw new Error('The project timeline named range R_MONTHS is missing.');
   const selection = _detailsPeriodSelection(months.getValues().flat(), period,
@@ -230,5 +230,5 @@ function _updateDetailsPeriodSelection(sheet, selectedValue) {
     .setAllowInvalid(false)
     .build();
   selected.setDataValidation(validation).setNumberFormat('@').setValue(selection.value);
-  sheet.getRange('D1').setValue(`Select ${period}`);
+  sheet.getRange('C1').setValue(`Select ${period}`);
 }

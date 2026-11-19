@@ -1,0 +1,262 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Details",
+  "description": "Append Details in parentheses to Param, remove the Details column and both separator columns. Preserve numeric construction counts and named-function calls.",
+  "before": {
+    "formula": "=LET(\n  details, LET(\n  period, A2,\n  selected, D2,\n  expense_type, F2,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      infra_details, LAMBDA(month,\n        LET(\n          source, S_INFRA_EXP_P,\n          params, COL_VALUES(source, \"param\"),\n          suppliers, COL_VALUES(source, \"supplier\"),\n          categories, COL_VALUES(source, \"_category\"),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n            ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      financing_details, LAMBDA(month, source, param_name, party_header, type_label,\n        LET(\n          params, COL_VALUES(source, \"param\"),\n          names, COL_VALUES(source, \"_name\"),\n          parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"),\n            COL_VALUES(source, party_header)), \"\")),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n            params=param_name,\n            ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type=\"Borrowing Repayments\",\n        financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n        IF(expense_type=\"Loan Disbursements\",\n          financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n        IF(expense_type = \"Infrastructure Expenses\", infra_details(month), IF(expense_type = \"Setup Expenses\", without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(OR(expense_type = \"Direct Operating Expenses\", expense_type = \"Other Operating Expenses\"),\n        LET(\n          operating, OPERATIONAL_EXPENSES_D(month),\n          IFNA(FILTER(operating, CHOOSECOLS(operating, 1)=expense_type), {\"\",\"\",\"\",\"\"})\n        ),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                infra_details(month),\n                LAND_EXPENSES_D(month),\n                financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n                financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  ))))),\n      LET(\n        expenses, REDUCE({\"\",0,\"\",\"\",0}, selected_months,\n          LAMBDA(result, month,\n            LET(\n              monthly, monthly_details(month),\n              VSTACK(result, HSTACK(\n                CHOOSECOLS(monthly, 1),\n                ARRAYFORMULA(IF(CHOOSECOLS(monthly, 1)<>\"\", month, \"\")),\n                CHOOSECOLS(monthly, 2, 3, 4)\n              ))\n            )\n          )),\n        IFNA(QUERY(expenses,\n          \"select Col1, Col2, Col3, Col4, sum(Col5) where Col1 is not null group by Col1, Col2, Col3, Col4 order by Col1, Col2, Col3 label sum(Col5) ''\", 0),\n          {\"\",\"\",\"\",\"\",0})\n      )\n    )\n  )\n),\n  spacer, ARRAYFORMULA(IF(SEQUENCE(ROWS(details))>0, \"\", \"\")),\n  type_labels, MAP(CHOOSECOLS(details, 1), LAMBDA(type,\n    SWITCH(type,\n      \"Construction\", \"Construction Expenses\",\n      \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\",\n      \"Land\", \"Land Expenses\",\n      type)\n  )),\n  unit_counts, MAP(type_labels, CHOOSECOLS(details, 2), CHOOSECOLS(details, 3),\n    LAMBDA(type, month, param,\n      IF(type=\"Construction Expenses\",\n        INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")),\n          1, MATCH(month, R_MONTHS, 0)),\n        \"\"\n      )\n    )),\n  item_values, ARRAYFORMULA(IF(type_labels=\"Construction Expenses\", unit_counts, CHOOSECOLS(details, 3))),\n  item_details, ARRAYFORMULA(IF(type_labels=\"Construction Expenses\", \"\", CHOOSECOLS(details, 4))),\n  construction_params, ARRAYFORMULA(IF(type_labels=\"Construction Expenses\", CHOOSECOLS(details, 3), \"\")),\n  listed, HSTACK(type_labels, CHOOSECOLS(details, 2), spacer, item_values, spacer, item_details, CHOOSECOLS(details, 5), construction_params),\n  total, HSTACK(\"Total\", \"\", \"\", \"\", \"\", \"\", SUM(CHOOSECOLS(details, 5)), \"\"),\n  IF(SUM(ARRAYFORMULA(N(type_labels<>\"\")))=0, total, VSTACK(listed, total))\n)"
+  },
+  "requests": [
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 2109063306,
+          "dimension": "COLUMNS",
+          "startIndex": 5,
+          "endIndex": 6
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 0,
+          "columnIndex": 5
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Select Type"
+                },
+                "userEnteredFormat": {
+                  "horizontalAlignment": "LEFT",
+                  "verticalAlignment": "BOTTOM",
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 10
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "All"
+                },
+                "userEnteredFormat": {
+                  "numberFormat": {
+                    "type": "TEXT",
+                    "pattern": "@"
+                  },
+                  "borders": {
+                    "bottom": {
+                      "style": "SOLID_MEDIUM",
+                      "width": 2,
+                      "color": {
+                        "red": 0.23529412,
+                        "green": 0.5803922,
+                        "blue": 0.5411765
+                      },
+                      "colorStyle": {
+                        "rgbColor": {
+                          "red": 0.23529412,
+                          "green": 0.5803922,
+                          "blue": 0.5411765
+                        }
+                      }
+                    }
+                  },
+                  "horizontalAlignment": "LEFT",
+                  "verticalAlignment": "MIDDLE",
+                  "textFormat": {
+                    "fontFamily": "Arial",
+                    "fontSize": 12,
+                    "bold": true
+                  }
+                },
+                "dataValidation": {
+                  "condition": {
+                    "type": "ONE_OF_LIST",
+                    "values": [
+                      {
+                        "userEnteredValue": "Construction Expenses"
+                      },
+                      {
+                        "userEnteredValue": "Infrastructure Expenses"
+                      },
+                      {
+                        "userEnteredValue": "Setup Expenses"
+                      },
+                      {
+                        "userEnteredValue": "Direct Operating Expenses"
+                      },
+                      {
+                        "userEnteredValue": "Other Operating Expenses"
+                      },
+                      {
+                        "userEnteredValue": "Land Expenses"
+                      },
+                      {
+                        "userEnteredValue": "Borrowing Repayments"
+                      },
+                      {
+                        "userEnteredValue": "Loan Disbursements"
+                      },
+                      {
+                        "userEnteredValue": "All"
+                      }
+                    ]
+                  },
+                  "strict": true,
+                  "showCustomUi": true
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat,dataValidation"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 4,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  details, LET(\n  period, A2,\n  selected, D2,\n  expense_type, F2,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      infra_details, LAMBDA(month,\n        LET(\n          source, S_INFRA_EXP_P,\n          params, COL_VALUES(source, \"param\"),\n          suppliers, COL_VALUES(source, \"supplier\"),\n          categories, COL_VALUES(source, \"_category\"),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n            ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      financing_details, LAMBDA(month, source, param_name, party_header, type_label,\n        LET(\n          params, COL_VALUES(source, \"param\"),\n          names, COL_VALUES(source, \"_name\"),\n          parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"),\n            COL_VALUES(source, party_header)), \"\")),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n            params=param_name,\n            ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type=\"Borrowing Repayments\",\n        financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n        IF(expense_type=\"Loan Disbursements\",\n          financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n        IF(expense_type = \"Infrastructure Expenses\", infra_details(month), IF(expense_type = \"Setup Expenses\", without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(OR(expense_type = \"Direct Operating Expenses\", expense_type = \"Other Operating Expenses\"),\n        LET(\n          operating, OPERATIONAL_EXPENSES_D(month),\n          IFNA(FILTER(operating, CHOOSECOLS(operating, 1)=expense_type), {\"\",\"\",\"\",\"\"})\n        ),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                infra_details(month),\n                LAND_EXPENSES_D(month),\n                financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n                financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  ))))),\n      LET(\n        expenses, REDUCE({\"\",0,\"\",\"\",0}, selected_months,\n          LAMBDA(result, month,\n            LET(\n              monthly, monthly_details(month),\n              VSTACK(result, HSTACK(\n                CHOOSECOLS(monthly, 1),\n                ARRAYFORMULA(IF(CHOOSECOLS(monthly, 1)<>\"\", month, \"\")),\n                CHOOSECOLS(monthly, 2, 3, 4)\n              ))\n            )\n          )),\n        IFNA(QUERY(expenses,\n          \"select Col1, Col2, Col3, Col4, sum(Col5) where Col1 is not null group by Col1, Col2, Col3, Col4 order by Col1, Col2, Col3 label sum(Col5) ''\", 0),\n          {\"\",\"\",\"\",\"\",0})\n      )\n    )\n  )\n),\n  spacer, ARRAYFORMULA(IF(SEQUENCE(ROWS(details))>0, \"\", \"\")),\n  type_labels, MAP(CHOOSECOLS(details, 1), LAMBDA(type,\n    SWITCH(type,\n      \"Construction\", \"Construction Expenses\",\n      \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\",\n      \"Land\", \"Land Expenses\",\n      type)\n  )),\n  unit_counts, MAP(type_labels, CHOOSECOLS(details, 2), CHOOSECOLS(details, 3),\n    LAMBDA(type, month, param,\n      IF(type=\"Construction Expenses\",\n        INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")),\n          1, MATCH(month, R_MONTHS, 0)),\n        \"\"\n      )\n    )),\n  item_values, ARRAYFORMULA(IF(type_labels=\"Construction Expenses\", unit_counts,\n    CHOOSECOLS(details, 3) & IF(CHOOSECOLS(details, 4)<>\"\", \" (\" & CHOOSECOLS(details, 4) & \")\", \"\"))),\n  construction_params, ARRAYFORMULA(IF(type_labels=\"Construction Expenses\", CHOOSECOLS(details, 3), \"\")),\n  listed, HSTACK(type_labels, CHOOSECOLS(details, 2), spacer, item_values, spacer, CHOOSECOLS(details, 5), construction_params),\n  total, HSTACK(\"Total\", \"\", \"\", \"\", \"\", SUM(CHOOSECOLS(details, 5)), \"\"),\n  IF(SUM(ARRAYFORMULA(N(type_labels<>\"\")))=0, total, VSTACK(listed, total))\n)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 0,
+          "columnIndex": 6
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=ROWS(LET(\n  details, LET(\n  period, A2,\n  selected, D2,\n  expense_type, F2,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      infra_details, LAMBDA(month,\n        LET(\n          source, S_INFRA_EXP_P,\n          params, COL_VALUES(source, \"param\"),\n          suppliers, COL_VALUES(source, \"supplier\"),\n          categories, COL_VALUES(source, \"_category\"),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n            ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      financing_details, LAMBDA(month, source, param_name, party_header, type_label,\n        LET(\n          params, COL_VALUES(source, \"param\"),\n          names, COL_VALUES(source, \"_name\"),\n          parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"),\n            COL_VALUES(source, party_header)), \"\")),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n            params=param_name,\n            ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type=\"Borrowing Repayments\",\n        financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n        IF(expense_type=\"Loan Disbursements\",\n          financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n        IF(expense_type = \"Infrastructure Expenses\", infra_details(month), IF(expense_type = \"Setup Expenses\", without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(OR(expense_type = \"Direct Operating Expenses\", expense_type = \"Other Operating Expenses\"),\n        LET(\n          operating, OPERATIONAL_EXPENSES_D(month),\n          IFNA(FILTER(operating, CHOOSECOLS(operating, 1)=expense_type), {\"\",\"\",\"\",\"\"})\n        ),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                infra_details(month),\n                LAND_EXPENSES_D(month),\n                financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n                financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  ))))),\n      LET(\n        expenses, REDUCE({\"\",0,\"\",\"\",0}, selected_months,\n          LAMBDA(result, month,\n            LET(\n              monthly, monthly_details(month),\n              VSTACK(result, HSTACK(\n                CHOOSECOLS(monthly, 1),\n                ARRAYFORMULA(IF(CHOOSECOLS(monthly, 1)<>\"\", month, \"\")),\n                CHOOSECOLS(monthly, 2, 3, 4)\n              ))\n            )\n          )),\n        IFNA(QUERY(expenses,\n          \"select Col1, Col2, Col3, Col4, sum(Col5) where Col1 is not null group by Col1, Col2, Col3, Col4 order by Col1, Col2, Col3 label sum(Col5) ''\", 0),\n          {\"\",\"\",\"\",\"\",0})\n      )\n    )\n  )\n),\n  spacer, ARRAYFORMULA(IF(SEQUENCE(ROWS(details))>0, \"\", \"\")),\n  type_labels, MAP(CHOOSECOLS(details, 1), LAMBDA(type,\n    SWITCH(type,\n      \"Construction\", \"Construction Expenses\",\n      \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\",\n      \"Land\", \"Land Expenses\",\n      type)\n  )),\n  unit_counts, MAP(type_labels, CHOOSECOLS(details, 2), CHOOSECOLS(details, 3),\n    LAMBDA(type, month, param,\n      IF(type=\"Construction Expenses\",\n        INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")),\n          1, MATCH(month, R_MONTHS, 0)),\n        \"\"\n      )\n    )),\n  item_values, ARRAYFORMULA(IF(type_labels=\"Construction Expenses\", unit_counts,\n    CHOOSECOLS(details, 3) & IF(CHOOSECOLS(details, 4)<>\"\", \" (\" & CHOOSECOLS(details, 4) & \")\", \"\"))),\n  construction_params, ARRAYFORMULA(IF(type_labels=\"Construction Expenses\", CHOOSECOLS(details, 3), \"\")),\n  listed, HSTACK(type_labels, CHOOSECOLS(details, 2), spacer, item_values, spacer, CHOOSECOLS(details, 5), construction_params),\n  total, HSTACK(\"Total\", \"\", \"\", \"\", \"\", SUM(CHOOSECOLS(details, 5)), \"\"),\n  IF(SUM(ARRAYFORMULA(N(type_labels<>\"\")))=0, total, VSTACK(listed, total))\n))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 2109063306,
+          "dimension": "COLUMNS",
+          "startIndex": 3,
+          "endIndex": 4
+        },
+        "properties": {
+          "pixelSize": 460
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 2109063306,
+          "dimension": "COLUMNS",
+          "startIndex": 5,
+          "endIndex": 6
+        },
+        "properties": {
+          "pixelSize": 250
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 2109063306,
+          "dimension": "COLUMNS",
+          "startIndex": 4,
+          "endIndex": 5
+        }
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 2109063306,
+          "dimension": "COLUMNS",
+          "startIndex": 2,
+          "endIndex": 3
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 4,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  details, LET(\n  period, A2,\n  selected, C2,\n  expense_type, D2,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      infra_details, LAMBDA(month,\n        LET(\n          source, S_INFRA_EXP_P,\n          params, COL_VALUES(source, \"param\"),\n          suppliers, COL_VALUES(source, \"supplier\"),\n          categories, COL_VALUES(source, \"_category\"),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n            ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      financing_details, LAMBDA(month, source, param_name, party_header, type_label,\n        LET(\n          params, COL_VALUES(source, \"param\"),\n          names, COL_VALUES(source, \"_name\"),\n          parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"),\n            COL_VALUES(source, party_header)), \"\")),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n            params=param_name,\n            ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type=\"Borrowing Repayments\",\n        financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n        IF(expense_type=\"Loan Disbursements\",\n          financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n        IF(expense_type = \"Infrastructure Expenses\", infra_details(month), IF(expense_type = \"Setup Expenses\", without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(OR(expense_type = \"Direct Operating Expenses\", expense_type = \"Other Operating Expenses\"),\n        LET(\n          operating, OPERATIONAL_EXPENSES_D(month),\n          IFNA(FILTER(operating, CHOOSECOLS(operating, 1)=expense_type), {\"\",\"\",\"\",\"\"})\n        ),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                infra_details(month),\n                LAND_EXPENSES_D(month),\n                financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n                financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  ))))),\n      LET(\n        expenses, REDUCE({\"\",0,\"\",\"\",0}, selected_months,\n          LAMBDA(result, month,\n            LET(\n              monthly, monthly_details(month),\n              VSTACK(result, HSTACK(\n                CHOOSECOLS(monthly, 1),\n                ARRAYFORMULA(IF(CHOOSECOLS(monthly, 1)<>\"\", month, \"\")),\n                CHOOSECOLS(monthly, 2, 3, 4)\n              ))\n            )\n          )),\n        IFNA(QUERY(expenses,\n          \"select Col1, Col2, Col3, Col4, sum(Col5) where Col1 is not null group by Col1, Col2, Col3, Col4 order by Col1, Col2, Col3 label sum(Col5) ''\", 0),\n          {\"\",\"\",\"\",\"\",0})\n      )\n    )\n  )\n),\n  type_labels, MAP(CHOOSECOLS(details, 1), LAMBDA(type,\n    SWITCH(type,\n      \"Construction\", \"Construction Expenses\",\n      \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\",\n      \"Land\", \"Land Expenses\",\n      type)\n  )),\n  unit_counts, MAP(type_labels, CHOOSECOLS(details, 2), CHOOSECOLS(details, 3),\n    LAMBDA(type, month, param,\n      IF(type=\"Construction Expenses\",\n        INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")),\n          1, MATCH(month, R_MONTHS, 0)),\n        \"\"\n      )\n    )),\n  item_values, ARRAYFORMULA(IF(type_labels=\"Construction Expenses\", unit_counts,\n    CHOOSECOLS(details, 3) & IF(CHOOSECOLS(details, 4)<>\"\", \" (\" & CHOOSECOLS(details, 4) & \")\", \"\"))),\n  construction_params, ARRAYFORMULA(IF(type_labels=\"Construction Expenses\", CHOOSECOLS(details, 3), \"\")),\n  listed, HSTACK(type_labels, CHOOSECOLS(details, 2), item_values, CHOOSECOLS(details, 5), construction_params),\n  total, HSTACK(\"Total\", \"\", \"\", SUM(CHOOSECOLS(details, 5)), \"\"),\n  IF(SUM(ARRAYFORMULA(N(type_labels<>\"\")))=0, total, VSTACK(listed, total))\n)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 0,
+          "columnIndex": 4
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=ROWS(LET(\n  details, LET(\n  period, A2,\n  selected, C2,\n  expense_type, D2,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      infra_details, LAMBDA(month,\n        LET(\n          source, S_INFRA_EXP_P,\n          params, COL_VALUES(source, \"param\"),\n          suppliers, COL_VALUES(source, \"supplier\"),\n          categories, COL_VALUES(source, \"_category\"),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n            ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      financing_details, LAMBDA(month, source, param_name, party_header, type_label,\n        LET(\n          params, COL_VALUES(source, \"param\"),\n          names, COL_VALUES(source, \"_name\"),\n          parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"),\n            COL_VALUES(source, party_header)), \"\")),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n            params=param_name,\n            ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type=\"Borrowing Repayments\",\n        financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n        IF(expense_type=\"Loan Disbursements\",\n          financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n        IF(expense_type = \"Infrastructure Expenses\", infra_details(month), IF(expense_type = \"Setup Expenses\", without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(OR(expense_type = \"Direct Operating Expenses\", expense_type = \"Other Operating Expenses\"),\n        LET(\n          operating, OPERATIONAL_EXPENSES_D(month),\n          IFNA(FILTER(operating, CHOOSECOLS(operating, 1)=expense_type), {\"\",\"\",\"\",\"\"})\n        ),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                infra_details(month),\n                LAND_EXPENSES_D(month),\n                financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n                financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  ))))),\n      LET(\n        expenses, REDUCE({\"\",0,\"\",\"\",0}, selected_months,\n          LAMBDA(result, month,\n            LET(\n              monthly, monthly_details(month),\n              VSTACK(result, HSTACK(\n                CHOOSECOLS(monthly, 1),\n                ARRAYFORMULA(IF(CHOOSECOLS(monthly, 1)<>\"\", month, \"\")),\n                CHOOSECOLS(monthly, 2, 3, 4)\n              ))\n            )\n          )),\n        IFNA(QUERY(expenses,\n          \"select Col1, Col2, Col3, Col4, sum(Col5) where Col1 is not null group by Col1, Col2, Col3, Col4 order by Col1, Col2, Col3 label sum(Col5) ''\", 0),\n          {\"\",\"\",\"\",\"\",0})\n      )\n    )\n  )\n),\n  type_labels, MAP(CHOOSECOLS(details, 1), LAMBDA(type,\n    SWITCH(type,\n      \"Construction\", \"Construction Expenses\",\n      \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\",\n      \"Land\", \"Land Expenses\",\n      type)\n  )),\n  unit_counts, MAP(type_labels, CHOOSECOLS(details, 2), CHOOSECOLS(details, 3),\n    LAMBDA(type, month, param,\n      IF(type=\"Construction Expenses\",\n        INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")),\n          1, MATCH(month, R_MONTHS, 0)),\n        \"\"\n      )\n    )),\n  item_values, ARRAYFORMULA(IF(type_labels=\"Construction Expenses\", unit_counts,\n    CHOOSECOLS(details, 3) & IF(CHOOSECOLS(details, 4)<>\"\", \" (\" & CHOOSECOLS(details, 4) & \")\", \"\"))),\n  construction_params, ARRAYFORMULA(IF(type_labels=\"Construction Expenses\", CHOOSECOLS(details, 3), \"\")),\n  listed, HSTACK(type_labels, CHOOSECOLS(details, 2), item_values, CHOOSECOLS(details, 5), construction_params),\n  total, HSTACK(\"Total\", \"\", \"\", SUM(CHOOSECOLS(details, 5)), \"\"),\n  IF(SUM(ARRAYFORMULA(N(type_labels<>\"\")))=0, total, VSTACK(listed, total))\n))"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    }
+  ],
+  "validation": {
+    "combined": 51,
+    "numeric": 72,
+    "total": 211108388.34104508
+  }
+}

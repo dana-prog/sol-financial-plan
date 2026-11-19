@@ -30,7 +30,7 @@ test('period options follow timeline bounds and deduplicate quarters and years',
 });
 
 function fixture() {
-  const values = { A2: 'Quarter', D2: 'Dec 2026' };
+  const values = { A2: 'Quarter', C2: 'Dec 2026' };
   const validations = {};
   const sheet = {
     getSheetId: () => 2109063306,
@@ -64,25 +64,25 @@ test('editing period replaces dependent options and keeps the matching period', 
   const { ctx, sheet, values, validations } = fixture();
   const range = { getSheet: () => sheet, getRow: () => 2, getLastRow: () => 2, getColumn: () => 1 };
   ctx.updateDetailsPeriod({ range });
-  assert.equal(values.D2, 'Q4 2026');
-  assert.equal(values.D1, 'Select Quarter');
-  assert.equal(validations.D2.allowInvalid, false);
-  assert.equal(validations.D2.options.length, 6);
+  assert.equal(values.C2, 'Q4 2026');
+  assert.equal(values.C1, 'Select Quarter');
+  assert.equal(validations.C2.allowInvalid, false);
+  assert.equal(validations.C2.options.length, 6);
   values.A2 = 'Year';
   ctx.updateDetailsPeriod({ range });
-  assert.equal(values.D2, '2026');
-  assert.equal(values.D1, 'Select Year');
+  assert.equal(values.C2, '2026');
+  assert.equal(values.C1, 'Select Year');
   values.A2 = 'Month';
-  values.D2 = 'All Years';
+  values.C2 = 'All Years';
   ctx.updateDetailsPeriod({ range });
-  assert.equal(values.D2, 'All Month');
-  assert.equal(values.D1, 'Select Month');
-  assert.equal(validations.D2.options[0], 'All Month');
+  assert.equal(values.C2, 'All Month');
+  assert.equal(values.C1, 'Select Month');
+  assert.equal(validations.C2.options[0], 'All Month');
   values.A2 = 'Quarter';
   ctx.updateDetailsPeriod({ range });
-  assert.equal(values.D2, 'All Quarters');
-  assert.equal(values.D1, 'Select Quarter');
-  assert.equal(validations.D2.options[0], 'All Quarters');
+  assert.equal(values.C2, 'All Quarters');
+  assert.equal(values.C1, 'Select Quarter');
+  assert.equal(validations.C2.options[0], 'All Quarters');
 });
 
 function resizeFixture({ currentRows = 100, count = 20, total = 'Total', blankTail = true } = {}) {
@@ -99,13 +99,13 @@ function resizeFixture({ currentRows = 100, count = 20, total = 'Total', blankTa
     deleteRows: (...args) => changes.push(['delete', ...args]),
     getRange: (row, column, rows, columns) => {
       if (row === 'A5') return { getFormula: () => '=EXPENSE_DETAILS(A2,D2,F2)' };
-      if (row === 'H1') return {
+      if (row === 'E1') return {
         getFormula: () => counterFormula,
         setFormula: formula => { counterFormula = formula; },
         getValue: () => typeof count === 'function' ? count() : count,
       };
       if (rows === undefined) return { getValue: () => total };
-      if (row === 5 && rows === 1 && columns === 8) return {
+      if (row === 5 && rows === 1 && columns === 5) return {
         copyFormatToRange: (target, ...args) => changes.push(['format', ...args]),
       };
       return { isBlank: () => blankTail };
@@ -128,7 +128,7 @@ test('Details grows a trimmed sheet and restores row formatting', () => {
   const { ctx, sheet, changes } = resizeFixture({ currentRows: 5, count: 200 });
   ctx._resizeDetailsRows(sheet);
   assert.deepEqual(changes, [
-    ['insert', 5, 199], ['format', 1, 8, 6, 204], ['height', 6, 199, 24],
+    ['insert', 5, 199], ['format', 1, 5, 6, 204], ['height', 6, 199, 24],
   ]);
 });
 
@@ -148,7 +148,7 @@ test('Details rechecks the result after a temporary row count changes during rec
   const { ctx, sheet, changes } = resizeFixture({ count: () => counts.shift() ?? 20 });
   ctx._resizeDetailsRows(sheet);
   assert.deepEqual(changes, [
-    ['insert', 100, 204], ['format', 1, 8, 101, 304], ['height', 101, 204, 24],
+    ['insert', 100, 204], ['format', 1, 5, 101, 304], ['height', 101, 204, 24],
     ['delete', 25, 280],
   ]);
 });
@@ -156,10 +156,10 @@ test('Details rechecks the result after a temporary row count changes during rec
 test('construction details reuse numeric unit formats and reset other detail rows', () => {
   const ctx = context();
   const rows = [
-    ['Construction Expenses', '', '', 1, '', '', 221850, 'clinics const. cost'],
-    ['Construction Expenses', '', '', 6, '', '', 5246000, 'complex room const. cost'],
-    ['Construction Expenses', '', '', 1, '', '', 1296000, 'lobby const. cost'],
-    ['Setup Expenses', '', '', 'Design'],
+    ['Construction Expenses', '', 1, 221850, 'clinics const. cost'],
+    ['Construction Expenses', '', 6, 5246000, 'complex room const. cost'],
+    ['Construction Expenses', '', 1, 1296000, 'lobby const. cost'],
+    ['Setup Expenses', '', 'Design'],
     ['Total'],
     [],
   ];
@@ -216,8 +216,8 @@ test('unit labels refresh when filters or source data change', () => {
     getSheet: () => sheet, getRow: () => row, getLastRow: () => row,
     getColumn: () => column, getLastColumn: () => column,
   } });
-  for (const column of [1, 4, 6]) ctx.updateDetailsView(edit(2, column));
-  ctx.updateDetailsView(edit(2, 3));
+  for (const column of [1, 3, 4]) ctx.updateDetailsView(edit(2, column));
+  ctx.updateDetailsView(edit(2, 2));
   ctx.updateDetailsView(edit(5, 4));
   ctx.updateDetailsView();
   assert.equal(refreshed.length, 3);
@@ -234,7 +234,7 @@ test('unrelated edits do not change the period selection', () => {
   ctx.updateDetailsPeriod({ range: { getSheet: () => sheet, getRow: () => 1, getLastRow: () => 1 } });
   ctx.updateDetailsPeriod({ range: { getSheet: () => sheet, getRow: () => 2, getLastRow: () => 2, getColumn: () => 2 } });
   ctx.updateDetailsPeriod({});
-  assert.deepEqual(values, { A2: 'Quarter', D2: 'Dec 2026' });
+  assert.deepEqual(values, { A2: 'Quarter', C2: 'Dec 2026' });
 });
 
 test('menu navigation opens the selected month and retains land and planning views', () => {
@@ -248,9 +248,9 @@ test('menu navigation opens the selected month and retains land and planning vie
     const { ctx, values, validations } = fixture();
     ctx.showDetails(param, new Date(2027, 4, 1));
     assert.equal(values.A2, 'Month');
-    assert.equal(values.D2, 'May 2027');
-    assert.equal(values.F2, expected);
+    assert.equal(values.C2, 'May 2027');
+    assert.equal(values.D2, expected);
     assert.equal(values.activated, true);
-    assert.ok(validations.D2.options.includes('May 2027'));
+    assert.ok(validations.C2.options.includes('May 2027'));
   }
 });
