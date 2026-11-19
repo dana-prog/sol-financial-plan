@@ -1,0 +1,79 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Display quarter as text Q1 2028 etc., while retaining actual month dates and defined type-then-month formula sorting.",
+  "verification": {
+    "rowsChecked": 1074,
+    "quarterLabelsMatchMonthDates": true
+  },
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 1,
+          "endRowIndex": 2,
+          "startColumnIndex": 0,
+          "endColumnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  without_totals, LAMBDA(expenses, source,\n    LET(\n      categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n        COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n      IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  infra_details, LAMBDA(month,\n    LET(\n      source, S_INFRA_EXP_P,\n      params, COL_VALUES(source, \"param\"),\n      suppliers, COL_VALUES(source, \"supplier\"),\n      categories, COL_VALUES(source, \"_category\"),\n      values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n      IFNA(FILTER(\n        HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n        ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n        ISNUMBER(values),\n        values>0\n      ), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  financing_details, LAMBDA(month, source, param_name, party_header, type_label,\n    LET(\n      params, COL_VALUES(source, \"param\"),\n      names, COL_VALUES(source, \"_name\"),\n      parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"),\n        COL_VALUES(source, party_header)), \"\")),\n      values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n      IFNA(FILTER(\n        HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n        params=param_name,\n        ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n        ISNUMBER(values),\n        values>0\n      ), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  monthly_details, LAMBDA(month,\n    LET(\n      operating, without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n      all_expenses, VSTACK(\n        financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n        financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n        without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n        LAND_EXPENSES_D(month),\n        infra_details(month),\n        without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n        IFNA(FILTER(operating, ARRAYFORMULA(\n          (CHOOSECOLS(operating, 1)=\"Direct Operating Expenses\")+\n          (CHOOSECOLS(operating, 1)=\"Other Operating Expenses\"))), {\"\",\"\",\"\",\"\"})\n      ),\n      IFNA(FILTER(all_expenses, CHOOSECOLS(all_expenses, 1)<>\"\"), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  expenses, REDUCE({\"\",0,\"\",\"\",0}, months,\n    LAMBDA(result, month,\n      LET(\n        monthly, monthly_details(month),\n        VSTACK(result, HSTACK(\n          CHOOSECOLS(monthly, 1),\n          ARRAYFORMULA(IF(CHOOSECOLS(monthly, 1)<>\"\", month, \"\")),\n          CHOOSECOLS(monthly, 2, 3, 4)\n        ))\n      )\n    )),\n  grouped, IFNA(QUERY(expenses,\n    \"select Col1, Col2, Col3, Col4, sum(Col5) where Col1 is not null group by Col1, Col2, Col3, Col4 label sum(Col5) ''\", 0),\n    {\"\",\"\",\"\",\"\",0}),\n  type_labels, MAP(CHOOSECOLS(grouped, 1), LAMBDA(type,\n    SWITCH(type, \"Construction\", \"Construction Expenses\", \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\", \"Land\", \"Land Expenses\", type)\n  )),\n  type_order, {\"Borrowing Repayments\";\"Loan Disbursements\";\"Setup Expenses\";\"Land Expenses\";\"Infrastructure Expenses\";\"Construction Expenses\";\"Direct Operating Expenses\";\"Other Operating Expenses\"},\n  ranked, HSTACK(ARRAYFORMULA(IFNA(MATCH(type_labels, type_order, 0), 9)), type_labels, CHOOSECOLS(grouped, 2, 3, 4, 5)),\n  details, SORT(ranked, 1, TRUE, 3, TRUE, 4, TRUE),\n  item_values, MAP(CHOOSECOLS(details, 2), CHOOSECOLS(details, 3), CHOOSECOLS(details, 4), CHOOSECOLS(details, 5),\n    LAMBDA(type, month, param, detail,\n      IF(type=\"Construction Expenses\",\n        LET(\n          units, INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")), 1, MATCH(month, R_MONTHS, 0)),\n          unit_name, REGEXREPLACE(param, \" const[.] cost$\", \"\"),\n          singular, SWITCH(unit_name, \"clinics\", \"clinic\", \"sala toilets\", \"sala toilet\", \"complex room\", \"complex home\", unit_name),\n          plural, SWITCH(unit_name,\n            \"lobby\", \"lobbies\", \"storage\", \"storage\", \"pool lounge seating\", \"pool lounge seating\",\n            \"general resort storage\", \"general resort storage\", \"shower & toilet\", \"showers & toilets\",\n            \"open air sala - big\", \"open air salas - big\", \"open air sala - medium\", \"open air salas - medium\",\n            singular&\"s\"),\n          TEXT(units, \"0\")&\" \"&IF(units=1, singular, plural)\n        ),\n        param&IF(detail<>\"\", \" (\"&detail&\")\", \"\")\n      )\n    )),\n  IF(SUM(ARRAYFORMULA(N(type_labels<>\"\")))=0, {\"\",\"\",\"\",\"\",\"\",\"\"},\n    HSTACK(CHOOSECOLS(details, 2),\n      ARRAYFORMULA(YEAR(CHOOSECOLS(details, 3))),\n      ARRAYFORMULA(\"Q\"&ROUNDUP(MONTH(CHOOSECOLS(details, 3))/3)&\" \"&YEAR(CHOOSECOLS(details, 3))),\n      CHOOSECOLS(details, 3),\n      item_values, CHOOSECOLS(details, 6)))\n)"
+                },
+                "note": "Formula-only view, sorted by the defined expense type order, then month (earliest first) and param. Use header filters to narrow the rows. Quarter labels show Q1–Q4 and year as text. Month remains a real date and controls chronological ordering. Construction labels are text and costs are numeric. Use the formula's SORT to change order; header sorting cannot safely reorder a spill formula."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 0,
+          "endRowIndex": 1,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "note": "Quarter and year label, for example Q1 2028. The formula sorts each expense type by the real date in Months."
+              }
+            ]
+          }
+        ],
+        "fields": "note"
+      }
+    }
+  ],
+  "formatting": {
+    "requestType": "updateCells",
+    "range": {
+      "sheetId": 1623286087,
+      "startRowIndex": 1,
+      "endRowIndex": 1075,
+      "startColumnIndex": 2,
+      "endColumnIndex": 3
+    },
+    "fields": "userEnteredFormat.numberFormat",
+    "rowTemplate": {
+      "values": [
+        {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "TEXT",
+              "pattern": "@"
+            }
+          }
+        }
+      ]
+    },
+    "repeatRows": 1074
+  }
+}
