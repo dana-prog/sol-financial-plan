@@ -52,7 +52,7 @@ function _onToggleWriteLogsToFile() {
 
 function _onSetTimelineBorders() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  if (sheet.getName() === 'Details') {
+  if (['Details', 'All Expenses'].includes(sheet.getName())) {
     setDetailsSheetBorders(sheet);
     return;
   }

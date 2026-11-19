@@ -64,7 +64,7 @@ test('border command only changes horizontal borders across the populated width'
   ]);
 });
 
-test('the menu dispatches details borders separately from existing timeline sheets', () => {
+test('the menu supports both expense sheet names, including renamed workbook copies', () => {
   let activeName = 'Details';
   const calls = [];
   const sheet = { getName: () => activeName };
@@ -76,7 +76,9 @@ test('the menu dispatches details borders separately from existing timeline shee
   vm.runInContext(fs.readFileSync(`${__dirname}/../src/Main.js`, 'utf8'), ctx);
   ctx.setDetailsSheetBorders = target => { assert.equal(target, sheet); calls.push('details'); };
   ctx._onSetTimelineBorders();
+  activeName = 'All Expenses';
+  ctx._onSetTimelineBorders();
   activeName = 'Operational Exp (P)';
   ctx._onSetTimelineBorders();
-  assert.deepEqual(calls, ['details', 'timeline']);
+  assert.deepEqual(calls, ['details', 'details', 'timeline']);
 });
