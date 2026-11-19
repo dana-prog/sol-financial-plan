@@ -1,0 +1,368 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheetId": 1623286087,
+  "title": "_details",
+  "description": "Formula-only monthly detail view using existing named expense functions, with ordinary Sheets filters on type, year, quarter, months, param and cost. Construction unit labels are text as requested. No Apps Script source changes.",
+  "verification": {
+    "rows": 1074,
+    "allRowsMatchExistingDetails": true,
+    "total": 1066585556.3598039,
+    "categories": {
+      "Borrowing Repayments": {
+        "rows": 101,
+        "cost": 363243652.8766362
+      },
+      "Loan Disbursements": {
+        "rows": 2,
+        "cost": 30000000
+      },
+      "Setup Expenses": {
+        "rows": 78,
+        "cost": 10528160
+      },
+      "Land Expenses": {
+        "rows": 3,
+        "cost": 86665068.49315068
+      },
+      "Infrastructure Expenses": {
+        "rows": 15,
+        "cost": 14515000
+      },
+      "Construction Expenses": {
+        "rows": 83,
+        "cost": 162003900
+      },
+      "Direct Operating Expenses": {
+        "rows": 264,
+        "cost": 173738064.77399993
+      },
+      "Other Operating Expenses": {
+        "rows": 528,
+        "cost": 225891710.2160172
+      }
+    },
+    "nativeFilterTest": {
+      "type": "Construction Expenses",
+      "year": 2028,
+      "visibleRows": 72,
+      "hiddenRows": 1002
+    },
+    "filtersClearedAfterTest": true,
+    "visualCheckedAtNormalZoom": true
+  },
+  "requests": [
+    {
+      "addSheet": {
+        "properties": {
+          "sheetId": 1623286087,
+          "title": "_details",
+          "index": 14,
+          "gridProperties": {
+            "rowCount": 2000,
+            "columnCount": 6,
+            "frozenRowCount": 1
+          }
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 0,
+          "endRowIndex": 1,
+          "startColumnIndex": 0,
+          "endColumnIndex": 6
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "type"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "year"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "quarter"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "months"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "param"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "cost"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 1,
+          "endRowIndex": 2,
+          "startColumnIndex": 0,
+          "endColumnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  without_totals, LAMBDA(expenses, source,\n    LET(\n      categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n        COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n      IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  infra_details, LAMBDA(month,\n    LET(\n      source, S_INFRA_EXP_P,\n      params, COL_VALUES(source, \"param\"),\n      suppliers, COL_VALUES(source, \"supplier\"),\n      categories, COL_VALUES(source, \"_category\"),\n      values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n      IFNA(FILTER(\n        HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n        ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n        ISNUMBER(values),\n        values>0\n      ), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  financing_details, LAMBDA(month, source, param_name, party_header, type_label,\n    LET(\n      params, COL_VALUES(source, \"param\"),\n      names, COL_VALUES(source, \"_name\"),\n      parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"),\n        COL_VALUES(source, party_header)), \"\")),\n      values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n      IFNA(FILTER(\n        HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n        params=param_name,\n        ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n        ISNUMBER(values),\n        values>0\n      ), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  monthly_details, LAMBDA(month,\n    LET(\n      operating, without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n      all_expenses, VSTACK(\n        financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n        financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n        without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n        LAND_EXPENSES_D(month),\n        infra_details(month),\n        without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n        IFNA(FILTER(operating, ARRAYFORMULA(\n          (CHOOSECOLS(operating, 1)=\"Direct Operating Expenses\")+\n          (CHOOSECOLS(operating, 1)=\"Other Operating Expenses\"))), {\"\",\"\",\"\",\"\"})\n      ),\n      IFNA(FILTER(all_expenses, CHOOSECOLS(all_expenses, 1)<>\"\"), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  expenses, REDUCE({\"\",0,\"\",\"\",0}, months,\n    LAMBDA(result, month,\n      LET(\n        monthly, monthly_details(month),\n        VSTACK(result, HSTACK(\n          CHOOSECOLS(monthly, 1),\n          ARRAYFORMULA(IF(CHOOSECOLS(monthly, 1)<>\"\", month, \"\")),\n          CHOOSECOLS(monthly, 2, 3, 4)\n        ))\n      )\n    )),\n  grouped, IFNA(QUERY(expenses,\n    \"select Col1, Col2, Col3, Col4, sum(Col5) where Col1 is not null group by Col1, Col2, Col3, Col4 label sum(Col5) ''\", 0),\n    {\"\",\"\",\"\",\"\",0}),\n  type_labels, MAP(CHOOSECOLS(grouped, 1), LAMBDA(type,\n    SWITCH(type, \"Construction\", \"Construction Expenses\", \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\", \"Land\", \"Land Expenses\", type)\n  )),\n  type_order, {\"Borrowing Repayments\";\"Loan Disbursements\";\"Setup Expenses\";\"Land Expenses\";\"Infrastructure Expenses\";\"Construction Expenses\";\"Direct Operating Expenses\";\"Other Operating Expenses\"},\n  ranked, HSTACK(ARRAYFORMULA(IFNA(MATCH(type_labels, type_order, 0), 9)), type_labels, CHOOSECOLS(grouped, 2, 3, 4, 5)),\n  details, SORT(ranked, 1, TRUE, 3, TRUE, 4, TRUE),\n  item_values, MAP(CHOOSECOLS(details, 2), CHOOSECOLS(details, 3), CHOOSECOLS(details, 4), CHOOSECOLS(details, 5),\n    LAMBDA(type, month, param, detail,\n      IF(type=\"Construction Expenses\",\n        LET(\n          units, INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")), 1, MATCH(month, R_MONTHS, 0)),\n          unit_name, REGEXREPLACE(param, \" const[.] cost$\", \"\"),\n          singular, SWITCH(unit_name, \"clinics\", \"clinic\", \"sala toilets\", \"sala toilet\", \"complex room\", \"complex home\", unit_name),\n          plural, SWITCH(unit_name,\n            \"lobby\", \"lobbies\", \"storage\", \"storage\", \"pool lounge seating\", \"pool lounge seating\",\n            \"general resort storage\", \"general resort storage\", \"shower & toilet\", \"showers & toilets\",\n            \"open air sala - big\", \"open air salas - big\", \"open air sala - medium\", \"open air salas - medium\",\n            singular&\"s\"),\n          TEXT(units, \"0\")&\" \"&IF(units=1, singular, plural)\n        ),\n        param&IF(detail<>\"\", \" (\"&detail&\")\", \"\")\n      )\n    )),\n  IF(SUM(ARRAYFORMULA(N(type_labels<>\"\")))=0, {\"\",\"\",\"\",\"\",\"\",\"\"},\n    HSTACK(CHOOSECOLS(details, 2),\n      ARRAYFORMULA(YEAR(CHOOSECOLS(details, 3))),\n      ARRAYFORMULA(\"Q\"&ROUNDUP(MONTH(CHOOSECOLS(details, 3))/3)),\n      ARRAYFORMULA(TEXT(CHOOSECOLS(details, 3), \"mmmm\")),\n      item_values, CHOOSECOLS(details, 6)))\n)"
+                },
+                "note": "Formula-only view of all monthly expense items. Use the header filters to choose type, year, quarter, or month. Construction unit counts and labels are text; costs are numeric. Source totals are excluded."
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,note"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 0,
+          "endRowIndex": 1075,
+          "startColumnIndex": 0,
+          "endColumnIndex": 6
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11
+            },
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat(textFormat,verticalAlignment)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 0,
+          "endRowIndex": 1,
+          "startColumnIndex": 0,
+          "endColumnIndex": 6
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.0863,
+              "green": 0.1961,
+              "blue": 0.3098
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat(backgroundColor,textFormat)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 1,
+          "endRowIndex": 1075,
+          "startColumnIndex": 1,
+          "endColumnIndex": 4
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "horizontalAlignment": "CENTER"
+          }
+        },
+        "fields": "userEnteredFormat.horizontalAlignment"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 1,
+          "endRowIndex": 1075,
+          "startColumnIndex": 5,
+          "endColumnIndex": 6
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "฿ #,##0,\"K\""
+            },
+            "horizontalAlignment": "RIGHT"
+          }
+        },
+        "fields": "userEnteredFormat(numberFormat,horizontalAlignment)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 1,
+          "endRowIndex": 1075,
+          "startColumnIndex": 4,
+          "endColumnIndex": 5
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "wrapStrategy": "WRAP"
+          }
+        },
+        "fields": "userEnteredFormat.wrapStrategy"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "ROWS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 34
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 250
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 1,
+          "endIndex": 2
+        },
+        "properties": {
+          "pixelSize": 80
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 2,
+          "endIndex": 3
+        },
+        "properties": {
+          "pixelSize": 95
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 3,
+          "endIndex": 4
+        },
+        "properties": {
+          "pixelSize": 120
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 4,
+          "endIndex": 5
+        },
+        "properties": {
+          "pixelSize": 440
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 5,
+          "endIndex": 6
+        },
+        "properties": {
+          "pixelSize": 150
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "setBasicFilter": {
+        "filter": {
+          "range": {
+            "sheetId": 1623286087,
+            "startRowIndex": 0,
+            "startColumnIndex": 0,
+            "endColumnIndex": 6
+          }
+        }
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "ROWS",
+          "startIndex": 1075,
+          "endIndex": 2000
+        }
+      }
+    }
+  ]
+}
