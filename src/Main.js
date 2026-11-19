@@ -16,6 +16,7 @@ function onInstallableEdit(e) {
 // This bound-sheet-only update needs no authorization or installed trigger.
 function onEdit(e) {
   updateDetailsPeriod(e);
+  updateDetailsUnitFormats(e);
 }
 
 /**

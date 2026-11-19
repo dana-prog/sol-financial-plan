@@ -34,6 +34,7 @@ function fixture() {
   const validations = {};
   const sheet = {
     getSheetId: () => 2109063306,
+    getMaxRows: () => 4,
     getParent: () => ({ getRangeByName: () => ({ getValues: () => [months] }) }),
     getRange: cell => ({
       getValue: () => values[cell],
@@ -81,6 +82,44 @@ test('editing period replaces dependent options and keeps the matching period', 
   assert.equal(values.D2, 'All Quarters');
   assert.equal(values.D1, 'Select Quarter');
   assert.equal(validations.D2.options[0], 'All Quarters');
+});
+
+test('construction details reuse numeric unit formats and reset other detail rows', () => {
+  const ctx = context();
+  const rows = [
+    ['Construction Expenses', '', '', 1, '', '', 221850, 'clinics const. cost'],
+    ['Construction Expenses', '', '', 6, '', '', 5246000, 'complex room const. cost'],
+    ['Construction Expenses', '', '', 1, '', '', 1296000, 'lobby const. cost'],
+    ['Setup Expenses', '', '', 'Design'],
+    ['Total'],
+    [],
+  ];
+  const params = [['clinics const. count'], ['complex room const. count'], ['lobby const. count']];
+  const formats = [['[=1]0 "clinic";0 "clinics"'], ['[=1]0 "complex room";0 "complex rooms"'], ['[=1]0 "lobby";0 "lobbies"']];
+  assert.deepEqual(JSON.parse(JSON.stringify(ctx._detailsUnitFormats(rows, params, formats))), [
+    formats[0], ['[=1]0 "complex home";0 "complex homes"'], formats[2], ['General'], ['General'], ['General'],
+  ]);
+  assert.throws(() => ctx._detailsUnitFormats([rows[0]], [], []), /Missing planned-unit/);
+});
+
+test('unit labels refresh when filters or source data change', () => {
+  const ctx = context();
+  const refreshed = [];
+  ctx._refreshDetailsUnitFormats = sheet => refreshed.push(sheet);
+  const details = { getSheetId: () => 2109063306 };
+  const edit = (row, column, sheet = details) => ({ range: {
+    getSheet: () => sheet, getRow: () => row, getLastRow: () => row,
+    getColumn: () => column, getLastColumn: () => column,
+  } });
+  for (const column of [1, 4, 6]) ctx.updateDetailsUnitFormats(edit(2, column));
+  ctx.updateDetailsUnitFormats(edit(2, 3));
+  ctx.updateDetailsUnitFormats(edit(5, 4));
+  ctx.updateDetailsUnitFormats();
+  assert.equal(refreshed.length, 3);
+  const source = { getSheetId: () => 123, getParent: () => ({ getSheetById: () => details }) };
+  ctx.updateDetailsUnitFormats(edit(10, 5, source));
+  assert.equal(refreshed.length, 4);
+  assert.ok(refreshed.every(sheet => sheet === details));
 });
 
 test('unrelated edits do not change the period selection', () => {

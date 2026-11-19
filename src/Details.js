@@ -41,6 +41,7 @@ function showDetails(param, month) {
   detailsSheet.getRange('A2').setValue('Month');
   detailsSheet.getRange('F2').setValue(SOLLibrary.capitalize(param));
   _updateDetailsPeriodSelection(detailsSheet, _detailsPeriodLabel(month, 'Month'));
+  _refreshDetailsUnitFormats(detailsSheet);
 
   detailsSheet.activate();
 }
@@ -61,6 +62,56 @@ function _detailsPeriodLabel(month, period) {
   const names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return `${names[month.getMonth()]} ${year}`;
+}
+
+function updateDetailsUnitFormats(e) {
+  if (!e || !e.range) return;
+  const range = e.range;
+  const sheet = range.getSheet();
+  if (sheet.getSheetId() === DETAILS_SHEET_ID) {
+    if (range.getRow() > 2 || range.getLastRow() < 2 ||
+        ![1, 4, 6].some(column => range.getColumn() <= column && range.getLastColumn() >= column)) return;
+    _refreshDetailsUnitFormats(sheet);
+    return;
+  }
+  // Source edits can change the position of construction rows in the All view.
+  const details = sheet.getParent().getSheetById(DETAILS_SHEET_ID);
+  if (details) _refreshDetailsUnitFormats(details);
+}
+
+function _detailsUnitFormats(rows, params, formats) {
+  const byParam = new Map(params.map((row, index) => [String(row[0]).toLowerCase(), formats[index][0]]));
+  return rows.map(row => {
+    if (row[0] !== 'Construction Expenses') return ['General'];
+    const param = String(row[7]).toLowerCase().replace(/ const\. cost$/, ' const. count');
+    const format = byParam.get(param);
+    if (!format) throw new Error(`Missing planned-unit number format for ${param}.`);
+    return [format.replace(/complex room/g, 'complex home')];
+  });
+}
+
+function _refreshDetailsUnitFormats(sheet) {
+  const rowCount = sheet.getMaxRows() - 4;
+  if (rowCount <= 0) return;
+  SpreadsheetApp.flush();
+  const rows = sheet.getRange(5, 1, rowCount, 8).getValues();
+  const target = sheet.getRange(5, 4, rowCount, 1);
+  if (!rows.some(row => row[0] === 'Construction Expenses')) {
+    target.setNumberFormat('General');
+    return;
+  }
+  const source = sheet.getParent().getRangeByName('S_CONSTRUCTION_EXP_P');
+  if (!source) throw new Error('The construction timeline named range is missing.');
+  const sourceSheet = source.getSheet();
+  const headers = sourceSheet.getRange(source.getRow(), source.getColumn(), 1, source.getNumColumns()).getValues()[0];
+  const paramColumn = headers.findIndex(value => String(value).toLowerCase() === 'param');
+  const monthColumn = headers.findIndex(value => value instanceof Date);
+  if (paramColumn < 0 || monthColumn < 0) throw new Error('Construction timeline headers are incomplete.');
+  const firstRow = source.getRow() + 1;
+  const sourceRows = source.getNumRows() - 1;
+  const params = sourceSheet.getRange(firstRow, source.getColumn() + paramColumn, sourceRows, 1).getValues();
+  const formats = sourceSheet.getRange(firstRow, source.getColumn() + monthColumn, sourceRows, 1).getNumberFormats();
+  target.setNumberFormats(_detailsUnitFormats(rows, params, formats));
 }
 
 function _detailsPeriodSelection(months, period, selected) {
