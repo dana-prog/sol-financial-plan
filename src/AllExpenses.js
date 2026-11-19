@@ -69,7 +69,6 @@ function _validateAllExpenses(rows) {
 function _allExpensesLayout(expenses) {
   _validateAllExpenses(expenses);
   const rows = [];
-  const subtotals = [];
   const sections = [];
   for (const type of ALL_EXPENSES_TYPES) {
     const items = expenses.filter(row => row[0] === type)
@@ -83,20 +82,14 @@ function _allExpensesLayout(expenses) {
         const quarterStart = rows.length + 2;
         rows.push(...yearly.filter(row => row[2] === quarter));
         sections.push({startRow: quarterStart, endRow: rows.length + 1, depth: 3});
-        subtotals.push(rows.length + 2);
-        rows.push([type, year, quarter, '', 'Quarter subtotal', `=SUBTOTAL(9,F${quarterStart}:F${rows.length + 1})`]);
       }
       sections.push({startRow: yearStart, endRow: rows.length + 1, depth: 2});
-      subtotals.push(rows.length + 2);
-      rows.push([type, year, '', '', 'Year subtotal', `=SUBTOTAL(9,F${yearStart}:F${rows.length + 1})`]);
     }
     sections.push({startRow: typeStart, endRow: rows.length + 1, depth: 1});
-    subtotals.push(rows.length + 2);
-    rows.push([type, '', '', '', 'Type subtotal', `=SUBTOTAL(9,F${typeStart}:F${rows.length + 1})`]);
   }
   const totalRow = rows.length + 2;
   rows.push(['Total', '', '', '', '', totalRow === 2 ? '=0' : `=SUBTOTAL(9,F2:F${totalRow - 1})`]);
-  return { rows, subtotals, sections, totalRow };
+  return { rows, sections, totalRow };
 }
 
 function _allExpensesWriteRequests(sheet, layout) {
@@ -115,7 +108,7 @@ function _allExpensesWriteRequests(sheet, layout) {
   requests.push({repeatCell: {range: bodyRange, cell: {}, fields: 'userEnteredValue,textFormatRuns'}});
   const rows = layout.rows.map((row,index) => ({values: row.map((value,column) => {
     const rowNumber = index + 2;
-    const summary = layout.subtotals.includes(rowNumber) || rowNumber === layout.totalRow;
+    const summary = rowNumber === layout.totalRow;
     const format = {
       backgroundColor: {red: summary ? 0.93 : 1, green: summary ? 0.93 : 1, blue: summary ? 0.93 : 1},
       verticalAlignment: 'MIDDLE', horizontalAlignment: column === 5 ? 'RIGHT' : column >= 1 && column <= 3 ? 'CENTER' : 'LEFT',
@@ -141,19 +134,14 @@ function _allExpensesWriteRequests(sheet, layout) {
   requests.push({updateDimensionProperties: {range: {sheetId, dimension: 'ROWS', startIndex: 1, endIndex: layout.totalRow},
     properties: {hiddenByUser: false}, fields: 'hiddenByUser'}});
   for (const section of layout.sections) {
-    requests.push({mergeCells: {range: {sheetId, startRowIndex: section.startRow - 1, endRowIndex: section.endRow + 1,
+    if (section.startRow === section.endRow) continue;
+    requests.push({mergeCells: {range: {sheetId, startRowIndex: section.startRow - 1, endRowIndex: section.endRow,
       startColumnIndex: section.depth - 1, endColumnIndex: section.depth}, mergeType: 'MERGE_ALL'}});
   }
   if (layout.totalRow > 2) {
     const filterSpecs = sheet.basicFilter?.filterSpecs || Object.entries(sheet.basicFilter?.criteria || {})
       .map(([column, filterCriteria]) => ({columnIndex: Number(column), filterCriteria}));
-    const preserved = filterSpecs.map(spec => ({...spec, filterCriteria: {...spec.filterCriteria}}));
-    for (const spec of preserved) {
-      if (spec.columnIndex >= 1 && spec.columnIndex <= 3 && spec.filterCriteria.hiddenValues) {
-        spec.filterCriteria.hiddenValues = spec.filterCriteria.hiddenValues.filter(value => value !== '');
-      }
-    }
-    requests.push({setBasicFilter: {filter: {range: {sheetId, startRowIndex: 0, endRowIndex: layout.totalRow - 1, startColumnIndex: 0, endColumnIndex: 6}, filterSpecs: preserved}}});
+    requests.push({setBasicFilter: {filter: {range: {sheetId, startRowIndex: 0, endRowIndex: layout.totalRow - 1, startColumnIndex: 0, endColumnIndex: 6}, filterSpecs}}});
   }
   requests.push({updateSheetProperties: {properties: {sheetId, gridProperties: {rowCount: layout.totalRow}},
     fields: 'gridProperties.rowCount'}});

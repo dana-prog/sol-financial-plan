@@ -8,7 +8,7 @@ vm.runInContext(fs.readFileSync(`${__dirname}/../src/DetailsBorders.js`, 'utf8')
 const plain = value => JSON.parse(JSON.stringify(value));
 const item = (type, year, quarter, month, cost) => [type, year, quarter, month, 'Item (detail)', cost];
 
-test('type subtotals follow the defined order and sum only detail rows', () => {
+test('details follow the defined type order with only one grand total', () => {
   const layout = plain(ctx._allExpensesLayout([
     item('Land Expenses', 2027, 'Q1 2027', 46500, 50),
     item('Borrowing Repayments', 2028, 'Q1 2028', 46800, 20),
@@ -16,11 +16,10 @@ test('type subtotals follow the defined order and sum only detail rows', () => {
   ]));
   assert.deepEqual([...new Set(layout.rows.map(row => row[0]))], ['Borrowing Repayments', 'Land Expenses', 'Total']);
   assert.equal(layout.rows[0][5], 10);
-  assert.deepEqual(layout.subtotals, [3, 4, 6, 7, 8, 10, 11, 12]);
-  assert.equal(layout.rows[6][5], '=SUBTOTAL(9,F2:F7)');
-  assert.equal(layout.rows[10][5], '=SUBTOTAL(9,F9:F11)');
-  // Function 9 ignores filtered rows and nested SUBTOTALs, but retains collapsed groups.
-  assert.equal(layout.rows[11][5], '=SUBTOTAL(9,F2:F12)');
+  assert.equal(layout.rows.length, 4);
+  assert.deepEqual(layout.rows.slice(0, -1).map(row => row[5]), [10, 20, 50]);
+  assert.equal(layout.rows[3][5], '=SUBTOTAL(9,F2:F4)');
+  assert.equal(layout.rows.filter(row => typeof row[5] === 'string').length, 1);
 });
 
 test('nested sections identify the type, year and quarter merge boundaries', () => {
@@ -31,23 +30,18 @@ test('nested sections identify the type, year and quarter merge boundaries', () 
   ]));
   assert.deepEqual(layout.sections, [
     {startRow: 2, endRow: 2, depth: 3},
+    {startRow: 3, endRow: 3, depth: 3},
+    {startRow: 2, endRow: 3, depth: 2},
     {startRow: 4, endRow: 4, depth: 3},
-    {startRow: 2, endRow: 5, depth: 2},
-    {startRow: 7, endRow: 7, depth: 3},
-    {startRow: 7, endRow: 8, depth: 2},
-    {startRow: 2, endRow: 9, depth: 1},
+    {startRow: 4, endRow: 4, depth: 2},
+    {startRow: 2, endRow: 4, depth: 1},
   ]);
-  assert.equal(layout.subtotals.at(-1), 10);
-  // Summary rows separate sibling groups, otherwise Sheets merges adjacent groups.
-  for (const depth of [1, 2, 3]) {
-    const groups = layout.sections.filter(group => group.depth === depth);
-    for (let i=1;i<groups.length;i++) assert.ok(groups[i].startRow > groups[i-1].endRow + 1);
-  }
+  assert.equal(layout.totalRow, 5);
 });
 
 test('empty plans produce a zero total; invalid calculation results are rejected', () => {
   assert.deepEqual(plain(ctx._allExpensesLayout([])), {
-    rows: [['Total', '', '', '', '', '=0']], subtotals: [], sections: [], totalRow: 2,
+    rows: [['Total', '', '', '', '', '=0']], sections: [], totalRow: 2,
   });
   assert.throws(() => ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1', 1, '#VALUE!')]), /invalid rows/);
   assert.throws(() => ctx._allExpensesLayout([item('Unknown', 2027, 'Q1', 1, 1)]), /invalid rows/);
@@ -74,23 +68,34 @@ test('rich text switches to 10pt only inside parentheses and has unique ordered 
 test('atomic display write preserves filters and merges type, year and quarter labels', () => {
   const sheet = {properties: {sheetId: 12, gridProperties: {rowCount: 20}},
     basicFilter: {filterSpecs: [{columnIndex: 1, filterCriteria: {hiddenValues: ['', '2028']}}]}};
-  const layout = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 50)]);
+  const layout = ctx._allExpensesLayout([
+    item('Land Expenses', 2027, 'Q1 2027', 46400, 50),
+    item('Land Expenses', 2027, 'Q1 2027', 46401, 60),
+  ]);
   const requests = plain(ctx._allExpensesWriteRequests(sheet, layout));
   const write = requests.find(request => request.updateCells).updateCells;
   assert.equal(write.rows[0].values[5].userEnteredValue.numberValue, 50);
-  assert.equal(write.rows[1].values[5].userEnteredValue.formulaValue, '=SUBTOTAL(9,F2:F2)');
+  assert.equal(write.rows[2].values[5].userEnteredValue.formulaValue, '=SUBTOTAL(9,F2:F3)');
   assert.deepEqual(write.rows[0].values[4].textFormatRuns, [
     {startIndex: 0, format: {fontSize: 11}}, {startIndex: 5, format: {fontSize: 10}},
   ]);
   const filter = requests.find(request => request.setBasicFilter).setBasicFilter.filter;
-  assert.deepEqual(filter.filterSpecs[0].filterCriteria.hiddenValues, ['2028']);
-  assert.equal(filter.range.endRowIndex, 5);
+  assert.deepEqual(filter.filterSpecs[0].filterCriteria.hiddenValues, ['', '2028']);
+  assert.equal(filter.range.endRowIndex, 3);
   assert.equal(requests.filter(request => request.addDimensionGroup).length, 0);
   assert.deepEqual(requests.filter(request => request.mergeCells).map(request => request.mergeCells.range), [
     {sheetId: 12, startRowIndex: 1, endRowIndex: 3, startColumnIndex: 2, endColumnIndex: 3},
-    {sheetId: 12, startRowIndex: 1, endRowIndex: 4, startColumnIndex: 1, endColumnIndex: 2},
-    {sheetId: 12, startRowIndex: 1, endRowIndex: 5, startColumnIndex: 0, endColumnIndex: 1},
+    {sheetId: 12, startRowIndex: 1, endRowIndex: 3, startColumnIndex: 1, endColumnIndex: 2},
+    {sheetId: 12, startRowIndex: 1, endRowIndex: 3, startColumnIndex: 0, endColumnIndex: 1},
   ]);
-  assert.equal(requests.at(-1).updateSheetProperties.properties.gridProperties.rowCount, 6);
+  assert.equal(requests.at(-1).updateSheetProperties.properties.gridProperties.rowCount, 4);
   assert.deepEqual(sheet.basicFilter.filterSpecs[0].filterCriteria.hiddenValues, ['', '2028']);
+});
+
+test('single item sections stay unmerged and the grand total stays outside merges', () => {
+  const sheet = {properties: {sheetId: 12, gridProperties: {rowCount: 20}}};
+  const layout = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 50)]);
+  const requests = ctx._allExpensesWriteRequests(sheet, layout);
+  assert.equal(requests.filter(request => request.mergeCells).length, 0);
+  assert.equal(layout.totalRow, 3);
 });
