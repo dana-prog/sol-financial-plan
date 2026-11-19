@@ -38,8 +38,8 @@ function showDetails(param, month) {
 
   const detailsSheet = SpreadsheetApp.getActive().getSheetById(DETAILS_SHEET_ID);
 
-  detailsSheet.getRange('B1').setValue('Month');
-  detailsSheet.getRange('B3').setValue(SOLLibrary.capitalize(param));
+  detailsSheet.getRange('A2').setValue('Month');
+  detailsSheet.getRange('C2').setValue(SOLLibrary.capitalize(param));
   _updateDetailsPeriodSelection(detailsSheet, _detailsPeriodLabel(month, 'Month'));
 
   detailsSheet.activate();
@@ -50,7 +50,7 @@ function updateDetailsPeriod(e) {
   const range = e.range;
   const sheet = range.getSheet();
   if (sheet.getSheetId() !== DETAILS_SHEET_ID ||
-      range.getRow() > 1 || range.getColumn() > 2 || range.getLastColumn() < 2) return;
+      range.getRow() > 2 || range.getLastRow() < 2 || range.getColumn() > 1) return;
   _updateDetailsPeriodSelection(sheet);
 }
 
@@ -80,7 +80,7 @@ function _detailsPeriodSelection(months, period, selected) {
 }
 
 function _updateDetailsPeriodSelection(sheet, selectedValue) {
-  const period = sheet.getRange('B1').getValue();
+  const period = sheet.getRange('A2').getValue();
   const selected = sheet.getRange('B2');
   const months = sheet.getParent().getRangeByName('R_MONTHS');
   if (!months) throw new Error('The project timeline named range R_MONTHS is missing.');
@@ -91,5 +91,5 @@ function _updateDetailsPeriodSelection(sheet, selectedValue) {
     .setAllowInvalid(false)
     .build();
   selected.setDataValidation(validation).setNumberFormat('@').setValue(selection.value);
-  sheet.getRange('A2').setValue(`Select ${period}`);
+  sheet.getRange('B1').setValue(`Select ${period}`);
 }
