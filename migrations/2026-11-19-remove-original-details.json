@@ -1,0 +1,23 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Remove the original script-driven Details sheet. Keep _details and all named expense functions used by its formula. Remove the dedicated Details source, simple edit handler, menu action and obsolete tests.",
+  "verification": {
+    "preservedRows": 1074,
+    "formulaAndDataUnchanged": true,
+    "concurrentHeaderCapitalizationPreserved": true,
+    "removedSource": "src/Details.js",
+    "removedHandlers": [
+      "onEdit",
+      "_onShowDetails"
+    ],
+    "removedMenuItem": "Show Expenses Details",
+    "remoteSourceVerified": true
+  },
+  "requests": [
+    {
+      "deleteSheet": {
+        "sheetId": 2109063306
+      }
+    }
+  ]
+}

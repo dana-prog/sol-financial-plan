@@ -13,12 +13,6 @@ function onInstallableEdit(e) {
   updateTimelineParamNames(e);
 }
 
-// This bound-sheet-only update needs no authorization or installed trigger.
-function onEdit(e) {
-  updateDetailsPeriod(e);
-  updateDetailsView(e);
-}
-
 /**
  * Creates the SOL menu.
  * @private
@@ -30,30 +24,12 @@ function _createMenu() {
     .addItem('Recalculate Borrowing Payments and Tax', 'showRepaymentCalculation')
     .addItem('Sync Wise Transactions', 'syncWiseScheduled')
     .addSeparator()
-    .addItem('Show Expenses Details', '_onShowDetails')
-    .addSeparator()
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')
     // .addSeparator()
     // .addItem('Toggle Write Logs To File', '_onToggleWriteLogsToFile')
     // .addItem('Export Named Functions', '_onExportNamedFunctions')
     // .addItem('Export Formulas', '_onExportFormulas')
     .addToUi();
-}
-
-function _onShowDetails() {
-  const activeSheet = SpreadsheetApp.getActive().getActiveSheet();
-  const activeCell = activeSheet.getActiveCell();
-
-  const row = activeCell.getRow();
-  const col = activeCell.getColumn();
-
-  // Assumes:
-  // - Parameters are in column B.
-  // - Month headers are in row 3.
-  const param = activeSheet.getRange(row, 2).getValue();
-  const month = activeSheet.getRange(3, col).getValue();
-
-  showDetails(param, month);
 }
 
 function _onExportValuesXSLX() {
