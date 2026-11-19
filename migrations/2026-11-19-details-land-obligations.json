@@ -1,0 +1,135 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Details",
+  "description": "Use obligations in the Land category for Land Expenses, including inherited _category labels, creditor details and scheduled monthly amounts.",
+  "namedFunction": {
+    "name": "LAND_EXPENSES_D",
+    "arguments": [
+      "m"
+    ],
+    "definition": "=LET(\n  source, S_OBLIGATIONS,\n  categories, COL_VALUES(source, \"_category\"),\n  names, COL_VALUES(source, \"name\"),\n  creditors, COL_VALUES(source, \"creditor\"),\n  values, CHOOSECOLS(DATA_ROWS(source), MATCH(m, HEADER_ROW(source), 0)),\n  IFNA(\n    FILTER(\n      HSTACK(categories, names, creditors, values),\n      ARRAYFORMULA(LOWER(TRIM(categories))=\"land\"),\n      names<>\"\",\n      ISNUMBER(values),\n      values>0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n)",
+    "appliedVia": "Existing Google Sheets named-function editor; retains LAND_EXPENSES_D(m) calls in Details."
+  },
+  "requests": [
+    {
+      "appendDimension": {
+        "sheetId": 2109063306,
+        "dimension": "ROWS",
+        "length": 3
+      }
+    },
+    {
+      "copyPaste": {
+        "source": {
+          "sheetId": 2109063306,
+          "startRowIndex": 89,
+          "endRowIndex": 90,
+          "startColumnIndex": 0,
+          "endColumnIndex": 4
+        },
+        "destination": {
+          "sheetId": 2109063306,
+          "startRowIndex": 90,
+          "endRowIndex": 93,
+          "startColumnIndex": 0,
+          "endColumnIndex": 4
+        },
+        "pasteType": "PASTE_FORMAT"
+      }
+    }
+  ],
+  "validation": [
+    {
+      "period": "Month",
+      "selected": "Nov 2027",
+      "type": "Land Expenses",
+      "rows": 2,
+      "outputRows": 2,
+      "total": 46665068.49315068,
+      "matchesSource": true
+    },
+    {
+      "period": "Month",
+      "selected": "May 2028",
+      "type": "Land Expenses",
+      "rows": 1,
+      "outputRows": 1,
+      "total": 40000000,
+      "matchesSource": true
+    },
+    {
+      "period": "Quarter",
+      "selected": "Q4 2027",
+      "type": "Land Expenses",
+      "rows": 2,
+      "outputRows": 2,
+      "total": 46665068.49315068,
+      "matchesSource": true
+    },
+    {
+      "period": "Year",
+      "selected": "2028",
+      "type": "Land Expenses",
+      "rows": 1,
+      "outputRows": 1,
+      "total": 40000000,
+      "matchesSource": true
+    },
+    {
+      "period": "Month",
+      "selected": "Jan 2026",
+      "type": "Land Expenses",
+      "rows": 0,
+      "outputRows": 0,
+      "total": 0,
+      "matchesSource": true
+    },
+    {
+      "period": "Month",
+      "selected": "All Month",
+      "type": "Land Expenses",
+      "rows": 3,
+      "outputRows": 3,
+      "total": 86665068.49315068,
+      "matchesSource": true
+    },
+    {
+      "period": "Quarter",
+      "selected": "All Quarters",
+      "type": "Land Expenses",
+      "rows": 3,
+      "outputRows": 3,
+      "total": 86665068.49315068,
+      "matchesSource": true
+    },
+    {
+      "period": "Year",
+      "selected": "All Years",
+      "type": "Land Expenses",
+      "rows": 3,
+      "outputRows": 3,
+      "total": 86665068.49315068,
+      "matchesSource": true
+    },
+    {
+      "period": "Month",
+      "selected": "All Month",
+      "type": "All",
+      "rows": 3,
+      "outputRows": 88,
+      "total": 86665068.49315068,
+      "matchesSource": true
+    }
+  ],
+  "notes": [
+    "The source is S_OBLIGATIONS with _category matching Land (case-insensitive, trimmed).",
+    "Retain existing positive-amount detail behavior. Totals and non-Land categories are excluded.",
+    "Details A6 formula and period/type dropdowns are unchanged.",
+    "Add three formatted rows so the combined all-period output of 88 rows fits.",
+    "Temporary test sheet removed; live Land view visually verified.",
+    "No Apps Script source change is needed; the named-function update is saved directly in the spreadsheet."
+  ],
+  "before": {
+    "namedFunctionExport": "LAMBDA(m, IF(\n  m = PARAM(\"land acquisition date\"),\n  VSTACK(\n    {\"Land\", \"land cost\", \"\", PARAM(\"land cost\")}, \n    {\"Land\", \"land tax\", \"\", PARAM(\"land cost\") * PARAM(\"land tax rate\")}\n  ),\n  {\"\",\"\",\"\",\"\"}\n))"
+  }
+}
