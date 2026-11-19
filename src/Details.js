@@ -85,8 +85,11 @@ function _refreshDetailsView(sheet) {
   try {
     for (let attempt = 0; attempt < 4; attempt++) {
       try {
+        // Rebuild the groups after recalculation; old merges can span new types.
+        sheet.getRange(5, 1, sheet.getMaxRows() - 4, 1).breakApart();
         _resizeDetailsRows(sheet);
         _refreshDetailsUnitFormats(sheet);
+        _mergeDetailsTypes(sheet);
         return;
       } catch (error) {
         // Sheets can briefly reject reads while expanding a recalculating array.
@@ -96,6 +99,26 @@ function _refreshDetailsView(sheet) {
     }
   } finally {
     lock.releaseLock();
+  }
+}
+
+function _detailsTypeGroups(types) {
+  const groups = [];
+  for (let start = 0; start < types.length;) {
+    let end = start + 1;
+    while (end < types.length && types[end] === types[start]) end++;
+    if (types[start] && types[start] !== 'Total' && end - start > 1) {
+      groups.push({ row: start + 5, count: end - start });
+    }
+    start = end;
+  }
+  return groups;
+}
+
+function _mergeDetailsTypes(sheet) {
+  const types = sheet.getRange(5, 1, sheet.getMaxRows() - 4, 1).getValues().flat();
+  for (const group of _detailsTypeGroups(types)) {
+    sheet.getRange(group.row, 1, group.count, 1).merge().setVerticalAlignment('middle');
   }
 }
 

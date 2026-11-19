@@ -175,6 +175,7 @@ test('Details retries transient spreadsheet service failures and releases its re
   let released = 0;
   let attempts = 0;
   let formatted = 0;
+  const sheet = { getMaxRows: () => 20, getRange: () => ({ breakApart() {} }) };
   const ctx = context({
     LockService: { getDocumentLock: () => ({ waitLock() {}, releaseLock() { released++; } }) },
     Utilities: { sleep() {} },
@@ -183,13 +184,27 @@ test('Details retries transient spreadsheet service failures and releases its re
     if (++attempts === 1) throw new Error('Service Spreadsheets failed while accessing document');
   };
   ctx._refreshDetailsUnitFormats = () => { formatted++; };
-  ctx._refreshDetailsView({});
+  ctx._mergeDetailsTypes = () => {};
+  ctx._refreshDetailsView(sheet);
   assert.equal(attempts, 2);
   assert.equal(formatted, 1);
   assert.equal(released, 1);
   ctx._resizeDetailsRows = () => { throw new Error('Content below Total'); };
-  assert.throws(() => ctx._refreshDetailsView({}), /Content below Total/);
+  assert.throws(() => ctx._refreshDetailsView(sheet), /Content below Total/);
   assert.equal(released, 2);
+});
+
+test('type merges group only consecutive matching expense rows, excluding blanks and Total', () => {
+  const ctx = context();
+  const groups = types => JSON.parse(JSON.stringify(ctx._detailsTypeGroups(types)));
+  assert.deepEqual(groups([
+    'Construction Expenses', 'Construction Expenses', 'Land Expenses',
+    'Setup Expenses', 'Setup Expenses', '', '',
+    'Construction Expenses', 'Construction Expenses', 'Total', 'Total',
+  ]), [{ row: 5, count: 2 }, { row: 8, count: 2 }, { row: 12, count: 2 }]);
+  assert.deepEqual(groups(['Total']), []);
+  assert.deepEqual(groups(['Setup Expenses']), []);
+  assert.deepEqual(groups([]), []);
 });
 
 test('unit labels refresh when filters or source data change', () => {
