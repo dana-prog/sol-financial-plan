@@ -1,0 +1,15 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Rename the formula-only _details sheet to Details and update the border menu dispatcher.",
+  "requests": [
+    {
+      "updateSheetProperties": {
+        "properties": {
+          "sheetId": 1623286087,
+          "title": "Details"
+        },
+        "fields": "title"
+      }
+    }
+  ]
+}

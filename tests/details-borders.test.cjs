@@ -66,7 +66,7 @@ test('border command only changes horizontal borders across the populated width'
 });
 
 test('the menu dispatches details borders separately from existing timeline sheets', () => {
-  let activeName = '_details';
+  let activeName = 'Details';
   const calls = [];
   const sheet = { getName: () => activeName };
   const ctx = context({
