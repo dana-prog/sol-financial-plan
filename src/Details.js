@@ -12,13 +12,17 @@ const params = [
   "setup expenses",
   "direct operating expenses",
   "other operating expenses",
-  "land expenses"
+  "land expenses",
+  "borrowing repayments",
+  "loan disbursements"
 ];
 
 function showDetails(param, month) {
   const aliases = {
     'planning expenses': 'setup expenses',
     'infra expenses': 'infrastructure expenses',
+    'borrowings repaid': 'borrowing repayments',
+    'loan disbursed': 'loan disbursements',
   };
   param = aliases[param] || param;
   if (!(month instanceof Date) || !Number.isFinite(month.getTime())) {

@@ -96,6 +96,8 @@ test('menu navigation opens the selected month and retains land and planning vie
     ['construction expenses', 'construction expenses'], ['land expenses', 'land expenses'],
     ['direct operating expenses', 'direct operating expenses'],
     ['other operating expenses', 'other operating expenses'],
+    ['borrowings repaid', 'borrowing repayments'], ['borrowing repayments', 'borrowing repayments'],
+    ['loan disbursed', 'loan disbursements'], ['loan disbursements', 'loan disbursements'],
     ['infra expenses', 'infrastructure expenses'], ['infrastructure expenses', 'infrastructure expenses']]) {
     const { ctx, values, validations } = fixture();
     ctx.showDetails(param, new Date(2027, 4, 1));
