@@ -35,11 +35,21 @@ test('group columns are identified by header, and missing headers fail before wr
   let writes = 0;
   const sheet = {
     getLastRow: () => 2, getLastColumn: () => 3,
-    getRange: () => ({ getDisplayValues: () => [['type', 'quarter', 'month'], ['Land', 'Q2 2028', 'May']],
+    getRange: () => ({ getMergedRanges: () => [], getDisplayValues: () => [['type', 'quarter', 'month'], ['Land', 'Q2 2028', 'May']],
       setBorder: () => writes++ }),
   };
   assert.throws(() => ctx.setDetailsSheetBorders(sheet), /No borders were changed/);
   assert.equal(writes, 0);
+});
+
+test('expense headers and subtotal rows retain year dividers without a spurious subtotal divider', () => {
+  const values = [
+    ['Expense Type', 'Year'], ['Land Expenses', '2027'], ['Land Expenses', '2028'],
+    ['Land Expenses', ''], ['Total', ''],
+  ];
+  assert.deepEqual(JSON.parse(JSON.stringify(context()._detailsBorderRows(values))), [
+    {row: 2, style: 'SOLID'}, {row: 4, style: 'SOLID_THICK'}, {row: 5, style: 'SOLID_THICK'},
+  ]);
 });
 
 test('border command only changes horizontal borders across the populated width', () => {
@@ -47,6 +57,7 @@ test('border command only changes horizontal borders across the populated width'
   const sheet = {
     getLastRow: () => 3, getLastColumn: () => 6,
     getRange: (...range) => ({
+      getMergedRanges: () => [],
       getDisplayValues: () => [['type', 'year', 'quarter'], ['Land', '2028', 'Q1 2028'], ['Land', '2029', 'Q1 2029']],
       getA1Notation: () => 'F1',
       setBorder: (...args) => writes.push({ range, args }),
@@ -62,6 +73,22 @@ test('border command only changes horizontal borders across the populated width'
     { ranges: ['A3:F3'], args: [null, null, true, null, null, null, '#666666', 'thick'] },
     { ranges: ['A2:F2'], args: [null, null, true, null, null, null, '#666666', 'thin'] },
   ]);
+});
+
+test('merged labels retain the category end and year boundaries when borders are rebuilt', () => {
+  const writes = [];
+  const sheet = {
+    getLastRow: () => 5, getLastColumn: () => 6,
+    getRange: () => ({
+      getDisplayValues: () => [['Expense Type', 'Year'], ['Land', '2027'], ['', '2028'], ['', ''], ['Total', '']],
+      getMergedRanges: () => [{getRow: () => 2, getColumn: () => 1, getNumRows: () => 3, getNumColumns: () => 1}],
+      getA1Notation: () => 'F1', setBorder() {},
+    }),
+    getRangeList: ranges => ({setBorder: () => writes.push(Array.from(ranges))}),
+  };
+  const ctx = context({SpreadsheetApp: {BorderStyle: {SOLID: 'thin', SOLID_THICK: 'thick'}}});
+  ctx.setDetailsSheetBorders(sheet);
+  assert.deepEqual(writes, [['A4:F4', 'A5:F5'], ['A2:F2']]);
 });
 
 test('the menu supports both expense sheet names, including renamed workbook copies', () => {

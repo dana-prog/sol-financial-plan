@@ -3,7 +3,17 @@ function setDetailsSheetBorders(sheet) {
   const lastColumn = sheet.getLastColumn();
   if (lastRow < 2) return;
 
-  const values = sheet.getRange(1, 1, lastRow, lastColumn).getDisplayValues();
+  const range = sheet.getRange(1, 1, lastRow, lastColumn);
+  const values = range.getDisplayValues();
+  for (const merge of range.getMergedRanges()) {
+    const row = merge.getRow() - 1;
+    const column = merge.getColumn() - 1;
+    // Merged labels are stored only in their top cell, but borders still need
+    // the category and year associated with every detail and subtotal row.
+    if (merge.getNumColumns() === 1) {
+      for (let index = row + 1; index < row + merge.getNumRows(); index++) values[index][column] = values[row][column];
+    }
+  }
   const borders = _detailsBorderRows(values);
 
   // Rebuild horizontal dividers without changing the header or vertical borders.
@@ -24,7 +34,7 @@ function setDetailsSheetBorders(sheet) {
 
 function _detailsBorderRows(values) {
   const headers = values[0].map(value => String(value).trim().toLowerCase());
-  const columns = ['type', 'year'].map(header => headers.indexOf(header));
+  const columns = [headers.indexOf('type') >= 0 ? headers.indexOf('type') : headers.indexOf('expense type'), headers.indexOf('year')];
   if (columns.includes(-1)) {
     throw new Error('Could not find Type and Year columns. No borders were changed.');
   }
@@ -38,7 +48,7 @@ function _detailsBorderRows(values) {
     // A shared boundary receives only its strongest divider.
     if (!next || current.values[type] !== next.values[type]) {
       borders.push({ row: current.row, style: 'SOLID_THICK' });
-    } else if (current.values[year] !== next.values[year]) {
+    } else if (next.values[year] !== '' && current.values[year] !== next.values[year]) {
       borders.push({ row: current.row, style: 'SOLID' });
     }
   }

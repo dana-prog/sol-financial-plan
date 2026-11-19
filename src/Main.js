@@ -20,6 +20,7 @@ function onInstallableEdit(e) {
 function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     .addItem('Set Timeline Borders', '_onSetTimelineBorders')
+    .addItem('Refresh All Expenses', 'refreshAllExpenses')
     .addSeparator()
     .addItem('Recalculate Borrowing Payments and Tax', 'showRepaymentCalculation')
     .addItem('Sync Wise Transactions', 'syncWiseScheduled')
