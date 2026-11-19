@@ -91,7 +91,7 @@ test('unchanged labels retain formatting while refreshed costs and rich text are
   const layout = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 50)]);
   const sheet = sheetSnapshot(layout);
   const next = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 75)]);
-  const requests = plain(ctx._allExpensesRefreshRequests(sheet, next, 20000));
+  const requests = plain(ctx._allExpensesRefreshRequests(sheet, next));
   assert.equal(requests.some(request => request.updateBorders), false);
   assert.equal(requests.some(request => request.repeatCell?.fields.includes('userEnteredFormat')), false);
   const write = requests.find(request => request.updateCells).updateCells;
@@ -106,63 +106,28 @@ test('changed labels rebuild the formatting and remove unused calculation rows',
   const previous = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 50)]);
   const sheet = sheetSnapshot(previous);
   const next = ctx._allExpensesLayout([]);
-  const requests = plain(ctx._allExpensesRefreshRequests(sheet, next, 20000));
+  const requests = plain(ctx._allExpensesRefreshRequests(sheet, next));
   assert.ok(requests.some(request => request.repeatCell?.fields === 'userEnteredFormat'));
   assert.equal(requests.at(-1).updateSheetProperties.properties.gridProperties.rowCount, 2);
 });
 
-test('calculation uses the existing table without adding sheets or columns', () => {
-  vm.runInContext('var ALL_EXPENSES_FORMULA = "=NAMED_FUNCTION()";', ctx);
+test('an unchanged result does not write or resize the sheet', () => {
+  const layout = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 50)]);
+  assert.deepEqual(plain(ctx._allExpensesRefreshRequests(sheetSnapshot(layout), layout)), []);
+});
+
+
+test('an empty result also skips writes once its zero total is current', () => {
+  const layout = ctx._allExpensesLayout([]);
+  const sheet = sheetSnapshot(layout);
+  delete sheet.basicFilter;
+  assert.deepEqual(plain(ctx._allExpensesRefreshRequests(sheet, layout)), []);
+});
+
+test('refresh repairs a filter that accidentally includes the grand total', () => {
   const layout = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 50)]);
   const sheet = sheetSnapshot(layout);
-  const requests = plain(ctx._allExpensesCalculationRequests(sheet, 20000));
-  assert.equal(requests.some(request => request.addSheet || request.deleteSheet), false);
-  assert.equal(requests.find(request => request.appendDimension).appendDimension.dimension, 'ROWS');
-  assert.equal(requests.at(-1).updateCells.start.rowIndex, 1);
-  assert.equal(requests.at(-1).updateCells.start.columnIndex, 0);
-  assert.equal(requests.at(-1).updateCells.rows[0].values[0].userEnteredValue.formulaValue, '=NAMED_FUNCTION()');
-});
-
-test('ready calculation responses need no extra API reads and ignore trailing formatted blanks', () => {
-  const expense = item('Land Expenses', 2027, 'Q1 2027', 46400, 50);
-  const grid = [{values: expense.map(value => ({effectiveValue: typeof value === 'number' ? {numberValue: value} : {stringValue: value}}))}, {values: [{}, {}]}];
-  const timings = {};
-  const result = {updatedSpreadsheet: {sheets: [{data: [{rowData: grid}]}]}};
-  assert.deepEqual(plain(ctx._readCalculatedExpenses('id', 'range', result, timings)), [expense]);
-  assert.equal(timings.polls, 0);
-  const empty = {updatedSpreadsheet: {sheets: [{data: [{rowData: [{values: [{effectiveValue: {stringValue: '__NO_EXPENSES__'}}]}]}]}]}};
-  assert.deepEqual(plain(ctx._readCalculatedExpenses('id', 'range', empty, {})), []);
-});
-
-test('formula errors fail immediately instead of waiting for the polling timeout', () => {
-  const result = {updatedSpreadsheet: {sheets: [{data: [{rowData: [{values: [{effectiveValue: {
-    errorValue: {type: 'REF', message: 'Formula cannot expand'},
-  }}]}]}]}]}};
-  assert.throws(() => ctx._readCalculatedExpenses('id', 'range', result, {}), /Formula cannot expand/);
-});
-
-test('a failed calculation restores original values, total formula, rich text, filter and grid size', () => {
-  const layout = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 50)]);
-  const snapshot = sheetSnapshot(layout);
-  const calls = [];
-  const runtime = vm.createContext({
-    console: {log() {}},
-    SpreadsheetApp: {getActiveSpreadsheet: () => ({getId: () => 'copy-id', getSheetByName: () => ({getName: () => 'All Expenses', getMaxRows: () => 3})})},
-    LockService: {getDocumentLock: () => ({tryLock: () => true, releaseLock() {}})},
-    ALL_EXPENSES_FORMULA: '=NAMED_FUNCTION()',
-    Sheets: {Spreadsheets: {get: () => ({sheets: [snapshot]}), batchUpdate: request => {
-      calls.push(plain(request));
-      if (calls.length === 1) return {updatedSpreadsheet: {sheets: [{data: [{rowData: [{values: [{effectiveValue: {
-        errorValue: {type: 'ERROR', message: 'Broken calculation'},
-      }}]}]}]}]}};
-      return {};
-    }}},
-  });
-  vm.runInContext(fs.readFileSync(`${__dirname}/../src/AllExpenses.js`, 'utf8'), runtime);
-  assert.throws(() => runtime.refreshAllExpenses(), /Broken calculation/);
-  assert.equal(calls.length, 2);
-  const restore = calls[1].requests;
-  assert.deepEqual(restore[1].updateCells.rows, snapshot.data[0].rowData.slice(1));
-  assert.equal(restore[2].updateSheetProperties.properties.gridProperties.rowCount, 3);
-  assert.deepEqual(restore.at(-1).setBasicFilter.filter, snapshot.basicFilter);
+  sheet.basicFilter.range.endRowIndex = layout.totalRow;
+  const requests = ctx._allExpensesRefreshRequests(sheet, layout);
+  assert.equal(requests.find(request => request.setBasicFilter).setBasicFilter.filter.range.endRowIndex, layout.totalRow - 1);
 });
