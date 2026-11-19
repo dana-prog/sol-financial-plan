@@ -13,6 +13,11 @@ function onInstallableEdit(e) {
   updateTimelineParamNames(e);
 }
 
+// This bound-sheet-only update needs no authorization or installed trigger.
+function onEdit(e) {
+  updateDetailsPeriod(e);
+}
+
 /**
  * Creates the SOL menu.
  * @private
