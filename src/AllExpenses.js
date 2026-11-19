@@ -69,27 +69,14 @@ function _validateAllExpenses(rows) {
 function _allExpensesLayout(expenses) {
   _validateAllExpenses(expenses);
   const rows = [];
-  const sections = [];
   for (const type of ALL_EXPENSES_TYPES) {
     const items = expenses.filter(row => row[0] === type)
       .sort((a, b) => Number(a[3]) - Number(b[3]) || String(a[4]).localeCompare(String(b[4])));
-    if (!items.length) continue;
-    const typeStart = rows.length + 2;
-    for (const year of [...new Set(items.map(row => row[1]))]) {
-      const yearly = items.filter(row => row[1] === year);
-      const yearStart = rows.length + 2;
-      for (const quarter of [...new Set(yearly.map(row => row[2]))]) {
-        const quarterStart = rows.length + 2;
-        rows.push(...yearly.filter(row => row[2] === quarter));
-        sections.push({startRow: quarterStart, endRow: rows.length + 1, depth: 3});
-      }
-      sections.push({startRow: yearStart, endRow: rows.length + 1, depth: 2});
-    }
-    sections.push({startRow: typeStart, endRow: rows.length + 1, depth: 1});
+    rows.push(...items);
   }
   const totalRow = rows.length + 2;
   rows.push(['Total', '', '', '', '', totalRow === 2 ? '=0' : `=SUBTOTAL(9,F2:F${totalRow - 1})`]);
-  return { rows, sections, totalRow };
+  return { rows, totalRow };
 }
 
 function _allExpensesWriteRequests(sheet, layout) {
@@ -133,11 +120,6 @@ function _allExpensesWriteRequests(sheet, layout) {
   }
   requests.push({updateDimensionProperties: {range: {sheetId, dimension: 'ROWS', startIndex: 1, endIndex: layout.totalRow},
     properties: {hiddenByUser: false}, fields: 'hiddenByUser'}});
-  for (const section of layout.sections) {
-    if (section.startRow === section.endRow) continue;
-    requests.push({mergeCells: {range: {sheetId, startRowIndex: section.startRow - 1, endRowIndex: section.endRow,
-      startColumnIndex: section.depth - 1, endColumnIndex: section.depth}, mergeType: 'MERGE_ALL'}});
-  }
   if (layout.totalRow > 2) {
     const filterSpecs = sheet.basicFilter?.filterSpecs || Object.entries(sheet.basicFilter?.criteria || {})
       .map(([column, filterCriteria]) => ({columnIndex: Number(column), filterCriteria}));
