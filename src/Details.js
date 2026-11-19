@@ -1,10 +1,17 @@
 const DETAILS_SHEET_ID = 2109063306;
-const DETAILS_PERIODS = ['Month', 'Quarter', 'Year'];
-const DETAILS_ALL_PERIOD_LABELS = {
-  Month: 'All Month',
-  Quarter: 'All Quarters',
-  Year: 'All Years',
-};
+const DETAILS_CONTROLS_SHEET = '_Details Controls';
+const DETAILS_PERIOD_VALUE_FORMULA = `=LET(
+  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),
+  saved, TO_TEXT('_Details Controls'!C2),
+  period, A2,
+  month_labels, ARRAYFORMULA(TEXT(months, "mmm yyyy")),
+  quarter_labels, ARRAYFORMULA("Q"&ROUNDUP(MONTH(months)/3)&" "&YEAR(months)),
+  year_labels, ARRAYFORMULA(TEXT(months, "yyyy")),
+  all_label, SWITCH(period, "Month", "All Month", "Quarter", "All Quarters", "Year", "All Years"),
+  anchor, IFNA(MATCH(TRUE, ARRAYFORMULA(((month_labels=saved)+(quarter_labels=saved)+(year_labels=saved))>0), 0), 1),
+  IF(OR(saved="All Month", saved="All Quarters", saved="All Years"), all_label,
+    SWITCH(period, "Month", INDEX(month_labels, 1, anchor), "Quarter", INDEX(quarter_labels, 1, anchor), "Year", INDEX(year_labels, 1, anchor)))
+)`;
 
 const params = [
   "construction expenses",
@@ -51,8 +58,12 @@ function updateDetailsPeriod(e) {
   const range = e.range;
   const sheet = range.getSheet();
   if (sheet.getSheetId() !== DETAILS_SHEET_ID ||
-      range.getRow() > 2 || range.getLastRow() < 2 || range.getColumn() > 1) return;
-  _updateDetailsPeriodSelection(sheet);
+      range.getRow() > 2 || range.getLastRow() < 2 ||
+      ![1, 3].some(column => range.getColumn() <= column && range.getLastColumn() >= column)) return;
+  const selected = sheet.getRange('C2');
+  // Choosing a dropdown item replaces its formula. Remember that choice and
+  // restore the formula so the next period change needs no script round trip.
+  if (!selected.getFormula()) _updateDetailsPeriodSelection(sheet, selected.getValue());
 }
 
 function _detailsPeriodLabel(month, period) {
@@ -202,33 +213,10 @@ function _refreshDetailsUnitFormats(sheet) {
   target.setNumberFormats(_detailsUnitFormats(rows, params, formats));
 }
 
-function _detailsPeriodSelection(months, period, selected) {
-  if (!DETAILS_PERIODS.includes(period)) throw new Error(`Unsupported details period: ${period}`);
-  const dates = months.filter(month => month instanceof Date && Number.isFinite(month.getTime()));
-  if (!dates.length) throw new Error('The project timeline has no months to select.');
-  const allPeriods = DETAILS_ALL_PERIOD_LABELS[period];
-  const options = [allPeriods, ...new Set(dates.map(month => _detailsPeriodLabel(month, period)))];
-  if (Object.values(DETAILS_ALL_PERIOD_LABELS).includes(selected)) {
-    return { options, value: allPeriods };
-  }
-  // Keep the selected date within the same calendar period when changing granularity.
-  const anchor = dates.find(month => DETAILS_PERIODS.some(
-    value => _detailsPeriodLabel(month, value) === String(selected)
-  )) || dates[0];
-  return { options, value: _detailsPeriodLabel(anchor, period) };
-}
-
 function _updateDetailsPeriodSelection(sheet, selectedValue) {
-  const period = sheet.getRange('A2').getValue();
-  const selected = sheet.getRange('C2');
-  const months = sheet.getParent().getRangeByName('R_MONTHS');
-  if (!months) throw new Error('The project timeline named range R_MONTHS is missing.');
-  const selection = _detailsPeriodSelection(months.getValues().flat(), period,
-    selectedValue === undefined ? selected.getValue() : selectedValue);
-  const validation = SpreadsheetApp.newDataValidation()
-    .requireValueInList(selection.options, true)
-    .setAllowInvalid(false)
-    .build();
-  selected.setDataValidation(validation).setNumberFormat('@').setValue(selection.value);
-  sheet.getRange('C1').setValue(`Select ${period}`);
+  const controls = sheet.getParent().getSheetByName(DETAILS_CONTROLS_SHEET);
+  if (!controls) throw new Error('The Details period controls sheet is missing.');
+  controls.getRange('C2').setValue(String(selectedValue));
+  sheet.getRange('C2').setFormula(DETAILS_PERIOD_VALUE_FORMULA);
+  SpreadsheetApp.flush();
 }

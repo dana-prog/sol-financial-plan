@@ -9,38 +9,23 @@ function context(globals = {}) {
   return ctx;
 }
 
-const months = Array.from({ length: 14 }, (_, index) => new Date(2026, index + 10, 1));
-
-test('period options follow timeline bounds and deduplicate quarters and years', () => {
-  const ctx = context();
-  const selection = (period, value) => JSON.parse(JSON.stringify(
-    ctx._detailsPeriodSelection([...months, '', null], period, value)));
-  assert.equal(selection('Month', 'Dec 2026').options.length, 15);
-  assert.equal(selection('Month', 'Dec 2026').options[0], 'All Month');
-  assert.equal(selection('Month', 'All Years').value, 'All Month');
-  assert.deepEqual(selection('Quarter', 'Dec 2026'), {
-    options: ['All Quarters', 'Q4 2026', 'Q1 2027', 'Q2 2027', 'Q3 2027', 'Q4 2027'], value: 'Q4 2026',
-  });
-  assert.deepEqual(selection('Year', 'Q4 2027'), { options: ['All Years', '2026', '2027'], value: '2027' });
-  assert.equal(selection('Month', 'Q4 2026').value, 'Nov 2026');
-  assert.equal(selection('Month', '2027').value, 'Jan 2027');
-  assert.equal(selection('Quarter', 'stale selection').value, 'Q4 2026');
-  assert.throws(() => ctx._detailsPeriodSelection([], 'Month', ''), /no months/);
-  assert.throws(() => ctx._detailsPeriodSelection(months, 'Week', ''), /Unsupported/);
-});
-
 function fixture() {
   const values = { A2: 'Quarter', C2: 'Dec 2026' };
-  const validations = {};
+  const formulas = {};
+  const remembered = {};
   const sheet = {
     getSheetId: () => 2109063306,
     getMaxRows: () => 4,
-    getParent: () => ({ getRangeByName: () => ({ getValues: () => [months] }) }),
+    getParent: () => ({ getSheetByName: () => ({
+      getRange: cell => ({ setValue: value => { remembered[cell] = value; } }),
+    }) }),
     getRange: cell => ({
       getValue: () => values[cell],
+      getFormula: () => formulas[cell] || '',
+      setFormula(formula) { formulas[cell] = formula; return this; },
       setValue(value) { values[cell] = value; return this; },
       setNumberFormat() { return this; },
-      setDataValidation(value) { validations[cell] = value; return this; },
+
     }),
     activate() { values.activated = true; },
   };
@@ -49,40 +34,27 @@ function fixture() {
     SpreadsheetApp: {
       getActive: () => ({ getSheetById: () => sheet }),
       getUi: () => ({ alert: message => { throw new Error(message); } }),
-      newDataValidation: () => ({
-        requireValueInList(options) { this.options = options; return this; },
-        setAllowInvalid(value) { this.allowInvalid = value; return this; },
-        build() { return this; },
-      }),
+      flush() {},
     },
   });
   ctx._refreshDetailsView = () => {};
-  return { ctx, sheet, values, validations };
+  return { ctx, sheet, values, formulas, remembered };
 }
 
-test('editing period replaces dependent options and keeps the matching period', () => {
-  const { ctx, sheet, values, validations } = fixture();
-  const range = { getSheet: () => sheet, getRow: () => 2, getLastRow: () => 2, getColumn: () => 1 };
+test('dropdown choices are remembered and the native period formula is restored', () => {
+  const { ctx, sheet, values, formulas, remembered } = fixture();
+  const range = { getSheet: () => sheet, getRow: () => 2, getLastRow: () => 2,
+    getColumn: () => 3, getLastColumn: () => 3 };
+  values.C2 = 'Q3 2028';
   ctx.updateDetailsPeriod({ range });
-  assert.equal(values.C2, 'Q4 2026');
-  assert.equal(values.C1, 'Select Quarter');
-  assert.equal(validations.C2.allowInvalid, false);
-  assert.equal(validations.C2.options.length, 6);
+  assert.equal(remembered.C2, 'Q3 2028');
+  assert.ok(formulas.C2.startsWith('=LET('));
   values.A2 = 'Year';
+  range.getColumn = () => 1;
+  range.getLastColumn = () => 1;
   ctx.updateDetailsPeriod({ range });
-  assert.equal(values.C2, '2026');
-  assert.equal(values.C1, 'Select Year');
-  values.A2 = 'Month';
-  values.C2 = 'All Years';
-  ctx.updateDetailsPeriod({ range });
-  assert.equal(values.C2, 'All Month');
-  assert.equal(values.C1, 'Select Month');
-  assert.equal(validations.C2.options[0], 'All Month');
-  values.A2 = 'Quarter';
-  ctx.updateDetailsPeriod({ range });
-  assert.equal(values.C2, 'All Quarters');
-  assert.equal(values.C1, 'Select Quarter');
-  assert.equal(validations.C2.options[0], 'All Quarters');
+  assert.equal(remembered.C2, 'Q3 2028');
+  assert.equal(values.C1, undefined);
 });
 
 function resizeFixture({ currentRows = 100, count = 20, total = 'Total', blankTail = true } = {}) {
@@ -232,7 +204,7 @@ test('unrelated edits do not change the period selection', () => {
   ctx.updateDetailsPeriod({ range: { getSheet: () => sheet, getRow: () => 3 } });
   ctx.updateDetailsPeriod({ range: { getSheet: () => ({ getSheetId: () => 1 }) } });
   ctx.updateDetailsPeriod({ range: { getSheet: () => sheet, getRow: () => 1, getLastRow: () => 1 } });
-  ctx.updateDetailsPeriod({ range: { getSheet: () => sheet, getRow: () => 2, getLastRow: () => 2, getColumn: () => 2 } });
+  ctx.updateDetailsPeriod({ range: { getSheet: () => sheet, getRow: () => 2, getLastRow: () => 2, getColumn: () => 2, getLastColumn: () => 2 } });
   ctx.updateDetailsPeriod({});
   assert.deepEqual(values, { A2: 'Quarter', C2: 'Dec 2026' });
 });
@@ -245,12 +217,12 @@ test('menu navigation opens the selected month and retains land and planning vie
     ['borrowings repaid', 'borrowing repayments'], ['borrowing repayments', 'borrowing repayments'],
     ['loan disbursed', 'loan disbursements'], ['loan disbursements', 'loan disbursements'],
     ['infra expenses', 'infrastructure expenses'], ['infrastructure expenses', 'infrastructure expenses']]) {
-    const { ctx, values, validations } = fixture();
+    const { ctx, values, formulas, remembered } = fixture();
     ctx.showDetails(param, new Date(2027, 4, 1));
     assert.equal(values.A2, 'Month');
-    assert.equal(values.C2, 'May 2027');
+    assert.equal(remembered.C2, 'May 2027');
     assert.equal(values.D2, expected);
     assert.equal(values.activated, true);
-    assert.ok(validations.C2.options.includes('May 2027'));
+    assert.ok(formulas.C2.startsWith('=LET('));
   }
 });

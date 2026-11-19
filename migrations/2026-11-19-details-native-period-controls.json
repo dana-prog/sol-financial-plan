@@ -1,0 +1,193 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Details",
+  "description": "Make the dependent period label, displayed value, and dropdown choices native formulas. Remember manual choices on a hidden controls sheet so subsequent period changes do not wait for Apps Script.",
+  "before": {
+    "label": {
+      "userEnteredValue": {
+        "stringValue": "Select Year"
+      },
+      "effectiveValue": {
+        "stringValue": "Select Year"
+      }
+    },
+    "selection": {
+      "userEnteredValue": {
+        "stringValue": "2028"
+      },
+      "effectiveValue": {
+        "stringValue": "2028"
+      },
+      "dataValidation": {
+        "condition": {
+          "type": "ONE_OF_LIST",
+          "values": [
+            {
+              "userEnteredValue": "All Years"
+            },
+            {
+              "userEnteredValue": "2026"
+            },
+            {
+              "userEnteredValue": "2027"
+            },
+            {
+              "userEnteredValue": "2028"
+            },
+            {
+              "userEnteredValue": "2029"
+            },
+            {
+              "userEnteredValue": "2030"
+            },
+            {
+              "userEnteredValue": "2031"
+            },
+            {
+              "userEnteredValue": "2032"
+            },
+            {
+              "userEnteredValue": "2033"
+            }
+          ]
+        },
+        "strict": true,
+        "showCustomUi": true
+      }
+    }
+  },
+  "requests": [
+    {
+      "addSheet": {
+        "properties": {
+          "sheetId": 1626484920,
+          "title": "_Details Controls",
+          "hidden": true,
+          "gridProperties": {
+            "rowCount": 1000,
+            "columnCount": 3
+          }
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 1626484920,
+          "rowIndex": 0,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Period options"
+                }
+              },
+              {},
+              {
+                "userEnteredValue": {
+                  "stringValue": "Remembered selection"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  period, Details!A2,\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months), TEXT(months, \"yyyy\")))),\n  VSTACK(SWITCH(period, \"Month\", \"All Month\", \"Quarter\", \"All Quarters\", \"Year\", \"All Years\"), UNIQUE(TRANSPOSE(labels)))\n)"
+                }
+              },
+              {},
+              {
+                "userEnteredValue": {
+                  "stringValue": "2028"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 0,
+          "columnIndex": 2
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=\"Select \"&A2"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  saved, TO_TEXT('_Details Controls'!C2),\n  period, A2,\n  month_labels, ARRAYFORMULA(TEXT(months, \"mmm yyyy\")),\n  quarter_labels, ARRAYFORMULA(\"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months)),\n  year_labels, ARRAYFORMULA(TEXT(months, \"yyyy\")),\n  all_label, SWITCH(period, \"Month\", \"All Month\", \"Quarter\", \"All Quarters\", \"Year\", \"All Years\"),\n  anchor, IFNA(MATCH(TRUE, ARRAYFORMULA(((month_labels=saved)+(quarter_labels=saved)+(year_labels=saved))>0), 0), 1),\n  IF(OR(saved=\"All Month\", saved=\"All Quarters\", saved=\"All Years\"), all_label,\n    SWITCH(period, \"Month\", INDEX(month_labels, 1, anchor), \"Quarter\", INDEX(quarter_labels, 1, anchor), \"Year\", INDEX(year_labels, 1, anchor)))\n)"
+                },
+                "dataValidation": {
+                  "condition": {
+                    "type": "ONE_OF_RANGE",
+                    "values": [
+                      {
+                        "userEnteredValue": "='_Details Controls'!$A$2:$A$1000"
+                      }
+                    ]
+                  },
+                  "strict": true,
+                  "showCustomUi": true
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,dataValidation"
+      }
+    }
+  ],
+  "validation": {
+    "nativeFormulaChecks": [
+      {
+        "period": "Year",
+        "saved": "Sep 2028",
+        "value": "2028",
+        "firstOption": "All Years"
+      },
+      {
+        "period": "Quarter",
+        "saved": "Sep 2028",
+        "value": "Q3 2028",
+        "firstOption": "All Quarters"
+      },
+      {
+        "period": "Month",
+        "saved": "Q1 2028",
+        "value": "Jan 2028",
+        "firstOption": "All Month"
+      },
+      {
+        "period": "Quarter",
+        "saved": "All Years",
+        "value": "All Quarters",
+        "firstOption": "All Quarters"
+      },
+      {
+        "period": "Month",
+        "saved": "All Years",
+        "value": "All Month",
+        "firstOption": "All Month"
+      }
+    ],
+    "liveUpdateWithoutEditTrigger": true
+  }
+}
