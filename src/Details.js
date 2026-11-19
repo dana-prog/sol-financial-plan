@@ -10,7 +10,8 @@ const params = [
   "construction expenses",
   "infrastructure expenses",
   "setup expenses",
-  "operational expenses",
+  "direct operating expenses",
+  "other operating expenses",
   "land expenses"
 ];
 

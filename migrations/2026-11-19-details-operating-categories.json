@@ -1,0 +1,248 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Details",
+  "description": "Split operational details into Direct Operating Expenses and Other Operating Expenses using the source _category column; include every parameter with a positive numeric amount, including salaries. Preserve the existing OPERATIONAL_EXPENSES_D(m) named-function calls.",
+  "before": {
+    "formula": "=LET(\n  period, B1,\n  selected, B2,\n  expense_type, B3,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      infra_details, LAMBDA(month,\n        LET(\n          source, S_INFRA_EXP_P,\n          params, COL_VALUES(source, \"param\"),\n          suppliers, COL_VALUES(source, \"supplier\"),\n          categories, COL_VALUES(source, \"_category\"),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n            ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type = \"Infrastructure Expenses\", infra_details(month), IF(expense_type = \"Setup Expenses\", without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(expense_type = \"Operational Expenses\", OPERATIONAL_EXPENSES_D(month),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                infra_details(month),\n                LAND_EXPENSES_D(month),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  ))),\n      IF(AND(period=\"Month\", NOT(all_periods)), monthly_details(INDEX(selected_months, 1, 1)),\n        LET(\n          expenses, REDUCE({\"\",\"\",\"\",0}, selected_months,\n            LAMBDA(result, month, VSTACK(result, monthly_details(month)))),\n          IFNA(QUERY(expenses,\n            \"select Col1, Col2, Col3, sum(Col4) where Col1 is not null group by Col1, Col2, Col3 label sum(Col4) ''\", 0),\n            {\"\",\"\",\"\",0})\n        )\n      )\n    )\n  )\n)",
+    "typeValidation": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "Construction Expenses"
+          },
+          {
+            "userEnteredValue": "Infrastructure Expenses"
+          },
+          {
+            "userEnteredValue": "Setup Expenses"
+          },
+          {
+            "userEnteredValue": "Operational Expenses"
+          },
+          {
+            "userEnteredValue": "Land Expenses"
+          },
+          {
+            "userEnteredValue": "All"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    },
+    "namedFunctionExport": "LAMBDA(m, LET(\n  rows, SEQUENCE(ROWS(S_OPERATIONAL_EXP) - 1, 1, 2),\n  params, COL_VALUES(S_OPERATIONAL_EXP, \"param\"),\n  month_col, MATCH(m, INDEX(S_OPERATIONAL_EXP,1,), 0),\n  values, CHOOSEROWS(INDEX(S_OPERATIONAL_EXP,,month_col), rows),\n  IFNA(\n    FILTER(\n      HSTACK(\n        ARRAYFORMULA(IF(params <> \"\",\"Operations\",\"\")),\n        params,\n        \"\",\n        values\n      ),\n      REGEXMATCH(params, \"expenses$\"),\n      params <> \"total operational expenses\",\n      values > 0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n))"
+  },
+  "namedFunction": {
+    "name": "OPERATIONAL_EXPENSES_D",
+    "arguments": [
+      "m"
+    ],
+    "definition": "=LET(\n  rows, SEQUENCE(ROWS(S_OPERATIONAL_EXP) - 1, 1, 2),\n  params, COL_VALUES(S_OPERATIONAL_EXP, \"param\"),\n  categories, COL_VALUES(S_OPERATIONAL_EXP, \"_category\"),\n  month_col, MATCH(m, INDEX(S_OPERATIONAL_EXP,1,), 0),\n  values, CHOOSEROWS(INDEX(S_OPERATIONAL_EXP,,month_col), rows),\n  IFNA(\n    FILTER(\n      HSTACK(categories, params, \"\", values),\n      REGEXMATCH(categories, \"^(Direct Operating Expenses|Other Operating Expenses)$\"),\n      params <> \"\",\n      ISNUMBER(values),\n      values > 0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n)",
+    "appliedVia": "Google Sheets native named-function editor; saved and verified through dependent formula calculations."
+  },
+  "requests": [
+    {
+      "appendDimension": {
+        "sheetId": 2109063306,
+        "dimension": "ROWS",
+        "length": 3
+      }
+    },
+    {
+      "copyPaste": {
+        "source": {
+          "sheetId": 2109063306,
+          "startRowIndex": 86,
+          "endRowIndex": 87,
+          "startColumnIndex": 0,
+          "endColumnIndex": 4
+        },
+        "destination": {
+          "sheetId": 2109063306,
+          "startRowIndex": 87,
+          "endRowIndex": 90,
+          "startColumnIndex": 0,
+          "endColumnIndex": 4
+        },
+        "pasteType": "PASTE_FORMAT"
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 2109063306,
+          "startRowIndex": 2,
+          "endRowIndex": 3,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rule": {
+          "condition": {
+            "type": "ONE_OF_LIST",
+            "values": [
+              {
+                "userEnteredValue": "Construction Expenses"
+              },
+              {
+                "userEnteredValue": "Infrastructure Expenses"
+              },
+              {
+                "userEnteredValue": "Setup Expenses"
+              },
+              {
+                "userEnteredValue": "Direct Operating Expenses"
+              },
+              {
+                "userEnteredValue": "Other Operating Expenses"
+              },
+              {
+                "userEnteredValue": "Land Expenses"
+              },
+              {
+                "userEnteredValue": "All"
+              }
+            ]
+          },
+          "strict": true,
+          "showCustomUi": true
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 5,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  period, B1,\n  selected, B2,\n  expense_type, B3,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      infra_details, LAMBDA(month,\n        LET(\n          source, S_INFRA_EXP_P,\n          params, COL_VALUES(source, \"param\"),\n          suppliers, COL_VALUES(source, \"supplier\"),\n          categories, COL_VALUES(source, \"_category\"),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n            ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type = \"Infrastructure Expenses\", infra_details(month), IF(expense_type = \"Setup Expenses\", without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(OR(expense_type = \"Direct Operating Expenses\", expense_type = \"Other Operating Expenses\"),\n        LET(\n          operating, OPERATIONAL_EXPENSES_D(month),\n          IFNA(FILTER(operating, CHOOSECOLS(operating, 1)=expense_type), {\"\",\"\",\"\",\"\"})\n        ),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                infra_details(month),\n                LAND_EXPENSES_D(month),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  ))),\n      IF(AND(period=\"Month\", NOT(all_periods)), monthly_details(INDEX(selected_months, 1, 1)),\n        LET(\n          expenses, REDUCE({\"\",\"\",\"\",0}, selected_months,\n            LAMBDA(result, month, VSTACK(result, monthly_details(month)))),\n          IFNA(QUERY(expenses,\n            \"select Col1, Col2, Col3, sum(Col4) where Col1 is not null group by Col1, Col2, Col3 label sum(Col4) ''\", 0),\n            {\"\",\"\",\"\",0})\n        )\n      )\n    )\n  )\n)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 2109063306,
+          "dimension": "COLUMNS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 220
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "validation": [
+    {
+      "period": "Month",
+      "selected": "Aug 2028",
+      "type": "Direct Operating Expenses",
+      "rows": 4,
+      "outputRows": 4,
+      "total": 975275.154,
+      "matchesSource": true
+    },
+    {
+      "period": "Month",
+      "selected": "Aug 2028",
+      "type": "Other Operating Expenses",
+      "rows": 8,
+      "outputRows": 8,
+      "total": 1681883.5258645872,
+      "matchesSource": true
+    },
+    {
+      "period": "Quarter",
+      "selected": "Q3 2028",
+      "type": "Direct Operating Expenses",
+      "rows": 4,
+      "outputRows": 4,
+      "total": 2831472.1059999997,
+      "matchesSource": true
+    },
+    {
+      "period": "Quarter",
+      "selected": "Q3 2028",
+      "type": "Other Operating Expenses",
+      "rows": 8,
+      "outputRows": 8,
+      "total": 4893472.705392212,
+      "matchesSource": true
+    },
+    {
+      "period": "Year",
+      "selected": "2028",
+      "type": "Direct Operating Expenses",
+      "rows": 4,
+      "outputRows": 4,
+      "total": 6819194.538,
+      "matchesSource": true
+    },
+    {
+      "period": "Year",
+      "selected": "2028",
+      "type": "Other Operating Expenses",
+      "rows": 8,
+      "outputRows": 8,
+      "total": 11447554.861829828,
+      "matchesSource": true
+    },
+    {
+      "period": "Month",
+      "selected": "All Month",
+      "type": "Direct Operating Expenses",
+      "rows": 4,
+      "outputRows": 4,
+      "total": 173738064.774,
+      "matchesSource": true
+    },
+    {
+      "period": "Year",
+      "selected": "All Years",
+      "type": "Other Operating Expenses",
+      "rows": 8,
+      "outputRows": 8,
+      "total": 225891710.2160171,
+      "matchesSource": true
+    },
+    {
+      "period": "Month",
+      "selected": "Jan 2026",
+      "type": "Direct Operating Expenses",
+      "rows": 0,
+      "outputRows": 0,
+      "total": 0,
+      "matchesSource": true
+    },
+    {
+      "period": "Month",
+      "selected": "All Month",
+      "type": "All",
+      "rows": 12,
+      "outputRows": 85,
+      "total": 399629774.9900171,
+      "matchesSource": true
+    }
+  ],
+  "notes": [
+    "Totals and other source categories are excluded by selecting only the two requested _category values.",
+    "Existing positive-amount period behavior is retained; zero-amount periods return no expense rows.",
+    "Added three formatted rows to accommodate the 85-row combined All-period output.",
+    "Widened column A to display full category names.",
+    "Temporary verification sheet removed after validation."
+  ],
+  "appsScript": "Updated Details.js locally; clasp push followed by pull comparison verified synchronization while preserving unrelated live source."
+}
