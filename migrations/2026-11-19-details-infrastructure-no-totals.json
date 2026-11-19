@@ -1,0 +1,211 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Details",
+  "description": "Exclude _category=Totals from standalone Setup details and add Infrastructure details with the same exclusion, including the combined All view. Preserve existing expense named-function calls.",
+  "before": {
+    "formula": "=LET(\n  period, B1,\n  selected, B2,\n  expense_type, B3,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type = \"Setup Expenses\",  SETUP_EXPENSES_D(month),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(expense_type = \"Operational Expenses\", OPERATIONAL_EXPENSES_D(month),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                LAND_EXPENSES_D(month),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  )),\n      IF(AND(period=\"Month\", NOT(all_periods)), monthly_details(INDEX(selected_months, 1, 1)),\n        LET(\n          expenses, REDUCE({\"\",\"\",\"\",0}, selected_months,\n            LAMBDA(result, month, VSTACK(result, monthly_details(month)))),\n          IFNA(QUERY(expenses,\n            \"select Col1, Col2, Col3, sum(Col4) where Col1 is not null group by Col1, Col2, Col3 label sum(Col4) ''\", 0),\n            {\"\",\"\",\"\",0})\n        )\n      )\n    )\n  )\n)",
+    "typeValidation": {
+      "condition": {
+        "type": "ONE_OF_LIST",
+        "values": [
+          {
+            "userEnteredValue": "Construction Expenses"
+          },
+          {
+            "userEnteredValue": "Setup Expenses"
+          },
+          {
+            "userEnteredValue": "Operational Expenses"
+          },
+          {
+            "userEnteredValue": "Land Expenses"
+          },
+          {
+            "userEnteredValue": "All"
+          }
+        ]
+      },
+      "strict": true,
+      "showCustomUi": true
+    },
+    "rowCount": 81
+  },
+  "requests": [
+    {
+      "appendDimension": {
+        "sheetId": 2109063306,
+        "dimension": "ROWS",
+        "length": 6
+      }
+    },
+    {
+      "copyPaste": {
+        "source": {
+          "sheetId": 2109063306,
+          "startRowIndex": 80,
+          "endRowIndex": 81,
+          "startColumnIndex": 0,
+          "endColumnIndex": 4
+        },
+        "destination": {
+          "sheetId": 2109063306,
+          "startRowIndex": 81,
+          "endRowIndex": 87,
+          "startColumnIndex": 0,
+          "endColumnIndex": 4
+        },
+        "pasteType": "PASTE_FORMAT"
+      }
+    },
+    {
+      "setDataValidation": {
+        "range": {
+          "sheetId": 2109063306,
+          "startRowIndex": 2,
+          "endRowIndex": 3,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "rule": {
+          "condition": {
+            "type": "ONE_OF_LIST",
+            "values": [
+              {
+                "userEnteredValue": "Construction Expenses"
+              },
+              {
+                "userEnteredValue": "Infrastructure Expenses"
+              },
+              {
+                "userEnteredValue": "Setup Expenses"
+              },
+              {
+                "userEnteredValue": "Operational Expenses"
+              },
+              {
+                "userEnteredValue": "Land Expenses"
+              },
+              {
+                "userEnteredValue": "All"
+              }
+            ]
+          },
+          "strict": true,
+          "showCustomUi": true
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 5,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  period, B1,\n  selected, B2,\n  expense_type, B3,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      infra_details, LAMBDA(month,\n        LET(\n          source, S_INFRA_EXP_P,\n          params, COL_VALUES(source, \"param\"),\n          suppliers, COL_VALUES(source, \"supplier\"),\n          categories, COL_VALUES(source, \"_category\"),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n            ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type = \"Infrastructure Expenses\", infra_details(month), IF(expense_type = \"Setup Expenses\", without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(expense_type = \"Operational Expenses\", OPERATIONAL_EXPENSES_D(month),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                infra_details(month),\n                LAND_EXPENSES_D(month),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  ))),\n      IF(AND(period=\"Month\", NOT(all_periods)), monthly_details(INDEX(selected_months, 1, 1)),\n        LET(\n          expenses, REDUCE({\"\",\"\",\"\",0}, selected_months,\n            LAMBDA(result, month, VSTACK(result, monthly_details(month)))),\n          IFNA(QUERY(expenses,\n            \"select Col1, Col2, Col3, sum(Col4) where Col1 is not null group by Col1, Col2, Col3 label sum(Col4) ''\", 0),\n            {\"\",\"\",\"\",0})\n        )\n      )\n    )\n  )\n)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    }
+  ],
+  "validation": [
+    {
+      "period": "Month",
+      "selected": "All Month",
+      "type": "All",
+      "rows": 82,
+      "sum": 586076834.990017,
+      "totalsCategoryRows": 0
+    },
+    {
+      "period": "Month",
+      "selected": "All Month",
+      "type": "Infrastructure Expenses",
+      "rows": 13,
+      "sum": 13915000,
+      "expected": 13915000,
+      "totalsCategoryRows": 0
+    },
+    {
+      "period": "Month",
+      "selected": "Jan 2028",
+      "type": "Infrastructure Expenses",
+      "rows": 13,
+      "sum": 13915000,
+      "expected": 13915000,
+      "totalsCategoryRows": 0
+    },
+    {
+      "period": "Quarter",
+      "selected": "Q1 2028",
+      "type": "Infrastructure Expenses",
+      "rows": 13,
+      "sum": 13915000,
+      "expected": 13915000,
+      "totalsCategoryRows": 0
+    },
+    {
+      "period": "Year",
+      "selected": "2028",
+      "type": "Infrastructure Expenses",
+      "rows": 13,
+      "sum": 13915000,
+      "expected": 13915000,
+      "totalsCategoryRows": 0
+    },
+    {
+      "period": "Month",
+      "selected": "Jan 2026",
+      "type": "Infrastructure Expenses",
+      "rows": 0,
+      "sum": 0,
+      "expected": 0,
+      "totalsCategoryRows": 0
+    },
+    {
+      "period": "Month",
+      "selected": "All Month",
+      "type": "Setup Expenses",
+      "rows": 22,
+      "sum": 10528160,
+      "totalsCategoryRows": 0
+    },
+    {
+      "period": "Month",
+      "selected": "Nov 2026",
+      "type": "Setup Expenses",
+      "rows": 6,
+      "sum": 920920,
+      "totalsCategoryRows": 0
+    },
+    {
+      "period": "Quarter",
+      "selected": "Q4 2026",
+      "type": "Setup Expenses",
+      "rows": 9,
+      "sum": 2314240,
+      "totalsCategoryRows": 0
+    },
+    {
+      "period": "Year",
+      "selected": "2026",
+      "type": "Setup Expenses",
+      "rows": 12,
+      "sum": 3915240,
+      "totalsCategoryRows": 0
+    }
+  ],
+  "sourceNotes": [
+    "Infra Exp (P)!AD17 and AD18 contain text amounts (฿ 300K); numeric detail totals match the source sheet SUM behavior and exclude nonnumeric cells."
+  ],
+  "appsScript": "Updated Details.js locally; clasp push followed by pull comparison verifies synchronization and preservation of unrelated live source."
+}

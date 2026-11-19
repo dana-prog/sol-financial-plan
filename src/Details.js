@@ -8,13 +8,17 @@ const DETAILS_ALL_PERIOD_LABELS = {
 
 const params = [
   "construction expenses",
+  "infrastructure expenses",
   "setup expenses",
   "operational expenses",
   "land expenses"
 ];
 
 function showDetails(param, month) {
-  const aliases = {'planning expenses': 'setup expenses'};
+  const aliases = {
+    'planning expenses': 'setup expenses',
+    'infra expenses': 'infrastructure expenses',
+  };
   param = aliases[param] || param;
   if (!(month instanceof Date) || !Number.isFinite(month.getTime())) {
     SpreadsheetApp.getUi().alert('Select a monthly value in a supported expense row.');

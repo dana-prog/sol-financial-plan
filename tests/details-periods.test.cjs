@@ -93,7 +93,8 @@ test('unrelated edits do not change the period selection', () => {
 
 test('menu navigation opens the selected month and retains land and planning views', () => {
   for (const [param, expected] of [['planning expenses', 'setup expenses'],
-    ['construction expenses', 'construction expenses'], ['land expenses', 'land expenses']]) {
+    ['construction expenses', 'construction expenses'], ['land expenses', 'land expenses'],
+    ['infra expenses', 'infrastructure expenses'], ['infrastructure expenses', 'infrastructure expenses']]) {
     const { ctx, values, validations } = fixture();
     ctx.showDetails(param, new Date(2027, 4, 1));
     assert.equal(values.B1, 'Month');
