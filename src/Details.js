@@ -41,7 +41,7 @@ function showDetails(param, month) {
   detailsSheet.getRange('A2').setValue('Month');
   detailsSheet.getRange('F2').setValue(SOLLibrary.capitalize(param));
   _updateDetailsPeriodSelection(detailsSheet, _detailsPeriodLabel(month, 'Month'));
-  _refreshDetailsUnitFormats(detailsSheet);
+  _refreshDetailsView(detailsSheet);
 
   detailsSheet.activate();
 }
@@ -64,19 +64,84 @@ function _detailsPeriodLabel(month, period) {
   return `${names[month.getMonth()]} ${year}`;
 }
 
-function updateDetailsUnitFormats(e) {
+function updateDetailsView(e) {
   if (!e || !e.range) return;
   const range = e.range;
   const sheet = range.getSheet();
   if (sheet.getSheetId() === DETAILS_SHEET_ID) {
     if (range.getRow() > 2 || range.getLastRow() < 2 ||
         ![1, 4, 6].some(column => range.getColumn() <= column && range.getLastColumn() >= column)) return;
-    _refreshDetailsUnitFormats(sheet);
+    _refreshDetailsView(sheet);
     return;
   }
   // Source edits can change the position of construction rows in the All view.
   const details = sheet.getParent().getSheetById(DETAILS_SHEET_ID);
-  if (details) _refreshDetailsUnitFormats(details);
+  if (details) _refreshDetailsView(details);
+}
+
+function _refreshDetailsView(sheet) {
+  const lock = LockService.getDocumentLock();
+  lock.waitLock(5000);
+  try {
+    for (let attempt = 0; attempt < 4; attempt++) {
+      try {
+        _resizeDetailsRows(sheet);
+        _refreshDetailsUnitFormats(sheet);
+        return;
+      } catch (error) {
+        // Sheets can briefly reject reads while expanding a recalculating array.
+        if (attempt === 3 || !String(error.message).includes('Service Spreadsheets failed')) throw error;
+        Utilities.sleep(500);
+      }
+    }
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function _resizeDetailsRows(sheet) {
+  const formula = sheet.getRange('A5').getFormula();
+  if (!formula) throw new Error('The Details table formula is missing.');
+  // Count the formula result independently so a larger selection can recover
+  // even when its array cannot yet spill into the trimmed sheet.
+  const counter = sheet.getRange('H1');
+  const countFormula = `=ROWS(${formula.slice(1)})`;
+  if (counter.getFormula() !== countFormula) counter.setFormula(countFormula);
+  for (let attempt = 0; attempt < 10; attempt++) {
+    SpreadsheetApp.flush();
+    const count = counter.getValue();
+    if (Number.isInteger(count) && count > 0) {
+      const lastRow = count + 4;
+      if (lastRow > sheet.getMaxRows()) _growDetailsRows(sheet, lastRow);
+      SpreadsheetApp.flush();
+      if (counter.getValue() === count && sheet.getRange(lastRow, 1).getValue() === 'Total') {
+        const extraRows = sheet.getMaxRows() - lastRow;
+        if (extraRows > 0) {
+          if (!sheet.getRange(lastRow + 1, 1, extraRows, sheet.getMaxColumns()).isBlank()) {
+            throw new Error('Cannot remove Details rows containing content below Total.');
+          }
+          sheet.deleteRows(lastRow + 1, extraRows);
+        }
+        return;
+      }
+    }
+    // flush submits writes, but dependent array formulas may still be recalculating.
+    Utilities.sleep(250);
+  }
+  throw new Error('The Details table has not finished calculating its Total row.');
+}
+
+function _growDetailsRows(sheet, lastRow) {
+  const currentRows = sheet.getMaxRows();
+  sheet.insertRowsAfter(currentRows, lastRow - currentRows);
+  sheet.getRange(5, 1, 1, 8).copyFormatToRange(sheet, 1, 8, currentRows + 1, lastRow);
+  sheet.setRowHeights(currentRows + 1, lastRow - currentRows, sheet.getRowHeight(5));
+  const rules = sheet.getConditionalFormatRules().map(rule => rule.copy().setRanges(
+    rule.getRanges().map(range => range.getRow() >= 5 && range.getLastRow() === currentRows
+      ? sheet.getRange(range.getRow(), range.getColumn(), lastRow - range.getRow() + 1, range.getNumColumns())
+      : range)
+  ).build());
+  sheet.setConditionalFormatRules(rules);
 }
 
 function _detailsUnitFormats(rows, params, formats) {
