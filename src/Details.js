@@ -1,5 +1,10 @@
 const DETAILS_SHEET_ID = 2109063306;
 const DETAILS_PERIODS = ['Month', 'Quarter', 'Year'];
+const DETAILS_ALL_PERIOD_LABELS = {
+  Month: 'All Month',
+  Quarter: 'All Quarters',
+  Year: 'All Years',
+};
 
 const params = [
   "construction expenses",
@@ -53,7 +58,11 @@ function _detailsPeriodSelection(months, period, selected) {
   if (!DETAILS_PERIODS.includes(period)) throw new Error(`Unsupported details period: ${period}`);
   const dates = months.filter(month => month instanceof Date && Number.isFinite(month.getTime()));
   if (!dates.length) throw new Error('The project timeline has no months to select.');
-  const options = [...new Set(dates.map(month => _detailsPeriodLabel(month, period)))];
+  const allPeriods = DETAILS_ALL_PERIOD_LABELS[period];
+  const options = [allPeriods, ...new Set(dates.map(month => _detailsPeriodLabel(month, period)))];
+  if (Object.values(DETAILS_ALL_PERIOD_LABELS).includes(selected)) {
+    return { options, value: allPeriods };
+  }
   // Keep the selected date within the same calendar period when changing granularity.
   const anchor = dates.find(month => DETAILS_PERIODS.some(
     value => _detailsPeriodLabel(month, value) === String(selected)

@@ -1,0 +1,880 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Details",
+  "description": "Prepend All Month, All Quarters and All Years to the dependent selector. Exclude source _category=Totals rows only from the All expense type, preserving existing named-function calls.",
+  "before": {
+    "formula": "=LET(\n  period, B1,\n  selected, B2,\n  expense_type, B3,\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0, \"\",\n    LET(\n      selected_months, FILTER(months, labels=TO_TEXT(selected)),\n      monthly_details, LAMBDA(month, IF(expense_type = \"Setup Expenses\",  SETUP_EXPENSES_D(month),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(expense_type = \"Operational Expenses\", OPERATIONAL_EXPENSES_D(month),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                CONSTRUCTION_EXPENSES_D(month),\n                LAND_EXPENSES_D(month),\n                OPERATIONAL_EXPENSES_D(month),\n                SETUP_EXPENSES_D(month),\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  )),\n      IF(period=\"Month\", monthly_details(INDEX(selected_months, 1, 1)),\n        LET(\n          expenses, REDUCE({\"\",\"\",\"\",0}, selected_months,\n            LAMBDA(result, month, VSTACK(result, monthly_details(month)))),\n          IFNA(QUERY(expenses,\n            \"select Col1, Col2, Col3, sum(Col4) where Col1 is not null group by Col1, Col2, Col3 label sum(Col4) ''\", 0),\n            {\"\",\"\",\"\",0})\n        )\n      )\n    )\n  )\n)",
+    "conditionalFormats": [
+      {
+        "ranges": [
+          {
+            "sheetId": 2109063306,
+            "startRowIndex": 1,
+            "endRowIndex": 2,
+            "startColumnIndex": 1,
+            "endColumnIndex": 2
+          }
+        ],
+        "booleanRule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=IF($B$1=\"Year\",DATE(VALUE($B$2),1,1),IF($B$1=\"Quarter\",DATE(VALUE(RIGHT($B$2,4)),VALUE(MID($B$2,2,1))*3-2,1),DATEVALUE(\"1 \"&$B$2))) < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+              }
+            ]
+          },
+          "format": {
+            "backgroundColor": {
+              "red": 0.8784314,
+              "green": 0.4,
+              "blue": 0.4
+            },
+            "textFormat": {
+              "foregroundColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              },
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              }
+            }
+          }
+        }
+      },
+      {
+        "ranges": [
+          {
+            "sheetId": 2109063306,
+            "startRowIndex": 1,
+            "endRowIndex": 2,
+            "startColumnIndex": 1,
+            "endColumnIndex": 2
+          }
+        ],
+        "booleanRule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=IF($B$1=\"Year\",DATE(VALUE($B$2),1,1),IF($B$1=\"Quarter\",DATE(VALUE(RIGHT($B$2,4)),VALUE(MID($B$2,2,1))*3-2,1),DATEVALUE(\"1 \"&$B$2))) < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+              }
+            ]
+          },
+          "format": {
+            "backgroundColor": {
+              "red": 0.9647059,
+              "green": 0.69803923,
+              "blue": 0.41960785
+            },
+            "textFormat": {
+              "foregroundColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              },
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              }
+            }
+          }
+        }
+      },
+      {
+        "ranges": [
+          {
+            "sheetId": 2109063306,
+            "startRowIndex": 1,
+            "endRowIndex": 2,
+            "startColumnIndex": 1,
+            "endColumnIndex": 2
+          }
+        ],
+        "booleanRule": {
+          "condition": {
+            "type": "CUSTOM_FORMULA",
+            "values": [
+              {
+                "userEnteredValue": "=IF($B$1=\"Year\",DATE(VALUE($B$2),1,1),IF($B$1=\"Quarter\",DATE(VALUE(RIGHT($B$2,4)),VALUE(MID($B$2,2,1))*3-2,1),DATEVALUE(\"1 \"&$B$2))) < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0))"
+              }
+            ]
+          },
+          "format": {
+            "backgroundColor": {
+              "red": 0.42745098,
+              "green": 0.61960787,
+              "blue": 0.92156863
+            },
+            "textFormat": {
+              "foregroundColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              },
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              }
+            }
+          }
+        }
+      },
+      {
+        "ranges": [
+          {
+            "sheetId": 2109063306,
+            "startRowIndex": 1,
+            "endRowIndex": 2,
+            "startColumnIndex": 1,
+            "endColumnIndex": 2
+          }
+        ],
+        "booleanRule": {
+          "condition": {
+            "type": "NOT_BLANK"
+          },
+          "format": {
+            "backgroundColor": {
+              "red": 0.5764706,
+              "green": 0.76862746,
+              "blue": 0.49019608
+            },
+            "textFormat": {
+              "foregroundColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              },
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.5764706,
+                "green": 0.76862746,
+                "blue": 0.49019608
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "requests": [
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 0,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Month"
+                },
+                "dataValidation": {
+                  "condition": {
+                    "type": "ONE_OF_LIST",
+                    "values": [
+                      {
+                        "userEnteredValue": "Month"
+                      },
+                      {
+                        "userEnteredValue": "Quarter"
+                      },
+                      {
+                        "userEnteredValue": "Year"
+                      }
+                    ]
+                  },
+                  "strict": true,
+                  "showCustomUi": true
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "All Month"
+                },
+                "dataValidation": {
+                  "condition": {
+                    "type": "ONE_OF_LIST",
+                    "values": [
+                      {
+                        "userEnteredValue": "All Month"
+                      },
+                      {
+                        "userEnteredValue": "Jan 2026"
+                      },
+                      {
+                        "userEnteredValue": "Feb 2026"
+                      },
+                      {
+                        "userEnteredValue": "Mar 2026"
+                      },
+                      {
+                        "userEnteredValue": "Apr 2026"
+                      },
+                      {
+                        "userEnteredValue": "May 2026"
+                      },
+                      {
+                        "userEnteredValue": "Jun 2026"
+                      },
+                      {
+                        "userEnteredValue": "Jul 2026"
+                      },
+                      {
+                        "userEnteredValue": "Aug 2026"
+                      },
+                      {
+                        "userEnteredValue": "Sep 2026"
+                      },
+                      {
+                        "userEnteredValue": "Oct 2026"
+                      },
+                      {
+                        "userEnteredValue": "Nov 2026"
+                      },
+                      {
+                        "userEnteredValue": "Dec 2026"
+                      },
+                      {
+                        "userEnteredValue": "Jan 2027"
+                      },
+                      {
+                        "userEnteredValue": "Feb 2027"
+                      },
+                      {
+                        "userEnteredValue": "Mar 2027"
+                      },
+                      {
+                        "userEnteredValue": "Apr 2027"
+                      },
+                      {
+                        "userEnteredValue": "May 2027"
+                      },
+                      {
+                        "userEnteredValue": "Jun 2027"
+                      },
+                      {
+                        "userEnteredValue": "Jul 2027"
+                      },
+                      {
+                        "userEnteredValue": "Aug 2027"
+                      },
+                      {
+                        "userEnteredValue": "Sep 2027"
+                      },
+                      {
+                        "userEnteredValue": "Oct 2027"
+                      },
+                      {
+                        "userEnteredValue": "Nov 2027"
+                      },
+                      {
+                        "userEnteredValue": "Dec 2027"
+                      },
+                      {
+                        "userEnteredValue": "Jan 2028"
+                      },
+                      {
+                        "userEnteredValue": "Feb 2028"
+                      },
+                      {
+                        "userEnteredValue": "Mar 2028"
+                      },
+                      {
+                        "userEnteredValue": "Apr 2028"
+                      },
+                      {
+                        "userEnteredValue": "May 2028"
+                      },
+                      {
+                        "userEnteredValue": "Jun 2028"
+                      },
+                      {
+                        "userEnteredValue": "Jul 2028"
+                      },
+                      {
+                        "userEnteredValue": "Aug 2028"
+                      },
+                      {
+                        "userEnteredValue": "Sep 2028"
+                      },
+                      {
+                        "userEnteredValue": "Oct 2028"
+                      },
+                      {
+                        "userEnteredValue": "Nov 2028"
+                      },
+                      {
+                        "userEnteredValue": "Dec 2028"
+                      },
+                      {
+                        "userEnteredValue": "Jan 2029"
+                      },
+                      {
+                        "userEnteredValue": "Feb 2029"
+                      },
+                      {
+                        "userEnteredValue": "Mar 2029"
+                      },
+                      {
+                        "userEnteredValue": "Apr 2029"
+                      },
+                      {
+                        "userEnteredValue": "May 2029"
+                      },
+                      {
+                        "userEnteredValue": "Jun 2029"
+                      },
+                      {
+                        "userEnteredValue": "Jul 2029"
+                      },
+                      {
+                        "userEnteredValue": "Aug 2029"
+                      },
+                      {
+                        "userEnteredValue": "Sep 2029"
+                      },
+                      {
+                        "userEnteredValue": "Oct 2029"
+                      },
+                      {
+                        "userEnteredValue": "Nov 2029"
+                      },
+                      {
+                        "userEnteredValue": "Dec 2029"
+                      },
+                      {
+                        "userEnteredValue": "Jan 2030"
+                      },
+                      {
+                        "userEnteredValue": "Feb 2030"
+                      },
+                      {
+                        "userEnteredValue": "Mar 2030"
+                      },
+                      {
+                        "userEnteredValue": "Apr 2030"
+                      },
+                      {
+                        "userEnteredValue": "May 2030"
+                      },
+                      {
+                        "userEnteredValue": "Jun 2030"
+                      },
+                      {
+                        "userEnteredValue": "Jul 2030"
+                      },
+                      {
+                        "userEnteredValue": "Aug 2030"
+                      },
+                      {
+                        "userEnteredValue": "Sep 2030"
+                      },
+                      {
+                        "userEnteredValue": "Oct 2030"
+                      },
+                      {
+                        "userEnteredValue": "Nov 2030"
+                      },
+                      {
+                        "userEnteredValue": "Dec 2030"
+                      },
+                      {
+                        "userEnteredValue": "Jan 2031"
+                      },
+                      {
+                        "userEnteredValue": "Feb 2031"
+                      },
+                      {
+                        "userEnteredValue": "Mar 2031"
+                      },
+                      {
+                        "userEnteredValue": "Apr 2031"
+                      },
+                      {
+                        "userEnteredValue": "May 2031"
+                      },
+                      {
+                        "userEnteredValue": "Jun 2031"
+                      },
+                      {
+                        "userEnteredValue": "Jul 2031"
+                      },
+                      {
+                        "userEnteredValue": "Aug 2031"
+                      },
+                      {
+                        "userEnteredValue": "Sep 2031"
+                      },
+                      {
+                        "userEnteredValue": "Oct 2031"
+                      },
+                      {
+                        "userEnteredValue": "Nov 2031"
+                      },
+                      {
+                        "userEnteredValue": "Dec 2031"
+                      },
+                      {
+                        "userEnteredValue": "Jan 2032"
+                      },
+                      {
+                        "userEnteredValue": "Feb 2032"
+                      },
+                      {
+                        "userEnteredValue": "Mar 2032"
+                      },
+                      {
+                        "userEnteredValue": "Apr 2032"
+                      },
+                      {
+                        "userEnteredValue": "May 2032"
+                      },
+                      {
+                        "userEnteredValue": "Jun 2032"
+                      },
+                      {
+                        "userEnteredValue": "Jul 2032"
+                      },
+                      {
+                        "userEnteredValue": "Aug 2032"
+                      },
+                      {
+                        "userEnteredValue": "Sep 2032"
+                      },
+                      {
+                        "userEnteredValue": "Oct 2032"
+                      },
+                      {
+                        "userEnteredValue": "Nov 2032"
+                      },
+                      {
+                        "userEnteredValue": "Dec 2032"
+                      },
+                      {
+                        "userEnteredValue": "Jan 2033"
+                      },
+                      {
+                        "userEnteredValue": "Feb 2033"
+                      },
+                      {
+                        "userEnteredValue": "Mar 2033"
+                      },
+                      {
+                        "userEnteredValue": "Apr 2033"
+                      },
+                      {
+                        "userEnteredValue": "May 2033"
+                      },
+                      {
+                        "userEnteredValue": "Jun 2033"
+                      },
+                      {
+                        "userEnteredValue": "Jul 2033"
+                      },
+                      {
+                        "userEnteredValue": "Aug 2033"
+                      },
+                      {
+                        "userEnteredValue": "Sep 2033"
+                      },
+                      {
+                        "userEnteredValue": "Oct 2033"
+                      },
+                      {
+                        "userEnteredValue": "Nov 2033"
+                      },
+                      {
+                        "userEnteredValue": "Dec 2033"
+                      }
+                    ]
+                  },
+                  "strict": true,
+                  "showCustomUi": true
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,dataValidation"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 1,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Select Month"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 5,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  period, B1,\n  selected, B2,\n  expense_type, B3,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type = \"Setup Expenses\",  SETUP_EXPENSES_D(month),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(expense_type = \"Operational Expenses\", OPERATIONAL_EXPENSES_D(month),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                LAND_EXPENSES_D(month),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  )),\n      IF(AND(period=\"Month\", NOT(all_periods)), monthly_details(INDEX(selected_months, 1, 1)),\n        LET(\n          expenses, REDUCE({\"\",\"\",\"\",0}, selected_months,\n            LAMBDA(result, month, VSTACK(result, monthly_details(month)))),\n          IFNA(QUERY(expenses,\n            \"select Col1, Col2, Col3, sum(Col4) where Col1 is not null group by Col1, Col2, Col3 label sum(Col4) ''\", 0),\n            {\"\",\"\",\"\",0})\n        )\n      )\n    )\n  )\n)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2109063306,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2109063306,
+              "startRowIndex": 1,
+              "endRowIndex": 2,
+              "startColumnIndex": 1,
+              "endColumnIndex": 2
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IF(LEFT($B$2,3)=\"All\",FALSE,IF($B$1=\"Year\",DATE(VALUE($B$2),1,1),IF($B$1=\"Quarter\",DATE(VALUE(RIGHT($B$2,4)),VALUE(MID($B$2,2,1))*3-2,1),DATEVALUE(\"1 \"&$B$2))) < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"land acquisition date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.8784314,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.8784314,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2109063306,
+        "index": 1,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2109063306,
+              "startRowIndex": 1,
+              "endRowIndex": 2,
+              "startColumnIndex": 1,
+              "endColumnIndex": 2
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IF(LEFT($B$2,3)=\"All\",FALSE,IF($B$1=\"Year\",DATE(VALUE($B$2),1,1),IF($B$1=\"Quarter\",DATE(VALUE(RIGHT($B$2,4)),VALUE(MID($B$2,2,1))*3-2,1),DATEVALUE(\"1 \"&$B$2))) < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"construction start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9647059,
+                "green": 0.69803923,
+                "blue": 0.41960785
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9647059,
+                  "green": 0.69803923,
+                  "blue": 0.41960785
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2109063306,
+        "index": 2,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2109063306,
+              "startRowIndex": 1,
+              "endRowIndex": 2,
+              "startColumnIndex": 1,
+              "endColumnIndex": 2
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=IF(LEFT($B$2,3)=\"All\",FALSE,IF($B$1=\"Year\",DATE(VALUE($B$2),1,1),IF($B$1=\"Quarter\",DATE(VALUE(RIGHT($B$2,4)),VALUE(MID($B$2,2,1))*3-2,1),DATEVALUE(\"1 \"&$B$2))) < INDEX(INDIRECT(\"Params!$C$2:$C$101\"),MATCH(\"operations start date\",INDIRECT(\"Params!$B$2:$B$101\"),0)))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.42745098,
+                "green": 0.61960787,
+                "blue": 0.92156863
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.42745098,
+                  "green": 0.61960787,
+                  "blue": 0.92156863
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2109063306,
+        "index": 3,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2109063306,
+              "startRowIndex": 1,
+              "endRowIndex": 2,
+              "startColumnIndex": 1,
+              "endColumnIndex": 2
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND(LEFT($B$2,3)<>\"All\",$B$2<>\"\")"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.5764706,
+                "green": 0.76862746,
+                "blue": 0.49019608
+              },
+              "textFormat": {
+                "foregroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "foregroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.5764706,
+                  "green": 0.76862746,
+                  "blue": 0.49019608
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "verification": {
+    "expenseFiltering": [
+      {
+        "period": "Month",
+        "selected": "Nov 2026",
+        "type": "All",
+        "rows": 6,
+        "totalsRowsExcluded": 2,
+        "sum": 920920
+      },
+      {
+        "period": "Quarter",
+        "selected": "Q4 2026",
+        "type": "All",
+        "rows": 9,
+        "totalsRowsExcluded": 2,
+        "sum": 2314240
+      },
+      {
+        "period": "Year",
+        "selected": "2028",
+        "type": "All",
+        "rows": 50,
+        "totalsRowsExcluded": 6,
+        "sum": 153827749.39982983
+      },
+      {
+        "period": "Year",
+        "selected": "2026",
+        "type": "Setup Expenses",
+        "rows": 14,
+        "totalsRowsExcluded": 0,
+        "sum": 8222004
+      }
+    ],
+    "allSelections": [
+      {
+        "period": "Month",
+        "selected": "All Month",
+        "rows": 69,
+        "matchesFullTimeline": true,
+        "totalsCategoryRows": 0
+      },
+      {
+        "period": "Quarter",
+        "selected": "All Quarters",
+        "rows": 69,
+        "matchesFullTimeline": true,
+        "totalsCategoryRows": 0
+      },
+      {
+        "period": "Year",
+        "selected": "All Years",
+        "rows": 69,
+        "matchesFullTimeline": true,
+        "totalsCategoryRows": 0
+      }
+    ],
+    "temporaryCheckSheetRemoved": true
+  },
+  "appsScript": {
+    "files": [
+      "src/Details.js"
+    ],
+    "synchronizedWithClasp": true,
+    "unrelatedLiveSourcePreserved": true
+  }
+}

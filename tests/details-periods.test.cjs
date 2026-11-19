@@ -15,11 +15,13 @@ test('period options follow timeline bounds and deduplicate quarters and years',
   const ctx = context();
   const selection = (period, value) => JSON.parse(JSON.stringify(
     ctx._detailsPeriodSelection([...months, '', null], period, value)));
-  assert.equal(selection('Month', 'Dec 2026').options.length, 14);
+  assert.equal(selection('Month', 'Dec 2026').options.length, 15);
+  assert.equal(selection('Month', 'Dec 2026').options[0], 'All Month');
+  assert.equal(selection('Month', 'All Years').value, 'All Month');
   assert.deepEqual(selection('Quarter', 'Dec 2026'), {
-    options: ['Q4 2026', 'Q1 2027', 'Q2 2027', 'Q3 2027', 'Q4 2027'], value: 'Q4 2026',
+    options: ['All Quarters', 'Q4 2026', 'Q1 2027', 'Q2 2027', 'Q3 2027', 'Q4 2027'], value: 'Q4 2026',
   });
-  assert.deepEqual(selection('Year', 'Q4 2027'), { options: ['2026', '2027'], value: '2027' });
+  assert.deepEqual(selection('Year', 'Q4 2027'), { options: ['All Years', '2026', '2027'], value: '2027' });
   assert.equal(selection('Month', 'Q4 2026').value, 'Nov 2026');
   assert.equal(selection('Month', '2027').value, 'Jan 2027');
   assert.equal(selection('Quarter', 'stale selection').value, 'Q4 2026');
@@ -63,11 +65,22 @@ test('editing period replaces dependent options and keeps the matching period', 
   assert.equal(values.B2, 'Q4 2026');
   assert.equal(values.A2, 'Select Quarter');
   assert.equal(validations.B2.allowInvalid, false);
-  assert.equal(validations.B2.options.length, 5);
+  assert.equal(validations.B2.options.length, 6);
   values.B1 = 'Year';
   ctx.updateDetailsPeriod({ range });
   assert.equal(values.B2, '2026');
   assert.equal(values.A2, 'Select Year');
+  values.B1 = 'Month';
+  values.B2 = 'All Years';
+  ctx.updateDetailsPeriod({ range });
+  assert.equal(values.B2, 'All Month');
+  assert.equal(values.A2, 'Select Month');
+  assert.equal(validations.B2.options[0], 'All Month');
+  values.B1 = 'Quarter';
+  ctx.updateDetailsPeriod({ range });
+  assert.equal(values.B2, 'All Quarters');
+  assert.equal(values.A2, 'Select Quarter');
+  assert.equal(validations.B2.options[0], 'All Quarters');
 });
 
 test('unrelated edits do not change the period selection', () => {
