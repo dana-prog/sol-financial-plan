@@ -12,19 +12,18 @@ function context(globals = {}) {
 function fixture() {
   const values = { A2: 'Quarter', C2: 'Dec 2026' };
   const formulas = {};
-  const remembered = {};
+  const validations = {};
   const sheet = {
     getSheetId: () => 2109063306,
     getMaxRows: () => 4,
-    getParent: () => ({ getSheetByName: () => ({
-      getRange: cell => ({ setValue: value => { remembered[cell] = value; } }),
-    }) }),
+    getParent: () => ({ getRangeByName: () => ({ getValues: () => [[new Date(2026, 10, 1), new Date(2028, 4, 1)]] }) }),
     getRange: cell => ({
       getValue: () => values[cell],
       getFormula: () => formulas[cell] || '',
       setFormula(formula) { formulas[cell] = formula; return this; },
       setValue(value) { values[cell] = value; return this; },
       setNumberFormat() { return this; },
+      setDataValidation(value) { validations[cell] = value; return this; },
 
     }),
     activate() { values.activated = true; },
@@ -35,112 +34,108 @@ function fixture() {
       getActive: () => ({ getSheetById: () => sheet }),
       getUi: () => ({ alert: message => { throw new Error(message); } }),
       flush() {},
+      newDataValidation: () => ({
+        requireValueInList(options) { this.options = options; return this; },
+        setAllowInvalid(value) { this.allowInvalid = value; return this; },
+        build() { return this; },
+      }),
     },
   });
   ctx._refreshDetailsView = () => {};
-  return { ctx, sheet, values, formulas, remembered };
+  return { ctx, sheet, values, formulas, validations };
 }
 
 test('dropdown choices are remembered and the native period formula is restored', () => {
-  const { ctx, sheet, values, formulas, remembered } = fixture();
+  const { ctx, sheet, values, formulas, validations } = fixture();
   const range = { getSheet: () => sheet, getRow: () => 2, getLastRow: () => 2,
     getColumn: () => 3, getLastColumn: () => 3 };
   values.C2 = 'Q3 2028';
   ctx.updateDetailsPeriod({ range });
-  assert.equal(remembered.C2, 'Q3 2028');
+  assert.ok(formulas.C2.includes('TO_TEXT("Q3 2028")'));
   assert.ok(formulas.C2.startsWith('=LET('));
   values.A2 = 'Year';
   range.getColumn = () => 1;
   range.getLastColumn = () => 1;
   ctx.updateDetailsPeriod({ range });
-  assert.equal(remembered.C2, 'Q3 2028');
+  assert.ok(formulas.C2.includes('TO_TEXT("Q3 2028")'));
   assert.equal(values.C1, undefined);
 });
 
 function resizeFixture({ currentRows = 100, count = 20, total = 'Total', blankTail = true } = {}) {
   const changes = [];
-  let counterFormula = '';
   const sheet = {
     getMaxRows: () => currentRows,
-    getMaxColumns: () => 8,
-    getRowHeight: () => 24,
-    getConditionalFormatRules: () => [],
-    setConditionalFormatRules: () => {},
-    setRowHeights: (...args) => changes.push(['height', ...args]),
-    insertRowsAfter: (after, added) => { changes.push(['insert', after, added]); currentRows += added; },
+    getMaxColumns: () => 4,
     deleteRows: (...args) => changes.push(['delete', ...args]),
     getRange: (row, column, rows, columns) => {
-      if (row === 'A5') return { getFormula: () => '=EXPENSE_DETAILS(A2,D2,F2)' };
-      if (row === 'E1') return {
-        getFormula: () => counterFormula,
-        setFormula: formula => { counterFormula = formula; },
-        getValue: () => typeof count === 'function' ? count() : count,
-      };
-      if (rows === undefined) return { getValue: () => total };
-      if (row === 5 && rows === 1 && columns === 5) return {
-        copyFormatToRange: (target, ...args) => changes.push(['format', ...args]),
-      };
+      if (row === 5 && columns === 1) return { getValues: () => Array.from({ length: count },
+        (_, index) => [index === count - 1 ? total : 'Setup Expenses']) };
       return { isBlank: () => blankTail };
     },
   };
   const ctx = context({ SpreadsheetApp: { flush() {} }, Utilities: { sleep() {} } });
-  return { ctx, sheet, changes, countFormula: () => counterFormula };
+  return { ctx, sheet, changes };
 }
 
-test('Details removes only empty rows after Total and keeps the header and total-only result', () => {
+test('Details trims only blank rows after Total, including an empty result', () => {
   for (const count of [20, 1]) {
-    const { ctx, sheet, changes, countFormula } = resizeFixture({ count });
+    const { ctx, sheet, changes } = resizeFixture({ count });
     ctx._resizeDetailsRows(sheet);
     assert.deepEqual(changes, [['delete', count + 5, 100 - count - 4]]);
-    assert.equal(countFormula(), '=ROWS(EXPENSE_DETAILS(A2,D2,F2))');
   }
 });
 
-test('Details grows a trimmed sheet and restores row formatting', () => {
-  const { ctx, sheet, changes } = resizeFixture({ currentRows: 5, count: 200 });
+test('Details trims automatically expanded sheets without deleting result rows', () => {
+  const { ctx, sheet, changes } = resizeFixture({ currentRows: 304, count: 200 });
   ctx._resizeDetailsRows(sheet);
-  assert.deepEqual(changes, [
-    ['insert', 5, 199], ['format', 1, 5, 6, 204], ['height', 6, 199, 24],
-  ]);
+  assert.deepEqual(changes, [['delete', 205, 100]]);
 });
 
 test('Details leaves exact-sized tables alone and refuses to delete content or incomplete results', () => {
   const exact = resizeFixture({ currentRows: 24 });
   exact.ctx._resizeDetailsRows(exact.sheet);
   assert.deepEqual(exact.changes, []);
-  for (const options of [{ count: '#REF!' }, { count: 0 }, { total: '#REF!' }, { blankTail: false }]) {
+  for (const options of [{ count: 0 }, { total: '#REF!' }, { blankTail: false }]) {
     const { ctx, sheet, changes } = resizeFixture(options);
     assert.throws(() => ctx._resizeDetailsRows(sheet), /Details/);
     assert.deepEqual(changes, []);
   }
 });
 
-test('Details rechecks the result after a temporary row count changes during recalculation', () => {
-  const counts = [300, 20, 20, 20];
-  const { ctx, sheet, changes } = resizeFixture({ count: () => counts.shift() ?? 20 });
-  ctx._resizeDetailsRows(sheet);
-  assert.deepEqual(changes, [
-    ['insert', 100, 204], ['format', 1, 5, 101, 304], ['height', 101, 204, 24],
-    ['delete', 25, 280],
+test('construction formats match source items in formula order without helper identifiers', () => {
+  const ctx = context();
+  const month = new Date(2028, 0, 1);
+  const rows = [
+    ['Construction Expenses', month, 1, 10],
+    ['Construction Expenses', month, 6, 60],
+    ['Construction Expenses', month, 1, 10],
+    ['Setup Expenses', month, 'Design', 20], ['Total'], [],
+  ];
+  const source = [
+    ['_category', 'param', month],
+    ['Construction Plan', 'clinics const. count', 1],
+    ['Construction Plan', 'complex room const. count', 6],
+    ['Construction Plan', 'lobby const. count', 1],
+    ['Construction Expenses', 'lobby const. cost', 10],
+    ['Construction Expenses', 'clinics const. cost', 10],
+    ['Construction Expenses', 'complex room const. cost', 60],
+    ['Totals', 'all const. cost', 80],
+  ];
+  const formats = [['General'], ['[=1]0 "clinic";0 "clinics"'], ['[=1]0 "complex room";0 "complex rooms"'], ['[=1]0 "lobby";0 "lobbies"'], ['General'], ['General'], ['General'], ['General']];
+  assert.deepEqual(JSON.parse(JSON.stringify(ctx._detailsUnitFormats(rows, source, formats))), [
+    formats[1], ['[=1]0 "complex home";0 "complex homes"'], formats[3], ['General'], ['General'], ['General'],
   ]);
+  assert.throws(() => ctx._detailsUnitFormats([['Construction Expenses', month, 99, 10]], source, formats), /could not be matched/);
+  assert.throws(() => ctx._detailsUnitFormats([['Construction Expenses', new Date(2030, 0, 1), 1, 10]], source, formats), /outside the source/);
 });
 
-test('construction details reuse numeric unit formats and reset other detail rows', () => {
+test('period options start with All and are deduplicated from the source timeline', () => {
   const ctx = context();
-  const rows = [
-    ['Construction Expenses', '', 1, 221850, 'clinics const. cost'],
-    ['Construction Expenses', '', 6, 5246000, 'complex room const. cost'],
-    ['Construction Expenses', '', 1, 1296000, 'lobby const. cost'],
-    ['Setup Expenses', '', 'Design'],
-    ['Total'],
-    [],
-  ];
-  const params = [['clinics const. count'], ['complex room const. count'], ['lobby const. count']];
-  const formats = [['[=1]0 "clinic";0 "clinics"'], ['[=1]0 "complex room";0 "complex rooms"'], ['[=1]0 "lobby";0 "lobbies"']];
-  assert.deepEqual(JSON.parse(JSON.stringify(ctx._detailsUnitFormats(rows, params, formats))), [
-    formats[0], ['[=1]0 "complex home";0 "complex homes"'], formats[2], ['General'], ['General'], ['General'],
-  ]);
-  assert.throws(() => ctx._detailsUnitFormats([rows[0]], [], []), /Missing planned-unit/);
+  const dates = [new Date(2028, 0, 1), new Date(2028, 1, 1), new Date(2028, 3, 1)];
+  assert.deepEqual(Array.from(ctx._detailsPeriodOptions(dates, 'Quarter')), ['All Quarters', 'Q1 2028', 'Q2 2028']);
+  assert.deepEqual(Array.from(ctx._detailsPeriodOptions(dates, 'Year')), ['All Years', '2028']);
+  assert.equal(ctx._detailsPeriodOptions(dates, 'Month')[0], 'All Month');
+  assert.throws(() => ctx._detailsPeriodOptions([], 'Year'), /no months/);
 });
 
 test('Details retries transient spreadsheet service failures and releases its refresh lock', () => {
@@ -183,6 +178,7 @@ test('unit labels refresh when filters or source data change', () => {
   const ctx = context();
   const refreshed = [];
   ctx._refreshDetailsView = sheet => refreshed.push(sheet);
+  ctx._updateDetailsPeriodOptions = () => {};
   const details = { getSheetId: () => 2109063306 };
   const edit = (row, column, sheet = details) => ({ range: {
     getSheet: () => sheet, getRow: () => row, getLastRow: () => row,
@@ -217,10 +213,10 @@ test('menu navigation opens the selected month and retains land and planning vie
     ['borrowings repaid', 'borrowing repayments'], ['borrowing repayments', 'borrowing repayments'],
     ['loan disbursed', 'loan disbursements'], ['loan disbursements', 'loan disbursements'],
     ['infra expenses', 'infrastructure expenses'], ['infrastructure expenses', 'infrastructure expenses']]) {
-    const { ctx, values, formulas, remembered } = fixture();
+    const { ctx, values, formulas, validations } = fixture();
     ctx.showDetails(param, new Date(2027, 4, 1));
     assert.equal(values.A2, 'Month');
-    assert.equal(remembered.C2, 'May 2027');
+    assert.ok(formulas.C2.includes('TO_TEXT("May 2027")'));
     assert.equal(values.D2, expected);
     assert.equal(values.activated, true);
     assert.ok(formulas.C2.startsWith('=LET('));

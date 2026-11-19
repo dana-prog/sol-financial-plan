@@ -1,8 +1,7 @@
 const DETAILS_SHEET_ID = 2109063306;
-const DETAILS_CONTROLS_SHEET = '_Details Controls';
 const DETAILS_PERIOD_VALUE_FORMULA = `=LET(
   months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),
-  saved, TO_TEXT('_Details Controls'!C2),
+  saved, TO_TEXT(__SELECTION__),
   period, A2,
   month_labels, ARRAYFORMULA(TEXT(months, "mmm yyyy")),
   quarter_labels, ARRAYFORMULA("Q"&ROUNDUP(MONTH(months)/3)&" "&YEAR(months)),
@@ -48,6 +47,7 @@ function showDetails(param, month) {
   detailsSheet.getRange('A2').setValue('Month');
   detailsSheet.getRange('D2').setValue(SOLLibrary.capitalize(param));
   _updateDetailsPeriodSelection(detailsSheet, _detailsPeriodLabel(month, 'Month'));
+  _updateDetailsPeriodOptions(detailsSheet);
   _refreshDetailsView(detailsSheet);
 
   detailsSheet.activate();
@@ -64,6 +64,7 @@ function updateDetailsPeriod(e) {
   // Choosing a dropdown item replaces its formula. Remember that choice and
   // restore the formula so the next period change needs no script round trip.
   if (!selected.getFormula()) _updateDetailsPeriodSelection(sheet, selected.getValue());
+  if (range.getColumn() === 1) _updateDetailsPeriodOptions(sheet);
 }
 
 function _detailsPeriodLabel(month, period) {
@@ -87,7 +88,10 @@ function updateDetailsView(e) {
   }
   // Source edits can change the position of construction rows in the All view.
   const details = sheet.getParent().getSheetById(DETAILS_SHEET_ID);
-  if (details) _refreshDetailsView(details);
+  if (details) {
+    _updateDetailsPeriodOptions(details);
+    _refreshDetailsView(details);
+  }
 }
 
 function _refreshDetailsView(sheet) {
@@ -134,58 +138,55 @@ function _mergeDetailsTypes(sheet) {
 }
 
 function _resizeDetailsRows(sheet) {
-  const formula = sheet.getRange('A5').getFormula();
-  if (!formula) throw new Error('The Details table formula is missing.');
-  // Count the formula result independently so a larger selection can recover
-  // even when its array cannot yet spill into the trimmed sheet.
-  const counter = sheet.getRange('E1');
-  const countFormula = `=ROWS(${formula.slice(1)})`;
-  if (counter.getFormula() !== countFormula) counter.setFormula(countFormula);
+  // Sheets expands the array itself; wait for its Total before trimming blanks.
   for (let attempt = 0; attempt < 10; attempt++) {
     SpreadsheetApp.flush();
-    const count = counter.getValue();
-    if (Number.isInteger(count) && count > 0) {
-      const lastRow = count + 4;
-      if (lastRow > sheet.getMaxRows()) _growDetailsRows(sheet, lastRow);
-      SpreadsheetApp.flush();
-      if (counter.getValue() === count && sheet.getRange(lastRow, 1).getValue() === 'Total') {
-        const extraRows = sheet.getMaxRows() - lastRow;
-        if (extraRows > 0) {
-          if (!sheet.getRange(lastRow + 1, 1, extraRows, sheet.getMaxColumns()).isBlank()) {
-            throw new Error('Cannot remove Details rows containing content below Total.');
-          }
-          sheet.deleteRows(lastRow + 1, extraRows);
+    const currentRows = sheet.getMaxRows();
+    const types = sheet.getRange(5, 1, currentRows - 4, 1).getValues().flat();
+    const totalIndex = types.indexOf('Total');
+    if (totalIndex >= 0) {
+      const lastRow = totalIndex + 5;
+      const extraRows = currentRows - lastRow;
+      if (extraRows > 0) {
+        if (!sheet.getRange(lastRow + 1, 1, extraRows, sheet.getMaxColumns()).isBlank()) {
+          throw new Error('Cannot remove Details rows containing content below Total.');
         }
-        return;
+        sheet.deleteRows(lastRow + 1, extraRows);
       }
+      return;
     }
-    // flush submits writes, but dependent array formulas may still be recalculating.
     Utilities.sleep(250);
   }
   throw new Error('The Details table has not finished calculating its Total row.');
 }
 
-function _growDetailsRows(sheet, lastRow) {
-  const currentRows = sheet.getMaxRows();
-  sheet.insertRowsAfter(currentRows, lastRow - currentRows);
-  sheet.getRange(5, 1, 1, 5).copyFormatToRange(sheet, 1, 5, currentRows + 1, lastRow);
-  sheet.setRowHeights(currentRows + 1, lastRow - currentRows, sheet.getRowHeight(5));
-  const rules = sheet.getConditionalFormatRules().map(rule => rule.copy().setRanges(
-    rule.getRanges().map(range => range.getRow() >= 5 && range.getLastRow() === currentRows
-      ? sheet.getRange(range.getRow(), range.getColumn(), lastRow - range.getRow() + 1, range.getNumColumns())
-      : range)
-  ).build());
-  sheet.setConditionalFormatRules(rules);
-}
-
-function _detailsUnitFormats(rows, params, formats) {
-  const byParam = new Map(params.map((row, index) => [String(row[0]).toLowerCase(), formats[index][0]]));
+function _detailsUnitFormats(rows, source, formats) {
+  const headers = source[0];
+  const paramColumn = headers.findIndex(value => String(value).toLowerCase() === 'param');
+  const categoryColumn = headers.findIndex(value => String(value).toLowerCase() === '_category');
+  if (paramColumn < 0 || categoryColumn < 0) throw new Error('Construction timeline headers are incomplete.');
+  const byParam = new Map(source.map((row, index) => [String(row[paramColumn]).toLowerCase(), { row, format: formats[index][0] }]));
+  const costs = source.slice(1).filter(row => String(row[categoryColumn]).toLowerCase() === 'construction expenses')
+    .sort((a, b) => String(a[paramColumn]).localeCompare(String(b[paramColumn])));
+  const monthColumns = new Map(headers.flatMap((value, index) => value instanceof Date ? [[value.getTime(), index]] : []));
+  const nextByMonth = new Map();
   return rows.map(row => {
     if (row[0] !== 'Construction Expenses') return ['General'];
-    const param = String(row[4]).toLowerCase().replace(/ const\. cost$/, ' const. count');
-    const format = byParam.get(param);
-    if (!format) throw new Error(`Missing planned-unit number format for ${param}.`);
-    return [format.replace(/complex room/g, 'complex home')];
+    const month = row[1] instanceof Date ? row[1].getTime() : NaN;
+    const column = monthColumns.get(month);
+    if (column === undefined) throw new Error('Construction expense month is outside the source timeline.');
+    // The formula orders construction rows by month and param. Match that order
+    // against the source amounts/counts without adding a visible identifier column.
+    for (let index = nextByMonth.get(month) || 0; index < costs.length; index++) {
+      const cost = costs[index];
+      const param = String(cost[paramColumn]).toLowerCase().replace(/ const\. cost$/, ' const. count');
+      const units = byParam.get(param);
+      if (cost[column] !== row[3] || !units || units.row[column] !== row[2]) continue;
+      if (!units.format) throw new Error(`Missing planned-unit number format for ${param}.`);
+      nextByMonth.set(month, index + 1);
+      return [units.format.replace(/complex room/g, 'complex home')];
+    }
+    throw new Error('Construction expense could not be matched to its planned-unit format.');
   });
 }
 
@@ -193,7 +194,7 @@ function _refreshDetailsUnitFormats(sheet) {
   const rowCount = sheet.getMaxRows() - 4;
   if (rowCount <= 0) return;
   SpreadsheetApp.flush();
-  const rows = sheet.getRange(5, 1, rowCount, 5).getValues();
+  const rows = sheet.getRange(5, 1, rowCount, 4).getValues();
   const target = sheet.getRange(5, 3, rowCount, 1);
   if (!rows.some(row => row[0] === 'Construction Expenses')) {
     target.setNumberFormat('General');
@@ -201,22 +202,33 @@ function _refreshDetailsUnitFormats(sheet) {
   }
   const source = sheet.getParent().getRangeByName('S_CONSTRUCTION_EXP_P');
   if (!source) throw new Error('The construction timeline named range is missing.');
-  const sourceSheet = source.getSheet();
-  const headers = sourceSheet.getRange(source.getRow(), source.getColumn(), 1, source.getNumColumns()).getValues()[0];
-  const paramColumn = headers.findIndex(value => String(value).toLowerCase() === 'param');
-  const monthColumn = headers.findIndex(value => value instanceof Date);
-  if (paramColumn < 0 || monthColumn < 0) throw new Error('Construction timeline headers are incomplete.');
-  const firstRow = source.getRow() + 1;
-  const sourceRows = source.getNumRows() - 1;
-  const params = sourceSheet.getRange(firstRow, source.getColumn() + paramColumn, sourceRows, 1).getValues();
-  const formats = sourceSheet.getRange(firstRow, source.getColumn() + monthColumn, sourceRows, 1).getNumberFormats();
-  target.setNumberFormats(_detailsUnitFormats(rows, params, formats));
+  const values = source.getValues();
+  const monthColumn = values[0].findIndex(value => value instanceof Date);
+  if (monthColumn < 0) throw new Error('Construction timeline month headers are missing.');
+  const formats = source.getSheet().getRange(source.getRow(), source.getColumn() + monthColumn, source.getNumRows(), 1).getNumberFormats();
+  target.setNumberFormats(_detailsUnitFormats(rows, values, formats));
 }
 
 function _updateDetailsPeriodSelection(sheet, selectedValue) {
-  const controls = sheet.getParent().getSheetByName(DETAILS_CONTROLS_SHEET);
-  if (!controls) throw new Error('The Details period controls sheet is missing.');
-  controls.getRange('C2').setValue(String(selectedValue));
-  sheet.getRange('C2').setFormula(DETAILS_PERIOD_VALUE_FORMULA);
+  const literal = '"' + String(selectedValue).replace(/"/g, '""') + '"';
+  sheet.getRange('C2').setFormula(DETAILS_PERIOD_VALUE_FORMULA.replace('__SELECTION__', literal));
+  SpreadsheetApp.flush();
+}
+
+function _detailsPeriodOptions(months, period) {
+  const allLabels = { Month: 'All Month', Quarter: 'All Quarters', Year: 'All Years' };
+  if (!allLabels[period]) throw new Error(`Unsupported details period: ${period}`);
+  const dates = months.filter(month => month instanceof Date && Number.isFinite(month.getTime()));
+  if (!dates.length) throw new Error('The project timeline has no months to select.');
+  return [allLabels[period], ...new Set(dates.map(month => _detailsPeriodLabel(month, period)))];
+}
+
+function _updateDetailsPeriodOptions(sheet) {
+  const period = sheet.getRange('A2').getValue();
+  const months = sheet.getParent().getRangeByName('R_MONTHS');
+  if (!months) throw new Error('The project timeline named range R_MONTHS is missing.');
+  const options = _detailsPeriodOptions(months.getValues().flat(), period);
+  const validation = SpreadsheetApp.newDataValidation().requireValueInList(options, true).setAllowInvalid(false).build();
+  sheet.getRange('C2').setDataValidation(validation);
   SpreadsheetApp.flush();
 }
