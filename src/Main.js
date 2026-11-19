@@ -51,6 +51,11 @@ function _onToggleWriteLogsToFile() {
 }
 
 function _onSetTimelineBorders() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  if (sheet.getName() === '_details') {
+    setDetailsSheetBorders(sheet);
+    return;
+  }
   setTimelineSheetBorders();
 }
 
