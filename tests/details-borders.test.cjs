@@ -33,12 +33,10 @@ test('group columns are identified by header, and missing headers fail before wr
     ['Quarter', ' TYPE ', 'Year'], ['Q1 2028', 'Land Expenses', '2028'],
   ]))), [{ row: 2, style: 'SOLID_THICK' }]);
   let writes = 0;
-  const sheet = {
-    getLastRow: () => 2, getLastColumn: () => 3,
-    getRange: () => ({ getMergedRanges: () => [], getDisplayValues: () => [['type', 'quarter', 'month'], ['Land', 'Q2 2028', 'May']],
-      setBorder: () => writes++ }),
-  };
-  assert.throws(() => ctx.setDetailsSheetBorders(sheet), /No borders were changed/);
+  const api = {get: () => sheetData([['type', 'quarter', 'month'], ['Land', 'Q2 2028', 'May']]),
+    batchUpdate: () => writes++};
+  const command = context({Sheets: {Spreadsheets: {get: () => ({sheets: [api.get()]}), batchUpdate: api.batchUpdate}}});
+  assert.throws(() => command.setDetailsSheetBorders(sheetHandle), /No borders were changed/);
   assert.equal(writes, 0);
 });
 
@@ -52,43 +50,96 @@ test('expense headers and subtotal rows retain year dividers without a spurious 
   ]);
 });
 
-test('border command only changes horizontal borders across the populated width', () => {
-  const writes = [];
-  const sheet = {
-    getLastRow: () => 3, getLastColumn: () => 6,
-    getRange: (...range) => ({
-      getMergedRanges: () => [],
-      getDisplayValues: () => [['type', 'year', 'quarter'], ['Land', '2028', 'Q1 2028'], ['Land', '2029', 'Q1 2029']],
-      getA1Notation: () => 'F1',
-      setBorder: (...args) => writes.push({ range, args }),
-    }),
-    getRangeList: ranges => ({ setBorder: (...args) => writes.push({ ranges: Array.from(ranges), args }) }),
-  };
-  const ctx = context({ SpreadsheetApp: { BorderStyle: {
-    SOLID: 'thin', SOLID_THICK: 'thick',
-  } } });
-  ctx.setDetailsSheetBorders(sheet);
-  assert.deepEqual(writes, [
-    { range: [2, 1, 2, 6], args: [null, null, false, null, null, false] },
-    { ranges: ['A3:F3'], args: [null, null, true, null, null, null, '#666666', 'thick'] },
-    { ranges: ['A2:F2'], args: [null, null, true, null, null, null, '#666666', 'thin'] },
-  ]);
+const plain = value => JSON.parse(JSON.stringify(value));
+const sheetHandle = {getName: () => 'All Expenses', getParent: () => ({getId: () => 'copy-id'})};
+function sheetData(values, merges = [], rowMetadata = []) {
+  return {properties: {sheetId: 12}, merges, data: [{
+    rowData: values.map(row => ({values: row.map(value => ({formattedValue: value}))})), rowMetadata,
+  }]};
+}
+const merged = (startRowIndex, endRowIndex, column) => ({
+  sheetId: 12, startRowIndex, endRowIndex, startColumnIndex: column, endColumnIndex: column + 1,
 });
 
-test('merged labels retain the category end and year boundaries when borders are rebuilt', () => {
-  const writes = [];
-  const sheet = {
-    getLastRow: () => 5, getLastColumn: () => 6,
-    getRange: () => ({
-      getDisplayValues: () => [['Expense Type', 'Year'], ['Land', '2027'], ['', '2028'], ['', ''], ['Total', '']],
-      getMergedRanges: () => [{getRow: () => 2, getColumn: () => 1, getNumRows: () => 3, getNumColumns: () => 1}],
-      getA1Notation: () => 'F1', setBorder() {},
-    }),
-    getRangeList: ranges => ({setBorder: () => writes.push(Array.from(ranges))}),
-  };
-  const ctx = context({SpreadsheetApp: {BorderStyle: {SOLID: 'thin', SOLID_THICK: 'thick'}}});
-  ctx.setDetailsSheetBorders(sheet);
-  assert.deepEqual(writes, [['A4:F4', 'A5:F5'], ['A2:F2']]);
+test('border command uses one read and one atomic horizontal border update', () => {
+  const calls = [];
+  const snapshot = sheetData([
+    ['Expense Type', 'Year', 'Quarter', 'Month', 'Item', 'Cost'],
+    ['Land', '2028', 'Q1 2028', '', 'Item', '10'],
+    ['Land', '2029', 'Q1 2029', '', 'Item', '20'],
+  ]);
+  const ctx = context({Sheets: {Spreadsheets: {
+    get: (id, options) => {calls.push({id, options}); return {sheets: [snapshot]};},
+    batchUpdate: (body, id) => calls.push({id, body: plain(body)}),
+  }}});
+  ctx.setDetailsSheetBorders(sheetHandle);
+  assert.equal(calls.length, 2);
+  assert.equal(calls[0].id, 'copy-id');
+  assert.deepEqual(Array.from(calls[0].options.ranges), ["'All Expenses'"]);
+  const requests = calls[1].body.requests;
+  assert.ok(requests.every(request => Object.keys(request).join() === 'updateBorders'));
+  assert.ok(requests.every(({updateBorders: border}) => !border.left && !border.right && !border.innerVertical));
+  assert.deepEqual(requests[0].updateBorders, {
+    range: {sheetId: 12, startRowIndex: 1, endRowIndex: 3, startColumnIndex: 0, endColumnIndex: 6},
+    top: {style: 'NONE'}, bottom: {style: 'NONE'}, innerHorizontal: {style: 'NONE'},
+  });
+  assert.equal(requests[1].updateBorders.top.style, 'SOLID_THICK');
+  assert.equal(requests[2].updateBorders.bottom.style, 'SOLID');
+  assert.equal(requests[3].updateBorders.top.style, 'SOLID');
+  assert.equal(requests[4].updateBorders.bottom.style, 'SOLID_THICK');
+  for (const {updateBorders: border} of requests.slice(1)) {
+    assert.deepEqual((border.top || border.bottom).color, {red: 0.4, green: 0.4, blue: 0.4});
+  }
+});
+
+test('category edges cover whole merged labels; year edges do not cut through a category', () => {
+  const sheet = sheetData([
+    ['Expense Type', 'Year', 'Quarter', 'Month', 'Item', 'Cost'],
+    ['Land', '2027', 'Q1', '', 'Item', '10'],
+    ['', '', '', '', 'Item', '20'],
+    ['', '2028', 'Q1', '', 'Item', '30'],
+    ['Total', '', '', '', '', '60'],
+  ], [merged(1, 4, 0), merged(1, 3, 1), merged(1, 3, 2)]);
+  const before = JSON.stringify(sheet);
+  const borders = plain(context()._detailsBorderRequests(sheet)).map(request => request.updateBorders);
+  assert.equal(JSON.stringify(sheet), before);
+  assert.ok(borders.some(border => border.bottom?.style === 'SOLID_THICK' &&
+    JSON.stringify(border.range) === JSON.stringify(merged(1, 4, 0))));
+  assert.ok(borders.some(border => border.bottom?.style === 'SOLID' &&
+    border.range.startRowIndex === 1 && border.range.endRowIndex === 3 && border.range.startColumnIndex === 1));
+  assert.ok(borders.filter(border => border.top?.style === 'SOLID' || border.bottom?.style === 'SOLID')
+    .every(border => border.range.startColumnIndex >= 1));
+});
+
+test('filtered category and year boundaries are placed on their visible rows', () => {
+  const sheet = sheetData([
+    ['Expense Type', 'Year', 'Quarter', 'Month', 'Item', 'Cost'],
+    ['Land', '2026', 'Q1', '', 'Item', '10'],
+    ['', '2027', 'Q1', '', 'Item', '20'],
+    ['', '2028', 'Q1', '', 'Item', '30'],
+    ['Setup', '2026', 'Q1', '', 'Item', '40'],
+    ['', '2027', 'Q1', '', 'Item', '50'],
+    ['Total', '', '', '', '', '150'],
+  ], [merged(1, 4, 0), merged(4, 6, 0)], [
+    {}, {hiddenByFilter: true}, {}, {hiddenByFilter: true}, {hiddenByUser: true}, {}, {},
+  ]);
+  const borders = plain(context()._detailsBorderRequests(sheet)).map(request => request.updateBorders);
+  assert.ok(borders.some(border => border.bottom?.style === 'SOLID_THICK' &&
+    border.range.startRowIndex === 2 && border.range.endRowIndex === 3 && border.range.endColumnIndex === 6));
+  assert.ok(borders.some(border => border.top?.style === 'SOLID_THICK' &&
+    border.range.startRowIndex === 5 && border.range.endRowIndex === 6 && border.range.endColumnIndex === 6));
+  assert.ok(!borders.some(border => border.top?.style === 'SOLID' || border.bottom?.style === 'SOLID'));
+});
+
+test('quarter changes within one year receive no horizontal divider', () => {
+  const sheet = sheetData([
+    ['Expense Type', 'Year', 'Quarter', 'Month', 'Item', 'Cost'],
+    ['Land', '2027', 'Q1', '', 'Item', '10'],
+    ['', '', 'Q2', '', 'Item', '20'],
+  ], [merged(1, 3, 0), merged(1, 3, 1)]);
+  const borders = plain(context()._detailsBorderRequests(sheet)).slice(1).map(request => request.updateBorders);
+  assert.ok(!borders.some(border => border.bottom && border.range.endRowIndex === 2));
+  assert.ok(!borders.some(border => border.top && border.range.startRowIndex === 2));
 });
 
 test('the menu supports both expense sheet names, including renamed workbook copies', () => {

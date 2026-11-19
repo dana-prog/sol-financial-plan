@@ -1,38 +1,78 @@
 function setDetailsSheetBorders(sheet) {
-  const lastRow = sheet.getLastRow();
-  const lastColumn = sheet.getLastColumn();
-  if (lastRow < 2) return;
-
-  const range = sheet.getRange(1, 1, lastRow, lastColumn);
-  const values = range.getDisplayValues();
-  for (const merge of range.getMergedRanges()) {
-    const row = merge.getRow() - 1;
-    const column = merge.getColumn() - 1;
-    // Merged labels are stored only in their top cell, but borders still need
-    // the category and year associated with every detail and subtotal row.
-    if (merge.getNumColumns() === 1) {
-      for (let index = row + 1; index < row + merge.getNumRows(); index++) values[index][column] = values[row][column];
-    }
-  }
-  const borders = _detailsBorderRows(values);
-
-  // Rebuild horizontal dividers without changing the header or vertical borders.
-  sheet.getRange(2, 1, lastRow - 1, lastColumn)
-    .setBorder(null, null, false, null, null, false);
-
-  const lastColumnName = sheet.getRange(1, lastColumn).getA1Notation().replace(/\d+$/, '');
-  const styles = SpreadsheetApp.BorderStyle;
-  for (const style of ['SOLID_THICK', 'SOLID']) {
-    const ranges = borders.filter(border => border.style === style)
-      .map(border => `A${border.row}:${lastColumnName}${border.row}`);
-    if (ranges.length) {
-      sheet.getRangeList(ranges)
-        .setBorder(null, null, true, null, null, null, BORDER_COLOR, styles[style]);
-    }
-  }
+  const spreadsheetId = sheet.getParent().getId();
+  const sheetName = sheet.getName().replace(/'/g, "''");
+  const result = Sheets.Spreadsheets.get(spreadsheetId, {
+    ranges: [`'${sheetName}'`],
+    fields: 'sheets(properties(sheetId),merges,data(rowData(values(formattedValue)),rowMetadata(hiddenByFilter,hiddenByUser)))',
+  });
+  const requests = _detailsBorderRequests(result.sheets[0]);
+  if (requests.length) Sheets.Spreadsheets.batchUpdate({requests}, spreadsheetId);
 }
 
-function _detailsBorderRows(values) {
+function _detailsBorderRequests(sheet) {
+  const grid = sheet.data?.[0];
+  const values = (grid?.rowData || []).map(row => (row.values || []).map(cell => cell.formattedValue || ''));
+  while (values.length && !values[values.length - 1].some(value => value !== '')) values.pop();
+  if (values.length < 2) return [];
+
+  const sheetId = sheet.properties.sheetId;
+  const lastColumn = Math.max(...values.map(row => row.length));
+  const hiddenRows = new Set();
+  for (let row = 1; row <= values.length; row++) {
+    const metadata = grid.rowMetadata?.[row - 1];
+    if (metadata?.hiddenByFilter || metadata?.hiddenByUser) hiddenRows.add(row);
+  }
+  // Expand labels in memory; never unmerge or rewrite the actual cells.
+  for (const merge of sheet.merges || []) {
+    if (merge.endColumnIndex - merge.startColumnIndex !== 1) continue;
+    const value = values[merge.startRowIndex]?.[merge.startColumnIndex] || '';
+    for (let row = merge.startRowIndex + 1; row < Math.min(merge.endRowIndex, values.length); row++) {
+      values[row][merge.startColumnIndex] = value;
+    }
+  }
+  const borders = _detailsBorderRows(values, hiddenRows);
+  const requests = [{updateBorders: {
+    range: {sheetId, startRowIndex: 1, endRowIndex: values.length, startColumnIndex: 0, endColumnIndex: lastColumn},
+    top: {style: 'NONE'}, bottom: {style: 'NONE'}, innerHorizontal: {style: 'NONE'},
+  }}];
+  const visibleRows = values.slice(1).map((_, index) => index + 2).filter(row => !hiddenRows.has(row));
+  const color = {red: 0.4, green: 0.4, blue: 0.4};
+
+  function addEdge(row, edge, style) {
+    let previous;
+    for (let column = 0; column < lastColumn; column++) {
+      const merge = (sheet.merges || []).find(range =>
+        row - 1 >= range.startRowIndex && row - 1 < range.endRowIndex &&
+        column >= range.startColumnIndex && column < range.endColumnIndex);
+      let range = {sheetId, startRowIndex: row - 1, endRowIndex: row, startColumnIndex: column, endColumnIndex: column + 1};
+      if (merge) {
+        const visibleMergedRows = visibleRows.filter(index => index > merge.startRowIndex && index <= merge.endRowIndex);
+        // A year divider must not cut through the merged expense type label.
+        if (row !== (edge === 'top' ? visibleMergedRows[0] : visibleMergedRows.at(-1))) continue;
+        if (column !== merge.startColumnIndex) continue;
+        range = {...merge};
+      }
+      // Join adjacent cells only when their full vertical extents match.
+      if (previous && previous.range.startRowIndex === range.startRowIndex &&
+          previous.range.endRowIndex === range.endRowIndex && previous.range.endColumnIndex === range.startColumnIndex) {
+        previous.range.endColumnIndex = range.endColumnIndex;
+      } else {
+        previous = {range, [edge]: {style, color}};
+        requests.push({updateBorders: previous});
+      }
+    }
+  }
+
+  if (visibleRows.length) addEdge(visibleRows[0], 'top', 'SOLID_THICK');
+  for (const border of borders) {
+    addEdge(border.row, 'bottom', border.style);
+    const nextRow = visibleRows.find(row => row > border.row);
+    if (nextRow) addEdge(nextRow, 'top', border.style);
+  }
+  return requests;
+}
+
+function _detailsBorderRows(values, hiddenRows = new Set()) {
   const headers = values[0].map(value => String(value).trim().toLowerCase());
   const columns = [headers.indexOf('type') >= 0 ? headers.indexOf('type') : headers.indexOf('expense type'), headers.indexOf('year')];
   if (columns.includes(-1)) {
@@ -40,7 +80,7 @@ function _detailsBorderRows(values) {
   }
   const [type, year] = columns;
   const rows = values.slice(1).map((values, index) => ({ values, row: index + 2 }))
-    .filter(row => row.values[type] !== '');
+    .filter(row => row.values[type] !== '' && row.values[type] !== undefined && !hiddenRows.has(row.row));
   const borders = [];
   for (let index = 0; index < rows.length; index++) {
     const current = rows[index];
