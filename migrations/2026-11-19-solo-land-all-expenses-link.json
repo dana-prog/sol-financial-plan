@@ -1,0 +1,83 @@
+{
+  "spreadsheetId": "1vCr6x_NBbwcomyW1BDdXZgko7y2gak9q-8WefImQCZY",
+  "description": "Add All Expenses as the last Project Expenses link in the Solo Land Purchase workbook, after Infra - Planned, using the existing card style.",
+  "target": {
+    "sheetId": 1623286087,
+    "title": "All Expenses"
+  },
+  "requests": [
+    {
+      "copyPaste": {
+        "source": {
+          "sheetId": 1936111402,
+          "startRowIndex": 8,
+          "endRowIndex": 10,
+          "startColumnIndex": 1,
+          "endColumnIndex": 5
+        },
+        "destination": {
+          "sheetId": 1936111402,
+          "startRowIndex": 8,
+          "endRowIndex": 10,
+          "startColumnIndex": 6,
+          "endColumnIndex": 10
+        },
+        "pasteType": "PASTE_NORMAL",
+        "pasteOrientation": "NORMAL"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 8,
+          "endRowIndex": 9,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=HYPERLINK(\"#gid=1623286087\",\"All Expenses ↗\")"
+                },
+                "userEnteredFormat": {
+                  "textFormat": {
+                    "link": {
+                      "uri": "#gid=1623286087"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue,userEnteredFormat.textFormat.link"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1936111402,
+          "startRowIndex": 9,
+          "endRowIndex": 10,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "All expense items by period"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    }
+  ]
+}
