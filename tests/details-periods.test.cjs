@@ -30,7 +30,7 @@ test('period options follow timeline bounds and deduplicate quarters and years',
 });
 
 function fixture() {
-  const values = { A2: 'Quarter', C2: 'Dec 2026' };
+  const values = { A2: 'Quarter', D2: 'Dec 2026' };
   const validations = {};
   const sheet = {
     getSheetId: () => 2109063306,
@@ -62,25 +62,25 @@ test('editing period replaces dependent options and keeps the matching period', 
   const { ctx, sheet, values, validations } = fixture();
   const range = { getSheet: () => sheet, getRow: () => 2, getLastRow: () => 2, getColumn: () => 1 };
   ctx.updateDetailsPeriod({ range });
-  assert.equal(values.C2, 'Q4 2026');
-  assert.equal(values.C1, 'Select Quarter');
-  assert.equal(validations.C2.allowInvalid, false);
-  assert.equal(validations.C2.options.length, 6);
+  assert.equal(values.D2, 'Q4 2026');
+  assert.equal(values.D1, 'Select Quarter');
+  assert.equal(validations.D2.allowInvalid, false);
+  assert.equal(validations.D2.options.length, 6);
   values.A2 = 'Year';
   ctx.updateDetailsPeriod({ range });
-  assert.equal(values.C2, '2026');
-  assert.equal(values.C1, 'Select Year');
+  assert.equal(values.D2, '2026');
+  assert.equal(values.D1, 'Select Year');
   values.A2 = 'Month';
-  values.C2 = 'All Years';
+  values.D2 = 'All Years';
   ctx.updateDetailsPeriod({ range });
-  assert.equal(values.C2, 'All Month');
-  assert.equal(values.C1, 'Select Month');
-  assert.equal(validations.C2.options[0], 'All Month');
+  assert.equal(values.D2, 'All Month');
+  assert.equal(values.D1, 'Select Month');
+  assert.equal(validations.D2.options[0], 'All Month');
   values.A2 = 'Quarter';
   ctx.updateDetailsPeriod({ range });
-  assert.equal(values.C2, 'All Quarters');
-  assert.equal(values.C1, 'Select Quarter');
-  assert.equal(validations.C2.options[0], 'All Quarters');
+  assert.equal(values.D2, 'All Quarters');
+  assert.equal(values.D1, 'Select Quarter');
+  assert.equal(validations.D2.options[0], 'All Quarters');
 });
 
 test('unrelated edits do not change the period selection', () => {
@@ -90,7 +90,7 @@ test('unrelated edits do not change the period selection', () => {
   ctx.updateDetailsPeriod({ range: { getSheet: () => sheet, getRow: () => 1, getLastRow: () => 1 } });
   ctx.updateDetailsPeriod({ range: { getSheet: () => sheet, getRow: () => 2, getLastRow: () => 2, getColumn: () => 2 } });
   ctx.updateDetailsPeriod({});
-  assert.deepEqual(values, { A2: 'Quarter', C2: 'Dec 2026' });
+  assert.deepEqual(values, { A2: 'Quarter', D2: 'Dec 2026' });
 });
 
 test('menu navigation opens the selected month and retains land and planning views', () => {
@@ -104,9 +104,9 @@ test('menu navigation opens the selected month and retains land and planning vie
     const { ctx, values, validations } = fixture();
     ctx.showDetails(param, new Date(2027, 4, 1));
     assert.equal(values.A2, 'Month');
-    assert.equal(values.C2, 'May 2027');
-    assert.equal(values.E2, expected);
+    assert.equal(values.D2, 'May 2027');
+    assert.equal(values.F2, expected);
     assert.equal(values.activated, true);
-    assert.ok(validations.C2.options.includes('May 2027'));
+    assert.ok(validations.D2.options.includes('May 2027'));
   }
 });

@@ -1,0 +1,328 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheet": "Details",
+  "description": "Add Month immediately after Type, retaining monthly expense rows within quarter, year, and all-period selections.",
+  "before": {
+    "formula": "=LET(\n  details, LET(\n  period, A2,\n  selected, C2,\n  expense_type, E2,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      infra_details, LAMBDA(month,\n        LET(\n          source, S_INFRA_EXP_P,\n          params, COL_VALUES(source, \"param\"),\n          suppliers, COL_VALUES(source, \"supplier\"),\n          categories, COL_VALUES(source, \"_category\"),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n            ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      financing_details, LAMBDA(month, source, param_name, party_header, type_label,\n        LET(\n          params, COL_VALUES(source, \"param\"),\n          names, COL_VALUES(source, \"_name\"),\n          parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"),\n            COL_VALUES(source, party_header)), \"\")),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n            params=param_name,\n            ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type=\"Borrowing Repayments\",\n        financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n        IF(expense_type=\"Loan Disbursements\",\n          financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n        IF(expense_type = \"Infrastructure Expenses\", infra_details(month), IF(expense_type = \"Setup Expenses\", without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(OR(expense_type = \"Direct Operating Expenses\", expense_type = \"Other Operating Expenses\"),\n        LET(\n          operating, OPERATIONAL_EXPENSES_D(month),\n          IFNA(FILTER(operating, CHOOSECOLS(operating, 1)=expense_type), {\"\",\"\",\"\",\"\"})\n        ),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                infra_details(month),\n                LAND_EXPENSES_D(month),\n                financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n                financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  ))))),\n      IF(AND(period=\"Month\", NOT(all_periods)), monthly_details(INDEX(selected_months, 1, 1)),\n        LET(\n          expenses, REDUCE({\"\",\"\",\"\",0}, selected_months,\n            LAMBDA(result, month, VSTACK(result, monthly_details(month)))),\n          IFNA(QUERY(expenses,\n            \"select Col1, Col2, Col3, sum(Col4) where Col1 is not null group by Col1, Col2, Col3 label sum(Col4) ''\", 0),\n            {\"\",\"\",\"\",0})\n        )\n      )\n    )\n  )\n),\n  spacer, ARRAYFORMULA(IF(SEQUENCE(ROWS(details))>0, \"\", \"\")),\n  type_labels, MAP(CHOOSECOLS(details, 1), LAMBDA(type,\n    SWITCH(type,\n      \"Construction\", \"Construction Expenses\",\n      \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\",\n      \"Land\", \"Land Expenses\",\n      type)\n  )),\n  HSTACK(type_labels, spacer, CHOOSECOLS(details, 2), spacer, CHOOSECOLS(details, 3, 4))\n)",
+    "sheet": {
+      "properties": {
+        "sheetId": 2109063306,
+        "title": "Details",
+        "index": 13,
+        "sheetType": "GRID",
+        "gridProperties": {
+          "rowCount": 101,
+          "columnCount": 6,
+          "frozenRowCount": 4,
+          "frozenColumnCount": 5,
+          "hideGridlines": true
+        }
+      },
+      "conditionalFormats": [
+        {
+          "ranges": [
+            {
+              "sheetId": 2109063306,
+              "startRowIndex": 4,
+              "endRowIndex": 101,
+              "startColumnIndex": 0,
+              "endColumnIndex": 6
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND($A5<>\"\",ISEVEN(ROW()))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9490196,
+                "green": 0.9647059,
+                "blue": 0.9764706
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9490196,
+                  "green": 0.9647059,
+                  "blue": 0.9764706
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "requests": [
+    {
+      "insertDimension": {
+        "range": {
+          "sheetId": 2109063306,
+          "dimension": "COLUMNS",
+          "startIndex": 1,
+          "endIndex": 2
+        },
+        "inheritFromBefore": true
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 2109063306,
+          "dimension": "COLUMNS",
+          "startIndex": 1,
+          "endIndex": 2
+        },
+        "properties": {
+          "pixelSize": 110
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 2109063306,
+          "startRowIndex": 0,
+          "endRowIndex": 2,
+          "startColumnIndex": 0,
+          "endColumnIndex": 2
+        },
+        "mergeType": "MERGE_ROWS"
+      }
+    },
+    {
+      "updateSheetProperties": {
+        "properties": {
+          "sheetId": 2109063306,
+          "gridProperties": {
+            "frozenColumnCount": 6
+          }
+        },
+        "fields": "gridProperties.frozenColumnCount"
+      }
+    },
+    {
+      "appendDimension": {
+        "sheetId": 2109063306,
+        "dimension": "ROWS",
+        "length": 977
+      }
+    },
+    {
+      "copyPaste": {
+        "source": {
+          "sheetId": 2109063306,
+          "startRowIndex": 100,
+          "endRowIndex": 101,
+          "startColumnIndex": 0,
+          "endColumnIndex": 7
+        },
+        "destination": {
+          "sheetId": 2109063306,
+          "startRowIndex": 101,
+          "endRowIndex": 1078,
+          "startColumnIndex": 0,
+          "endColumnIndex": 7
+        },
+        "pasteType": "PASTE_FORMAT"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 3,
+          "columnIndex": 1
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "month"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 2109063306,
+          "startRowIndex": 4,
+          "endRowIndex": 1078,
+          "startColumnIndex": 1,
+          "endColumnIndex": 2
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "DATE",
+              "pattern": "mmm yyyy"
+            },
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": false,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.2,
+                  "green": 0.255,
+                  "blue": 0.333
+                }
+              }
+            },
+            "horizontalAlignment": "LEFT"
+          }
+        },
+        "fields": "userEnteredFormat.numberFormat,userEnteredFormat.textFormat,userEnteredFormat.horizontalAlignment"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 2109063306,
+          "rowIndex": 4,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  details, LET(\n  period, A2,\n  selected, D2,\n  expense_type, F2,\n  all_periods, OR(selected=\"All Month\", selected=\"All Quarters\", selected=\"All Years\"),\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  labels, ARRAYFORMULA(IF(period=\"Month\", TEXT(months, \"mmm yyyy\"),\n    IF(period=\"Quarter\", \"Q\"&ROUNDUP(MONTH(months)/3)&\" \"&YEAR(months),\n      TEXT(months, \"yyyy\")))),\n  IF(AND(NOT(all_periods), SUM(ARRAYFORMULA(N(labels=TO_TEXT(selected))))=0), \"\",\n    LET(\n      selected_months, FILTER(months, IF(all_periods, ISNUMBER(months), labels=TO_TEXT(selected))),\n      without_totals, LAMBDA(expenses, source,\n        LET(\n          categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n            COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n          IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      infra_details, LAMBDA(month,\n        LET(\n          source, S_INFRA_EXP_P,\n          params, COL_VALUES(source, \"param\"),\n          suppliers, COL_VALUES(source, \"supplier\"),\n          categories, COL_VALUES(source, \"_category\"),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n            ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      financing_details, LAMBDA(month, source, param_name, party_header, type_label,\n        LET(\n          params, COL_VALUES(source, \"param\"),\n          names, COL_VALUES(source, \"_name\"),\n          parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"),\n            COL_VALUES(source, party_header)), \"\")),\n          values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n          IFNA(FILTER(\n            HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n            params=param_name,\n            ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n            ISNUMBER(values),\n            values>0\n          ), {\"\",\"\",\"\",\"\"})\n        )\n      ),\n      monthly_details, LAMBDA(month, IF(expense_type=\"Borrowing Repayments\",\n        financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n        IF(expense_type=\"Loan Disbursements\",\n          financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n        IF(expense_type = \"Infrastructure Expenses\", infra_details(month), IF(expense_type = \"Setup Expenses\", without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n    IF(expense_type = \"Construction Expenses\", CONSTRUCTION_EXPENSES_D(month),\n      IF(OR(expense_type = \"Direct Operating Expenses\", expense_type = \"Other Operating Expenses\"),\n        LET(\n          operating, OPERATIONAL_EXPENSES_D(month),\n          IFNA(FILTER(operating, CHOOSECOLS(operating, 1)=expense_type), {\"\",\"\",\"\",\"\"})\n        ),\n        IF(expense_type = \"Land Expenses\", LAND_EXPENSES_D(month),\n          IF(\n            expense_type = \"All\",\n            LET(\n              all_expenses,\n              VSTACK(\n                without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n                infra_details(month),\n                LAND_EXPENSES_D(month),\n                financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n                financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n                without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n                without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P)\n              ),               \n              FILTER(\n                all_expenses,\n                CHOOSECOLS(all_expenses, 1) <> \"\"\n              )\n            )\n          )\n        )\n      )\n    )\n  ))))),\n      LET(\n        expenses, REDUCE({\"\",0,\"\",\"\",0}, selected_months,\n          LAMBDA(result, month,\n            LET(\n              monthly, monthly_details(month),\n              VSTACK(result, HSTACK(\n                CHOOSECOLS(monthly, 1),\n                ARRAYFORMULA(IF(CHOOSECOLS(monthly, 1)<>\"\", month, \"\")),\n                CHOOSECOLS(monthly, 2, 3, 4)\n              ))\n            )\n          )),\n        IFNA(QUERY(expenses,\n          \"select Col1, Col2, Col3, Col4, sum(Col5) where Col1 is not null group by Col1, Col2, Col3, Col4 order by Col1, Col2, Col3 label sum(Col5) ''\", 0),\n          {\"\",\"\",\"\",\"\",0})\n      )\n    )\n  )\n),\n  spacer, ARRAYFORMULA(IF(SEQUENCE(ROWS(details))>0, \"\", \"\")),\n  type_labels, MAP(CHOOSECOLS(details, 1), LAMBDA(type,\n    SWITCH(type,\n      \"Construction\", \"Construction Expenses\",\n      \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\",\n      \"Land\", \"Land Expenses\",\n      type)\n  )),\n  HSTACK(type_labels, CHOOSECOLS(details, 2), spacer, CHOOSECOLS(details, 3), spacer, CHOOSECOLS(details, 4, 5))\n)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateConditionalFormatRule": {
+        "sheetId": 2109063306,
+        "index": 0,
+        "rule": {
+          "ranges": [
+            {
+              "sheetId": 2109063306,
+              "startRowIndex": 4,
+              "endRowIndex": 1078,
+              "startColumnIndex": 0,
+              "endColumnIndex": 7
+            }
+          ],
+          "booleanRule": {
+            "condition": {
+              "type": "CUSTOM_FORMULA",
+              "values": [
+                {
+                  "userEnteredValue": "=AND($A5<>\"\",ISEVEN(ROW()))"
+                }
+              ]
+            },
+            "format": {
+              "backgroundColor": {
+                "red": 0.9490196,
+                "green": 0.9647059,
+                "blue": 0.9764706
+              },
+              "backgroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.9490196,
+                  "green": 0.9647059,
+                  "blue": 0.9764706
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "layout": {
+    "period": "A2:B2",
+    "selectedPeriod": "D2",
+    "type": "F2",
+    "dependentLabel": "D1",
+    "monthColumn": "B5:B1078",
+    "tableColumns": [
+      "A",
+      "B",
+      "D",
+      "F",
+      "G"
+    ]
+  },
+  "validation": [
+    {
+      "period": "Month",
+      "selected": "Nov 2028",
+      "type": "All",
+      "monthlyRows": 21,
+      "previousAggregatedRows": 21,
+      "total": 13804736.588583022,
+      "totalsPreserved": true,
+      "monthsWithinSelection": true
+    },
+    {
+      "period": "Quarter",
+      "selected": "Q4 2028",
+      "type": "All",
+      "monthlyRows": 65,
+      "previousAggregatedRows": 27,
+      "total": 44099679.3107495,
+      "totalsPreserved": true,
+      "monthsWithinSelection": true
+    },
+    {
+      "period": "Year",
+      "selected": "2028",
+      "type": "All",
+      "monthlyRows": 195,
+      "previousAggregatedRows": 70,
+      "total": 211108388.34104508,
+      "totalsPreserved": true,
+      "monthsWithinSelection": true
+    },
+    {
+      "period": "Month",
+      "selected": "All Month",
+      "type": "All",
+      "monthlyRows": 1074,
+      "previousAggregatedRows": 97,
+      "total": 1066585556.3598031,
+      "totalsPreserved": true,
+      "monthsWithinSelection": true
+    },
+    {
+      "period": "Month",
+      "selected": "Jan 2026",
+      "type": "Loan Disbursements",
+      "monthlyRows": 0,
+      "previousAggregatedRows": 0,
+      "total": 0,
+      "totalsPreserved": true,
+      "monthsWithinSelection": true
+    }
+  ],
+  "notes": [
+    "Monthly dates are native date values formatted mmm yyyy.",
+    "All existing named-function calls remain; aggregation groups by month as well as type, item, and details.",
+    "Expanded the sheet to accommodate 1,074 monthly All-period detail rows, extending existing formatting and alternating-row styling.",
+    "Verified live Year/2028/All output has 195 rows and matches its previous aggregate total.",
+    "Visually verified month labels and selector layout; preserved separator columns.",
+    "Four Details period/navigation tests pass with shifted selection cells.",
+    "Clasp push followed by pull comparison verifies the source update and preserves unrelated source.",
+    "Temporary verification sheet removed."
+  ]
+}
