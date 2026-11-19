@@ -6,55 +6,139 @@ const ALL_EXPENSES_TYPES = [
 const ALL_EXPENSES_CALCULATION_ROWS = 20000;
 
 function refreshAllExpenses() {
+  const started = Date.now();
+  const timings = {};
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const spreadsheetId = spreadsheet.getId();
   const lock = LockService.getDocumentLock();
   if (!lock.tryLock(1000)) throw new Error('Another refresh is running. Please try again shortly.');
+  let snapshot;
+  let calculating = false;
   try {
-    const metadata = Sheets.Spreadsheets.get(spreadsheetId, {fields: 'sheets(properties,basicFilter,rowGroups,merges)'});
-    const sheet = metadata.sheets.find(sheet => sheet.properties.title === 'All Expenses') ||
-      metadata.sheets.find(sheet => sheet.properties.title === 'Details');
-    if (!sheet) throw new Error('Could not find All Expenses or Details.');
-    const expenses = _calculateAllExpenses(spreadsheetId);
+    let phase = Date.now();
+    const target = spreadsheet.getSheetByName('All Expenses') || spreadsheet.getSheetByName('Details');
+    if (!target) throw new Error('Could not find All Expenses or Details.');
+    const title = target.getName().replace(/'/g, "''");
+    const response = Sheets.Spreadsheets.get(spreadsheetId, {
+      ranges: [`'${title}'!A1:F${target.getMaxRows()}`],
+      fields: 'sheets(properties,basicFilter,rowGroups,merges,data(rowData(values(userEnteredValue,textFormatRuns))))',
+    });
+    snapshot = response.sheets[0];
+    timings.readMs = Date.now() - phase;
+    const capacity = Math.max(ALL_EXPENSES_CALCULATION_ROWS, snapshot.properties.gridProperties.rowCount);
+    const calculationRange = `'${title}'!A2:F${capacity}`;
+    phase = Date.now();
+    const result = Sheets.Spreadsheets.batchUpdate({
+      requests: _allExpensesCalculationRequests(snapshot, capacity),
+      includeSpreadsheetInResponse: true, responseIncludeGridData: true, responseRanges: [calculationRange],
+    }, spreadsheetId, {fields: 'updatedSpreadsheet(sheets(data(rowData(values(effectiveValue)))))'});
+    calculating = true;
+    timings.calculateMs = Date.now() - phase;
+    const expenses = _readCalculatedExpenses(spreadsheetId, calculationRange, result, timings);
+    phase = Date.now();
     const layout = _allExpensesLayout(expenses);
-    const requests = _allExpensesWriteRequests(sheet, layout);
+    const requests = _allExpensesRefreshRequests(snapshot, layout, capacity);
+    timings.prepareMs = Date.now() - phase;
+    timings.items = expenses.length;
+    timings.writeRequests = requests.length;
+    phase = Date.now();
     Sheets.Spreadsheets.batchUpdate({requests}, spreadsheetId);
-    _createMenu();
-    spreadsheet.toast(`Updated ${expenses.length} expense items.`, 'All Expenses', 5);
+    calculating = false;
+    timings.saveMs = Date.now() - phase;
+    return `Updated ${expenses.length} expense items.`;
+  } catch (error) {
+    if (calculating) {
+      try {
+        Sheets.Spreadsheets.batchUpdate({requests: _allExpensesRestoreRequests(snapshot)}, spreadsheetId);
+      } catch (restoreError) {
+        throw new Error(`${error.message} Could not restore the previous display: ${restoreError.message}`);
+      }
+    }
+    throw error;
   } finally {
     lock.releaseLock();
+    console.log('All Expenses refresh timings (ms): ' + JSON.stringify({...timings, totalMs: Date.now() - started}));
   }
 }
 
-function _calculateAllExpenses(spreadsheetId) {
-  // Evaluate the existing named-function formula in a temporary sheet. Never
-  // clear the last successful display until the complete new result is valid.
-  const sheetId = Math.floor(Math.random() * 2000000000);
-  const title = `_expenses_calculation_${Date.now()}`;
-  Sheets.Spreadsheets.batchUpdate({requests: [
-    {addSheet: {properties: {sheetId, title, hidden: true,
-      gridProperties: {rowCount: ALL_EXPENSES_CALCULATION_ROWS, columnCount: 6}}}},
-    {updateCells: {start: {sheetId, rowIndex: 0, columnIndex: 0},
-      rows: [{values: [{userEnteredValue: {formulaValue: ALL_EXPENSES_FORMULA}}]}], fields: 'userEnteredValue'}},
-  ]}, spreadsheetId);
-  try {
-    const deadline = Date.now() + 120000;
-    let rows;
-    do {
-      const range = `'${title}'!A1:F${ALL_EXPENSES_CALCULATION_ROWS}`;
-      const result = Sheets.Spreadsheets.Values.get(spreadsheetId, range, {valueRenderOption: 'UNFORMATTED_VALUE'});
-      rows = result.values || [];
-      if (rows[0]?.[0] === '__NO_EXPENSES__') return [];
-      if (ALL_EXPENSES_TYPES.includes(rows[0]?.[0])) {
-        _validateAllExpenses(rows);
-        return rows;
-      }
-      Utilities.sleep(1000);
-    } while (Date.now() < deadline);
-    throw new Error(`Expense calculation did not finish (${rows?.[0]?.[0] || 'blank result'}). Existing rows were preserved.`);
-  } finally {
-    Sheets.Spreadsheets.batchUpdate({requests: [{deleteSheet: {sheetId}}]}, spreadsheetId);
+function _allExpensesCalculationRequests(sheet, capacity) {
+  const sheetId = sheet.properties.sheetId;
+  const requests = [];
+  if (sheet.basicFilter) requests.push({clearBasicFilter: {sheetId}});
+  for (const range of sheet.merges || []) requests.push({unmergeCells: {range}});
+  const extraRows = capacity - sheet.properties.gridProperties.rowCount;
+  if (extraRows > 0) requests.push({appendDimension: {sheetId, dimension: 'ROWS', length: extraRows}});
+  requests.push({repeatCell: {range: {sheetId, startRowIndex: 1, endRowIndex: capacity, startColumnIndex: 0, endColumnIndex: 6},
+    cell: {}, fields: 'userEnteredValue,textFormatRuns'}});
+  requests.push({updateCells: {start: {sheetId, rowIndex: 1, columnIndex: 0},
+    rows: [{values: [{userEnteredValue: {formulaValue: ALL_EXPENSES_FORMULA}}]}], fields: 'userEnteredValue'}});
+  return requests;
+}
+
+function _readCalculatedExpenses(spreadsheetId, range, result, timings) {
+  const started = Date.now();
+  const deadline = started + 120000;
+  let grid = result.updatedSpreadsheet?.sheets?.[0]?.data?.[0]?.rowData || [];
+  timings.polls = 0;
+  while (true) {
+    const error = grid[0]?.values?.[0]?.effectiveValue?.errorValue;
+    if (error && error.type !== 'LOADING') throw new Error(`Expense calculation failed: ${error.message}`);
+    let rows = grid.map(row => (row.values || []).map(cell => {
+      const value = cell.effectiveValue || {};
+      return value.numberValue ?? value.stringValue ?? '';
+    }));
+    // Formatted empty rows may be included in GridData after an in-place write.
+    while (rows.length && rows[rows.length - 1].every(value => value === '')) rows.pop();
+    if (rows[0]?.[0] === '__NO_EXPENSES__') rows = [];
+    else if (!ALL_EXPENSES_TYPES.includes(rows[0]?.[0])) {
+      if (Date.now() >= deadline) throw new Error('Expense calculation did not finish.');
+      if (timings.polls) Utilities.sleep(1000);
+      const response = Sheets.Spreadsheets.get(spreadsheetId, {
+        ranges: [range], fields: 'sheets(data(rowData(values(effectiveValue))))',
+      });
+      grid = response.sheets?.[0]?.data?.[0]?.rowData || [];
+      timings.polls++;
+      continue;
+    }
+    _validateAllExpenses(rows);
+    timings.waitMs = Date.now() - started;
+    return rows;
   }
+}
+
+function _allExpensesRefreshRequests(sheet, layout, capacity) {
+  const previous = sheet.data?.[0]?.rowData?.slice(1) || [];
+  const sameLayout = !sheet.merges?.length && !sheet.rowGroups?.length && sheet.basicFilter &&
+    sheet.properties.gridProperties.rowCount === layout.totalRow && previous.length === layout.rows.length &&
+    layout.rows.every((row, index) => row.every((value, column) => {
+      if (column === 5 && index !== layout.rows.length - 1) return true;
+      const old = previous[index].values?.[column]?.userEnteredValue || {};
+      return value === (old.numberValue ?? old.stringValue ?? old.formulaValue ?? '');
+    }));
+  const preparedSheet = {...sheet, merges: [], basicFilter: undefined,
+    properties: {...sheet.properties, gridProperties: {...sheet.properties.gridProperties, rowCount: capacity}}};
+  const requests = _allExpensesWriteRequests(preparedSheet, layout);
+  const filter = requests.find(request => request.setBasicFilter)?.setBasicFilter.filter;
+  if (filter && sheet.basicFilter) {
+    filter.filterSpecs = sheet.basicFilter.filterSpecs || Object.entries(sheet.basicFilter.criteria || {})
+      .map(([column, filterCriteria]) => ({columnIndex: Number(column), filterCriteria}));
+  }
+  // Labels and periods are unchanged, so retain the user's existing formatting.
+  return sameLayout ? requests.filter(request => !request.updateBorders && !request.repeatCell?.fields.includes('userEnteredFormat')) : requests;
+}
+
+function _allExpensesRestoreRequests(sheet) {
+  const sheetId = sheet.properties.sheetId;
+  const rowCount = sheet.properties.gridProperties.rowCount;
+  const requests = [
+    {updateCells: {start: {sheetId, rowIndex: 1, columnIndex: 0}, rows: [{values: [{}]}], fields: 'userEnteredValue'}},
+    {updateCells: {range: {sheetId, startRowIndex: 1, endRowIndex: rowCount, startColumnIndex: 0, endColumnIndex: 6},
+      rows: (sheet.data?.[0]?.rowData || []).slice(1), fields: 'userEnteredValue,textFormatRuns'}},
+    {updateSheetProperties: {properties: {sheetId, gridProperties: {rowCount}}, fields: 'gridProperties.rowCount'}},
+  ];
+  for (const range of sheet.merges || []) requests.push({mergeCells: {range, mergeType: 'MERGE_ALL'}});
+  if (sheet.basicFilter) requests.push({setBasicFilter: {filter: sheet.basicFilter}});
+  return requests;
 }
 
 function _validateAllExpenses(rows) {
@@ -92,27 +176,36 @@ function _allExpensesWriteRequests(sheet, layout) {
   if (layout.totalRow > oldRowCount) {
     requests.push({appendDimension: {sheetId, dimension: 'ROWS', length: layout.totalRow - oldRowCount}});
   }
-  requests.push({repeatCell: {range: bodyRange, cell: {}, fields: 'userEnteredValue,textFormatRuns'}});
+  // Clearing the formula anchor releases its spill before writing static values.
+  requests.push({repeatCell: {range: {sheetId, startRowIndex: 1, endRowIndex: 2, startColumnIndex: 0, endColumnIndex: 1},
+    cell: {}, fields: 'userEnteredValue,textFormatRuns'}});
+  const displayRange = {...bodyRange, endRowIndex: layout.totalRow};
+  const format = {backgroundColor: {red: 1, green: 1, blue: 1}, verticalAlignment: 'MIDDLE',
+    horizontalAlignment: 'LEFT', wrapStrategy: 'OVERFLOW_CELL',
+    textFormat: {fontFamily: 'Arial', fontSize: 11, bold: false, foregroundColor: {red: 0.4, green: 0.4, blue: 0.4}}};
+  requests.push({repeatCell: {range: displayRange, cell: {userEnteredFormat: format}, fields: 'userEnteredFormat'}});
+  const columns = [
+    [1, {horizontalAlignment: 'CENTER', numberFormat: {type: 'NUMBER', pattern: '0'}}],
+    [2, {horizontalAlignment: 'CENTER', numberFormat: {type: 'TEXT', pattern: '@'}}],
+    [3, {horizontalAlignment: 'CENTER', numberFormat: {type: 'DATE', pattern: 'mmmm yyyy'}}],
+    [4, {wrapStrategy: 'WRAP'}],
+    [5, {horizontalAlignment: 'RIGHT', numberFormat: {type: 'NUMBER', pattern: '฿ #,##0,"K"'}}],
+  ];
+  for (const [column, columnFormat] of columns) {
+    requests.push({repeatCell: {range: {...displayRange, startColumnIndex: column, endColumnIndex: column + 1},
+      cell: {userEnteredFormat: columnFormat}, fields: Object.keys(columnFormat).map(key => 'userEnteredFormat.' + key).join(',')}});
+  }
+  requests.push({repeatCell: {range: {...displayRange, startRowIndex: layout.totalRow - 1},
+    cell: {userEnteredFormat: {backgroundColor: {red: 0.93, green: 0.93, blue: 0.93}, textFormat: {bold: true}}},
+    fields: 'userEnteredFormat.backgroundColor,userEnteredFormat.textFormat.bold'}});
   const rows = layout.rows.map((row,index) => ({values: row.map((value,column) => {
-    const rowNumber = index + 2;
-    const summary = rowNumber === layout.totalRow;
-    const format = {
-      backgroundColor: {red: summary ? 0.93 : 1, green: summary ? 0.93 : 1, blue: summary ? 0.93 : 1},
-      verticalAlignment: 'MIDDLE', horizontalAlignment: column === 5 ? 'RIGHT' : column >= 1 && column <= 3 ? 'CENTER' : 'LEFT',
-      wrapStrategy: column === 4 ? 'WRAP' : 'OVERFLOW_CELL',
-      textFormat: {fontFamily: 'Arial', fontSize: 11, bold: summary, foregroundColor: {red: 0.4, green: 0.4, blue: 0.4}},
-    };
-    if (column === 1) format.numberFormat = {type: 'NUMBER', pattern: '0'};
-    if (column === 2) format.numberFormat = {type: 'TEXT', pattern: '@'};
-    if (column === 3) format.numberFormat = {type: 'DATE', pattern: 'mmmm yyyy'};
-    if (column === 5) format.numberFormat = {type: 'NUMBER', pattern: '฿ #,##0,"K"'};
-    const cell = {userEnteredFormat: format, userEnteredValue: typeof value === 'number' ? {numberValue: value}
+    const summary = index + 2 === layout.totalRow;
+    const cell = {userEnteredValue: typeof value === 'number' ? {numberValue: value}
       : column === 5 && summary ? {formulaValue: value} : {stringValue: String(value)}};
     if (column === 4 && value) cell.textFormatRuns = _allExpensesTextRuns(String(value));
     return cell;
   })}));
-  requests.push({updateCells: {range: {...bodyRange, endRowIndex: layout.totalRow}, rows,
-    fields: 'userEnteredValue,userEnteredFormat,textFormatRuns'}});
+  requests.push({updateCells: {range: displayRange, rows, fields: 'userEnteredValue,textFormatRuns'}});
   const borderRows = _detailsBorderRows([['Type', 'Year'], ...layout.rows]);
   for (const border of borderRows) {
     requests.push({updateBorders: {range: {sheetId, startRowIndex: border.row - 1, endRowIndex: border.row, startColumnIndex: 0, endColumnIndex: 6},
