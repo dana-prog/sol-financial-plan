@@ -12,7 +12,7 @@ function refreshAllExpenses() {
   if (!lock.tryLock(1000)) throw new Error('Another refresh is running. Please try again shortly.');
   try {
     let phase = Date.now();
-    const metadata = Sheets.Spreadsheets.get(spreadsheetId, {fields: 'sheets(properties,basicFilter,rowGroups,merges)'});
+    const metadata = Sheets.Spreadsheets.get(spreadsheetId, {fields: 'properties(timeZone),sheets(properties,basicFilter,rowGroups,merges)'});
     const sheet = metadata.sheets.find(sheet => sheet.properties.title === 'All Expenses') ||
       metadata.sheets.find(sheet => sheet.properties.title === 'Details');
     if (!sheet) throw new Error('Could not find All Expenses or Details.');
@@ -30,7 +30,9 @@ function refreshAllExpenses() {
     timings.readSourcesMs = Date.now() - phase;
     phase = Date.now();
     const inputs = Object.fromEntries(ALL_EXPENSES_SOURCE_RANGES.map((name, index) => [name, source.valueRanges?.[index]?.values || []]));
-    const expenses = _allExpensesFromSources(inputs);
+    const monthStart = Utilities.formatDate(new Date(started), metadata.properties.timeZone, 'yyyy-MM-01');
+    const currentMonth = Date.parse(monthStart + 'T00:00:00Z') / 86400000 + 25569;
+    const expenses = _allExpensesFromSources(inputs, currentMonth);
     const layout = _allExpensesLayout(expenses);
     const requests = _allExpensesRefreshRequests(sheet, layout);
     timings.prepareMs = Date.now() - phase;

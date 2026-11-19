@@ -1,9 +1,10 @@
 const ALL_EXPENSES_SOURCE_RANGES = [
   'R_MONTHS', 'S_BORROWINGS', 'S_LOANS', 'S_SETUP_EXP_P', 'S_OBLIGATIONS',
-  'S_INFRA_EXP_P', 'S_CONSTRUCTION_EXP_P', 'S_OPERATIONAL_EXP',
+  'S_INFRA_EXP_P', 'S_CONSTRUCTION_EXP_P', 'S_OPERATIONAL_EXP', 'S_SETUP_EXP_A',
 ];
 
-function _allExpensesFromSources(inputs) {
+function _allExpensesFromSources(inputs, currentMonth) {
+  if (!Number.isFinite(currentMonth)) throw new Error('Invalid current month. Existing rows were preserved.');
   const months = (inputs.R_MONTHS?.[0] || []).filter(value => typeof value === 'number' && Number.isFinite(value));
   if (!months.length) throw new Error('The expense timeline has no months. Existing rows were preserved.');
   const grouped = new Map();
@@ -11,12 +12,16 @@ function _allExpensesFromSources(inputs) {
     ['S_BORROWINGS', 'Borrowing Repayments', 'financing'],
     ['S_LOANS', 'Loan Disbursements', 'financing'],
     ['S_SETUP_EXP_P', 'Setup Expenses', 'setup'],
+    ['S_SETUP_EXP_A', 'Setup Expenses', 'setup'],
     ['S_OBLIGATIONS', 'Land Expenses', 'land'],
     ['S_INFRA_EXP_P', 'Infrastructure Expenses', 'infra'],
     ['S_CONSTRUCTION_EXP_P', 'Construction Expenses', 'construction'],
     ['S_OPERATIONAL_EXP', '', 'operating'],
   ];
   for (const [source, defaultType, kind] of sources) {
+    const sourceMonths = kind === 'setup' ? months.filter(month =>
+      source === 'S_SETUP_EXP_A' ? month < currentMonth : month >= currentMonth) : months;
+    if (!sourceMonths.length) continue;
     const data = inputs[source];
     if (!data?.length) throw new Error(`Missing expense source: ${source}. Existing rows were preserved.`);
     const headers = data[0];
@@ -25,14 +30,15 @@ function _allExpensesFromSources(inputs) {
       if (index < 0) throw new Error(`Missing ${name} column in ${source}. Existing rows were preserved.`);
       return index;
     };
-    const monthColumns = months.map(month => {
+    const monthColumns = sourceMonths.map(month => {
       const index = headers.indexOf(month);
       if (index < 0) throw new Error(`Missing month ${month} in ${source}. Existing rows were preserved.`);
       return index;
     });
     const rows = data.slice(1);
     const paramColumn = column(kind === 'land' ? 'name' : 'param');
-    const categoryColumn = kind === 'financing' ? -1 : column('_category');
+    const inheritCategory = source === 'S_SETUP_EXP_A' && !headers.some(value => String(value).toLowerCase() === '_category');
+    const categoryColumn = kind === 'financing' ? -1 : column(inheritCategory ? 'category' : '_category');
     const detailColumn = ['setup', 'infra'].includes(kind) ? column('supplier') : kind === 'land' ? column('creditor') : -1;
     const nameColumn = kind === 'financing' ? column('_name') : paramColumn;
     const parties = new Map();
@@ -51,10 +57,12 @@ function _allExpensesFromSources(inputs) {
         if (!params.has(key)) params.set(key, row);
       }
     }
+    let previousCategory = '';
     for (const row of rows) {
       const param = String(row[paramColumn] ?? '');
       const name = String(row[nameColumn] ?? '');
-      const category = String(row[categoryColumn] ?? '');
+      const category = String(row[categoryColumn] || (inheritCategory ? previousCategory : ''));
+      previousCategory = category;
       const normalizedCategory = category.trim().toLowerCase();
       if (!name || normalizedCategory === 'totals') continue;
       if (kind === 'financing' && (param.toLowerCase() !== (source === 'S_BORROWINGS' ? 'borrowings repaid' : 'loan disbursed') || name.trim().toLowerCase() === 'totals')) continue;
@@ -64,7 +72,7 @@ function _allExpensesFromSources(inputs) {
       if (kind === 'operating' && !['Direct Operating Expenses', 'Other Operating Expenses'].includes(category)) continue;
       const type = kind === 'operating' ? category : defaultType;
       const detail = kind === 'financing' ? parties.get(name.toLowerCase()) || '' : String(row[detailColumn] ?? '');
-      months.forEach((month, index) => {
+      sourceMonths.forEach((month, index) => {
         const value = row[monthColumns[index]];
         if (['setup', 'construction'].includes(kind) && typeof value === 'string' && /^#(REF!|N\/A|VALUE!|DIV\/0!|NAME\?|NUM!|ERROR!)/.test(value)) {
           throw new Error(`Expense source ${source}: ${name} contains ${value} in month ${month}. Existing rows were preserved.`);
