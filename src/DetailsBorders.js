@@ -12,7 +12,7 @@ function setDetailsSheetBorders(sheet) {
 
   const lastColumnName = sheet.getRange(1, lastColumn).getA1Notation().replace(/\d+$/, '');
   const styles = SpreadsheetApp.BorderStyle;
-  for (const style of ['SOLID_THICK', 'SOLID_MEDIUM', 'SOLID']) {
+  for (const style of ['SOLID_THICK', 'SOLID']) {
     const ranges = borders.filter(border => border.style === style)
       .map(border => `A${border.row}:${lastColumnName}${border.row}`);
     if (ranges.length) {
@@ -24,11 +24,11 @@ function setDetailsSheetBorders(sheet) {
 
 function _detailsBorderRows(values) {
   const headers = values[0].map(value => String(value).trim().toLowerCase());
-  const columns = ['type', 'year', 'quarter'].map(header => headers.indexOf(header));
+  const columns = ['type', 'year'].map(header => headers.indexOf(header));
   if (columns.includes(-1)) {
-    throw new Error('Could not find Type, Year and Quarter columns. No borders were changed.');
+    throw new Error('Could not find Type and Year columns. No borders were changed.');
   }
-  const [type, year, quarter] = columns;
+  const [type, year] = columns;
   const rows = values.slice(1).map((values, index) => ({ values, row: index + 2 }))
     .filter(row => row.values[type] !== '');
   const borders = [];
@@ -39,8 +39,6 @@ function _detailsBorderRows(values) {
     if (!next || current.values[type] !== next.values[type]) {
       borders.push({ row: current.row, style: 'SOLID_THICK' });
     } else if (current.values[year] !== next.values[year]) {
-      borders.push({ row: current.row, style: 'SOLID_MEDIUM' });
-    } else if (current.values[quarter] !== next.values[quarter]) {
       borders.push({ row: current.row, style: 'SOLID' });
     }
   }

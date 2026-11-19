@@ -9,7 +9,7 @@ function context(globals = {}) {
   return ctx;
 }
 
-test('type, year and quarter boundaries use descending thickness, including the final type', () => {
+test('type boundaries are thick, year boundaries thin, and quarter changes have no divider', () => {
   const ctx = context();
   const values = [
     ['Type', 'Year', 'Quarter'],
@@ -21,8 +21,7 @@ test('type, year and quarter boundaries use descending thickness, including the 
     ['', '', ''],
   ];
   assert.deepEqual(JSON.parse(JSON.stringify(ctx._detailsBorderRows(values))), [
-    { row: 3, style: 'SOLID' },
-    { row: 4, style: 'SOLID_MEDIUM' },
+    { row: 4, style: 'SOLID' },
     { row: 5, style: 'SOLID_THICK' },
     { row: 6, style: 'SOLID_THICK' },
   ]);
@@ -36,7 +35,7 @@ test('group columns are identified by header, and missing headers fail before wr
   let writes = 0;
   const sheet = {
     getLastRow: () => 2, getLastColumn: () => 3,
-    getRange: () => ({ getDisplayValues: () => [['type', 'year', 'month'], ['Land', '2028', 'May']],
+    getRange: () => ({ getDisplayValues: () => [['type', 'quarter', 'month'], ['Land', 'Q2 2028', 'May']],
       setBorder: () => writes++ }),
   };
   assert.throws(() => ctx.setDetailsSheetBorders(sheet), /No borders were changed/);
@@ -55,13 +54,13 @@ test('border command only changes horizontal borders across the populated width'
     getRangeList: ranges => ({ setBorder: (...args) => writes.push({ ranges: Array.from(ranges), args }) }),
   };
   const ctx = context({ SpreadsheetApp: { BorderStyle: {
-    SOLID: 'thin', SOLID_MEDIUM: 'medium', SOLID_THICK: 'thick',
+    SOLID: 'thin', SOLID_THICK: 'thick',
   } } });
   ctx.setDetailsSheetBorders(sheet);
   assert.deepEqual(writes, [
     { range: [2, 1, 2, 6], args: [null, null, false, null, null, false] },
     { ranges: ['A3:F3'], args: [null, null, true, null, null, null, '#666666', 'thick'] },
-    { ranges: ['A2:F2'], args: [null, null, true, null, null, null, '#666666', 'medium'] },
+    { ranges: ['A2:F2'], args: [null, null, true, null, null, null, '#666666', 'thin'] },
   ]);
 });
 
