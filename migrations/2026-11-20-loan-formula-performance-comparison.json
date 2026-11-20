@@ -1,0 +1,334 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "date": "2026-11-20",
+  "description": "Compare direct and named formulas for Out Loans disbursements and loan start balances.",
+  "status": "Benchmark complete; original pre-test workbook state restored and verified.",
+  "scope": "Temporarily switched two Out Loans disbursement anchors, then nine In Loans/Out Loans start-balance rows. End balances and financial inputs were held unchanged. No permanent workbook changes or Apps Script changes.",
+  "method": {
+    "clock": "Wall-clock Date.now around individual connector requests.",
+    "iterationsPerVariant": 4,
+    "readsPerIteration": 3,
+    "order": {
+      "disbursed": [
+        "direct",
+        "named",
+        "direct",
+        "named",
+        "direct",
+        "named",
+        "direct",
+        "named"
+      ],
+      "start_balance": [
+        "named",
+        "direct",
+        "named",
+        "direct",
+        "named",
+        "direct",
+        "named",
+        "direct"
+      ]
+    },
+    "swapAndFirstRead": "Time to complete formula batchUpdate plus immediately following get_spreadsheet_cells(effectiveValue) over fixed 2016 output cells.",
+    "warmRead": "Two subsequent reads of exactly the same output cells without further edits.",
+    "limitation": "Timings include connector, network, API, dependency invalidation and calculation overhead. They do not isolate pure spreadsheet calculation time, and formula rewrites are not a benchmark of changing financial input amounts. Four runs per condition are insufficient to resolve small differences against observed variability.",
+    "startBalanceContext": "Current end balances use named principal carried forward plus interest carried forward, avoiding their prior dependency on start balance.",
+    "ranges": [
+      "'In Loans'!N4:DE4",
+      "'In Loans'!N8:DE8",
+      "'In Loans'!N18:DE18",
+      "'In Loans'!N22:DE22",
+      "'In Loans'!N32:DE32",
+      "'In Loans'!N36:DE36",
+      "'In Loans'!N46:DE46",
+      "'In Loans'!N50:DE50",
+      "'In Loans'!N60:DE60",
+      "'In Loans'!N64:DE64",
+      "'In Loans'!N74:DE74",
+      "'In Loans'!N78:DE78",
+      "'In Loans'!N88:DE88",
+      "'In Loans'!N92:DE92",
+      "'Out Loans'!J4:DA4",
+      "'Out Loans'!J8:DA8",
+      "'Out Loans'!J18:DA18",
+      "'Out Loans'!J22:DA22",
+      "'Out Loans'!J5:DA5",
+      "'Out Loans'!J19:DA19",
+      "'Cash Flow'!C24:CT24"
+    ]
+  },
+  "variants": {
+    "disbursed": {
+      "directSource": "migrations/2026-11-20-out-loans-disbursed-named-functions.json changes[].before",
+      "named": "=LET(\n  loan_name, OUT_LOAN_COL_VALUE(\"Name\"),\n  loan_date, LOOKUP_BY_NAME(S_OUT_LOANS, \"Date\", \"Name\", loan_name),\n  loan_amount, LOOKUP_BY_NAME(S_OUT_LOANS, \"Amount\", \"Name\", loan_name),\n  ARRAYFORMULA(\n    IF(R_MONTHS = IF(loan_date = \"\", \"\", MONTH_START(loan_date)), loan_amount, 0)\n  )\n)"
+    },
+    "start_balance": {
+      "direct": "First month =0, subsequent months directly reference the preceding month's end balance, in all nine loans.",
+      "namedIn": "=PREV_MONTH_ROW_VALUES(IN_LOAN_PARAM_VALUES(\"end balance\"))",
+      "namedOut": "=PREV_MONTH_ROW_VALUES(OUT_LOAN_PARAM_VALUES(\"end balance\"))"
+    }
+  },
+  "results": [
+    {
+      "experiment": "disbursed",
+      "variant": "direct",
+      "n": 4,
+      "medianSwapAndReadMs": 10162.5,
+      "swapAndReadMinMs": 10064,
+      "swapAndReadMaxMs": 11646,
+      "medianWarmReadMs": 792.5,
+      "warmMinMs": 647,
+      "warmMaxMs": 1631
+    },
+    {
+      "experiment": "disbursed",
+      "variant": "named",
+      "n": 4,
+      "medianSwapAndReadMs": 10760.5,
+      "swapAndReadMinMs": 9781,
+      "swapAndReadMaxMs": 13005,
+      "medianWarmReadMs": 782,
+      "warmMinMs": 667,
+      "warmMaxMs": 1115
+    },
+    {
+      "experiment": "start_balance",
+      "variant": "direct",
+      "n": 4,
+      "medianSwapAndReadMs": 11362.5,
+      "swapAndReadMinMs": 10936,
+      "swapAndReadMaxMs": 13271,
+      "medianWarmReadMs": 779.5,
+      "warmMinMs": 715,
+      "warmMaxMs": 897
+    },
+    {
+      "experiment": "start_balance",
+      "variant": "named",
+      "n": 4,
+      "medianSwapAndReadMs": 11734,
+      "swapAndReadMinMs": 11163,
+      "swapAndReadMaxMs": 14002,
+      "medianWarmReadMs": 833.5,
+      "warmMinMs": 729,
+      "warmMaxMs": 1176
+    }
+  ],
+  "rawTrials": [
+    {
+      "experiment": "disbursed",
+      "variant": "direct",
+      "writeMs": 897,
+      "readMs": [
+        9171,
+        1113,
+        647
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 10068
+    },
+    {
+      "experiment": "disbursed",
+      "variant": "named",
+      "writeMs": 1105,
+      "readMs": [
+        9980,
+        735,
+        829
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 11085
+    },
+    {
+      "experiment": "disbursed",
+      "variant": "direct",
+      "writeMs": 695,
+      "readMs": [
+        10951,
+        760,
+        754
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 11646
+    },
+    {
+      "experiment": "disbursed",
+      "variant": "named",
+      "writeMs": 651,
+      "readMs": [
+        9130,
+        706,
+        1115
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 9781
+    },
+    {
+      "experiment": "disbursed",
+      "variant": "direct",
+      "writeMs": 697,
+      "readMs": [
+        9560,
+        825,
+        753
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 10257
+    },
+    {
+      "experiment": "disbursed",
+      "variant": "named",
+      "writeMs": 694,
+      "readMs": [
+        9742,
+        667,
+        896
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 10436
+    },
+    {
+      "experiment": "disbursed",
+      "variant": "direct",
+      "writeMs": 726,
+      "readMs": [
+        9338,
+        1631,
+        1046
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 10064
+    },
+    {
+      "experiment": "disbursed",
+      "variant": "named",
+      "writeMs": 823,
+      "readMs": [
+        12182,
+        935,
+        716
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 13005
+    },
+    {
+      "experiment": "start_balance",
+      "variant": "named",
+      "writeMs": 700,
+      "readMs": [
+        10463,
+        844,
+        1122
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 11163
+    },
+    {
+      "experiment": "start_balance",
+      "variant": "direct",
+      "writeMs": 1270,
+      "readMs": [
+        9666,
+        796,
+        715
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 10936
+    },
+    {
+      "experiment": "start_balance",
+      "variant": "named",
+      "writeMs": 1284,
+      "readMs": [
+        12718,
+        896,
+        1176
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 14002
+    },
+    {
+      "experiment": "start_balance",
+      "variant": "direct",
+      "writeMs": 1030,
+      "readMs": [
+        10537,
+        751,
+        737
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 11567
+    },
+    {
+      "experiment": "start_balance",
+      "variant": "named",
+      "writeMs": 751,
+      "readMs": [
+        10791,
+        729,
+        796
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 11542
+    },
+    {
+      "experiment": "start_balance",
+      "variant": "direct",
+      "writeMs": 838,
+      "readMs": [
+        10320,
+        897,
+        887
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 11158
+    },
+    {
+      "experiment": "start_balance",
+      "variant": "named",
+      "writeMs": 812,
+      "readMs": [
+        11114,
+        823,
+        770
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 11926
+    },
+    {
+      "experiment": "start_balance",
+      "variant": "direct",
+      "writeMs": 1388,
+      "readMs": [
+        11883,
+        763,
+        840
+      ],
+      "checkedCells": 2016,
+      "maxDifference": 0,
+      "swapAndFirstReadMs": 13271
+    }
+  ],
+  "verification": {
+    "cellsChecked": 20879,
+    "differences": 0
+  },
+  "conclusion": "No clear performance advantage for either form in this small end-to-end benchmark. All 48 reads completed without errors and all 2016 checked output values matched the baseline exactly on each read.",
+  "restoredState": "Named Out Loans disbursements; original per-cell direct start-balance formulas; all other pre-test inputs, formulas, effective values and validation matched across 20879 cells."
+}
