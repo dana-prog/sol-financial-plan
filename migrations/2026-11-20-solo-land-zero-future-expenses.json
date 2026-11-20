@@ -1,0 +1,3055 @@
+{
+  "spreadsheetId": "1s3fwWnew4mnzCds8QhFSuR4jIvJSgs4mcDA5SHQfKbU",
+  "title": "SOL KPG - Financial Plan 2026 V.10 - Solo Land",
+  "date": "2026-11-20",
+  "description": "Zero future planned expense categories except Setup and Obligations in the Solo Land version.",
+  "status": "Applied and verified in the Solo Land workbook.",
+  "verification": {
+    "cellsChecked": 50663,
+    "unexpectedInputs": 0,
+    "newErrors": [],
+    "excludedDifferences": 0,
+    "pastBudgetDifferences": 0,
+    "nonzeroOtherFutureBudget": [],
+    "remainingExemptBudget": [
+      {
+        "row": 6,
+        "category": "Setup",
+        "label": "Accounting",
+        "future": 23000,
+        "past": 0
+      },
+      {
+        "row": 7,
+        "category": "Setup",
+        "label": "Legal",
+        "future": 680000,
+        "past": 118000
+      },
+      {
+        "row": 8,
+        "category": "Setup",
+        "label": "Permits",
+        "future": 487920,
+        "past": 886320
+      },
+      {
+        "row": 9,
+        "category": "Setup",
+        "label": "Planning",
+        "future": 300000,
+        "past": 828850
+      },
+      {
+        "row": 18,
+        "category": "Land",
+        "label": "Land",
+        "future": 46665068.49315068,
+        "past": 0
+      },
+      {
+        "row": 20,
+        "category": "Setup",
+        "label": "Accounting",
+        "future": 70000,
+        "past": 0
+      },
+      {
+        "row": 21,
+        "category": "Setup",
+        "label": "Legal",
+        "future": 840000,
+        "past": 0
+      },
+      {
+        "row": 22,
+        "category": "Setup",
+        "label": "Permits",
+        "future": 987920,
+        "past": 0
+      },
+      {
+        "row": 23,
+        "category": "Setup",
+        "label": "Planning",
+        "future": 1200000,
+        "past": 0
+      },
+      {
+        "row": 53,
+        "category": "Land",
+        "label": "Land",
+        "future": 40000000,
+        "past": 0
+      },
+      {
+        "row": 56,
+        "category": "Setup",
+        "label": "Legal",
+        "future": 680000,
+        "past": 0
+      },
+      {
+        "row": 58,
+        "category": "Setup",
+        "label": "Planning",
+        "future": 2735000,
+        "past": 0
+      }
+    ],
+    "nonzeroFutureExpenseCells": [],
+    "historicalMonthlyExpenseDifferences": [],
+    "mismatchedWrites": 0
+  },
+  "cutoff": {
+    "date": "2026-11-01",
+    "reason": "The workbook's Future Expenses formulas include the current month using MONTH_START(TODAY())."
+  },
+  "scope": "Construction, infrastructure, operating expenses including salaries, future out-loan disbursements, in-loan repayments, and company tax. Setup and Obligations excluded. Past expense values preserved. No Apps Script changes.",
+  "choices": [
+    "Retain the construction quantity schedule and revenue assumptions; zero construction monetary outputs only.",
+    "Wrap future cost outputs with zero branches while retaining existing named-function calls and historical formulas.",
+    "Set the two wholly future Out Loans amounts to zero so dependent repayment/interest receipts also become zero.",
+    "Zero existing future script-generated loan repayment and company-tax schedule amounts; rerunning those calculation commands can repopulate them."
+  ],
+  "changes": [
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 124,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 125,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 126,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 127,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 128,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 129,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 130,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 131,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 132,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 133,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 134,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 135,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 136,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 137,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 138,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 139,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 140,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 141,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 142,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 143,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 144,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 145,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 146,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 147,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 148,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 149,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 150,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 151,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 152,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 153,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 154,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 155,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 156,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 157,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 158,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Construction Exp (P)",
+      "sheetId": 462995266,
+      "row": 159,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, CONSTRUCTION_PARAM_NAME(),\n  construction_type, LEFT(param_name, FIND(\" const. cost\", param_name) - 1),\n  unit_construction_cost, UNIT_CONSTRUCTION_COST(construction_type),\n  ARRAYFORMULA(CONSTRUCTION_PARAM_VALUES(construction_type & \" const. count\") * unit_construction_cost)\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 5,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 6,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 7,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 8,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 9,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 10,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 11,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 12,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 13,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 14,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 15,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 16,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 17,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 18,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  param_name, OPERATIONS_PARAM_NAME(),\n  role, LEFT(param_name, FIND(\" monthly salaries\", param_name) - 1),\n  ARRAYFORMULA(\n    LOOKUP_BY_NAME(S_STAFFING, \"salary\", \"role\", role) * \n    OCCUPANCY_PARAM_VALUES(role & \" headcount\") *\n    (1 + OPERATIONS_PARAM_VALUES(\"inflation rate\"))\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 21,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  months, D3:CU3,\n  total_headcount, OCCUPANCY_PARAM_VALUES(\"total headcount\"),\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  electricity_cost, PARAM(\"electricity cost per person per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      electricity_cost *\n      total_headcount *\n      (1 + inflation_rate),\n      0\n    )\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  months, D3:CU3,\n  total_headcount, OCCUPANCY_PARAM_VALUES(\"total headcount\"),\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  electricity_cost, PARAM(\"electricity cost per person per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      electricity_cost *\n      total_headcount *\n      (1 + inflation_rate),\n      0\n    )\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 22,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  months, D3:CU3,\n  total_headcount, OCCUPANCY_PARAM_VALUES(\"total headcount\"),\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  water_cost, PARAM(\"water cost per person per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      water_cost *\n      total_headcount *\n      (1 + inflation_rate),\n      0\n    )\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  months, D3:CU3,\n  total_headcount, OCCUPANCY_PARAM_VALUES(\"total headcount\"),\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  water_cost, PARAM(\"water cost per person per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      water_cost *\n      total_headcount *\n      (1 + inflation_rate),\n      0\n    )\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 23,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  months, D3:CU3,\n  total_headcount, OCCUPANCY_PARAM_VALUES(\"total headcount\"),\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  food_cost, PARAM(\"food cost per person per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      food_cost *\n      total_headcount *\n      (1 + inflation_rate),\n      0\n    )\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  months, D3:CU3,\n  total_headcount, OCCUPANCY_PARAM_VALUES(\"total headcount\"),\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  food_cost, PARAM(\"food cost per person per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      food_cost *\n      total_headcount *\n      (1 + inflation_rate),\n      0\n    )\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 25,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  months, D3:CU3,\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  insurance_cost, PARAM(\"insurance cost per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      insurance_cost * (1 + inflation_rate),\n      0\n    )\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  months, D3:CU3,\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  insurance_cost, PARAM(\"insurance cost per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      insurance_cost * (1 + inflation_rate),\n      0\n    )\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 26,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  months, D3:CU3,\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  wifi_expenses, PARAM(\"wifi cost per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      wifi_expenses * (1 + inflation_rate),\n      0\n    )\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  months, D3:CU3,\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  wifi_expenses, PARAM(\"wifi cost per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      wifi_expenses * (1 + inflation_rate),\n      0\n    )\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 27,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  months, D3:CU3,\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  software_expenses, PARAM(\"software cost per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      software_expenses * (1 + inflation_rate),\n      0\n    )\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  months, D3:CU3,\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  software_expenses, PARAM(\"software cost per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      software_expenses * (1 + inflation_rate),\n      0\n    )\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 28,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  months, D3:CU3,\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  legal_expense, PARAM(\"legal cost per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      legal_expense * (1 + inflation_rate),\n      0\n    )\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  months, D3:CU3,\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  legal_expense, PARAM(\"legal cost per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      legal_expense * (1 + inflation_rate),\n      0\n    )\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 29,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  months, R_MONTHS,\n  startMonth, PARAM(\"operations start date\"),\n  unitTypes, COL_VALUES(S_UNITS, \"type\"),\n  unitPrices, COL_VALUES(S_UNITS, \"unit cost\"),\n  mntRates, COL_VALUES(S_UNITS, \"mnt. rate per year\"),\n\n  MAP(\n    months,\n    LAMBDA(m,\n      IF(\n        m < startMonth,\n        0,\n        SUM(\n          MAP(\n            unitTypes,\n            unitPrices,\n            mntRates,\n            LAMBDA(unitType, unitPrice, mntRate,\n              unitPrice *\n              mntRate *\n              TIMELINE_PARAM_VALUE(S_CONSTRUCTION_EXP_P, unitType & \" completed count\", m) / 12\n            )\n          )\n        )\n      )\n    )\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  months, R_MONTHS,\n  startMonth, PARAM(\"operations start date\"),\n  unitTypes, COL_VALUES(S_UNITS, \"type\"),\n  unitPrices, COL_VALUES(S_UNITS, \"unit cost\"),\n  mntRates, COL_VALUES(S_UNITS, \"mnt. rate per year\"),\n\n  MAP(\n    months,\n    LAMBDA(m,\n      IF(\n        m < startMonth,\n        0,\n        SUM(\n          MAP(\n            unitTypes,\n            unitPrices,\n            mntRates,\n            LAMBDA(unitType, unitPrice, mntRate,\n              unitPrice *\n              mntRate *\n              TIMELINE_PARAM_VALUE(S_CONSTRUCTION_EXP_P, unitType & \" completed count\", m) / 12\n            )\n          )\n        )\n      )\n    )\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 30,
+      "col": 3,
+      "before": {
+        "formulaValue": "=LET(\n  months, D3:CU3,\n  total_headcount, OCCUPANCY_PARAM_VALUES(\"total headcount\"),\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  wear_tear_cost, PARAM(\"wear & tear cost per person per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      wear_tear_cost *\n      total_headcount *\n      (1 + inflation_rate),\n      0\n    )\n  )\n)"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, LET(\n  months, D3:CU3,\n  total_headcount, OCCUPANCY_PARAM_VALUES(\"total headcount\"),\n  inflation_rate, OPERATIONS_PARAM_VALUES(\"inflation rate\"),\n\n  wear_tear_cost, PARAM(\"wear & tear cost per person per month\"),\n  op_start_m, PARAM(\"operations start date\"),\n\n  ARRAYFORMULA(\n    IF(\n      months >= op_start_m,\n      wear_tear_cost *\n      total_headcount *\n      (1 + inflation_rate),\n      0\n    )\n  )\n)))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Operational Exp (P)",
+      "sheetId": 1093991711,
+      "row": 31,
+      "col": 3,
+      "before": {
+        "formulaValue": "=ARRAYFORMULA(PARAM(\"marketing cost percent of revenue\") * REVENUE_PARAM_VALUES(\"total revenue\"))"
+      },
+      "after": {
+        "formulaValue": "=ARRAYFORMULA(IF(R_MONTHS >= DATE(2026, 11, 1), 0, ARRAYFORMULA(PARAM(\"marketing cost percent of revenue\") * REVENUE_PARAM_VALUES(\"total revenue\"))))"
+      },
+      "reason": "Zero future cost output while preserving past months and existing named-function calls"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 4,
+      "col": 29,
+      "before": {
+        "numberValue": 2500000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 5,
+      "col": 29,
+      "before": {
+        "numberValue": 1000000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 6,
+      "col": 29,
+      "before": {
+        "numberValue": 1000000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 7,
+      "col": 29,
+      "before": {
+        "numberValue": 1950000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 8,
+      "col": 29,
+      "before": {
+        "numberValue": 65000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 9,
+      "col": 29,
+      "before": {
+        "numberValue": 500000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 10,
+      "col": 29,
+      "before": {
+        "numberValue": 500000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 12,
+      "col": 29,
+      "before": {
+        "formulaValue": "=PARAM(\"router count\") * PARAM(\"router cost\")"
+      },
+      "after": {
+        "formulaValue": "=0 * (PARAM(\"router count\") * PARAM(\"router cost\"))"
+      },
+      "reason": "Zero future infrastructure cost and retain its existing calculation"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 14,
+      "col": 29,
+      "before": {
+        "numberValue": 500000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 15,
+      "col": 29,
+      "before": {
+        "numberValue": 300000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 17,
+      "col": 29,
+      "before": {
+        "numberValue": 300000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 18,
+      "col": 29,
+      "before": {
+        "numberValue": 300000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 19,
+      "col": 29,
+      "before": {
+        "numberValue": 1800000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 20,
+      "col": 29,
+      "before": {
+        "formulaValue": "=PARAM(\"road length\") * PARAM(\"road cost per meter\")"
+      },
+      "after": {
+        "formulaValue": "=0 * (PARAM(\"road length\") * PARAM(\"road cost per meter\"))"
+      },
+      "reason": "Zero future infrastructure cost and retain its existing calculation"
+    },
+    {
+      "sheet": "Infra Exp (P)",
+      "sheetId": 1754072773,
+      "row": 21,
+      "col": 29,
+      "before": {
+        "numberValue": 1000000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future planned infrastructure expense"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 10,
+      "col": 49,
+      "before": {
+        "numberValue": 20644.588400000004
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 24,
+      "col": 49,
+      "before": {
+        "numberValue": 1667500
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 27,
+      "col": 40,
+      "before": {
+        "numberValue": 250385.49265074127
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 27,
+      "col": 41,
+      "before": {
+        "numberValue": 9913.630136986303
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 27,
+      "col": 42,
+      "before": {
+        "numberValue": 9593.835616438357
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 27,
+      "col": 43,
+      "before": {
+        "numberValue": 9913.630136986303
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 27,
+      "col": 44,
+      "before": {
+        "numberValue": 9913.630136986303
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 27,
+      "col": 45,
+      "before": {
+        "numberValue": 9593.835616438357
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 27,
+      "col": 46,
+      "before": {
+        "numberValue": 9913.630136986303
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 27,
+      "col": 47,
+      "before": {
+        "numberValue": 9593.835616438357
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 27,
+      "col": 48,
+      "before": {
+        "numberValue": 9913.630136986303
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 27,
+      "col": 49,
+      "before": {
+        "numberValue": 9913.630136986303
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 38,
+      "col": 49,
+      "before": {
+        "numberValue": 5000000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 41,
+      "col": 44,
+      "before": {
+        "numberValue": 749683.0413210735
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 41,
+      "col": 45,
+      "before": {
+        "numberValue": 28767.123287671235
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 41,
+      "col": 46,
+      "before": {
+        "numberValue": 29726.027397260277
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 41,
+      "col": 47,
+      "before": {
+        "numberValue": 28767.123287671235
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 41,
+      "col": 48,
+      "before": {
+        "numberValue": 29726.027397260277
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 41,
+      "col": 49,
+      "before": {
+        "numberValue": 29726.027397260277
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 52,
+      "col": 49,
+      "before": {
+        "numberValue": 1286694.2189452667
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 52,
+      "col": 53,
+      "before": {
+        "numberValue": 3726095.543200582
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 52,
+      "col": 54,
+      "before": {
+        "numberValue": 4672040.1354592545
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 52,
+      "col": 55,
+      "before": {
+        "numberValue": 315170.10239489656
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 55,
+      "col": 46,
+      "before": {
+        "numberValue": 1453248.146969413
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 55,
+      "col": 47,
+      "before": {
+        "numberValue": 57534.24657534247
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 55,
+      "col": 48,
+      "before": {
+        "numberValue": 59452.054794520554
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 55,
+      "col": 49,
+      "before": {
+        "numberValue": 59452.054794520554
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 55,
+      "col": 53,
+      "before": {
+        "numberValue": 200525.39331742402
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 55,
+      "col": 54,
+      "before": {
+        "numberValue": 28693.53835477731
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 55,
+      "col": 55,
+      "before": {
+        "numberValue": 1873.751019717604
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 55,
+      "before": {
+        "numberValue": 4820037.380211752
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 56,
+      "before": {
+        "numberValue": 2665505.152186312
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 57,
+      "before": {
+        "numberValue": 3982585.606767945
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 62,
+      "before": {
+        "numberValue": 4544978.015295251
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 63,
+      "before": {
+        "numberValue": 8093320.812346447
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 64,
+      "before": {
+        "numberValue": 7930664.289526183
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 65,
+      "before": {
+        "numberValue": 3195020.3649971127
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 70,
+      "before": {
+        "numberValue": 3848052.5184234134
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 71,
+      "before": {
+        "numberValue": 4324616.735215985
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 72,
+      "before": {
+        "numberValue": 9469205.769958975
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 73,
+      "before": {
+        "numberValue": 9726805.089200538
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 66,
+      "col": 74,
+      "before": {
+        "numberValue": 7399208.265870091
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 58,
+      "before": {
+        "numberValue": 4375200.110005453
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 59,
+      "before": {
+        "numberValue": 4220932.801742978
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 60,
+      "before": {
+        "numberValue": 2316120.619659295
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 61,
+      "before": {
+        "numberValue": 347984.0053096158
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 62,
+      "before": {
+        "numberValue": 314308.13382804004
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 63,
+      "before": {
+        "numberValue": 320963.17710909335
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 64,
+      "before": {
+        "numberValue": 264045.2147115173
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 65,
+      "before": {
+        "numberValue": 225697.2930787821
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 66,
+      "before": {
+        "numberValue": 200034.42628823261
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 67,
+      "before": {
+        "numberValue": 206702.24049784036
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 68,
+      "before": {
+        "numberValue": 206702.24049784036
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 69,
+      "before": {
+        "numberValue": 200034.42628823261
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 70,
+      "before": {
+        "numberValue": 206983.5674535334
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 71,
+      "before": {
+        "numberValue": 177894.94604524862
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 72,
+      "before": {
+        "numberValue": 158114.0424693541
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 73,
+      "before": {
+        "numberValue": 101817.66843973497
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 69,
+      "col": 74,
+      "before": {
+        "numberValue": 39732.73479754898
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 74,
+      "before": {
+        "numberValue": 1158959.6005640253
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 75,
+      "before": {
+        "numberValue": 10272245.87208574
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 76,
+      "before": {
+        "numberValue": 10049997.977885678
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 77,
+      "before": {
+        "numberValue": 1095335.312152876
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 78,
+      "before": {
+        "numberValue": 7198408.593268679
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 79,
+      "before": {
+        "numberValue": 7818682.5623181835
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 81,
+      "before": {
+        "numberValue": 4795971.117636905
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 82,
+      "before": {
+        "numberValue": 6560378.192460623
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 83,
+      "before": {
+        "numberValue": 6348183.371080208
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 84,
+      "before": {
+        "numberValue": 12591127.534922246
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 85,
+      "before": {
+        "numberValue": 12891078.251500009
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 86,
+      "before": {
+        "numberValue": 11983190.426622009
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 80,
+      "col": 87,
+      "before": {
+        "numberValue": 7236441.187502826
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 60,
+      "before": {
+        "numberValue": 6092023.950183662
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 61,
+      "before": {
+        "numberValue": 8260268.318045749
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 62,
+      "before": {
+        "numberValue": 2680250.7120037684
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 63,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 64,
+      "before": {
+        "numberValue": 575342.4657534247
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 65,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 66,
+      "before": {
+        "numberValue": 575342.4657534247
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 67,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 68,
+      "before": {
+        "numberValue": 538863.9803062791
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 69,
+      "before": {
+        "numberValue": 630999.0333923511
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 70,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 71,
+      "before": {
+        "numberValue": 575342.4657534247
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 72,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 73,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 74,
+      "before": {
+        "numberValue": 536986.3013698631
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 75,
+      "before": {
+        "numberValue": 587630.2949774687
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 76,
+      "before": {
+        "numberValue": 509573.88632174116
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 77,
+      "before": {
+        "numberValue": 466810.3794858578
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 78,
+      "before": {
+        "numberValue": 445450.050954396
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 79,
+      "before": {
+        "numberValue": 417502.3677741735
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 81,
+      "before": {
+        "numberValue": 730069.0417779863
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 82,
+      "before": {
+        "numberValue": 342505.65959471447
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 83,
+      "before": {
+        "numberValue": 293712.4482751159
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 84,
+      "before": {
+        "numberValue": 265761.6086553074
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 85,
+      "before": {
+        "numberValue": 190904.768242208
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 86,
+      "before": {
+        "numberValue": 106892.7456895162
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 83,
+      "col": 87,
+      "before": {
+        "numberValue": 43022.12979967434
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 94,
+      "col": 87,
+      "before": {
+        "numberValue": 6254629.582033599
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 94,
+      "col": 88,
+      "before": {
+        "numberValue": 13170134.02967259
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 94,
+      "col": 89,
+      "before": {
+        "numberValue": 637640.7734780712
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 94,
+      "col": 90,
+      "before": {
+        "numberValue": 9406865.144852923
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 94,
+      "col": 91,
+      "before": {
+        "numberValue": 9983880.141073178
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 94,
+      "col": 93,
+      "before": {
+        "numberValue": 5623055.39499964
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 94,
+      "col": 94,
+      "before": {
+        "numberValue": 8108287.2856170675
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 94,
+      "col": 95,
+      "before": {
+        "numberValue": 7722887.425292243
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 94,
+      "col": 96,
+      "before": {
+        "numberValue": 14316837.2629699
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 94,
+      "col": 97,
+      "before": {
+        "numberValue": 14426156.486341033
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 94,
+      "col": 98,
+      "before": {
+        "numberValue": 10349626.473669738
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 66,
+      "before": {
+        "numberValue": 5646991.384408858
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 67,
+      "before": {
+        "numberValue": 6135806.364078319
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 69,
+      "before": {
+        "numberValue": 4583259.189660985
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 70,
+      "before": {
+        "numberValue": 1225800.8216046975
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 71,
+      "before": {
+        "numberValue": 575342.4657534247
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 72,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 73,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 74,
+      "before": {
+        "numberValue": 536986.3013698631
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 75,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 76,
+      "before": {
+        "numberValue": 575342.4657534247
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 77,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 78,
+      "before": {
+        "numberValue": 575342.4657534247
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 79,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 81,
+      "before": {
+        "numberValue": 1169863.0136986303
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 82,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 83,
+      "before": {
+        "numberValue": 575342.4657534247
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 84,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 85,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 86,
+      "before": {
+        "numberValue": 556164.3835616439
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 87,
+      "before": {
+        "numberValue": 594520.5479452056
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 88,
+      "before": {
+        "numberValue": 539356.9256924095
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 89,
+      "before": {
+        "numberValue": 479036.336883829
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 90,
+      "before": {
+        "numberValue": 459914.93367428234
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 91,
+      "before": {
+        "numberValue": 419319.6852597789
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 93,
+      "before": {
+        "numberValue": 708315.2079571472
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 94,
+      "before": {
+        "numberValue": 326533.2465932638
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 95,
+      "before": {
+        "numberValue": 269349.49605855654
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 96,
+      "before": {
+        "numberValue": 232413.6599558029
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 97,
+      "before": {
+        "numberValue": 147297.1206115709
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "row": 97,
+      "col": 98,
+      "before": {
+        "numberValue": 55576.07640655531
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled loan principal/interest repayment"
+    },
+    {
+      "sheet": "Cash Flow",
+      "sheetId": 706577296,
+      "row": 11,
+      "col": 45,
+      "before": {
+        "numberValue": 2621221.472881146
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled company tax"
+    },
+    {
+      "sheet": "Cash Flow",
+      "sheetId": 706577296,
+      "row": 11,
+      "col": 54,
+      "before": {
+        "numberValue": 2621221.472881146
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled company tax"
+    },
+    {
+      "sheet": "Cash Flow",
+      "sheetId": 706577296,
+      "row": 11,
+      "col": 57,
+      "before": {
+        "numberValue": 6341821.673707134
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled company tax"
+    },
+    {
+      "sheet": "Cash Flow",
+      "sheetId": 706577296,
+      "row": 11,
+      "col": 66,
+      "before": {
+        "numberValue": 6341821.673707134
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled company tax"
+    },
+    {
+      "sheet": "Cash Flow",
+      "sheetId": 706577296,
+      "row": 11,
+      "col": 69,
+      "before": {
+        "numberValue": 9250770.018128095
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled company tax"
+    },
+    {
+      "sheet": "Cash Flow",
+      "sheetId": 706577296,
+      "row": 11,
+      "col": 78,
+      "before": {
+        "numberValue": 9250770.018128095
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled company tax"
+    },
+    {
+      "sheet": "Cash Flow",
+      "sheetId": 706577296,
+      "row": 11,
+      "col": 81,
+      "before": {
+        "numberValue": 12053944.658193478
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled company tax"
+    },
+    {
+      "sheet": "Cash Flow",
+      "sheetId": 706577296,
+      "row": 11,
+      "col": 90,
+      "before": {
+        "numberValue": 12053944.658193478
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled company tax"
+    },
+    {
+      "sheet": "Cash Flow",
+      "sheetId": 706577296,
+      "row": 11,
+      "col": 93,
+      "before": {
+        "numberValue": 12915883.674890654
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Zero future scheduled company tax"
+    },
+    {
+      "sheet": "Out Loans",
+      "sheetId": 198423991,
+      "row": 4,
+      "col": 3,
+      "before": {
+        "numberValue": 10000000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Cancel future planned out-loan amount so disbursement, repayment and interest schedules all recalculate consistently"
+    },
+    {
+      "sheet": "Out Loans",
+      "sheetId": 198423991,
+      "row": 18,
+      "col": 3,
+      "before": {
+        "numberValue": 20000000
+      },
+      "after": {
+        "numberValue": 0
+      },
+      "reason": "Cancel future planned out-loan amount so disbursement, repayment and interest schedules all recalculate consistently"
+    }
+  ]
+}
