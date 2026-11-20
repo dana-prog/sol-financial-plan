@@ -1,0 +1,39 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Replace Cash Flow profit-before-tax direct references with existing cash-flow and outgoing-loan named functions.",
+  "sheet": "Cash Flow",
+  "cell": "C40",
+  "before": "=ARRAYFORMULA(C20:CT20-C39:CT39+BYCOL(FILTER('Out Loans'!J4:DA38,'Out Loans'!I4:I38=\"interest generated\"),LAMBDA(month,SUM(month))))",
+  "after": "=ARRAYFORMULA(\n  CASH_FLOW_PARAM_VALUES(\"operating profit\") -\n  CASH_FLOW_PARAM_VALUES(\"deductions\") +\n  OUT_LOANS_PARAM_SUMS(\"interest generated\")\n)",
+  "requests": [
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 706577296,
+          "startRowIndex": 39,
+          "endRowIndex": 40,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=ARRAYFORMULA(\n  CASH_FLOW_PARAM_VALUES(\"operating profit\") -\n  CASH_FLOW_PARAM_VALUES(\"deductions\") +\n  OUT_LOANS_PARAM_SUMS(\"interest generated\")\n)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    }
+  ],
+  "verification": {
+    "monthlyValuesCompared": 96,
+    "changedValues": 0,
+    "formulaErrors": 0,
+    "neighboringRowsAndFormattingUnchanged": true
+  }
+}
