@@ -1,0 +1,731 @@
+{
+  "spreadsheetId": "1DuApqJ58lUKorGGjxbJBYmVSCfkVFFPZB3zt8V3INic",
+  "description": "Narrow repeated loan and borrowing lookup inputs after isolating Budget Future Expenses as a performance bottleneck.",
+  "status": "Applied and verified in the performance test copy on 2026-11-20. Not applied to the original plan.",
+  "scope": "Two shared financing named functions in the test copy. No Apps Script or cell formulas changed permanently. All diagnostic freezes were restored.",
+  "changesSummary": [
+    "Cache HEADER_ROW once within each lookup.",
+    "Use CHOOSECOLS to pass only _Name or Param to COL_VALUES, avoiding extraction of every data column for each monthly lookup.",
+    "Preserve function names, three existing arguments, COL_VALUES, HEADER_ROW, MONTH_START, and their financial lookup semantics."
+  ],
+  "namedFunctionChanges": {
+    "LOAN_PARAM_VALUE_BY_LOAN": {
+      "before": "=LET(names, COL_VALUES(S_LOANS, \"_Name\"), params, COL_VALUES(S_LOANS, \"Param\"), loan_row, MATCH(1, ARRAYFORMULA((names = loan_name) * (params = param_name)), 0) + 1, month_column, MATCH(MONTH_START(m), HEADER_ROW(S_LOANS), 0), INDEX(S_LOANS, loan_row, month_column))",
+      "after": "=LET(headers, HEADER_ROW(S_LOANS), names, COL_VALUES(CHOOSECOLS(S_LOANS, MATCH(\"_Name\", headers, 0)), \"_Name\"), params, COL_VALUES(CHOOSECOLS(S_LOANS, MATCH(\"Param\", headers, 0)), \"Param\"), loan_row, MATCH(1, ARRAYFORMULA((names = loan_name) * (params = param_name)), 0) + 1, month_column, MATCH(MONTH_START(m), headers, 0), INDEX(S_LOANS, loan_row, month_column))"
+    },
+    "BORROWING_PARAM_VALUE_BY_BORROWING": {
+      "before": "=LET(\n  names, COL_VALUES(S_BORROWINGS, \"_Name\"),\n  params, COL_VALUES(S_BORROWINGS, \"Param\"),\n\n  loan_row, MATCH(\n    1,\n    ARRAYFORMULA(\n      (names = loan_name) *\n      (params = param_name)\n    ),\n    0\n  ) + 1,\n\n  month_column, MATCH(\n    MONTH_START(m),\n    HEADER_ROW(S_BORROWINGS),\n    0\n  ),\n\n  INDEX(S_BORROWINGS, loan_row, month_column)\n)",
+      "after": "=LET(headers, HEADER_ROW(S_BORROWINGS), names, COL_VALUES(CHOOSECOLS(S_BORROWINGS, MATCH(\"_Name\", headers, 0)), \"_Name\"), params, COL_VALUES(CHOOSECOLS(S_BORROWINGS, MATCH(\"Param\", headers, 0)), \"Param\"), loan_row, MATCH(1, ARRAYFORMULA((names = loan_name) * (params = param_name)), 0) + 1, month_column, MATCH(MONTH_START(m), headers, 0), INDEX(S_BORROWINGS, loan_row, month_column))"
+    }
+  },
+  "isolation": {
+    "input": "'Construction Exp (P)'!AC8",
+    "inputTransitions": [
+      "0 -> 1",
+      "1 -> 0"
+    ],
+    "runsPerDirectionPerCondition": 3,
+    "frozenGroups": {
+      "pastExpenses": "Budget!D2:D114 (113 formulas)",
+      "futureExpenses": "Budget!E2:E114 (113 formulas)",
+      "futureOperationsAndSalaries": [
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114
+      ],
+      "futureConstruction": [
+        32,
+        67,
+        102
+      ],
+      "futureFinancing": [
+        4,
+        12,
+        47,
+        82,
+        16,
+        49,
+        84
+      ]
+    },
+    "finalRestoration": "Budget A1:N114 formulas, values and links match pre-test snapshot exactly; AC8 is 0."
+  },
+  "performance": {
+    "method": "Visible Chrome calculation/saving indicators, from input submission until the start of a continuous 2.5-second quiet interval. Browser/network overhead included. Same test copy and input for every condition. Conditions ran sequentially, not randomized.",
+    "summary": {
+      "Budget isolation baseline": {
+        "1": {
+          "medianSeconds": 22.012,
+          "rangeSeconds": [
+            21.996,
+            23.351
+          ],
+          "runs": 3
+        },
+        "0": {
+          "medianSeconds": 26.136,
+          "rangeSeconds": [
+            26.035,
+            26.319
+          ],
+          "runs": 3
+        }
+      },
+      "Budget isolation past frozen": {
+        "1": {
+          "medianSeconds": 22.735,
+          "rangeSeconds": [
+            21.951,
+            22.949
+          ],
+          "runs": 3
+        },
+        "0": {
+          "medianSeconds": 26.615,
+          "rangeSeconds": [
+            26.298,
+            26.662
+          ],
+          "runs": 3
+        }
+      },
+      "Budget isolation future frozen": {
+        "1": {
+          "medianSeconds": 11.755,
+          "rangeSeconds": [
+            11.15,
+            12.196
+          ],
+          "runs": 3
+        },
+        "0": {
+          "medianSeconds": 18.351,
+          "rangeSeconds": [
+            18.184,
+            18.483
+          ],
+          "runs": 3
+        }
+      },
+      "Budget isolation operations frozen": {
+        "1": {
+          "medianSeconds": 22.845,
+          "rangeSeconds": [
+            22.212,
+            23.071
+          ],
+          "runs": 3
+        },
+        "0": {
+          "medianSeconds": 27.315,
+          "rangeSeconds": [
+            27.164,
+            28.073
+          ],
+          "runs": 3
+        }
+      },
+      "Budget isolation construction frozen": {
+        "1": {
+          "medianSeconds": 23.109,
+          "rangeSeconds": [
+            22.338,
+            25.072
+          ],
+          "runs": 3
+        },
+        "0": {
+          "medianSeconds": 26.851,
+          "rangeSeconds": [
+            23.77,
+            27.946
+          ],
+          "runs": 3
+        }
+      },
+      "Budget isolation financing frozen": {
+        "1": {
+          "medianSeconds": 17.395,
+          "rangeSeconds": [
+            17.391,
+            18.212
+          ],
+          "runs": 3
+        },
+        "0": {
+          "medianSeconds": 20.603,
+          "rangeSeconds": [
+            20.498,
+            20.636
+          ],
+          "runs": 3
+        }
+      },
+      "Budget isolation optimized": {
+        "1": {
+          "medianSeconds": 11.981,
+          "rangeSeconds": [
+            11.88,
+            12.027
+          ],
+          "runs": 3
+        },
+        "0": {
+          "medianSeconds": 10.242,
+          "rangeSeconds": [
+            10.076,
+            10.437
+          ],
+          "runs": 3
+        }
+      }
+    },
+    "runs": [
+      {
+        "condition": "Budget isolation baseline 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795135460512,
+        "settled": true,
+        "settleMs": 23351,
+        "observedMs": 25866,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 23033
+      },
+      {
+        "condition": "Budget isolation baseline 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795135490561,
+        "settled": true,
+        "settleMs": 26035,
+        "observedMs": 28555,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 25770
+      },
+      {
+        "condition": "Budget isolation baseline 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795135530362,
+        "settled": true,
+        "settleMs": 22012,
+        "observedMs": 24546,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 21684
+      },
+      {
+        "condition": "Budget isolation baseline 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795135558524,
+        "settled": true,
+        "settleMs": 26136,
+        "observedMs": 28899,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 25867
+      },
+      {
+        "condition": "Budget isolation baseline 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795135592257,
+        "settled": true,
+        "settleMs": 21996,
+        "observedMs": 24812,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 21681
+      },
+      {
+        "condition": "Budget isolation baseline 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795135621702,
+        "settled": true,
+        "settleMs": 26319,
+        "observedMs": 28849,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 25968
+      },
+      {
+        "condition": "Budget isolation past frozen 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795135675298,
+        "settled": true,
+        "settleMs": 21951,
+        "observedMs": 24519,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 21685
+      },
+      {
+        "condition": "Budget isolation past frozen 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795135703732,
+        "settled": true,
+        "settleMs": 26662,
+        "observedMs": 29403,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 26401
+      },
+      {
+        "condition": "Budget isolation past frozen 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795135738136,
+        "settled": true,
+        "settleMs": 22735,
+        "observedMs": 25295,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 22485
+      },
+      {
+        "condition": "Budget isolation past frozen 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795135767066,
+        "settled": true,
+        "settleMs": 26615,
+        "observedMs": 29213,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 26199
+      },
+      {
+        "condition": "Budget isolation past frozen 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795135801291,
+        "settled": true,
+        "settleMs": 22949,
+        "observedMs": 25515,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 22686
+      },
+      {
+        "condition": "Budget isolation past frozen 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795135831407,
+        "settled": true,
+        "settleMs": 26298,
+        "observedMs": 28865,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 26021
+      },
+      {
+        "condition": "Budget isolation future frozen 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795135884340,
+        "settled": true,
+        "settleMs": 11150,
+        "observedMs": 13717,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 10883
+      },
+      {
+        "condition": "Budget isolation future frozen 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795135899475,
+        "settled": true,
+        "settleMs": 18483,
+        "observedMs": 21035,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 18137
+      },
+      {
+        "condition": "Budget isolation future frozen 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795135932539,
+        "settled": true,
+        "settleMs": 11755,
+        "observedMs": 14372,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 11404
+      },
+      {
+        "condition": "Budget isolation future frozen 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795135947992,
+        "settled": true,
+        "settleMs": 18351,
+        "observedMs": 20868,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 17984
+      },
+      {
+        "condition": "Budget isolation future frozen 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795135977797,
+        "settled": true,
+        "settleMs": 12196,
+        "observedMs": 14980,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 11878
+      },
+      {
+        "condition": "Budget isolation future frozen 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795135994108,
+        "settled": true,
+        "settleMs": 18184,
+        "observedMs": 20717,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 17802
+      },
+      {
+        "condition": "Budget isolation operations frozen 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136048210,
+        "settled": true,
+        "settleMs": 22212,
+        "observedMs": 24828,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 21883
+      },
+      {
+        "condition": "Budget isolation operations frozen 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136077427,
+        "settled": true,
+        "settleMs": 27164,
+        "observedMs": 29693,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 26710
+      },
+      {
+        "condition": "Budget isolation operations frozen 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136113555,
+        "settled": true,
+        "settleMs": 23071,
+        "observedMs": 25622,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 22821
+      },
+      {
+        "condition": "Budget isolation operations frozen 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136144261,
+        "settled": true,
+        "settleMs": 27315,
+        "observedMs": 30097,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 27015
+      },
+      {
+        "condition": "Budget isolation operations frozen 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136181895,
+        "settled": true,
+        "settleMs": 22845,
+        "observedMs": 25428,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 22580
+      },
+      {
+        "condition": "Budget isolation operations frozen 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136212475,
+        "settled": true,
+        "settleMs": 28073,
+        "observedMs": 30617,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 27820
+      },
+      {
+        "condition": "Budget isolation construction frozen 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136263146,
+        "settled": true,
+        "settleMs": 22338,
+        "observedMs": 24869,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 22073
+      },
+      {
+        "condition": "Budget isolation construction frozen 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136292565,
+        "settled": true,
+        "settleMs": 26851,
+        "observedMs": 29366,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 26470
+      },
+      {
+        "condition": "Budget isolation construction frozen 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136326847,
+        "settled": true,
+        "settleMs": 23109,
+        "observedMs": 25676,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 22842
+      },
+      {
+        "condition": "Budget isolation construction frozen 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136356461,
+        "settled": true,
+        "settleMs": 27946,
+        "observedMs": 30504,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 27643
+      },
+      {
+        "condition": "Budget isolation construction frozen 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136393287,
+        "settled": true,
+        "settleMs": 25072,
+        "observedMs": 27737,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 24816
+      },
+      {
+        "condition": "Budget isolation construction frozen 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136425579,
+        "settled": true,
+        "settleMs": 23770,
+        "observedMs": 26418,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 23490
+      },
+      {
+        "condition": "Budget isolation financing frozen 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136477082,
+        "settled": true,
+        "settleMs": 17395,
+        "observedMs": 20018,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 17114
+      },
+      {
+        "condition": "Budget isolation financing frozen 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136498172,
+        "settled": true,
+        "settleMs": 20498,
+        "observedMs": 23032,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 20246
+      },
+      {
+        "condition": "Budget isolation financing frozen 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136553341,
+        "settled": true,
+        "settleMs": 17391,
+        "observedMs": 20045,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 17143
+      },
+      {
+        "condition": "Budget isolation financing frozen 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136574527,
+        "settled": true,
+        "settleMs": 20636,
+        "observedMs": 23301,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 20370
+      },
+      {
+        "condition": "Budget isolation financing frozen 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136605894,
+        "settled": true,
+        "settleMs": 18212,
+        "observedMs": 20911,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 17967
+      },
+      {
+        "condition": "Budget isolation financing frozen 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136627923,
+        "settled": true,
+        "settleMs": 20603,
+        "observedMs": 23115,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 20350
+      },
+      {
+        "condition": "Budget isolation restored validation",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136698764,
+        "settled": true,
+        "settleMs": 19739,
+        "observedMs": 22275,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 19492
+      },
+      {
+        "condition": "Budget isolation optimized warmup",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136833659,
+        "settled": true,
+        "settleMs": 10221,
+        "observedMs": 12816,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 9955
+      },
+      {
+        "condition": "Budget isolation optimized 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136869476,
+        "settled": true,
+        "settleMs": 11981,
+        "observedMs": 14733,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 11731
+      },
+      {
+        "condition": "Budget isolation optimized 1",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136885359,
+        "settled": true,
+        "settleMs": 10076,
+        "observedMs": 12659,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 9809
+      },
+      {
+        "condition": "Budget isolation optimized 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136904054,
+        "settled": true,
+        "settleMs": 11880,
+        "observedMs": 14493,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 11611
+      },
+      {
+        "condition": "Budget isolation optimized 2",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136919634,
+        "settled": true,
+        "settleMs": 10242,
+        "observedMs": 12896,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 9966
+      },
+      {
+        "condition": "Budget isolation optimized 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "1",
+        "start": 1795136939660,
+        "settled": true,
+        "settleMs": 12027,
+        "observedMs": 14618,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 11669
+      },
+      {
+        "condition": "Budget isolation optimized 3",
+        "cell": "'Construction Exp (P)'!AC8",
+        "value": "0",
+        "start": 1795136955413,
+        "settled": true,
+        "settleMs": 10437,
+        "observedMs": 12980,
+        "calculationBarObserved": true,
+        "lastBarObservedMs": 10186
+      }
+    ],
+    "interpretation": "Past Expenses, construction totals and operating costs showed no repeatable benefit when frozen individually. Future financing was a meaningful contributor. Narrowing shared lookup inputs also benefits other callers, so the optimized gain exceeds the Budget-only financing freeze gain. No separate attribution of that additional gain was measured."
+  },
+  "verification": {
+    "ranges": [
+      "Budget!A1:N114",
+      "Loans!A1:DE38",
+      "Borrowings!A1:DJ109",
+      "Cash Flow!A1:CT43",
+      "Details!A1:F1075"
+    ],
+    "scenarios": [
+      {
+        "AC8": 0,
+        "cellsCompared": 28687,
+        "valueDifferences": 0,
+        "hyperlinkDifferences": 0
+      },
+      {
+        "AC8": 1,
+        "cellsCompared": 28693,
+        "valueDifferences": 0,
+        "hyperlinkDifferences": 0
+      }
+    ],
+    "numericTolerance": "max(1e-6, abs(before) * 1e-12)",
+    "namedFunctionCallsPreserved": true,
+    "savedDefinitionsReadBack": true,
+    "frozenFormulaRestorationExact": true,
+    "originalPlanChanged": false
+  },
+  "rollback": "In the test copy, restore each namedFunctionChanges entry to its before definition. No cell or sheet restoration is needed; all diagnostic freezes are already restored.",
+  "repositoryScope": "Only this migration record is part of the repository change. No Apps Script source changed; clasp push is not required."
+}
