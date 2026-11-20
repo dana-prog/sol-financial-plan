@@ -1,0 +1,80 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "date": "2026-11-20",
+  "description": "Replace direct references in the seven In Loans received formulas with existing named functions and ranges.",
+  "status": "Applied and verified in the original financial plan.",
+  "scope": "Only In Loans N5, N19, N33, N47, N61, N75 and N89 formula anchors changed. Their 96-month spills and blank-date behavior are preserved. Start balances and Out Loans are unchanged. No Apps Script source changes.",
+  "changes": [
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "cell": "N5",
+      "before": "=ARRAYFORMULA(IF(N$3:DE$3=IF($E$4=\"\",\"\",EOMONTH($E$4,-1)+1),$D$4,0))",
+      "after": "=LET(\n  loan_name, IN_LOAN_COL_VALUE(\"Name\"),\n  loan_date, LOOKUP_BY_NAME(S_IN_LOANS, \"Date\", \"Name\", loan_name),\n  loan_amount, LOOKUP_BY_NAME(S_IN_LOANS, \"Amount\", \"Name\", loan_name),\n  ARRAYFORMULA(\n    IF(R_MONTHS = IF(loan_date = \"\", \"\", MONTH_START(loan_date)), loan_amount, 0)\n  )\n)"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "cell": "N19",
+      "before": "=ARRAYFORMULA(IF(N$3:DE$3=IF($E$18=\"\",\"\",EOMONTH($E$18,-1)+1),$D$18,0))",
+      "after": "=LET(\n  loan_name, IN_LOAN_COL_VALUE(\"Name\"),\n  loan_date, LOOKUP_BY_NAME(S_IN_LOANS, \"Date\", \"Name\", loan_name),\n  loan_amount, LOOKUP_BY_NAME(S_IN_LOANS, \"Amount\", \"Name\", loan_name),\n  ARRAYFORMULA(\n    IF(R_MONTHS = IF(loan_date = \"\", \"\", MONTH_START(loan_date)), loan_amount, 0)\n  )\n)"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "cell": "N33",
+      "before": "=ARRAYFORMULA(IF(N$3:DE$3=IF($E$32=\"\",\"\",EOMONTH($E$32,-1)+1),$D$32,0))",
+      "after": "=LET(\n  loan_name, IN_LOAN_COL_VALUE(\"Name\"),\n  loan_date, LOOKUP_BY_NAME(S_IN_LOANS, \"Date\", \"Name\", loan_name),\n  loan_amount, LOOKUP_BY_NAME(S_IN_LOANS, \"Amount\", \"Name\", loan_name),\n  ARRAYFORMULA(\n    IF(R_MONTHS = IF(loan_date = \"\", \"\", MONTH_START(loan_date)), loan_amount, 0)\n  )\n)"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "cell": "N47",
+      "before": "=ARRAYFORMULA(IF(N$3:DE$3=IF($E$46=\"\",\"\",EOMONTH($E$46,-1)+1),$D$46,0))",
+      "after": "=LET(\n  loan_name, IN_LOAN_COL_VALUE(\"Name\"),\n  loan_date, LOOKUP_BY_NAME(S_IN_LOANS, \"Date\", \"Name\", loan_name),\n  loan_amount, LOOKUP_BY_NAME(S_IN_LOANS, \"Amount\", \"Name\", loan_name),\n  ARRAYFORMULA(\n    IF(R_MONTHS = IF(loan_date = \"\", \"\", MONTH_START(loan_date)), loan_amount, 0)\n  )\n)"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "cell": "N61",
+      "before": "=ARRAYFORMULA(IF(N$3:DE$3=IF($E$60=\"\",\"\",EOMONTH($E$60,-1)+1),$D$60,0))",
+      "after": "=LET(\n  loan_name, IN_LOAN_COL_VALUE(\"Name\"),\n  loan_date, LOOKUP_BY_NAME(S_IN_LOANS, \"Date\", \"Name\", loan_name),\n  loan_amount, LOOKUP_BY_NAME(S_IN_LOANS, \"Amount\", \"Name\", loan_name),\n  ARRAYFORMULA(\n    IF(R_MONTHS = IF(loan_date = \"\", \"\", MONTH_START(loan_date)), loan_amount, 0)\n  )\n)"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "cell": "N75",
+      "before": "=ARRAYFORMULA(IF(N$3:DE$3=IF($E$74=\"\",\"\",EOMONTH($E$74,-1)+1),$D$74,0))",
+      "after": "=LET(\n  loan_name, IN_LOAN_COL_VALUE(\"Name\"),\n  loan_date, LOOKUP_BY_NAME(S_IN_LOANS, \"Date\", \"Name\", loan_name),\n  loan_amount, LOOKUP_BY_NAME(S_IN_LOANS, \"Amount\", \"Name\", loan_name),\n  ARRAYFORMULA(\n    IF(R_MONTHS = IF(loan_date = \"\", \"\", MONTH_START(loan_date)), loan_amount, 0)\n  )\n)"
+    },
+    {
+      "sheet": "In Loans",
+      "sheetId": 1346380865,
+      "cell": "N89",
+      "before": "=ARRAYFORMULA(IF(N$3:DE$3=IF($E$88=\"\",\"\",EOMONTH($E$88,-1)+1),$D$88,0))",
+      "after": "=LET(\n  loan_name, IN_LOAN_COL_VALUE(\"Name\"),\n  loan_date, LOOKUP_BY_NAME(S_IN_LOANS, \"Date\", \"Name\", loan_name),\n  loan_amount, LOOKUP_BY_NAME(S_IN_LOANS, \"Amount\", \"Name\", loan_name),\n  ARRAYFORMULA(\n    IF(R_MONTHS = IF(loan_date = \"\", \"\", MONTH_START(loan_date)), loan_amount, 0)\n  )\n)"
+    }
+  ],
+  "verification": {
+    "cellsChecked": 16745,
+    "monthlyReceiptsChecked": 672,
+    "valueDifferences": 73,
+    "valueDifferenceRows": [
+      "In Loans:106"
+    ],
+    "changedInputs": [
+      "In Loans:4:13",
+      "In Loans:18:13",
+      "In Loans:32:13",
+      "In Loans:46:13",
+      "In Loans:60:13",
+      "In Loans:74:13",
+      "In Loans:88:13"
+    ],
+    "validationChanges": 0,
+    "formulaErrors": 0,
+    "allSevenAnchorFormulasMatch": true,
+    "inLoansRow107MatchesCashFlow": true,
+    "valueDifferenceExplanation": "Only 73 cached values in unchanged In Loans row 107 refreshed. All 96 final row-107 values match Cash Flow row 24; loan receipts, all other loan values and Cash Flow are unchanged."
+  }
+}
