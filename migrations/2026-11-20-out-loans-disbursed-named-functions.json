@@ -1,0 +1,36 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "date": "2026-11-20",
+  "description": "Replace direct references in Out Loans disbursement formulas with existing named functions and ranges.",
+  "status": "Applied and verified in the original financial plan.",
+  "scope": "Only Out Loans J5 and J19 formula anchors changed; both retain their 96-month spills. No Apps Script source changes.",
+  "rationale": "Use OUT_LOAN_COL_VALUE to identify the current loan, LOOKUP_BY_NAME to retrieve its original Date and Amount inputs, MONTH_START for the disbursement month, and R_MONTHS for the timeline. Looking up the original input fields preserves blank values rather than inheriting a previous loan's helper values.",
+  "changes": [
+    {
+      "sheet": "Out Loans",
+      "sheetId": 198423991,
+      "cell": "J5",
+      "before": "=ARRAYFORMULA(IF(J$3:DA$3=IF($B$4=\"\",\"\",EOMONTH($B$4,-1)+1),$D$4,0))",
+      "after": "=LET(\n  loan_name, OUT_LOAN_COL_VALUE(\"Name\"),\n  loan_date, LOOKUP_BY_NAME(S_OUT_LOANS, \"Date\", \"Name\", loan_name),\n  loan_amount, LOOKUP_BY_NAME(S_OUT_LOANS, \"Amount\", \"Name\", loan_name),\n  ARRAYFORMULA(\n    IF(R_MONTHS = IF(loan_date = \"\", \"\", MONTH_START(loan_date)), loan_amount, 0)\n  )\n)"
+    },
+    {
+      "sheet": "Out Loans",
+      "sheetId": 198423991,
+      "cell": "J19",
+      "before": "=ARRAYFORMULA(IF(J$3:DA$3=IF($B$18=\"\",\"\",EOMONTH($B$18,-1)+1),$D$18,0))",
+      "after": "=LET(\n  loan_name, OUT_LOAN_COL_VALUE(\"Name\"),\n  loan_date, LOOKUP_BY_NAME(S_OUT_LOANS, \"Date\", \"Name\", loan_name),\n  loan_amount, LOOKUP_BY_NAME(S_OUT_LOANS, \"Amount\", \"Name\", loan_name),\n  ARRAYFORMULA(\n    IF(R_MONTHS = IF(loan_date = \"\", \"\", MONTH_START(loan_date)), loan_amount, 0)\n  )\n)"
+    }
+  ],
+  "verification": {
+    "cellsChecked": 8348,
+    "monthlyDisbursementValues": 192,
+    "valueDifferences": 0,
+    "changedCells": [
+      "Out Loans:4:9",
+      "Out Loans:18:9"
+    ],
+    "errors": [],
+    "validationChanges": 0,
+    "formulasMatch": true
+  }
+}
