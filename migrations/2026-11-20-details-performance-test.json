@@ -1,0 +1,184 @@
+{
+  "spreadsheetId": "1DuApqJ58lUKorGGjxbJBYmVSCfkVFFPZB3zt8V3INic",
+  "description": "Cache month-independent Details inputs once and narrow the source columns used by its monthly detail functions.",
+  "status": "Applied and verified in the test copy on 2026-11-20. Not applied to the original plan.",
+  "formulaChange": {
+    "sheet": "Details",
+    "sheetId": 1623286087,
+    "cell": "A2",
+    "before": "=LET(\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  without_totals, LAMBDA(expenses, source,\n    LET(\n      categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n        COL_VALUES(source, \"param\"), COL_VALUES(source, \"_category\")), \"\")),\n      IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  infra_details, LAMBDA(month,\n    LET(\n      source, S_INFRA_EXP_P,\n      params, COL_VALUES(source, \"param\"),\n      suppliers, COL_VALUES(source, \"supplier\"),\n      categories, COL_VALUES(source, \"_category\"),\n      values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n      IFNA(FILTER(\n        HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Infrastructure\", \"\")), params, suppliers, values),\n        ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\"),\n        ISNUMBER(values),\n        values>0\n      ), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  financing_details, LAMBDA(month, source, param_name, party_header, type_label,\n    LET(\n      params, COL_VALUES(source, \"param\"),\n      names, COL_VALUES(source, \"_name\"),\n      parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"),\n        COL_VALUES(source, party_header)), \"\")),\n      values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n      IFNA(FILTER(\n        HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n        params=param_name,\n        ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n        ISNUMBER(values),\n        values>0\n      ), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  monthly_details, LAMBDA(month,\n    LET(\n      operating, without_totals(OPERATIONAL_EXPENSES_D(month), S_OPERATIONAL_EXP),\n      all_expenses, VSTACK(\n        financing_details(month, S_BORROWINGS, \"borrowings repaid\", \"lender\", \"Borrowing Repayments\"),\n        financing_details(month, S_LOANS, \"loan disbursed\", \"debtor\", \"Loan Disbursements\"),\n        without_totals(SETUP_EXPENSES_D(month), S_SETUP_EXP_P),\n        LAND_EXPENSES_D(month),\n        infra_details(month),\n        without_totals(CONSTRUCTION_EXPENSES_D(month), S_CONSTRUCTION_EXP_P),\n        IFNA(FILTER(operating, ARRAYFORMULA(\n          (CHOOSECOLS(operating, 1)=\"Direct Operating Expenses\")+\n          (CHOOSECOLS(operating, 1)=\"Other Operating Expenses\"))), {\"\",\"\",\"\",\"\"})\n      ),\n      IFNA(FILTER(all_expenses, CHOOSECOLS(all_expenses, 1)<>\"\"), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  expenses, REDUCE({\"\",0,\"\",\"\",0}, months,\n    LAMBDA(result, month,\n      LET(\n        monthly, monthly_details(month),\n        VSTACK(result, HSTACK(\n          CHOOSECOLS(monthly, 1),\n          ARRAYFORMULA(IF(CHOOSECOLS(monthly, 1)<>\"\", month, \"\")),\n          CHOOSECOLS(monthly, 2, 3, 4)\n        ))\n      )\n    )),\n  grouped, IFNA(QUERY(expenses,\n    \"select Col1, Col2, Col3, Col4, sum(Col5) where Col1 is not null group by Col1, Col2, Col3, Col4 label sum(Col5) ''\", 0),\n    {\"\",\"\",\"\",\"\",0}),\n  type_labels, MAP(CHOOSECOLS(grouped, 1), LAMBDA(type,\n    SWITCH(type, \"Construction\", \"Construction Expenses\", \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\", \"Land\", \"Land Expenses\", type)\n  )),\n  type_order, {\"Borrowing Repayments\";\"Loan Disbursements\";\"Setup Expenses\";\"Land Expenses\";\"Infrastructure Expenses\";\"Construction Expenses\";\"Direct Operating Expenses\";\"Other Operating Expenses\"},\n  ranked, HSTACK(ARRAYFORMULA(IFNA(MATCH(type_labels, type_order, 0), 9)), type_labels, CHOOSECOLS(grouped, 2, 3, 4, 5)),\n  details, SORT(ranked, 1, TRUE, 3, TRUE, 4, TRUE),\n  item_values, MAP(CHOOSECOLS(details, 2), CHOOSECOLS(details, 3), CHOOSECOLS(details, 4), CHOOSECOLS(details, 5),\n    LAMBDA(type, month, param, detail,\n      IF(type=\"Construction Expenses\",\n        LET(\n          units, INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")), 1, MATCH(month, R_MONTHS, 0)),\n          unit_name, REGEXREPLACE(param, \" const[.] cost$\", \"\"),\n          singular, SWITCH(unit_name, \"clinics\", \"clinic\", \"sala toilets\", \"sala toilet\", \"complex room\", \"complex home\", unit_name),\n          plural, SWITCH(unit_name,\n            \"lobby\", \"lobbies\", \"storage\", \"storage\", \"pool lounge seating\", \"pool lounge seating\",\n            \"general resort storage\", \"general resort storage\", \"shower & toilet\", \"showers & toilets\",\n            \"open air sala - big\", \"open air salas - big\", \"open air sala - medium\", \"open air salas - medium\",\n            singular&\"s\"),\n          TEXT(units, \"0\")&\" \"&IF(units=1, singular, plural)\n        ),\n        param&IF(detail<>\"\", \" (\"&detail&\")\", \"\")\n      )\n    )),\n  IF(SUM(ARRAYFORMULA(N(type_labels<>\"\")))=0, {\"\",\"\",\"\",\"\",\"\",\"\"},\n    HSTACK(CHOOSECOLS(details, 2),\n      ARRAYFORMULA(YEAR(CHOOSECOLS(details, 3))),\n      ARRAYFORMULA(\"Q\"&ROUNDUP(MONTH(CHOOSECOLS(details, 3))/3)&\" \"&YEAR(CHOOSECOLS(details, 3))),\n      CHOOSECOLS(details, 3),\n      item_values, CHOOSECOLS(details, 6)))\n)",
+    "after": "=LET(\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  setup_params, COL_VALUES(S_SETUP_EXP_P, \"param\"),\n  setup_categories, COL_VALUES(S_SETUP_EXP_P, \"_category\"),\n  construction_params, COL_VALUES(S_CONSTRUCTION_EXP_P, \"param\"),\n  construction_categories, COL_VALUES(S_CONSTRUCTION_EXP_P, \"_category\"),\n  operating_params, COL_VALUES(S_OPERATIONAL_EXP, \"param\"),\n  operating_categories, COL_VALUES(S_OPERATIONAL_EXP, \"_category\"),\n  infra_params, COL_VALUES(S_INFRA_EXP_P, \"param\"),\n  infra_suppliers, COL_VALUES(S_INFRA_EXP_P, \"supplier\"),\n  infra_categories, COL_VALUES(S_INFRA_EXP_P, \"_category\"),\n  infra_headers, HEADER_ROW(S_INFRA_EXP_P),\n  infra_data, DATA_ROWS(S_INFRA_EXP_P),\n  borrowing_params, COL_VALUES(S_BORROWINGS, \"param\"),\n  borrowing_names, COL_VALUES(S_BORROWINGS, \"_name\"),\n  borrowing_parties, ARRAYFORMULA(IFNA(XLOOKUP(borrowing_names,\n    COL_VALUES(S_BORROWINGS, \"name\"), COL_VALUES(S_BORROWINGS, \"lender\")), \"\")),\n  borrowing_headers, HEADER_ROW(S_BORROWINGS),\n  borrowing_data, DATA_ROWS(S_BORROWINGS),\n  loan_params, COL_VALUES(S_LOANS, \"param\"),\n  loan_names, COL_VALUES(S_LOANS, \"_name\"),\n  loan_parties, ARRAYFORMULA(IFNA(XLOOKUP(loan_names,\n    COL_VALUES(S_LOANS, \"name\"), COL_VALUES(S_LOANS, \"debtor\")), \"\")),\n  loan_headers, HEADER_ROW(S_LOANS),\n  loan_data, DATA_ROWS(S_LOANS),\n  without_totals, LAMBDA(expenses, source_params, source_categories,\n    LET(\n      categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n        source_params, source_categories), \"\")),\n      IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  infra_details, LAMBDA(month,\n    LET(\n      values, CHOOSECOLS(infra_data, MATCH(month, infra_headers, 0)),\n      IFNA(FILTER(\n        HSTACK(ARRAYFORMULA(IF(infra_params<>\"\", \"Infrastructure\", \"\")), infra_params, infra_suppliers, values),\n        ARRAYFORMULA(LOWER(TRIM(infra_categories))<>\"totals\"),\n        ISNUMBER(values),\n        values>0\n      ), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  financing_details, LAMBDA(month, params, names, parties, headers, data, param_name, type_label,\n    LET(\n      values, CHOOSECOLS(data, MATCH(month, headers, 0)),\n      IFNA(FILTER(\n        HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n        params=param_name,\n        ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n        ISNUMBER(values),\n        values>0\n      ), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  monthly_details, LAMBDA(month,\n    LET(\n      operating, without_totals(OPERATIONAL_EXPENSES_D(month), operating_params, operating_categories),\n      all_expenses, VSTACK(\n        financing_details(month, borrowing_params, borrowing_names, borrowing_parties, borrowing_headers, borrowing_data, \"borrowings repaid\", \"Borrowing Repayments\"),\n        financing_details(month, loan_params, loan_names, loan_parties, loan_headers, loan_data, \"loan disbursed\", \"Loan Disbursements\"),\n        without_totals(SETUP_EXPENSES_D(month), setup_params, setup_categories),\n        LAND_EXPENSES_D(month),\n        infra_details(month),\n        without_totals(CONSTRUCTION_EXPENSES_D(month), construction_params, construction_categories),\n        IFNA(FILTER(operating, ARRAYFORMULA(\n          (CHOOSECOLS(operating, 1)=\"Direct Operating Expenses\")+\n          (CHOOSECOLS(operating, 1)=\"Other Operating Expenses\"))), {\"\",\"\",\"\",\"\"})\n      ),\n      IFNA(FILTER(all_expenses, CHOOSECOLS(all_expenses, 1)<>\"\"), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  expenses, REDUCE({\"\",0,\"\",\"\",0}, months,\n    LAMBDA(result, month,\n      LET(\n        monthly, monthly_details(month),\n        VSTACK(result, HSTACK(\n          CHOOSECOLS(monthly, 1),\n          ARRAYFORMULA(IF(CHOOSECOLS(monthly, 1)<>\"\", month, \"\")),\n          CHOOSECOLS(monthly, 2, 3, 4)\n        ))\n      )\n    )),\n  grouped, IFNA(QUERY(expenses,\n    \"select Col1, Col2, Col3, Col4, sum(Col5) where Col1 is not null group by Col1, Col2, Col3, Col4 label sum(Col5) ''\", 0),\n    {\"\",\"\",\"\",\"\",0}),\n  type_labels, MAP(CHOOSECOLS(grouped, 1), LAMBDA(type,\n    SWITCH(type, \"Construction\", \"Construction Expenses\", \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\", \"Land\", \"Land Expenses\", type)\n  )),\n  type_order, {\"Borrowing Repayments\";\"Loan Disbursements\";\"Setup Expenses\";\"Land Expenses\";\"Infrastructure Expenses\";\"Construction Expenses\";\"Direct Operating Expenses\";\"Other Operating Expenses\"},\n  ranked, HSTACK(ARRAYFORMULA(IFNA(MATCH(type_labels, type_order, 0), 9)), type_labels, CHOOSECOLS(grouped, 2, 3, 4, 5)),\n  details, SORT(ranked, 1, TRUE, 3, TRUE, 4, TRUE),\n  item_values, MAP(CHOOSECOLS(details, 2), CHOOSECOLS(details, 3), CHOOSECOLS(details, 4), CHOOSECOLS(details, 5),\n    LAMBDA(type, month, param, detail,\n      IF(type=\"Construction Expenses\",\n        LET(\n          units, INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")), 1, MATCH(month, R_MONTHS, 0)),\n          unit_name, REGEXREPLACE(param, \" const[.] cost$\", \"\"),\n          singular, SWITCH(unit_name, \"clinics\", \"clinic\", \"sala toilets\", \"sala toilet\", \"complex room\", \"complex home\", unit_name),\n          plural, SWITCH(unit_name,\n            \"lobby\", \"lobbies\", \"storage\", \"storage\", \"pool lounge seating\", \"pool lounge seating\",\n            \"general resort storage\", \"general resort storage\", \"shower & toilet\", \"showers & toilets\",\n            \"open air sala - big\", \"open air salas - big\", \"open air sala - medium\", \"open air salas - medium\",\n            singular&\"s\"),\n          TEXT(units, \"0\")&\" \"&IF(units=1, singular, plural)\n        ),\n        param&IF(detail<>\"\", \" (\"&detail&\")\", \"\")\n      )\n    )),\n  IF(SUM(ARRAYFORMULA(N(type_labels<>\"\")))=0, {\"\",\"\",\"\",\"\",\"\",\"\"},\n    HSTACK(CHOOSECOLS(details, 2),\n      ARRAYFORMULA(YEAR(CHOOSECOLS(details, 3))),\n      ARRAYFORMULA(\"Q\"&ROUNDUP(MONTH(CHOOSECOLS(details, 3))/3)&\" \"&YEAR(CHOOSECOLS(details, 3))),\n      CHOOSECOLS(details, 3),\n      item_values, CHOOSECOLS(details, 6)))\n)"
+  },
+  "namedFunctionChanges": {
+    "CONSTRUCTION_EXPENSES_D": {
+      "before": "=LET(\n  rows, SEQUENCE(ROWS(S_CONSTRUCTION_EXP_P) - 1, 1, 2),\n  params, COL_VALUES(S_CONSTRUCTION_EXP_P, \"param\"),\n  month_col, MATCH(m, INDEX(S_CONSTRUCTION_EXP_P,1,), 0),\n  values, CHOOSEROWS(INDEX(S_CONSTRUCTION_EXP_P,,month_col), rows),\n  IFNA(\n    FILTER(\n      HSTACK(\n        ARRAYFORMULA(IF(params <> \"\",\"Construction\",\"\")),\n        params,\n        \"\",\n        values\n      ),\n      REGEXMATCH(params, \"const\\. cost$\"),\n      values > 0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n)",
+      "after": "=LET(\n  rows, SEQUENCE(ROWS(S_CONSTRUCTION_EXP_P) - 1, 1, 2),\n  params, COL_VALUES(CHOOSECOLS(S_CONSTRUCTION_EXP_P, MATCH(\"param\", INDEX(S_CONSTRUCTION_EXP_P, 1, 0), 0)), \"param\"),\n  month_col, MATCH(m, INDEX(S_CONSTRUCTION_EXP_P,1,), 0),\n  values, CHOOSEROWS(INDEX(S_CONSTRUCTION_EXP_P,,month_col), rows),\n  IFNA(\n    FILTER(\n      HSTACK(\n        ARRAYFORMULA(IF(params <> \"\",\"Construction\",\"\")),\n        params,\n        \"\",\n        values\n      ),\n      REGEXMATCH(params, \"const\\. cost$\"),\n      values > 0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n)"
+    },
+    "OPERATIONAL_EXPENSES_D": {
+      "before": "=LET(\n  rows, SEQUENCE(ROWS(S_OPERATIONAL_EXP) - 1, 1, 2),\n  params, COL_VALUES(S_OPERATIONAL_EXP, \"param\"),\n  categories, COL_VALUES(S_OPERATIONAL_EXP, \"_category\"),\n  month_col, MATCH(m, INDEX(S_OPERATIONAL_EXP,1,), 0),\n  values, CHOOSEROWS(INDEX(S_OPERATIONAL_EXP,,month_col), rows),\n  IFNA(\n    FILTER(\n      HSTACK(categories, params, \"\", values),\n      REGEXMATCH(categories, \"^(Direct Operating Expenses|Other Operating Expenses)$\"),\n      params <> \"\",\n      ISNUMBER(values),\n      values > 0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n)",
+      "after": "=LET(\n  rows, SEQUENCE(ROWS(S_OPERATIONAL_EXP) - 1, 1, 2),\n  params, COL_VALUES(CHOOSECOLS(S_OPERATIONAL_EXP, MATCH(\"param\", INDEX(S_OPERATIONAL_EXP, 1, 0), 0)), \"param\"),\n  categories, COL_VALUES(CHOOSECOLS(S_OPERATIONAL_EXP, MATCH(\"_category\", INDEX(S_OPERATIONAL_EXP, 1, 0), 0)), \"_category\"),\n  month_col, MATCH(m, INDEX(S_OPERATIONAL_EXP,1,), 0),\n  values, CHOOSEROWS(INDEX(S_OPERATIONAL_EXP,,month_col), rows),\n  IFNA(\n    FILTER(\n      HSTACK(categories, params, \"\", values),\n      REGEXMATCH(categories, \"^(Direct Operating Expenses|Other Operating Expenses)$\"),\n      params <> \"\",\n      ISNUMBER(values),\n      values > 0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n)"
+    },
+    "SETUP_EXPENSES_D": {
+      "before": "=LET(\n  rows, SEQUENCE(ROWS(S_SETUP_EXP_P) - 1, 1, 2),\n  params, COL_VALUES(S_SETUP_EXP_P, \"param\"),\n  month_col, MATCH(m, INDEX(S_SETUP_EXP_P,1,), 0),\n  values, CHOOSEROWS(INDEX(S_SETUP_EXP_P,,month_col), rows),\n  suppliers, COL_VALUES(S_SETUP_EXP_P, \"supplier\"),\n  IFNA(\n    FILTER(\n      HSTACK(\n        ARRAYFORMULA(IF(params<>\"\",\"Setup\",\"\")),\n        params,\n        suppliers,\n        values\n      ),\n      params <> \"total costs\",\n      values > 0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n)",
+      "after": "=LET(\n  rows, SEQUENCE(ROWS(S_SETUP_EXP_P) - 1, 1, 2),\n  params, COL_VALUES(CHOOSECOLS(S_SETUP_EXP_P, MATCH(\"param\", INDEX(S_SETUP_EXP_P, 1, 0), 0)), \"param\"),\n  month_col, MATCH(m, INDEX(S_SETUP_EXP_P,1,), 0),\n  values, CHOOSEROWS(INDEX(S_SETUP_EXP_P,,month_col), rows),\n  suppliers, COL_VALUES(CHOOSECOLS(S_SETUP_EXP_P, MATCH(\"supplier\", INDEX(S_SETUP_EXP_P, 1, 0), 0)), \"supplier\"),\n  IFNA(\n    FILTER(\n      HSTACK(\n        ARRAYFORMULA(IF(params<>\"\",\"Setup\",\"\")),\n        params,\n        suppliers,\n        values\n      ),\n      params <> \"total costs\",\n      values > 0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n)"
+    }
+  },
+  "changesSummary": [
+    "Move static category columns, infrastructure arrays, financing names and counterparties outside the monthly loop.",
+    "Reuse those LET bindings inside the monthly lambdas.",
+    "Pass only requested columns to COL_VALUES in CONSTRUCTION_EXPENSES_D, OPERATIONAL_EXPENSES_D and SETUP_EXPENSES_D.",
+    "Preserve existing named-function calls, output ordering, grouping, labels and links."
+  ],
+  "verification": {
+    "scenarios": [
+      {
+        "AC8": 0,
+        "cellsCompared": 6438,
+        "valueDifferences": 0,
+        "hyperlinkDifferences": 0
+      },
+      {
+        "AC8": 1,
+        "cellsCompared": 6444,
+        "valueDifferences": 0,
+        "hyperlinkDifferences": 0
+      }
+    ],
+    "range": "Details!A1:F1075",
+    "numericTolerance": "max(1e-6, abs(before) * 1e-12)",
+    "formulaReadBack": true,
+    "threeNamedDefinitionsReadBack": true,
+    "namedFunctionCallsPreserved": true,
+    "unexpectedSnapshotChanges": 0,
+    "inputRestoration": {
+      "Construction Exp (P)!AC8": 0,
+      "Cash Flow!C17": "Original ARRAYFORMULA(SCAN(...)) preserved in both workbooks."
+    },
+    "originalSnapshotRestoredExactly": true,
+    "visualCheck": "Native Details table renders correctly with existing headers, filtering and formatting."
+  },
+  "performance": {
+    "method": "Sequential Sheets connector batchUpdate of Construction Exp (P)!AC8 followed by a read of effectiveValue and hyperlink for Details!A1:F1075. Duration includes write, recalculation, read and connector/network overhead. Each baseline and final direction was repeated three times. Conditions were sequential, not randomized.",
+    "summary": {
+      "baseline": {
+        "0": {
+          "medianSeconds": 15.933,
+          "minSeconds": 15.537,
+          "maxSeconds": 16.956,
+          "runs": 3
+        },
+        "1": {
+          "medianSeconds": 13.525,
+          "minSeconds": 12.951,
+          "maxSeconds": 13.785,
+          "runs": 3
+        }
+      },
+      "optimized": {
+        "0": {
+          "medianSeconds": 13.709,
+          "minSeconds": 13.709,
+          "maxSeconds": 13.709,
+          "runs": 1
+        },
+        "1": {
+          "medianSeconds": 11.591,
+          "minSeconds": 11.591,
+          "maxSeconds": 11.591,
+          "runs": 1
+        }
+      },
+      "optimized_with_narrow_named_functions": {
+        "0": {
+          "medianSeconds": 10.638,
+          "minSeconds": 10.512,
+          "maxSeconds": 11.798,
+          "runs": 3
+        },
+        "1": {
+          "medianSeconds": 9.861,
+          "minSeconds": 8.339,
+          "maxSeconds": 10.665,
+          "runs": 3
+        }
+      }
+    },
+    "runs": [
+      {
+        "condition": "baseline",
+        "value": 0,
+        "durationMs": 15537
+      },
+      {
+        "condition": "baseline",
+        "value": 1,
+        "durationMs": 13785
+      },
+      {
+        "condition": "baseline",
+        "value": 0,
+        "durationMs": 16956
+      },
+      {
+        "condition": "baseline",
+        "value": 1,
+        "durationMs": 13525
+      },
+      {
+        "condition": "baseline",
+        "value": 0,
+        "durationMs": 15933
+      },
+      {
+        "condition": "baseline",
+        "value": 1,
+        "durationMs": 12951
+      },
+      {
+        "condition": "optimized",
+        "value": 0,
+        "durationMs": 13709
+      },
+      {
+        "condition": "optimized",
+        "value": 1,
+        "durationMs": 11591
+      },
+      {
+        "condition": "optimized_with_narrow_named_functions",
+        "value": 0,
+        "durationMs": 10512
+      },
+      {
+        "condition": "optimized_with_narrow_named_functions",
+        "value": 1,
+        "durationMs": 9861
+      },
+      {
+        "condition": "optimized_with_narrow_named_functions",
+        "value": 0,
+        "durationMs": 11798
+      },
+      {
+        "condition": "optimized_with_narrow_named_functions",
+        "value": 1,
+        "durationMs": 10665
+      },
+      {
+        "condition": "optimized_with_narrow_named_functions",
+        "value": 0,
+        "durationMs": 10638
+      },
+      {
+        "condition": "optimized_with_narrow_named_functions",
+        "value": 1,
+        "durationMs": 8339
+      }
+    ],
+    "limitation": "These completion-read durations are not directly comparable with the earlier visible-browser-progress timings. Do not combine their percentage reductions.",
+    "browserInvestigation": "Initial original-plan measurements were invalidated by browser tab changes. Guarded retries confirmed roughly 3-second UI responsiveness but exposed no calculation bars, so they were not used as calculation-performance evidence. Original input and formula snapshots were restored exactly."
+  },
+  "scope": "Test-copy Details!A2 plus three monthly detail named functions only. No temporary sheets, original-plan optimization, Apps Script changes or permanent input changes.",
+  "rollback": "Restore formulaChange.before to Details!A2 and each namedFunctionChanges entry to its before definition, after checking current definitions against after.",
+  "repositoryScope": "Only this migration record belongs to this task. No Apps Script source changed, so clasp push is not required."
+}
