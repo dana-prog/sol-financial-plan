@@ -1,5 +1,5 @@
 const ALL_EXPENSES_TYPES = [
-  'Borrowing Repayments', 'Loan Disbursements', 'Setup Expenses', 'Land Expenses',
+  'In Loan Repayments', 'Out Loan Disbursements', 'Setup Expenses', 'Land Expenses',
   'Infrastructure Expenses', 'Construction Expenses', 'Direct Operating Expenses',
   'Other Operating Expenses',
 ];

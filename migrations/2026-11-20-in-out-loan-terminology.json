@@ -1,0 +1,72 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Rename incoming borrowings to In Loans and outgoing lending to Out Loans throughout the financial plan, preserving calculations.",
+  "sheets": [
+    {
+      "sheetId": 1346380865,
+      "from": "Borrowings",
+      "to": "In Loans"
+    },
+    {
+      "sheetId": 198423991,
+      "from": "Loans",
+      "to": "Out Loans"
+    }
+  ],
+  "namedRanges": [
+    {
+      "from": "S_BORROWINGS",
+      "to": "S_IN_LOANS",
+      "range": "'In Loans'!A3:DI109"
+    },
+    {
+      "from": "S_LOANS",
+      "to": "S_OUT_LOANS",
+      "range": "'Out Loans'!A3:DE38"
+    }
+  ],
+  "namedFunctions": {
+    "BORROWING_COL_VALUE": "IN_LOAN_COL_VALUE",
+    "BORROWING_NAME": "IN_LOAN_NAME",
+    "BORROWING_PARAM_VALUE": "IN_LOAN_PARAM_VALUE",
+    "BORROWING_PARAM_VALUE_BY_BORROWING": "IN_LOAN_PARAM_VALUE_BY_LOAN",
+    "BORROWING_PARAM_VALUES": "IN_LOAN_PARAM_VALUES",
+    "BORROWING_PARAM_VALUES_BY_BORROWING": "IN_LOAN_PARAM_VALUES_BY_LOAN",
+    "BORROWINGS_EXPENSES_D": "IN_LOANS_EXPENSES_D",
+    "BORROWINGS_PARAM_SUM": "IN_LOANS_PARAM_SUM",
+    "BORROWINGS_PARAM_SUMS": "IN_LOANS_PARAM_SUMS",
+    "LOAN_COL_VALUE": "OUT_LOAN_COL_VALUE",
+    "LOAN_PARAM_VALUE_BY_LOAN": "OUT_LOAN_PARAM_VALUE_BY_LOAN",
+    "LOAN_PARAM_VALUES": "OUT_LOAN_PARAM_VALUES",
+    "LOAN_PARAM_VALUES_BY_LOAN": "OUT_LOAN_PARAM_VALUES_BY_LOAN",
+    "LOANS_PARAM_SUMS": "OUT_LOANS_PARAM_SUMS"
+  },
+  "scriptFunctions": {
+    "calculateBorrowingRepayments": "calculateInLoanRepayments",
+    "accrueBorrowingMonth": "accrueInLoanMonth",
+    "recalculateBorrowingRepayments": "recalculateInLoanRepayments",
+    "readBorrowingRepaymentModel": "readInLoanRepaymentModel"
+  },
+  "application": [
+    "Renamed native named functions and ranges in place, preserving calls and dependencies.",
+    "Renamed sheets, cash-flow parameters, contract-specific parameter keys, Budget categories, expense categories, navigation, Funding Status headings, notes, and formula-local financing variable names.",
+    "Replaced remaining old Budget identifiers with the renamed named-function and named-range calls.",
+    "Updated Apps Script locally, passed tests, pushed through clasp, and pulled remote source to verify synchronization.",
+    "Kept pre-existing uncommitted work out of the rename commit; the live source already included that work."
+  ],
+  "verification": {
+    "numericCellsCompared": 55272,
+    "newFormulaErrors": 0,
+    "staleIdentifiers": 0,
+    "namedFunctionsCompared": 69,
+    "namedRangesCompared": 19,
+    "unexpectedDefinitionChanges": 0,
+    "workingTreeTestsPassed": 97,
+    "isolatedCommitTestsPassed": 84,
+    "financialTotalsChanged": 0,
+    "refreshedCachedDisplayCells": 73,
+    "cachedDisplayExplanation": "In Loans row 106 kept its original direct-reference formulas. Its 73 stale cached values recalculated to agree with the unchanged Cash Flow row 24 source values.",
+    "nativeLoanSheetsAndFundingStatusVisuallyVerified": true,
+    "appsScriptPushVerified": true
+  }
+}

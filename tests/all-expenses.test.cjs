@@ -11,10 +11,10 @@ const item = (type, year, quarter, month, cost) => [type, year, quarter, month, 
 test('details follow the defined type order with only one grand total', () => {
   const layout = plain(ctx._allExpensesLayout([
     item('Land Expenses', 2027, 'Q1 2027', 46500, 50),
-    item('Borrowing Repayments', 2028, 'Q1 2028', 46800, 20),
-    item('Borrowing Repayments', 2027, 'Q4 2027', 46700, 10),
+    item('In Loan Repayments', 2028, 'Q1 2028', 46800, 20),
+    item('In Loan Repayments', 2027, 'Q4 2027', 46700, 10),
   ]));
-  assert.deepEqual([...new Set(layout.rows.map(row => row[0]))], ['Borrowing Repayments', 'Land Expenses', 'Total']);
+  assert.deepEqual([...new Set(layout.rows.map(row => row[0]))], ['In Loan Repayments', 'Land Expenses', 'Total']);
   assert.equal(layout.rows[0][5], 10);
   assert.equal(layout.rows.length, 4);
   assert.deepEqual(layout.rows.slice(0, -1).map(row => row[5]), [10, 20, 50]);

@@ -9,16 +9,16 @@ const months = [46023, 46054];
 const headers = ['name', 'lender', 'debtor', 'param', '_name', 'supplier', 'creditor', '_category', ...months];
 const row = values => headers.map(header => values[header] ?? '');
 function sources() {
-  return Object.fromEntries(['R_MONTHS', 'S_BORROWINGS', 'S_LOANS', 'S_SETUP_EXP_P', 'S_OBLIGATIONS',
+  return Object.fromEntries(['R_MONTHS', 'S_IN_LOANS', 'S_OUT_LOANS', 'S_SETUP_EXP_P', 'S_OBLIGATIONS',
     'S_INFRA_EXP_P', 'S_CONSTRUCTION_EXP_P', 'S_OPERATIONAL_EXP', 'S_SETUP_EXP_A'].map(name => [name, [name === 'R_MONTHS' ? months : headers]]));
 }
 
 test('all eight expense categories retain their source rules, grouping and month labels', () => {
   const input = sources();
-  input.S_BORROWINGS.push(row({name: 'Loan A', lender: 'Bank', param: 'start balance', _name: 'Loan A'}),
-    row({param: 'borrowings repaid', _name: 'Loan A', 46023: 10}),
-    row({param: 'borrowings repaid', _name: 'TOTALS', 46023: 999}));
-  input.S_LOANS.push(row({name: 'Loan B', debtor: 'Borrower', param: 'loan disbursed', _name: 'Loan B', 46023: 40}));
+  input.S_IN_LOANS.push(row({name: 'Loan A', lender: 'Bank', param: 'start balance', _name: 'Loan A'}),
+    row({param: 'in loans repaid', _name: 'Loan A', 46023: 10}),
+    row({param: 'in loans repaid', _name: 'TOTALS', 46023: 999}));
+  input.S_OUT_LOANS.push(row({name: 'Loan B', debtor: 'Borrower', param: 'out loans disbursed', _name: 'Loan B', 46023: 40}));
   input.S_SETUP_EXP_P.push(row({param: 'License', supplier: 'Agent', _category: 'Legal', 46023: 5, 46054: -1}),
     row({param: 'License', supplier: 'Agent', _category: 'Legal', 46023: 5}),
     row({param: 'Summary', _category: ' TOTALS ', 46023: 999}),
@@ -37,8 +37,8 @@ test('all eight expense categories retain their source rules, grouping and month
     row({param: 'Other category', _category: 'General', 46023: 999}));
   const output = plain(ctx._allExpensesLayout(ctx._allExpensesFromSources(input, months[0]))).rows.slice(0, -1);
   assert.deepEqual(output.map(r => [r[0], r[3], r[4], r[5]]), [
-    ['Borrowing Repayments', 46023, 'Loan A (Bank)', 10],
-    ['Loan Disbursements', 46023, 'Loan B (Borrower)', 40],
+    ['In Loan Repayments', 46023, 'Loan A (Bank)', 10],
+    ['Out Loan Disbursements', 46023, 'Loan B (Borrower)', 40],
     ['Setup Expenses', 46023, 'License (Agent)', 10],
     ['Land Expenses', 46023, 'Plot (Seller)', 15],
     ['Infrastructure Expenses', 46023, 'Road (Builder)', 20],
@@ -60,10 +60,10 @@ test('no positive expenses produce an empty detail list; numeric-only categories
 
 test('source structure and construction unit counts are validated before any output is written', () => {
   const missingSource = sources();
-  delete missingSource.S_LOANS;
+  delete missingSource.S_OUT_LOANS;
   assert.throws(() => ctx._allExpensesFromSources(missingSource, months[0]), /Missing expense source/);
   const missingMonth = sources();
-  missingMonth.S_LOANS = [headers.slice(0, -1)];
+  missingMonth.S_OUT_LOANS = [headers.slice(0, -1)];
   assert.throws(() => ctx._allExpensesFromSources(missingMonth, months[0]), /Missing month/);
   const missingCount = sources();
   missingCount.S_CONSTRUCTION_EXP_P.push(row({param: 'clinics const. cost', _category: 'Clinic', 46023: 50}));

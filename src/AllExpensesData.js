@@ -1,5 +1,5 @@
 const ALL_EXPENSES_SOURCE_RANGES = [
-  'R_MONTHS', 'S_BORROWINGS', 'S_LOANS', 'S_SETUP_EXP_P', 'S_OBLIGATIONS',
+  'R_MONTHS', 'S_IN_LOANS', 'S_OUT_LOANS', 'S_SETUP_EXP_P', 'S_OBLIGATIONS',
   'S_INFRA_EXP_P', 'S_CONSTRUCTION_EXP_P', 'S_OPERATIONAL_EXP', 'S_SETUP_EXP_A',
 ];
 
@@ -9,8 +9,8 @@ function _allExpensesFromSources(inputs, currentMonth) {
   if (!months.length) throw new Error('The expense timeline has no months. Existing rows were preserved.');
   const grouped = new Map();
   const sources = [
-    ['S_BORROWINGS', 'Borrowing Repayments', 'financing'],
-    ['S_LOANS', 'Loan Disbursements', 'financing'],
+    ['S_IN_LOANS', 'In Loan Repayments', 'financing'],
+    ['S_OUT_LOANS', 'Out Loan Disbursements', 'financing'],
     ['S_SETUP_EXP_P', 'Setup Expenses', 'setup'],
     ['S_SETUP_EXP_A', 'Setup Expenses', 'setup'],
     ['S_OBLIGATIONS', 'Land Expenses', 'land'],
@@ -45,7 +45,7 @@ function _allExpensesFromSources(inputs, currentMonth) {
     const params = new Map();
     if (kind === 'financing') {
       const loanNameColumn = column('name');
-      const partyColumn = column(source === 'S_BORROWINGS' ? 'lender' : 'debtor');
+      const partyColumn = column(source === 'S_IN_LOANS' ? 'lender' : 'debtor');
       for (const row of rows) {
         const key = String(row[loanNameColumn] ?? '').toLowerCase();
         if (!parties.has(key)) parties.set(key, String(row[partyColumn] ?? ''));
@@ -65,7 +65,7 @@ function _allExpensesFromSources(inputs, currentMonth) {
       previousCategory = category;
       const normalizedCategory = category.trim().toLowerCase();
       if (!name || normalizedCategory === 'totals') continue;
-      if (kind === 'financing' && (param.toLowerCase() !== (source === 'S_BORROWINGS' ? 'borrowings repaid' : 'loan disbursed') || name.trim().toLowerCase() === 'totals')) continue;
+      if (kind === 'financing' && (param.toLowerCase() !== (source === 'S_IN_LOANS' ? 'in loans repaid' : 'out loans disbursed') || name.trim().toLowerCase() === 'totals')) continue;
       if (kind === 'setup' && param.toLowerCase() === 'total costs') continue;
       if (kind === 'land' && normalizedCategory !== 'land') continue;
       if (kind === 'construction' && !/const\. cost$/.test(param)) continue;

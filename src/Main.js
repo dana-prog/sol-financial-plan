@@ -22,7 +22,7 @@ function _createMenu() {
     .addItem('Set Timeline Borders', '_onSetTimelineBorders')
     .addItem('Refresh All Expenses', 'refreshAllExpenses')
     .addSeparator()
-    .addItem('Recalculate Borrowing Payments and Tax', 'showRepaymentCalculation')
+    .addItem('Recalculate In Loan Payments and Tax', 'showRepaymentCalculation')
     .addItem('Sync Wise Transactions', 'syncWiseScheduled')
     .addSeparator()
     .addItem('Export as XLSX (Values Only)', '_onExportValuesXSLX')

@@ -13,11 +13,11 @@ test('type boundaries are thick, year boundaries thin, and quarter changes have 
   const ctx = context();
   const values = [
     ['Type', 'Year', 'Quarter'],
-    ['Borrowing Repayments', '2028', 'Q1 2028'],
-    ['Borrowing Repayments', '2028', 'Q1 2028'],
-    ['Borrowing Repayments', '2028', 'Q2 2028'],
-    ['Borrowing Repayments', '2029', 'Q1 2029'],
-    ['Loan Disbursements', '2027', 'Q4 2027'],
+    ['In Loan Repayments', '2028', 'Q1 2028'],
+    ['In Loan Repayments', '2028', 'Q1 2028'],
+    ['In Loan Repayments', '2028', 'Q2 2028'],
+    ['In Loan Repayments', '2029', 'Q1 2029'],
+    ['Out Loan Disbursements', '2027', 'Q4 2027'],
     ['', '', ''],
   ];
   assert.deepEqual(JSON.parse(JSON.stringify(ctx._detailsBorderRows(values))), [

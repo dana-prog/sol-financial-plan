@@ -31,9 +31,9 @@
 // ARRAYFORMULA is required to make + and - broadcast across the 1x32 rows
 // returned by MAIN_TIMELINE_PARAM_ROW. Without it, only the first cell receives a value.
 const _PERF_FIX_BATCH_1 = {
-  105: '=ARRAYFORMULA(MAIN_TIMELINE_PARAM_ROW("principal opening") + MAIN_TIMELINE_PARAM_ROW("loan draw") - MAIN_TIMELINE_PARAM_ROW("principal paid"))',
+  105: '=ARRAYFORMULA(MAIN_TIMELINE_PARAM_ROW("principal opening") + MAIN_TIMELINE_PARAM_ROW("in loan draw") - MAIN_TIMELINE_PARAM_ROW("principal paid"))',
   109: '=ARRAYFORMULA(MAIN_TIMELINE_PARAM_ROW("accrued interest opening") + MAIN_TIMELINE_PARAM_ROW("interest generated") - MAIN_TIMELINE_PARAM_ROW("interest paid"))',
-  111: '=ARRAYFORMULA(MAIN_TIMELINE_PARAM_ROW("cash opening") - MAIN_TIMELINE_PARAM_ROW("total setup cost") + MAIN_TIMELINE_PARAM_ROW("gross profit") + MAIN_TIMELINE_PARAM_ROW("loan draw"))',
+  111: '=ARRAYFORMULA(MAIN_TIMELINE_PARAM_ROW("cash opening") - MAIN_TIMELINE_PARAM_ROW("total setup cost") + MAIN_TIMELINE_PARAM_ROW("gross profit") + MAIN_TIMELINE_PARAM_ROW("in loan draw"))',
   113: '=ARRAYFORMULA(MAIN_TIMELINE_PARAM_ROW("cash before debt service") - MAIN_TIMELINE_PARAM_ROW("interest paid") - MAIN_TIMELINE_PARAM_ROW("principal paid") - MAIN_TIMELINE_PARAM_ROW("company tax"))',
 };
 
