@@ -1,0 +1,29 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheetId": 530781649,
+  "cell": "L2",
+  "description": "Leave Budget _category blank on rows containing a Year value while retaining category fill-down elsewhere.",
+  "status": "Applied and verified on 2026-11-20",
+  "before": "=LET(\n  values, COL_VALUES(S_BUDGET, \"category\"),\n  positions, SEQUENCE(ROWS(values)),\n  ARRAYFORMULA(\n    IFNA(\n      LOOKUP(\n        positions,\n        positions / (values <> \"\"),\n        values\n      ),\n      \"\"\n    )\n  )\n)",
+  "after": "=LET(\n  values, COL_VALUES(S_BUDGET, \"category\"),\n  years, COL_VALUES(S_BUDGET, \"year\"),\n  positions, SEQUENCE(ROWS(values)),\n  ARRAYFORMULA(\n    IF(years<>\"\", \"\",\n      IFNA(\n        LOOKUP(\n          positions,\n          positions / (values <> \"\"),\n          values\n        ),\n        \"\"\n      )\n    )\n  )\n)",
+  "verification": {
+    "yearRowsBlank": [
+      2,
+      10,
+      45,
+      80
+    ],
+    "effectiveValueChangesOnly": [
+      "L10",
+      "L45",
+      "L80"
+    ],
+    "otherBudgetValuesUnchanged": true,
+    "otherCellFormulasUnchanged": true,
+    "hyperlinksUnchanged": true,
+    "nativeVisualCheck": true,
+    "namedFunctionCallsPreserved": true
+  },
+  "rollback": "Restore before to Budget!L2.",
+  "repositoryScope": "Only this migration record belongs to the change. No Apps Script source changed; clasp push is not required."
+}
