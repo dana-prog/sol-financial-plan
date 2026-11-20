@@ -1,0 +1,39 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheetId": 530781649,
+  "description": "Apply the tested Budget performance optimization to the original financial plan, keeping all links enabled.",
+  "status": "Applied and verified on 2026-11-20",
+  "sourceMigration": "2026-11-20-budget-performance-test.json",
+  "sourceMigrationSha256": "e2643468b2bc40efaa7bbef4b754fc37c492d263f54d694c555d2f5fe194b0da",
+  "formulaChanges": "Exactly the 225 formulaChanges entries from sourceMigration, at the same zero-based rowIndex and columnIndex. All before formulas matched the live original before applying.",
+  "helperColumn": {
+    "column": "N",
+    "hidden": true,
+    "N1": "_calculation_date",
+    "N2": "=TODAY()",
+    "originalColumnCount": 13,
+    "finalColumnCount": 14
+  },
+  "namedFunctions": "No definitions changed. All existing named-function calls preserved. Link bypass and narrowed-link experiments were not applied.",
+  "verification": {
+    "range": "Budget!A1:M114",
+    "cellsChecked": 1482,
+    "expectedFormulaChanges": 225,
+    "unexpectedFormulaChanges": 0,
+    "effectiveValueDifferences": 0,
+    "hyperlinkDifferences": 0,
+    "formatDifferences": 0,
+    "validationDifferences": 0,
+    "formulaErrors": 0,
+    "numericComparisonTolerance": "max(1e-6, abs(before) * 1e-12)",
+    "helperFormula": "Budget!N2 =TODAY()",
+    "visualCheck": "Native Google Sheets Budget summaries render with the existing layout.",
+    "performance": "Timing evidence is recorded in sourceMigration for the test copy. No input scenarios were replayed in the original plan."
+  },
+  "rollback": [
+    "Check current formulas against sourceMigration formulaChanges[].after.",
+    "Restore sourceMigration formulaChanges[].before to the corresponding original Budget cells.",
+    "Delete the added Budget column N only after restoring those formulas."
+  ],
+  "repositoryScope": "Only this migration record is part of this repository change. No Apps Script source changed; clasp push is not required."
+}
