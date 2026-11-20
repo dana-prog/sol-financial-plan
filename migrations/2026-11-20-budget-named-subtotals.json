@@ -1,0 +1,365 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheetId": 530781649,
+  "description": "Replace Budget category and yearly expense SUMIFS with named functions that filter detail rows by year and category without A1 references.",
+  "status": "Applied and verified on 2026-11-20",
+  "namedFunctions": {
+    "BUDGET_CATEGORY_SUM": {
+      "arguments": [
+        "column_name"
+      ],
+      "definition": "=LET(\n  years, COL_VALUES(S_BUDGET, \"_year\"),\n  categories, COL_VALUES(S_BUDGET, \"_category\"),\n  lines, COL_VALUES(S_BUDGET, \"budget line\"),\n  matching_rows, IFNA(\n    FILTER(\n      SEQUENCE(ROWS(years), 1, 2),\n      years = BUDGET_VALUE(\"_year\"),\n      categories = BUDGET_VALUE(\"_category\"),\n      lines <> \"\"\n    ),\n    0\n  ),\n  IF(\n    INDEX(matching_rows, 1) = 0,\n    0,\n    SUM(MAP(matching_rows, LAMBDA(row_index,\n      VALUE_BY_INDEX(S_BUDGET, row_index, column_name)\n    )))\n  )\n)"
+    },
+    "BUDGET_YEAR_SUM": {
+      "arguments": [
+        "column_name"
+      ],
+      "definition": "=LET(\n  years, COL_VALUES(S_BUDGET, \"_year\"),\n  categories, COL_VALUES(S_BUDGET, \"_category\"),\n  lines, COL_VALUES(S_BUDGET, \"budget line\"),\n  matching_rows, IFNA(\n    FILTER(\n      SEQUENCE(ROWS(years), 1, 2),\n      years = BUDGET_VALUE(\"_year\"),\n      categories <> \"\",\n      lines <> \"\"\n    ),\n    0\n  ),\n  IF(\n    INDEX(matching_rows, 1) = 0,\n    0,\n    SUM(MAP(matching_rows, LAMBDA(row_index,\n      VALUE_BY_INDEX(S_BUDGET, row_index, column_name)\n    )))\n  )\n)"
+    },
+    "BUDGET_YEAR_CONTINGENCY": {
+      "arguments": [],
+      "definition": "=LET(\n  years, COL_VALUES(S_BUDGET, \"_year\"),\n  categories, COL_VALUES(S_BUDGET, \"category\"),\n  lines, COL_VALUES(S_BUDGET, \"budget line\"),\n  matching_rows, IFNA(\n    FILTER(\n      SEQUENCE(ROWS(years), 1, 2),\n      years = BUDGET_VALUE(\"_year\"),\n      categories <> \"\",\n      lines = \"\"\n    ),\n    0\n  ),\n  IF(\n    INDEX(matching_rows, 1) = 0,\n    0,\n    SUM(MAP(matching_rows, LAMBDA(row_index,\n      VALUE_BY_INDEX(S_BUDGET, row_index, \"contingency\")\n    )))\n  )\n)"
+    }
+  },
+  "changes": [
+    {
+      "cell": "F3",
+      "before": "=SUMIFS(\n  F4:F,\n  B4:B, BUDGET_VALUE(\"_year\"),\n  A4:A, BUDGET_VALUE(\"_category\"),\n  E4:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G3",
+      "before": "=SUMIFS(\n  G4:G,\n  B4:B, BUDGET_VALUE(\"_year\"),\n  A4:A, BUDGET_VALUE(\"_category\"),\n  E4:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F5",
+      "before": "=SUMIFS(\n  F6:F,\n  B6:B, BUDGET_VALUE(\"_year\"),\n  A6:A, BUDGET_VALUE(\"_category\"),\n  E6:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G5",
+      "before": "=SUMIFS(\n  G6:G,\n  B6:B, BUDGET_VALUE(\"_year\"),\n  A6:A, BUDGET_VALUE(\"_category\"),\n  E6:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F11",
+      "before": "=SUMIFS(\n  F12:F,\n  B12:B, BUDGET_VALUE(\"_year\"),\n  A12:A, BUDGET_VALUE(\"_category\"),\n  E12:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G11",
+      "before": "=SUMIFS(\n  G12:G,\n  B12:B, BUDGET_VALUE(\"_year\"),\n  A12:A, BUDGET_VALUE(\"_category\"),\n  E12:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F13",
+      "before": "=SUMIFS(F14:F,$B14:$B,BUDGET_VALUE(\"_year\"),$A14:$A,BUDGET_VALUE(\"_category\"),$E14:$E,\"<>\")",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G13",
+      "before": "=SUMIFS(G14:G,$B14:$B,BUDGET_VALUE(\"_year\"),$A14:$A,BUDGET_VALUE(\"_category\"),$E14:$E,\"<>\")",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F15",
+      "before": "=SUMIFS(\n  F16:F,\n  B16:B, BUDGET_VALUE(\"_year\"),\n  A16:A, BUDGET_VALUE(\"_category\"),\n  E16:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G15",
+      "before": "=SUMIFS(\n  G16:G,\n  B16:B, BUDGET_VALUE(\"_year\"),\n  A16:A, BUDGET_VALUE(\"_category\"),\n  E16:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F17",
+      "before": "=SUMIFS(\n  F18:F,\n  B18:B, BUDGET_VALUE(\"_year\"),\n  A18:A, BUDGET_VALUE(\"_category\"),\n  E18:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G17",
+      "before": "=SUMIFS(\n  G18:G,\n  B18:B, BUDGET_VALUE(\"_year\"),\n  A18:A, BUDGET_VALUE(\"_category\"),\n  E18:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F19",
+      "before": "=SUMIFS(\n  F20:F,\n  B20:B, BUDGET_VALUE(\"_year\"),\n  A20:A, BUDGET_VALUE(\"_category\"),\n  E20:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G19",
+      "before": "=SUMIFS(\n  G20:G,\n  B20:B, BUDGET_VALUE(\"_year\"),\n  A20:A, BUDGET_VALUE(\"_category\"),\n  E20:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F24",
+      "before": "=SUMIFS(\n  F25:F,\n  B25:B, BUDGET_VALUE(\"_year\"),\n  A25:A, BUDGET_VALUE(\"_category\"),\n  E25:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G24",
+      "before": "=SUMIFS(\n  G25:G,\n  B25:B, BUDGET_VALUE(\"_year\"),\n  A25:A, BUDGET_VALUE(\"_category\"),\n  E25:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F31",
+      "before": "=SUMIFS(\n  F32:F,\n  B32:B, BUDGET_VALUE(\"_year\"),\n  A32:A, BUDGET_VALUE(\"_category\"),\n  E32:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G31",
+      "before": "=SUMIFS(\n  G32:G,\n  B32:B, BUDGET_VALUE(\"_year\"),\n  A32:A, BUDGET_VALUE(\"_category\"),\n  E32:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F33",
+      "before": "=SUMIFS(\n  F34:F,\n  B34:B, BUDGET_VALUE(\"_year\"),\n  A34:A, BUDGET_VALUE(\"_category\"),\n  E34:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G33",
+      "before": "=SUMIFS(\n  G34:G,\n  B34:B, BUDGET_VALUE(\"_year\"),\n  A34:A, BUDGET_VALUE(\"_category\"),\n  E34:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F46",
+      "before": "=SUMIFS(\n  F47:F,\n  B47:B, BUDGET_VALUE(\"_year\"),\n  A47:A, BUDGET_VALUE(\"_category\"),\n  E47:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G46",
+      "before": "=SUMIFS(\n  G47:G,\n  B47:B, BUDGET_VALUE(\"_year\"),\n  A47:A, BUDGET_VALUE(\"_category\"),\n  E47:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F48",
+      "before": "=SUMIFS(\n  F49:F,\n  B49:B, BUDGET_VALUE(\"_year\"),\n  A49:A, BUDGET_VALUE(\"_category\"),\n  E49:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G48",
+      "before": "=SUMIFS(\n  G49:G,\n  B49:B, BUDGET_VALUE(\"_year\"),\n  A49:A, BUDGET_VALUE(\"_category\"),\n  E49:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F50",
+      "before": "=SUMIFS(F51:F,$B51:$B,BUDGET_VALUE(\"_year\"),$A51:$A,BUDGET_VALUE(\"_category\"),$E51:$E,\"<>\")",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G50",
+      "before": "=SUMIFS(G51:G,$B51:$B,BUDGET_VALUE(\"_year\"),$A51:$A,BUDGET_VALUE(\"_category\"),$E51:$E,\"<>\")",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F52",
+      "before": "=SUMIFS(\n  F53:F,\n  B53:B, BUDGET_VALUE(\"_year\"),\n  A53:A, BUDGET_VALUE(\"_category\"),\n  E53:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G52",
+      "before": "=SUMIFS(\n  G53:G,\n  B53:B, BUDGET_VALUE(\"_year\"),\n  A53:A, BUDGET_VALUE(\"_category\"),\n  E53:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F54",
+      "before": "=SUMIFS(\n  F55:F,\n  B55:B, BUDGET_VALUE(\"_year\"),\n  A55:A, BUDGET_VALUE(\"_category\"),\n  E55:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G54",
+      "before": "=SUMIFS(\n  G55:G,\n  B55:B, BUDGET_VALUE(\"_year\"),\n  A55:A, BUDGET_VALUE(\"_category\"),\n  E55:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F59",
+      "before": "=SUMIFS(\n  F60:F,\n  B60:B, BUDGET_VALUE(\"_year\"),\n  A60:A, BUDGET_VALUE(\"_category\"),\n  E60:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G59",
+      "before": "=SUMIFS(\n  G60:G,\n  B60:B, BUDGET_VALUE(\"_year\"),\n  A60:A, BUDGET_VALUE(\"_category\"),\n  E60:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F66",
+      "before": "=SUMIFS(\n  F67:F,\n  B67:B, BUDGET_VALUE(\"_year\"),\n  A67:A, BUDGET_VALUE(\"_category\"),\n  E67:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G66",
+      "before": "=SUMIFS(\n  G67:G,\n  B67:B, BUDGET_VALUE(\"_year\"),\n  A67:A, BUDGET_VALUE(\"_category\"),\n  E67:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F68",
+      "before": "=SUMIFS(\n  F69:F,\n  B69:B, BUDGET_VALUE(\"_year\"),\n  A69:A, BUDGET_VALUE(\"_category\"),\n  E69:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G68",
+      "before": "=SUMIFS(\n  G69:G,\n  B69:B, BUDGET_VALUE(\"_year\"),\n  A69:A, BUDGET_VALUE(\"_category\"),\n  E69:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F81",
+      "before": "=SUMIFS(\n  F82:F,\n  B82:B, BUDGET_VALUE(\"_year\"),\n  A82:A, BUDGET_VALUE(\"_category\"),\n  E82:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G81",
+      "before": "=SUMIFS(\n  G82:G,\n  B82:B, BUDGET_VALUE(\"_year\"),\n  A82:A, BUDGET_VALUE(\"_category\"),\n  E82:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F83",
+      "before": "=SUMIFS(\n  F84:F,\n  B84:B, BUDGET_VALUE(\"_year\"),\n  A84:A, BUDGET_VALUE(\"_category\"),\n  E84:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G83",
+      "before": "=SUMIFS(\n  G84:G,\n  B84:B, BUDGET_VALUE(\"_year\"),\n  A84:A, BUDGET_VALUE(\"_category\"),\n  E84:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F85",
+      "before": "=SUMIFS(F86:F,$B86:$B,BUDGET_VALUE(\"_year\"),$A86:$A,BUDGET_VALUE(\"_category\"),$E86:$E,\"<>\")",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G85",
+      "before": "=SUMIFS(G86:G,$B86:$B,BUDGET_VALUE(\"_year\"),$A86:$A,BUDGET_VALUE(\"_category\"),$E86:$E,\"<>\")",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F87",
+      "before": "=SUMIFS(\n  F88:F,\n  B88:B, BUDGET_VALUE(\"_year\"),\n  A88:A, BUDGET_VALUE(\"_category\"),\n  E88:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G87",
+      "before": "=SUMIFS(\n  G88:G,\n  B88:B, BUDGET_VALUE(\"_year\"),\n  A88:A, BUDGET_VALUE(\"_category\"),\n  E88:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F89",
+      "before": "=SUMIFS(\n  F90:F,\n  B90:B, BUDGET_VALUE(\"_year\"),\n  A90:A, BUDGET_VALUE(\"_category\"),\n  E90:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G89",
+      "before": "=SUMIFS(\n  G90:G,\n  B90:B, BUDGET_VALUE(\"_year\"),\n  A90:A, BUDGET_VALUE(\"_category\"),\n  E90:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F94",
+      "before": "=SUMIFS(\n  F95:F,\n  B95:B, BUDGET_VALUE(\"_year\"),\n  A95:A, BUDGET_VALUE(\"_category\"),\n  E95:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G94",
+      "before": "=SUMIFS(\n  G95:G,\n  B95:B, BUDGET_VALUE(\"_year\"),\n  A95:A, BUDGET_VALUE(\"_category\"),\n  E95:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F101",
+      "before": "=SUMIFS(\n  F102:F,\n  B102:B, BUDGET_VALUE(\"_year\"),\n  A102:A, BUDGET_VALUE(\"_category\"),\n  E102:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G101",
+      "before": "=SUMIFS(\n  G102:G,\n  B102:B, BUDGET_VALUE(\"_year\"),\n  A102:A, BUDGET_VALUE(\"_category\"),\n  E102:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F103",
+      "before": "=SUMIFS(\n  F104:F,\n  B104:B, BUDGET_VALUE(\"_year\"),\n  A104:A, BUDGET_VALUE(\"_category\"),\n  E104:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G103",
+      "before": "=SUMIFS(\n  G104:G,\n  B104:B, BUDGET_VALUE(\"_year\"),\n  A104:A, BUDGET_VALUE(\"_category\"),\n  E104:E, \"<>\"\n)",
+      "after": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F2",
+      "before": "=SUMIFS(\n  F3:F,\n  B3:B, BUDGET_VALUE(\"_year\"),\n  E3:E, \"<>\"\n)",
+      "after": "=BUDGET_YEAR_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G2",
+      "before": "=SUMIFS(\n  G3:G,\n  B3:B, BUDGET_VALUE(\"_year\"),\n  E3:E, \"<>\"\n)",
+      "after": "=BUDGET_YEAR_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F10",
+      "before": "=SUMIFS(\n  F11:F,\n  B11:B, BUDGET_VALUE(\"_year\"),\n  E11:E, \"<>\"\n)",
+      "after": "=BUDGET_YEAR_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G10",
+      "before": "=SUMIFS(\n  G11:G,\n  B11:B, BUDGET_VALUE(\"_year\"),\n  E11:E, \"<>\"\n)",
+      "after": "=BUDGET_YEAR_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F45",
+      "before": "=SUMIFS(\n  F46:F,\n  B46:B, BUDGET_VALUE(\"_year\"),\n  E46:E, \"<>\"\n)",
+      "after": "=BUDGET_YEAR_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G45",
+      "before": "=SUMIFS(\n  G46:G,\n  B46:B, BUDGET_VALUE(\"_year\"),\n  E46:E, \"<>\"\n)",
+      "after": "=BUDGET_YEAR_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "F80",
+      "before": "=SUMIFS(\n  F81:F,\n  B81:B, BUDGET_VALUE(\"_year\"),\n  E81:E, \"<>\"\n)",
+      "after": "=BUDGET_YEAR_SUM(\"past expenses\")"
+    },
+    {
+      "cell": "G80",
+      "before": "=SUMIFS(\n  G81:G,\n  B81:B, BUDGET_VALUE(\"_year\"),\n  E81:E, \"<>\"\n)",
+      "after": "=BUDGET_YEAR_SUM(\"future expenses\")"
+    },
+    {
+      "cell": "I2",
+      "before": "=SUMIFS(I3:I,$B3:$B,BUDGET_VALUE(\"_year\"),$D3:$D,\"<>\")",
+      "after": "=BUDGET_YEAR_CONTINGENCY()"
+    },
+    {
+      "cell": "I10",
+      "before": "=SUMIFS(I11:I,$B11:$B,BUDGET_VALUE(\"_year\"),$D11:$D,\"<>\")",
+      "after": "=BUDGET_YEAR_CONTINGENCY()"
+    },
+    {
+      "cell": "I45",
+      "before": "=SUMIFS(I46:I,$B46:$B,BUDGET_VALUE(\"_year\"),$D46:$D,\"<>\")",
+      "after": "=BUDGET_YEAR_CONTINGENCY()"
+    },
+    {
+      "cell": "I80",
+      "before": "=SUMIFS(I81:I,$B81:$B,BUDGET_VALUE(\"_year\"),$D81:$D,\"<>\")",
+      "after": "=BUDGET_YEAR_CONTINGENCY()"
+    }
+  ],
+  "verification": {
+    "categorySubtotalCells": 52,
+    "yearSubtotalCells": 8,
+    "comparedRange": "Budget!A1:M114",
+    "comparedCells": 1482,
+    "allEffectiveValuesUnchanged": true,
+    "onlyIntendedCellFormulasChanged": true,
+    "hyperlinksAndValidationUnchanged": true,
+    "noFormulaErrors": true,
+    "namedDefinitionsReadBack": true,
+    "nativeVisualCheck": true,
+    "testCopyCategoryCellsTested": 52,
+    "testCopyAllValuesUnchanged": true,
+    "testCopyRestored": true,
+    "yearContingencyCells": 4
+  },
+  "contingency": "Preserves category-level contingency amounts and filters category headers by the current year, nonblank Category, and blank Budget line.",
+  "rollback": "Restore each change.before formula to its cell. The three added named functions can then be removed if unused.",
+  "repositoryScope": "Only this migration record belongs to the change. No Apps Script source changed; clasp push is not required."
+}
