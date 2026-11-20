@@ -1,0 +1,31 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Apply the tested narrower loan and borrowing lookups to the original financial plan.",
+  "status": "Applied and verified on 2026-11-20",
+  "sourceMigration": "2026-11-20-financing-lookup-performance-test.json",
+  "sourceMigrationSha256": "281b3deadefc60f06c4f13d86ba9a9ec1090b68d82d6505bb2764db4918a98e6",
+  "namedFunctionChanges": "Exactly the before/after definitions recorded in sourceMigration.namedFunctionChanges for LOAN_PARAM_VALUE_BY_LOAN and BORROWING_PARAM_VALUE_BY_BORROWING.",
+  "preconditions": "Both live original definitions matched the tested before definitions exactly before editing.",
+  "verification": {
+    "ranges": [
+      "Budget!A1:N114",
+      "Loans!A1:DE38",
+      "Borrowings!A1:DJ109",
+      "Cash Flow!A1:CT43",
+      "Details!A1:F1075"
+    ],
+    "cellsCompared": 28687,
+    "effectiveValueDifferences": 0,
+    "hyperlinkDifferences": 0,
+    "cellFormulaOrInputDifferences": 0,
+    "newErrors": 0,
+    "numericTolerance": "max(1e-6, abs(before) * 1e-12)",
+    "savedDefinitionsReadBack": true,
+    "browserStatus": "Saved to Drive",
+    "visualCheck": "Original Budget summaries retain their existing layout and values.",
+    "performance": "Three-run timing evidence is in sourceMigration for the test copy. No benchmark input edits were made in the original."
+  },
+  "scope": "Only the two named-function definitions changed. Existing named-function calls, arguments, links, sheet cells and Apps Script are preserved.",
+  "rollback": "Restore each function to sourceMigration.namedFunctionChanges[name].before after checking that its live definition matches after.",
+  "repositoryScope": "Only this migration record belongs to this change. No Apps Script source changed; clasp push is not required."
+}
