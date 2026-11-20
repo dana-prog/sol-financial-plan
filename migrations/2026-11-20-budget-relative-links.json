@@ -1,0 +1,30 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "namedFunction": "BUDGET_TIMELINE_LINK",
+  "description": "Use workbook-relative hyperlinks so Budget links in future plan copies stay within their own workbook.",
+  "status": "Applied and verified on 2026-11-20",
+  "arguments": [
+    "source_table",
+    "sheet_id",
+    "lookup_col",
+    "lookup_value",
+    "start_month",
+    "month_count",
+    "amount"
+  ],
+  "before": "=IF(\n  month_count = 0,\n  0,\n  LET(\n    keys, COL_VALUES(source_table, lookup_col),\n    first_row, ROW(INDEX(source_table, 1, 1)) + MATCH(lookup_value, keys, 0),\n    last_row, ROW(INDEX(source_table, 1, 1)) + LOOKUP(2, ARRAYFORMULA(1 / (keys = lookup_value)), SEQUENCE(ROWS(keys))),\n    first_col, COLUMN(INDEX(source_table, 1, 1)) - 1 + MATCH(start_month, INDEX(source_table, 1, 0), 0),\n    HYPERLINK(\n      \"https://docs.google.com/spreadsheets/d/1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4/edit#gid=\" & sheet_id & \"&range=\" & ADDRESS(first_row, first_col, 4) & \":\" & ADDRESS(last_row, first_col + month_count - 1, 4),\n      amount\n    )\n  )\n)",
+  "after": "=IF(\n  month_count = 0,\n  0,\n  LET(\n    keys, COL_VALUES(source_table, lookup_col),\n    first_row, ROW(INDEX(source_table, 1, 1)) + MATCH(lookup_value, keys, 0),\n    last_row, ROW(INDEX(source_table, 1, 1)) + LOOKUP(2, ARRAYFORMULA(1 / (keys = lookup_value)), SEQUENCE(ROWS(keys))),\n    first_col, COLUMN(INDEX(source_table, 1, 1)) - 1 + MATCH(start_month, INDEX(source_table, 1, 0), 0),\n    HYPERLINK(\n      \"#gid=\" & sheet_id & \"&range=\" & ADDRESS(first_row, first_col, 4) & \":\" & ADDRESS(last_row, first_col + month_count - 1, 4),\n      amount\n    )\n  )\n)",
+  "verification": {
+    "range": "Budget!A1:N114",
+    "comparedCells": 1596,
+    "relativeHyperlinksUpdated": 106,
+    "tabIdsAndTargetRangesUnchanged": true,
+    "allCellFormulasAndValuesUnchanged": true,
+    "budgetErrors": 0,
+    "savedDefinitionReadBackMatches": true,
+    "nativeVisualCheck": true,
+    "namedFunctionCallsPreserved": true
+  },
+  "rollback": "Restore before as the BUDGET_TIMELINE_LINK named-function definition.",
+  "repositoryScope": "Only this migration record belongs to the change. No Apps Script source changed; clasp push is not required."
+}
