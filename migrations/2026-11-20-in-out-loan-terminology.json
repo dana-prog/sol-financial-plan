@@ -52,7 +52,8 @@
     "Renamed sheets, cash-flow parameters, contract-specific parameter keys, Budget categories, expense categories, navigation, Funding Status headings, notes, and formula-local financing variable names.",
     "Replaced remaining old Budget identifiers with the renamed named-function and named-range calls.",
     "Updated Apps Script locally, passed tests, pushed through clasp, and pulled remote source to verify synchronization.",
-    "Kept pre-existing uncommitted work out of the rename commit; the live source already included that work."
+    "Kept pre-existing uncommitted work out of the rename commit; the live source already included that work.",
+    "Auto-resized only Out Loans column I after the longer total repayment label clipped; verified the full label in the native sheet."
   ],
   "verification": {
     "numericCellsCompared": 55272,
@@ -67,6 +68,8 @@
     "refreshedCachedDisplayCells": 73,
     "cachedDisplayExplanation": "In Loans row 106 kept its original direct-reference formulas. Its 73 stale cached values recalculated to agree with the unchanged Cash Flow row 24 source values.",
     "nativeLoanSheetsAndFundingStatusVisuallyVerified": true,
-    "appsScriptPushVerified": true
+    "appsScriptPushVerified": true,
+    "outgoingTotalLabelFits": true,
+    "contractParameterLabelsVisuallyVerified": true
   }
 }
