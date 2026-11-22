@@ -128,7 +128,7 @@ const ALL_EXPENSES_NAMED_FUNCTIONS = [
   {
     name: 'ALL_EXPENSES_ROWS',
     arguments: ['months'],
-    description: 'Returns the complete 13-column expense dataset for numeric month dates in the supplied timeline, sorted by type, month, parameter and source row. Includes the column-title row; an empty result returns titles only. Contains no total record.',
+    description: 'Returns titles and expense records: Actual before the current month, Planned from the current month onward, with no fallback for missing actuals. Sorted by type, month, parameter and source row; an empty result returns titles only.',
     formula: String.raw`=LET(
   headers, {${ALL_EXPENSES_HEADERS.map(header => '"' + header + '"').join(',')}},
   selected_months, FILTER(months, ISNUMBER(months)),
@@ -136,9 +136,12 @@ const ALL_EXPENSES_NAMED_FUNCTIONS = [
   records, REDUCE(empty_record, selected_months, LAMBDA(result, month,
       VSTACK(result, EXPENSES_FOR_MONTH(month))
   )),
-  IF(SUM(ARRAYFORMULA(N(CHOOSECOLS(records, 1)<>"")))=0, headers,
+  eligible, ARRAYFORMULA((CHOOSECOLS(records, 1)<>"") *
+    IF(CHOOSECOLS(records, 2)<MONTH_START(TODAY()),
+      CHOOSECOLS(records, 9)="Actual", CHOOSECOLS(records, 9)="Planned")),
+  IF(SUM(eligible)=0, headers,
     LET(
-      populated, FILTER(records, CHOOSECOLS(records, 1)<>""),
+      populated, FILTER(records, eligible),
       type_order, {"In Loan Repayments";"Out Loan Disbursements";"Setup Expenses";"Land Expenses";"Infrastructure Expenses";"Construction Expenses";"Direct Operating Expenses";"Other Operating Expenses"},
       ranked, HSTACK(ARRAYFORMULA(MATCH(CHOOSECOLS(populated, 1), type_order, 0)), populated),
       details, CHOOSECOLS(SORT(ranked, 1, TRUE, 3, TRUE, 4, TRUE, 13, TRUE), 2,3,4,5,6,7,8,9,10,11,12,13),

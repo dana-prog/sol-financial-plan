@@ -1,6 +1,6 @@
 # Expense source refactor
 
-The migration will make All Expenses the shared expense dataset for Budget and Cash Flow. The All Expenses dataset upgrade is live and verified. Budget and Cash Flow still read their original sources; their consumer migration is the next stage.
+All Expenses is now Budget's source for ordinary expense amounts and category contingency. Company Tax remains a Cash Flow result displayed under Operations; revenue and funding retain their original sources. Cash Flow's expense-consumer migration is the next stage.
 
 The baseline is the SOL financial plan on 22 November 2026, after the Road correction and the user's numeric Water Tanks correction. The spreadsheet timezone is Asia/Bangkok. Cash Flow covers January 2026 through December 2033; Budget currently covers 2026 through 2029. Do not extend Budget's horizon as part of this migration.
 
@@ -17,11 +17,21 @@ Evidence: [original baseline and formula mapping](../migrations/2026-11-22-expen
 
 ## Corrections and source exceptions
 
+### Budget consumer migration completed
+
+`BUDGET_EXPENSE_SUM(basis, amount_column)` reads the existing `ALL_EXPENSES` named range using the current Budget row's year, category and line. Blank line means the whole category; blank basis means both bases. It normalizes the existing plural Out Loans label, returns zero for missing matches and propagates source errors. Its native definition is maintained in `src/BudgetFormula.js`.
+
+All 83 ordinary detail lines now use that function for Cost in Past Expenses (Actual) and Future Expenses (Planned). The 23 category contingency cells read Contingency from the dataset, without applying rates again. The three Company Tax lines retain their existing formulas. Existing subtotal functions, source drill-down links, funding, carry-forward, headroom, statuses and sheet layout are preserved. Source ranges remain in link formulas only to locate drill-down destinations, not to retrieve expense amounts.
+
+`ALL_EXPENSES_ROWS` explicitly accepts only Actual records before the current month and Planned records from the current month onward. It never relabels past plans as actuals or substitutes a plan for a missing actual. All 1,064 existing records already satisfied this rule, so no current amount changed. Setup is currently the only actual expense source; the other sources will need actual records as their months become historical.
+
+Validation compared every Budget result, all expense records and the complete Cash Flow snapshot before and after (numeric tolerance THB 0.000001). Twelve native Sheets formula cases cover signed credits, duplicate records, basis/year matching, category contingency, aliases, empty results, source errors and the month boundary; thirteen existing local tests passed. Native function exports match local source. See [migration and rollback](../migrations/2026-11-22-budget-all-expenses.json).
+
 ### Company Tax grouped under Operations in Budget
 
 Company Tax is now the first detail line under Operations for 2027–2029 (rows 33, 68, and 103). The separate Tax category headers were removed. This is a Budget reporting change only: the detail formulas still read `CASH_FLOW_PARAM_VALUES("company tax")`, and All Expenses still excludes tax.
 
-Operations contingency subtracts the year's company-tax payments from its total expenses before applying `PARAM("operating contingency")`. Company Tax therefore increases the Operations subtotal without receiving contingency. All 87 detail amounts, annual expense totals, contingency, required budget, available budget, headroom, and statuses were preserved (numeric tolerance THB 0.000001). The row groups and named Budget range adjusted to the new layout. See [applied migration](../migrations/2026-11-22-budget-tax-under-operations.json).
+At the grouping stage, Operations contingency subtracted company-tax payments before applying the operating rate. The consumer migration now reads contingency directly from All Expenses, which excludes company tax. Company Tax still increases the Operations subtotal without receiving contingency. Annual expense totals, contingency, required budget, available budget, headroom, and statuses were preserved. The row groups and named Budget range adjusted to the new layout. See [grouping migration](../migrations/2026-11-22-budget-tax-under-operations.json).
 
 ### Road correction completed
 
@@ -78,7 +88,7 @@ The displayed dataset has 13 columns in the user's requested order. Type is reta
 
 Use one record per selected source row and month. Identical display descriptions may legitimately appear more than once. Source row positions can change; regenerate provenance from the source rather than treating row numbers as permanent IDs. Keep current type/date ordering. The dataset has no embedded grand-total record. Report consumers must aggregate the appropriate amount column.
 
-Base and contingency stay separate. Budget's existing category contingency formulas may continue to apply once to base expenses; Cash Flow consumes Total cost. Do not feed Total cost to Budget's base-expense columns.
+Base and contingency stay separate. Budget now reads Cost for its expense columns and Contingency for its category contingency cells. Do not apply rates a second time or feed Total Cost to Budget's base-expense columns. Cash Flow's future consumer should read Total Cost.
 
 ## Formula and refresh contract
 
@@ -88,7 +98,7 @@ Current and proposed interfaces:
 
 - `S_ALL_EXPENSES` is live: All Expenses A1:M10273, with a header and no total record. Its capacity covers every currently eligible source row in all 96 months. Revisit capacity when source rows or the timeline expand.
 - `ALL_EXPENSES_MONTHLY_VALUES(expense_type, amount_column)`: returns one value for every month in `R_MONTHS`, including zero months.
-- `ALL_EXPENSES_BUDGET_SUM(budget_category, budget_line, start_month, month_count, amount_column)`: sums the base-cost field for the same date windows as the existing Budget formulas; zero months returns zero.
+- `BUDGET_EXPENSE_SUM(basis, amount_column)` is live: sums the selected amount for the current Budget row's year, category, optional line and optional basis.
 
 Reuse existing header lookup functions such as `COL_VALUES` and `DATA_ROWS`. Keep `BUDGET_VALUE`, `BUDGET_CATEGORY_SUM`, `BUDGET_YEAR_SUM`, `BUDGET_YEAR_CONTINGENCY`, `BUDGET_TIMELINE_LINK`, and `CASH_FLOW_PARAM_VALUES` in their existing roles. Retain source drill-down links. Replace source-specific retrieval calls only with a reviewed named-function interface, never direct ranges or inlined implementations. Do not globally redirect source functions such as `CONSTRUCTION_PARAM_VALUES` or `OPERATIONS_PARAM_VALUES` to All Expenses: its own calculations depend on those functions.
 
@@ -137,7 +147,7 @@ Filtering records out of the source sheet would also remove them from future Bud
 ## Dependency boundaries
 
 1. Raw expense calculations and All Expenses must remain independent of Budget and Cash Flow.
-2. Budget reads base expense amounts and retains its current contingency, funding, carry-forward, and status calculations. Company Tax continues to read Cash Flow.
+2. Budget reads Cost and Contingency from All Expenses and retains its subtotal, funding, carry-forward, and status calculations. Company Tax continues to read Cash Flow.
 3. Cash Flow reads total expense amounts by month and type. Revenue and funding inflows retain their existing sources. Interest, principal, depreciation, and tax retain their specialized calculations.
 4. The repayment script reads Cash Flow expense inputs excluding in-loan debt service, calculates repayments and tax in memory, and writes scheduled outputs. Keep that boundary: never feed total expenses including in-loan repayments back into its pre-debt-service input.
 5. A formula-driven All Expenses row must not read Cash Flow tax or available cash. That would couple the upstream expense table to downstream results.
@@ -146,7 +156,7 @@ The local repayment and tax files contain pre-existing uncommitted work. The liv
 
 ## Implementation sequence and acceptance
 
-Steps 1–3 and the Apps Script synchronization for this stage are complete. The next step is to define and validate the named aggregation interfaces, then migrate Budget before Cash Flow. No report-consumer replacement has been applied.
+Steps 1–4 are complete. Budget's consumer migration and explicit actual/planned eligibility are live and verified. Cash Flow remains on its original expense sources; its consumer migration requires a separate monthly aggregation interface and validation.
 
 1. Inventory the live named functions/ranges and all consumers of All Expenses; retain formula snapshots and source-contract evidence.
 2. Implement the expanded formula, source mappings, and refresh behavior locally where Apps Script is involved. Validate signed adjustments, empty datasets, errors, duplicate descriptions, salary mapping, financing aliases, and the actual/planned boundary offline.
