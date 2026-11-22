@@ -160,3 +160,19 @@ test('the menu supports both expense sheet names, including renamed workbook cop
   ctx._onSetTimelineBorders();
   assert.deepEqual(calls, ['details', 'details', 'timeline']);
 });
+
+test('the reordered expense dataset groups by Budget Category and finds Year after Basis', () => {
+  const values = [
+    ['Budget Category', 'Budget Line', 'Param', 'Basis', 'Year', 'Quarter', 'Month'],
+    ['Setup', 'Planning', 'Design', 'Actual', '2026', 'Q1', 'January'],
+    ['Setup', 'Legal', 'Permit', 'Actual', '2026', 'Q2', 'April'],
+    ['Setup', 'Legal', 'Permit', 'Planned', '2027', 'Q1', 'January'],
+    ['Infra', 'Water', 'Tank', 'Planned', '2028', 'Q1', 'February'],
+  ];
+  assert.deepEqual(plain(context()._detailsBorderRows(values)), [
+    {row: 3, style: 'SOLID'}, {row: 4, style: 'SOLID_THICK'}, {row: 5, style: 'SOLID_THICK'},
+  ]);
+  assert.deepEqual(plain(context()._detailsBorderRows(values, new Set([4]))), [
+    {row: 3, style: 'SOLID_THICK'}, {row: 5, style: 'SOLID_THICK'},
+  ]);
+});

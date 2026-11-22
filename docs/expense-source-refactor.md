@@ -52,24 +52,23 @@ Preserve refunds and negative corrections as signed amounts. Zero-valued months 
 
 ## All Expenses schema
 
-Retain the existing first six columns to minimize disruption to the visible report. Append structured fields to the same sheet; no staging or temporary sheet is required. Keep source identifiers separate from display descriptions.
+The displayed dataset has 13 columns in the user's requested order. Type is retained only inside the named-function calculation for ordering and descriptions; it is no longer a sheet column. Source identifiers remain separate from display descriptions. No staging or temporary sheet is required.
 
 | Column | Field | Meaning |
 | --- | --- | --- |
-| A | Type | Existing expense-type label |
-| B | Year | Derived from the real Month date |
-| C | Quarter | Derived display value |
-| D | Month | First-of-month date, displayed as `mmmm` |
-| E | Param | Existing readable description; not an aggregation key |
-| F | Cost | Base cost, excluding contingency |
-| G | Budget category | Stable category corresponding to Budget's `_category` |
-| H | Budget line | Explicit matching key, with financing aliases normalized |
-| I | Source parameter | Unmodified source parameter or obligation name |
-| J | Source sheet | Origin for provenance and validation |
-| K | Basis | Actual, Planned, or Scheduled; financing and obligations use Scheduled unless their sources establish actual status |
-| L | Contingency | Signed base cost multiplied by the applicable rate; zero for actual Setup and financing/land |
-| M | Total cost | Cost plus Contingency |
-| N | Source row | Source location for traceability, not a persistent identity |
+| A | Budget Category | Stable category corresponding to Budget's `_category` |
+| B | Budget Line | Explicit matching key, with financing aliases normalized |
+| C | Param | Readable description; not an aggregation key |
+| D | Basis | Actual or Planned; financing and land use Planned |
+| E | Year | Derived from the real Month date |
+| F | Quarter | Derived display value, Q1–Q4 |
+| G | Month | First-of-month date, displayed as `mmmm` |
+| H | Cost | Base cost, excluding contingency |
+| I | Contingency | Signed base cost multiplied by the applicable rate; zero for actual Setup and financing/land |
+| J | Total Cost | Cost plus Contingency |
+| K | Source Sheet | Origin for provenance and validation |
+| L | Source Parameter | Unmodified source parameter or obligation name |
+| M | Source Row | Source location for traceability, not a persistent identity |
 
 Use one record per selected source row and month. Identical display descriptions may legitimately appear more than once. Source row positions can change; regenerate provenance from the source rather than treating row numbers as permanent IDs. Keep current type/date ordering. The dataset has no embedded grand-total record. Report consumers must aggregate the appropriate amount column.
 
@@ -81,7 +80,7 @@ All Expenses is formula-driven at A2. Its formula is stored in `src/AllExpensesF
 
 Current and proposed interfaces:
 
-- `S_ALL_EXPENSES` is live: All Expenses A1:N10273, with a header and no total record. Its capacity covers every currently eligible source row in all 96 months. Revisit capacity when source rows or the timeline expand.
+- `S_ALL_EXPENSES` is live: All Expenses A1:M10273, with a header and no total record. Its capacity covers every currently eligible source row in all 96 months. Revisit capacity when source rows or the timeline expand.
 - `ALL_EXPENSES_MONTHLY_VALUES(expense_type, amount_column)`: returns one value for every month in `R_MONTHS`, including zero months.
 - `ALL_EXPENSES_BUDGET_SUM(budget_category, budget_line, start_month, month_count, amount_column)`: sums the base-cost field for the same date windows as the existing Budget formulas; zero months returns zero.
 
@@ -101,11 +100,17 @@ All Expenses A2 now contains only `=ALL_EXPENSES(R_MONTHS)`. The named definitio
 | `EXPENSE_RECORDS(expenses, month, source_name, category, basis, rate)` | Add the Budget mapping, source, basis, contingency and total |
 | `EXPENSES_FOR_MONTH(month)` | Combine all expense sources for one month |
 | `EXPENSE_DESCRIPTION(type, month, param, party)` | Produce the readable description, retaining `CONSTRUCTION_PARAM_VALUES` for construction quantities |
-| `ALL_EXPENSES(months)` | Combine the supplied months, order the records and return the existing 14 columns |
+| `ALL_EXPENSES(months)` | Combine the supplied months, order the records and return the current 13 columns |
 
 The dependency graph has no reference back to `S_ALL_EXPENSES`, Budget or Cash Flow. `IN_LOANS_EXPENSES_D` was inspected but left unchanged: it is a legacy four-column function, while the current financing calculation needs the six-column source-provenance contract and the live parameter labels.
 
-All 1,064 rows were compared across all 14 columns before and after, with exact equality. Budget and Cash Flow formulas and effective values were unchanged. Native named-function tests covered negative values, duplicate descriptions from separate source rows, zero omission, empty selections, signed contingency, nonnumeric amounts, source formula errors and a single-month input. See the [named-function migration record](../migrations/2026-11-22-all-expenses-named-functions.json).
+At the named-function simplification stage, all 1,064 rows were compared across the then-current 14 columns before and after, with exact equality. Budget and Cash Flow formulas and effective values were unchanged. Native named-function tests covered negative values, duplicate descriptions from separate source rows, zero omission, empty selections, signed contingency, nonnumeric amounts, source formula errors and a single-month input. See the [named-function migration record](../migrations/2026-11-22-all-expenses-named-functions.json).
+
+### Column order and Basis update
+
+The subsequent [column-order migration](../migrations/2026-11-22-all-expenses-column-order.json) removed the displayed Type field and applied the 13-column schema above. All 1,064 records retained the same row order, amounts and source metadata. The 106 Scheduled basis labels for financing and land were renamed Planned. The filter and `S_ALL_EXPENSES` now span A:M; field widths and formatting follow their original fields. Section borders use Budget Category and Year. An empty result still has 13 columns, and A2 remains `=ALL_EXPENSES(R_MONTHS)`.
+
+Budget and Cash Flow formulas and values are unchanged. Before their consumer migration, adapt aggregation interfaces to this schema; no visible Type column remains for a type-based lookup. Internal expense records still retain that classification.
 
 ### Future display filtering
 

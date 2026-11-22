@@ -74,19 +74,21 @@ function _detailsBorderRequests(sheet) {
 
 function _detailsBorderRows(values, hiddenRows = new Set()) {
   const headers = values[0].map(value => String(value).trim().toLowerCase());
-  const columns = [headers.indexOf('type') >= 0 ? headers.indexOf('type') : headers.indexOf('expense type'), headers.indexOf('year')];
+  const category = ['budget category', 'type', 'expense type'].map(name => headers.indexOf(name))
+    .find(index => index >= 0) ?? -1;
+  const columns = [category, headers.indexOf('year')];
   if (columns.includes(-1)) {
-    throw new Error('Could not find Type and Year columns. No borders were changed.');
+    throw new Error('Could not find Budget Category (or Type) and Year columns. No borders were changed.');
   }
-  const [type, year] = columns;
+  const [group, year] = columns;
   const rows = values.slice(1).map((values, index) => ({ values, row: index + 2 }))
-    .filter(row => row.values[type] !== '' && row.values[type] !== undefined && !hiddenRows.has(row.row));
+    .filter(row => row.values[group] !== '' && row.values[group] !== undefined && !hiddenRows.has(row.row));
   const borders = [];
   for (let index = 0; index < rows.length; index++) {
     const current = rows[index];
     const next = rows[index + 1];
     // A shared boundary receives only its strongest divider.
-    if (!next || current.values[type] !== next.values[type]) {
+    if (!next || current.values[group] !== next.values[group]) {
       borders.push({ row: current.row, style: 'SOLID_THICK' });
     } else if (next.values[year] !== '' && current.values[year] !== next.values[year]) {
       borders.push({ row: current.row, style: 'SOLID' });

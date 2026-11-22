@@ -8,13 +8,13 @@ for (const file of ['AllExpensesFormula.js', 'DetailsBorders.js', 'AllExpenses.j
 }
 const headers = vm.runInContext('ALL_EXPENSES_HEADERS', ctx);
 function snapshot() {
-  const data = ['Setup Expenses', 2026, 'Q1', 46023, 'Design', -100, 'Setup', 'Planning', 'Design', 'Setup Exp (A)', 'Actual', 0, -100, 4];
+  const data = ['Setup', 'Planning', 'Design', 'Actual', 2026, 'Q1', 46023, -100, 0, -100, 'Setup Exp (A)', 'Design', 4];
   const cells = values => values.map(value => ({effectiveValue: {[typeof value === 'number' ? 'numberValue' : 'stringValue']: value}, formattedValue: String(value)}));
   const rows = [{values: cells(headers)}, {values: cells(data)}];
   rows[1].values[0].userEnteredValue = {formulaValue: '=LIVE_EXPENSES()'};
   return {
-    properties: {sheetId: 1, gridProperties: {rowCount: 100, columnCount: 14}},
-    basicFilter: {range: {sheetId: 1}, sortSpecs: [{dimensionIndex: 1, sortOrder: 'ASCENDING'}], criteria: {'0': {hiddenValues: ['Land Expenses']}}},
+    properties: {sheetId: 1, gridProperties: {rowCount: 100, columnCount: 13}},
+    basicFilter: {range: {sheetId: 1}, sortSpecs: [{dimensionIndex: 1, sortOrder: 'ASCENDING'}], criteria: {'0': {hiddenValues: ['Land']}}},
     data: [{rowData: rows, rowMetadata: [{}, {hiddenByUser: true}]}],
   };
 }
@@ -31,9 +31,9 @@ test('formatting refresh preserves the live formula, signed records and filter c
   const filter = requests.find(r => r.setBasicFilter).setBasicFilter.filter;
   assert.deepEqual(filter.criteria, sheet.basicFilter.criteria);
   assert.equal(filter.sortSpecs, undefined);
-  assert.equal(filter.range.endColumnIndex, 14);
+  assert.equal(filter.range.endColumnIndex, 13);
   assert.equal(filter.range.endRowIndex, 100);
-  assert.equal(requests.find(r => r.repeatCell?.range.startColumnIndex === 3).repeatCell.cell.userEnteredFormat.numberFormat.pattern, 'mmmm');
+  assert.equal(requests.find(r => r.repeatCell?.range.startColumnIndex === 6).repeatCell.cell.userEnteredFormat.numberFormat.pattern, 'mmmm');
 });
 
 test('invalid or static datasets fail before any write', () => {
@@ -41,9 +41,9 @@ test('invalid or static datasets fail before any write', () => {
   delete sheet.data[0].rowData[1].values[0].userEnteredValue;
   assert.throws(() => ctx._allExpensesRefreshRequests(sheet), /live formula/);
   const error = snapshot();
-  error.data[0].rowData[1].values[5].effectiveValue = {errorValue: {message: 'Source amount is text'}};
+  error.data[0].rowData[1].values[7].effectiveValue = {errorValue: {message: 'Source amount is text'}};
   assert.throws(() => ctx._allExpensesRefreshRequests(error), /row 2: Source amount is text/);
-  error.data[0].rowData[1].values[5].effectiveValue = {errorValue: {type: 'N_A'}};
+  error.data[0].rowData[1].values[7].effectiveValue = {errorValue: {type: 'N_A'}};
   assert.throws(() => ctx._allExpensesRefreshRequests(error), /row 2: N_A/);
   const wrongHeader = snapshot();
   wrongHeader.data[0].rowData[0].values[5].effectiveValue.stringValue = 'Total';

@@ -41,13 +41,13 @@ function _allExpensesRefreshRequests(sheet) {
   const requests = [];
   // Format the spill area without replacing the formula or changing filtered/hidden rows.
   const columns = [
-    [1, 2, {type: 'NUMBER', pattern: '0'}],
-    [2, 3, {type: 'TEXT', pattern: '@'}],
-    [3, 4, {type: 'DATE', pattern: 'mmmm'}],
-    [5, 6, {type: 'NUMBER', pattern: '฿ #,##0,"K"'}],
-    [6, 11, {type: 'TEXT', pattern: '@'}],
-    [11, 13, {type: 'NUMBER', pattern: '฿ #,##0,"K"'}],
-    [13, 14, {type: 'NUMBER', pattern: '0'}],
+    [0, 4, {type: 'TEXT', pattern: '@'}],
+    [4, 5, {type: 'NUMBER', pattern: '0'}],
+    [5, 6, {type: 'TEXT', pattern: '@'}],
+    [6, 7, {type: 'DATE', pattern: 'mmmm'}],
+    [7, 10, {type: 'NUMBER', pattern: '฿ #,##0,"K"'}],
+    [10, 12, {type: 'TEXT', pattern: '@'}],
+    [12, 13, {type: 'NUMBER', pattern: '0'}],
   ];
   for (const [startColumnIndex, endColumnIndex, numberFormat] of columns) {
     requests.push({repeatCell: {range: {...body, startColumnIndex, endColumnIndex},
