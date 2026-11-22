@@ -4,7 +4,7 @@ const ALL_EXPENSES_HEADERS = [
 ];
 
 // A1 is the public entry point; definitions below are maintained in Sheets as named functions.
-const ALL_EXPENSES_FORMULA = '=ALL_EXPENSES(R_MONTHS)';
+const ALL_EXPENSES_FORMULA = '=ALL_EXPENSES_ROWS(R_MONTHS)';
 
 // Dependency order supports importing or reviewing the definitions from top to bottom.
 const ALL_EXPENSES_NAMED_FUNCTIONS = [
@@ -126,7 +126,7 @@ const ALL_EXPENSES_NAMED_FUNCTIONS = [
 )`,
   },
   {
-    name: 'ALL_EXPENSES',
+    name: 'ALL_EXPENSES_ROWS',
     arguments: ['months'],
     description: 'Returns the complete 13-column expense dataset for numeric month dates in the supplied timeline, sorted by type, month, parameter and source row. Includes the column-title row; an empty result returns titles only. Contains no total record.',
     formula: String.raw`=LET(

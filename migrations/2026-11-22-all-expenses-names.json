@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-22",
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "description": "Rename the row generator and expose its output through the ALL_EXPENSES named range.",
+  "functionRename": {
+    "before": "ALL_EXPENSES",
+    "after": "ALL_EXPENSES_ROWS",
+    "arguments": [
+      "months"
+    ],
+    "definitionChanged": false
+  },
+  "anchor": {
+    "range": "All Expenses!A1",
+    "before": "=ALL_EXPENSES(R_MONTHS)",
+    "after": "=ALL_EXPENSES_ROWS(R_MONTHS)",
+    "updatedAutomaticallyBySheets": true
+  },
+  "addedNamedRange": {
+    "name": "ALL_EXPENSES",
+    "namedRangeId": "1539812894",
+    "range": "'All Expenses'!A1:M10273",
+    "includesHeaders": true
+  },
+  "preservedNamedRange": "S_ALL_EXPENSES",
+  "verification": {
+    "expenseRecords": 1064,
+    "allEffectiveValuesUnchanged": true,
+    "testsPassed": 13
+  },
+  "rollback": "Check consumers first. Remove only the added ALL_EXPENSES named range, rename ALL_EXPENSES_ROWS back to ALL_EXPENSES, and verify the A1 call and unchanged output. Restore the local definition and synchronize through clasp."
+}

@@ -90,7 +90,7 @@ Reuse existing header lookup functions such as `COL_VALUES` and `DATA_ROWS`. Kee
 
 ## Named-function simplification completed
 
-All Expenses A1 now contains only `=ALL_EXPENSES(R_MONTHS)`. The named definitions and the A2 formula are maintained in `src/AllExpensesFormula.js`; they are native Sheets named functions, not Apps Script custom functions. Existing source named functions and calls remain intact.
+All Expenses A1 now contains only `=ALL_EXPENSES_ROWS(R_MONTHS)`. The named definitions and the A1 formula are maintained in `src/AllExpensesFormula.js`; they are native Sheets named functions, not Apps Script custom functions. Existing source named functions and calls remain intact.
 
 | Function | Responsibility |
 | --- | --- |
@@ -100,7 +100,7 @@ All Expenses A1 now contains only `=ALL_EXPENSES(R_MONTHS)`. The named definitio
 | `EXPENSE_RECORDS(expenses, month, source_name, category, basis, rate)` | Add the Budget mapping, source, basis, contingency and total |
 | `EXPENSES_FOR_MONTH(month)` | Combine all expense sources for one month |
 | `EXPENSE_DESCRIPTION(type, month, param, party)` | Produce the readable description, retaining `CONSTRUCTION_PARAM_VALUES` for construction quantities |
-| `ALL_EXPENSES(months)` | Return the title row followed by the current 13-column records for the supplied months; return titles only for an empty result |
+| `ALL_EXPENSES_ROWS(months)` | Return the title row followed by the current 13-column records for the supplied months; return titles only for an empty result |
 
 The dependency graph has no reference back to `S_ALL_EXPENSES`, Budget or Cash Flow. `IN_LOANS_EXPENSES_D` was inspected but left unchanged: it is a legacy four-column function, while the current financing calculation needs the six-column source-provenance contract and the live parameter labels.
 
@@ -114,17 +114,17 @@ Budget and Cash Flow formulas and values are unchanged. Before their consumer mi
 
 ### Generated title row
 
-The title row is now part of `ALL_EXPENSES` output, with the single call `=ALL_EXPENSES(R_MONTHS)` in A1. Static title cells were cleared and the A2 formula removed; expense rows still begin at row 2. Title values and order are generated from `ALL_EXPENSES_HEADERS` in the local definition source. An empty result returns exactly the 13 titles, without a blank detail row. Refresh validates the live anchor at A1 and also checks for errors there. The existing filter and named range still begin at row 1.
+The title row is now part of `ALL_EXPENSES_ROWS` output, with the single call `=ALL_EXPENSES_ROWS(R_MONTHS)` in A1. Static title cells were cleared and the A2 formula removed; expense rows still begin at row 2. Title values and order are generated from `ALL_EXPENSES_HEADERS` in the local definition source. An empty result returns exactly the 13 titles, without a blank detail row. Refresh validates the live anchor at A1 and also checks for errors there. The existing filter and named range still begin at row 1.
 
 All titles, 1,064 expense records, and Budget/Cash Flow values were unchanged. See the [title-row migration](../migrations/2026-11-22-all-expenses-header-row.json).
 
 #### Proposed filter interface — not implemented
 
-The user wants to replace the months argument with `include_filter` and `exclude_filter`; the function would use `R_MONTHS` internally. Proposed syntax: `ALL_EXPENSES(ExpenseInclude, ExpenseExclude)`, with each argument a three-column range or array of Field, Operator, Value rules, excluding any control-table header row. Blank include means all records; blank exclude means no exclusions. All rules within a block must match; matching the nonempty exclusion block removes a record even when it matches inclusion. Numeric/date values remain typed, and invalid field names/operators should surface errors. The current months argument remains until the filter format is settled; no filter controls or filtering behavior were added by the title-row change.
+The user wants to replace the months argument with `include_filter` and `exclude_filter`; the function would use `R_MONTHS` internally. Proposed syntax: `ALL_EXPENSES_ROWS(ExpenseInclude, ExpenseExclude)`, with each argument a three-column range or array of Field, Operator, Value rules, excluding any control-table header row. Blank include means all records; blank exclude means no exclusions. All rules within a block must match; matching the nonempty exclusion block removes a record even when it matches inclusion. Numeric/date values remain typed, and invalid field names/operators should surface errors. The current months argument remains until the filter format is settled; no filter controls or filtering behavior were added by the title-row change.
 
 ### Future display filtering
 
-Keep `=ALL_EXPENSES(R_MONTHS)` complete as the shared report source. A future display function can accept the generated rows or the complete `S_ALL_EXPENSES` dataset and filter the structured fields before displaying them. Prefer reading the existing complete dataset for a separate view to avoid recalculating the raw sources twice. No filter controls, filtered view or additional sheet were added in this refactor.
+Keep `=ALL_EXPENSES_ROWS(R_MONTHS)` complete as the shared report source. A future display function can accept the generated rows or the complete `S_ALL_EXPENSES` dataset and filter the structured fields before displaying them. Prefer reading the existing complete dataset for a separate view to avoid recalculating the raw sources twice. No filter controls, filtered view or additional sheet were added in this refactor.
 
 Filtering records out of the source sheet would also remove them from future Budget/Cash Flow aggregations. Decide whether a filter is a viewing preference or a financial-scope rule before applying it there. No performance improvement is claimed from splitting formulas into named functions.
 
@@ -151,3 +151,7 @@ Steps 1–3 and the Apps Script synchronization for this stage are complete. The
 7. Synchronize authorized Apps Script changes using an isolated remote-matched clasp snapshot; verify remote content. Commit and push focused migration records and source changes.
 
 Rollback must restore each changed formula and named-range definition from a fresh pre-write snapshot. Row and column expansion must preserve validation, formatting, named references, filters, and existing data. Take no dependency on temporary tabs or a manually refreshed cache.
+
+## Expense function and range names — 22 November 2026
+
+The generator is now `ALL_EXPENSES_ROWS(months)`, called from All Expenses A1 as `=ALL_EXPENSES_ROWS(R_MONTHS)`. `ALL_EXPENSES` is a named range covering All Expenses A1:M10273, including the title row and spare capacity. `S_ALL_EXPENSES` remains an alias of the same range for existing consumers. The rename changes no expense selection or calculations; all 1,064 records and 13 headers were verified unchanged.
