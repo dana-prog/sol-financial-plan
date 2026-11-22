@@ -76,7 +76,7 @@ Base and contingency stay separate. Budget's existing category contingency formu
 
 ## Formula and refresh contract
 
-All Expenses is formula-driven at A2. Its formula is stored in `src/AllExpensesFormula.js`. The four existing detail functions (`SETUP_EXPENSES_D`, `CONSTRUCTION_EXPENSES_D`, `OPERATIONAL_EXPENSES_D`, `LAND_EXPENSES_D`) were extended to six outputs: type, parameter, party, base amount, source row and source category. The inventory found All Expenses A2 to be their only consumer. Their definitions and original versions are retained in the migration record. Existing named-function calls are preserved.
+All Expenses is formula-driven at A1, including its column-title row. Its formula is stored in `src/AllExpensesFormula.js`. The four existing detail functions (`SETUP_EXPENSES_D`, `CONSTRUCTION_EXPENSES_D`, `OPERATIONAL_EXPENSES_D`, `LAND_EXPENSES_D`) were extended to six outputs: type, parameter, party, base amount, source row and source category. The inventory found All Expenses A2 to be their only consumer. Their definitions and original versions are retained in the migration record. Existing named-function calls are preserved.
 
 Current and proposed interfaces:
 
@@ -90,7 +90,7 @@ Reuse existing header lookup functions such as `COL_VALUES` and `DATA_ROWS`. Kee
 
 ## Named-function simplification completed
 
-All Expenses A2 now contains only `=ALL_EXPENSES(R_MONTHS)`. The named definitions and the A2 formula are maintained in `src/AllExpensesFormula.js`; they are native Sheets named functions, not Apps Script custom functions. Existing source named functions and calls remain intact.
+All Expenses A1 now contains only `=ALL_EXPENSES(R_MONTHS)`. The named definitions and the A2 formula are maintained in `src/AllExpensesFormula.js`; they are native Sheets named functions, not Apps Script custom functions. Existing source named functions and calls remain intact.
 
 | Function | Responsibility |
 | --- | --- |
@@ -100,7 +100,7 @@ All Expenses A2 now contains only `=ALL_EXPENSES(R_MONTHS)`. The named definitio
 | `EXPENSE_RECORDS(expenses, month, source_name, category, basis, rate)` | Add the Budget mapping, source, basis, contingency and total |
 | `EXPENSES_FOR_MONTH(month)` | Combine all expense sources for one month |
 | `EXPENSE_DESCRIPTION(type, month, param, party)` | Produce the readable description, retaining `CONSTRUCTION_PARAM_VALUES` for construction quantities |
-| `ALL_EXPENSES(months)` | Combine the supplied months, order the records and return the current 13 columns |
+| `ALL_EXPENSES(months)` | Return the title row followed by the current 13-column records for the supplied months; return titles only for an empty result |
 
 The dependency graph has no reference back to `S_ALL_EXPENSES`, Budget or Cash Flow. `IN_LOANS_EXPENSES_D` was inspected but left unchanged: it is a legacy four-column function, while the current financing calculation needs the six-column source-provenance contract and the live parameter labels.
 
@@ -108,9 +108,19 @@ At the named-function simplification stage, all 1,064 rows were compared across 
 
 ### Column order and Basis update
 
-The subsequent [column-order migration](../migrations/2026-11-22-all-expenses-column-order.json) removed the displayed Type field and applied the 13-column schema above. All 1,064 records retained the same row order, amounts and source metadata. The 106 Scheduled basis labels for financing and land were renamed Planned. The filter and `S_ALL_EXPENSES` now span A:M; field widths and formatting follow their original fields. Section borders use Budget Category and Year. An empty result still has 13 columns, and A2 remains `=ALL_EXPENSES(R_MONTHS)`.
+The subsequent [column-order migration](../migrations/2026-11-22-all-expenses-column-order.json) removed the displayed Type field and applied the 13-column schema above. All 1,064 records retained the same row order, amounts and source metadata. The 106 Scheduled basis labels for financing and land were renamed Planned. The filter and `S_ALL_EXPENSES` now span A:M; field widths and formatting follow their original fields. Section borders use Budget Category and Year. An empty result still has 13 columns, and the anchor at that stage remained A2.
 
 Budget and Cash Flow formulas and values are unchanged. Before their consumer migration, adapt aggregation interfaces to this schema; no visible Type column remains for a type-based lookup. Internal expense records still retain that classification.
+
+### Generated title row
+
+The title row is now part of `ALL_EXPENSES` output, with the single call `=ALL_EXPENSES(R_MONTHS)` in A1. Static title cells were cleared and the A2 formula removed; expense rows still begin at row 2. Title values and order are generated from `ALL_EXPENSES_HEADERS` in the local definition source. An empty result returns exactly the 13 titles, without a blank detail row. Refresh validates the live anchor at A1 and also checks for errors there. The existing filter and named range still begin at row 1.
+
+All titles, 1,064 expense records, and Budget/Cash Flow values were unchanged. See the [title-row migration](../migrations/2026-11-22-all-expenses-header-row.json).
+
+#### Proposed filter interface — not implemented
+
+The user wants to replace the months argument with `include_filter` and `exclude_filter`; the function would use `R_MONTHS` internally. Proposed syntax: `ALL_EXPENSES(ExpenseInclude, ExpenseExclude)`, with each argument a three-column range or array of Field, Operator, Value rules, excluding any control-table header row. Blank include means all records; blank exclude means no exclusions. All rules within a block must match; matching the nonempty exclusion block removes a record even when it matches inclusion. Numeric/date values remain typed, and invalid field names/operators should surface errors. The current months argument remains until the filter format is settled; no filter controls or filtering behavior were added by the title-row change.
 
 ### Future display filtering
 

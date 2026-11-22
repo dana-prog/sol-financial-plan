@@ -11,7 +11,7 @@ function snapshot() {
   const data = ['Setup', 'Planning', 'Design', 'Actual', 2026, 'Q1', 46023, -100, 0, -100, 'Setup Exp (A)', 'Design', 4];
   const cells = values => values.map(value => ({effectiveValue: {[typeof value === 'number' ? 'numberValue' : 'stringValue']: value}, formattedValue: String(value)}));
   const rows = [{values: cells(headers)}, {values: cells(data)}];
-  rows[1].values[0].userEnteredValue = {formulaValue: '=LIVE_EXPENSES()'};
+  rows[0].values[0].userEnteredValue = {formulaValue: '=LIVE_EXPENSES()'};
   return {
     properties: {sheetId: 1, gridProperties: {rowCount: 100, columnCount: 13}},
     basicFilter: {range: {sheetId: 1}, sortSpecs: [{dimensionIndex: 1, sortOrder: 'ASCENDING'}], criteria: {'0': {hiddenValues: ['Land']}}},
@@ -38,13 +38,16 @@ test('formatting refresh preserves the live formula, signed records and filter c
 
 test('invalid or static datasets fail before any write', () => {
   const sheet = snapshot();
-  delete sheet.data[0].rowData[1].values[0].userEnteredValue;
+  delete sheet.data[0].rowData[0].values[0].userEnteredValue;
   assert.throws(() => ctx._allExpensesRefreshRequests(sheet), /live formula/);
   const error = snapshot();
   error.data[0].rowData[1].values[7].effectiveValue = {errorValue: {message: 'Source amount is text'}};
   assert.throws(() => ctx._allExpensesRefreshRequests(error), /row 2: Source amount is text/);
   error.data[0].rowData[1].values[7].effectiveValue = {errorValue: {type: 'N_A'}};
   assert.throws(() => ctx._allExpensesRefreshRequests(error), /row 2: N_A/);
+  const anchorError = snapshot();
+  anchorError.data[0].rowData[0].values[0].effectiveValue = {errorValue: {type: 'N_A'}};
+  assert.throws(() => ctx._allExpensesRefreshRequests(anchorError), /row 1: N_A/);
   const wrongHeader = snapshot();
   wrongHeader.data[0].rowData[0].values[5].effectiveValue.stringValue = 'Total';
   assert.throws(() => ctx._allExpensesRefreshRequests(wrongHeader), /headers/);
@@ -52,7 +55,7 @@ test('invalid or static datasets fail before any write', () => {
 
 test('empty live dataset can be formatted without adding static totals', () => {
   const sheet = snapshot();
-  sheet.data[0].rowData[1].values = [{userEnteredValue: {formulaValue: '=LIVE_EXPENSES()'}, effectiveValue: {stringValue: ''}}];
+  sheet.data[0].rowData.splice(1);
   assert.ok(ctx._allExpensesRefreshRequests(sheet).every(request => !request.updateCells));
 });
 

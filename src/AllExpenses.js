@@ -21,18 +21,18 @@ function refreshAllExpenses() {
 function _allExpensesRefreshRequests(sheet) {
   const rows = sheet.data?.[0]?.rowData || [];
   const headers = rows[0]?.values || [];
-  if (!ALL_EXPENSES_HEADERS.every((name, column) => headers[column]?.effectiveValue?.stringValue === name)) {
-    throw new Error('All Expenses headers do not match the expense dataset. No changes were made.');
+  if (!rows[0]?.values?.[0]?.userEnteredValue?.formulaValue) {
+    throw new Error('All Expenses must retain its live formula in A1. No changes were made.');
   }
-  if (!rows[1]?.values?.[0]?.userEnteredValue?.formulaValue) {
-    throw new Error('All Expenses must retain its live formula in A2. No changes were made.');
-  }
-  for (let index = 1; index < rows.length; index++) {
+  for (let index = 0; index < rows.length; index++) {
     for (const cell of rows[index].values || []) {
       if (cell.effectiveValue?.errorValue) {
         throw new Error(`All Expenses row ${index + 1}: ${cell.effectiveValue.errorValue.message || cell.effectiveValue.errorValue.type}. No changes were made.`);
       }
     }
+  }
+  if (!ALL_EXPENSES_HEADERS.every((name, column) => headers[column]?.effectiveValue?.stringValue === name)) {
+    throw new Error('All Expenses headers do not match the expense dataset. No changes were made.');
   }
   const sheetId = sheet.properties.sheetId;
   const endRowIndex = sheet.properties.gridProperties.rowCount;

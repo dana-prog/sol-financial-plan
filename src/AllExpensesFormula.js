@@ -3,7 +3,7 @@ const ALL_EXPENSES_HEADERS = [
   'Cost', 'Contingency', 'Total Cost', 'Source Sheet', 'Source Parameter', 'Source Row',
 ];
 
-// A2 is the public entry point; definitions below are maintained in Sheets as named functions.
+// A1 is the public entry point; definitions below are maintained in Sheets as named functions.
 const ALL_EXPENSES_FORMULA = '=ALL_EXPENSES(R_MONTHS)';
 
 // Dependency order supports importing or reviewing the definitions from top to bottom.
@@ -128,14 +128,15 @@ const ALL_EXPENSES_NAMED_FUNCTIONS = [
   {
     name: 'ALL_EXPENSES',
     arguments: ['months'],
-    description: 'Returns the complete 13-column expense dataset for numeric month dates in the supplied timeline, sorted by type, month, parameter and source row. Contains no header or total record.',
+    description: 'Returns the complete 13-column expense dataset for numeric month dates in the supplied timeline, sorted by type, month, parameter and source row. Includes the column-title row; an empty result returns titles only. Contains no total record.',
     formula: String.raw`=LET(
+  headers, {${ALL_EXPENSES_HEADERS.map(header => '"' + header + '"').join(',')}},
   selected_months, FILTER(months, ISNUMBER(months)),
   empty_record, {"","","","","","","","","","","",""},
   records, REDUCE(empty_record, selected_months, LAMBDA(result, month,
       VSTACK(result, EXPENSES_FOR_MONTH(month))
   )),
-  IF(SUM(ARRAYFORMULA(N(CHOOSECOLS(records, 1)<>"")))=0, {"","","","","","","","","","","","",""},
+  IF(SUM(ARRAYFORMULA(N(CHOOSECOLS(records, 1)<>"")))=0, headers,
     LET(
       populated, FILTER(records, CHOOSECOLS(records, 1)<>""),
       type_order, {"In Loan Repayments";"Out Loan Disbursements";"Setup Expenses";"Land Expenses";"Infrastructure Expenses";"Construction Expenses";"Direct Operating Expenses";"Other Operating Expenses"},
@@ -144,9 +145,9 @@ const ALL_EXPENSES_NAMED_FUNCTIONS = [
       descriptions, MAP(CHOOSECOLS(details, 1), CHOOSECOLS(details, 2), CHOOSECOLS(details, 3), CHOOSECOLS(details, 4), LAMBDA(type, month, param, party, EXPENSE_DESCRIPTION(type, month, param, party))),
       source_params, MAP(CHOOSECOLS(details, 1), CHOOSECOLS(details, 3), LAMBDA(type, param,
           SWITCH(type, "In Loan Repayments", "in loans repayments", "Out Loan Disbursements", "out loans disbursements", param))),
-      HSTACK(CHOOSECOLS(details, 6, 7), descriptions, CHOOSECOLS(details, 9),
+      VSTACK(headers, HSTACK(CHOOSECOLS(details, 6, 7), descriptions, CHOOSECOLS(details, 9),
         ARRAYFORMULA(YEAR(CHOOSECOLS(details, 2))), ARRAYFORMULA("Q"&ROUNDUP(MONTH(CHOOSECOLS(details, 2))/3)),
-        CHOOSECOLS(details, 2, 5, 10, 11, 8), source_params, CHOOSECOLS(details, 12))
+        CHOOSECOLS(details, 2, 5, 10, 11, 8), source_params, CHOOSECOLS(details, 12)))
     )
   )
 )`,
