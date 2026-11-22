@@ -1,0 +1,294 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheetId": 1623286087,
+  "range": "All Expenses!A2",
+  "status": "Applied and verified 2026-11-22",
+  "description": "Replace the large A2 LET with seven reusable native named functions; preserve the complete output and existing source calls.",
+  "beforeFormula": "=LET(\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  empty_details, {\"\",\"\",\"\",\"\",\"\",\"\"},\n  empty_record, {\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"},\n  numeric_details, LAMBDA(details, eligible,\n    IF(SUM(ARRAYFORMULA(N(eligible)))=0, empty_details,\n      LET(\n        selected, FILTER(details, eligible),\n        costs, CHOOSECOLS(selected, 4),\n        errors, ARRAYFORMULA(ISERROR(costs)),\n        IF(SUM(ARRAYFORMULA(N(errors)))>0, INDEX(costs, MATCH(TRUE, errors, 0)),\n          IF(SUM(ARRAYFORMULA(N((costs<>\"\")*NOT(ISNUMBER(costs)))))>0, NA(),\n            LET(\n              nonzero, ARRAYFORMULA(ISNUMBER(costs)*(costs<>0)),\n              IF(SUM(nonzero)=0, empty_details, FILTER(selected, nonzero))\n            )\n          )\n        )\n      )\n    )\n  ),\n  infra_params, COL_VALUES(S_INFRA_EXP_P, \"param\"),\n  infra_categories, COL_VALUES(S_INFRA_EXP_P, \"_category\"),\n  infra_suppliers, COL_VALUES(S_INFRA_EXP_P, \"supplier\"),\n  infra_data, DATA_ROWS(S_INFRA_EXP_P),\n  infra_headers, HEADER_ROW(S_INFRA_EXP_P),\n  infra_rows, SEQUENCE(ROWS(infra_params), 1, ROW(INDEX(S_INFRA_EXP_P, 1, 1)) + 1),\n  infra_details, LAMBDA(month,\n    numeric_details(\n      HSTACK(ARRAYFORMULA(IF(infra_params<>\"\", \"Infrastructure Expenses\", \"\")), infra_params,\n        infra_suppliers, CHOOSECOLS(infra_data, MATCH(month, infra_headers, 0)), infra_rows, infra_categories),\n      ARRAYFORMULA((infra_params<>\"\")*(LOWER(TRIM(infra_categories))<>\"totals\"))\n    )\n  ),\n  financing_details, LAMBDA(month, source, param_name, party_header, type_label,\n    LET(\n      params, COL_VALUES(source, \"param\"),\n      names, COL_VALUES(source, \"_name\"),\n      parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"), COL_VALUES(source, party_header)), \"\")),\n      values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n      source_rows, SEQUENCE(ROWS(params), 1, ROW(INDEX(source, 1, 1)) + 1),\n      numeric_details(\n        HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values, source_rows, params),\n        ARRAYFORMULA((params=param_name)*(names<>\"\")*(LOWER(TRIM(names))<>\"totals\"))\n      )\n    )\n  ),\n  decorate, LAMBDA(expenses, month, source_name, category, basis, rate,\n    LET(\n      types, CHOOSECOLS(expenses, 1),\n      params, CHOOSECOLS(expenses, 2),\n      costs, CHOOSECOLS(expenses, 4),\n      repeat, LAMBDA(value, ARRAYFORMULA(IF(types<>\"\", value, \"\"))),\n      lines, MAP(params, CHOOSECOLS(expenses, 6), LAMBDA(param, source_category,\n        IF(param=\"\", \"\", SWITCH(category,\n          \"Setup\", source_category, \"Infra\", source_category, \"Construction\", \"Construction\",\n          \"Land\", \"Land\", \"In Loans\", \"In Loan Repayment\", \"Out Loans\", \"Out Loan Disbursements\",\n          \"Operations\", SWITCH(param, \"total guest services salaries\", \"Salaries\",\n            \"total operations support salaries\", \"Salaries\", PROPER(REGEXREPLACE(param, \" expenses$\", \"\"))),\n          NA()\n        ))\n      )),\n      HSTACK(types, repeat(month), CHOOSECOLS(expenses, 2, 3, 4), repeat(category), lines,\n        repeat(source_name), repeat(basis), ARRAYFORMULA(IF(types<>\"\", costs*rate, \"\")),\n        ARRAYFORMULA(IF(types<>\"\", costs*(1+rate), \"\")), CHOOSECOLS(expenses, 5))\n    )\n  ),\n  records, REDUCE(empty_record, months, LAMBDA(result, month,\n    LET(\n      actual_setup, month < MONTH_START(TODAY()),\n      VSTACK(result,\n        decorate(financing_details(month, S_IN_LOANS, \"in loans repayments\", \"lender\", \"In Loan Repayments\"),\n          month, \"In Loans\", \"In Loans\", \"Scheduled\", 0),\n        decorate(financing_details(month, S_OUT_LOANS, \"out loans disbursements\", \"debtor\", \"Out Loan Disbursements\"),\n          month, \"Out Loans\", \"Out Loans\", \"Scheduled\", 0),\n        decorate(SETUP_EXPENSES_D(month), month, IF(actual_setup, \"Setup Exp (A)\", \"Setup Exp (P)\"),\n          \"Setup\", IF(actual_setup, \"Actual\", \"Planned\"), IF(actual_setup, 0, PARAM(\"setup contingency\"))),\n        decorate(LAND_EXPENSES_D(month), month, \"Obligations (P)\", \"Land\", \"Scheduled\", 0),\n        decorate(infra_details(month), month, \"Infra Exp (P)\", \"Infra\", \"Planned\", PARAM(\"infra contingency\")),\n        decorate(CONSTRUCTION_EXPENSES_D(month), month, \"Construction Exp (P)\", \"Construction\", \"Planned\", PARAM(\"construction contingency\")),\n        decorate(OPERATIONAL_EXPENSES_D(month), month, \"Operational Exp (P)\", \"Operations\", \"Planned\", PARAM(\"operating contingency\"))\n      )\n    )\n  )),\n  IF(SUM(ARRAYFORMULA(N(CHOOSECOLS(records, 1)<>\"\")))=0, {\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"},\n    LET(\n      populated, FILTER(records, CHOOSECOLS(records, 1)<>\"\"),\n      type_order, {\"In Loan Repayments\";\"Out Loan Disbursements\";\"Setup Expenses\";\"Land Expenses\";\"Infrastructure Expenses\";\"Construction Expenses\";\"Direct Operating Expenses\";\"Other Operating Expenses\"},\n      ranked, HSTACK(ARRAYFORMULA(MATCH(CHOOSECOLS(populated, 1), type_order, 0)), populated),\n      details, CHOOSECOLS(SORT(ranked, 1, TRUE, 3, TRUE, 4, TRUE, 13, TRUE), 2,3,4,5,6,7,8,9,10,11,12,13),\n      descriptions, MAP(CHOOSECOLS(details, 1), CHOOSECOLS(details, 2), CHOOSECOLS(details, 3), CHOOSECOLS(details, 4),\n        LAMBDA(type, month, param, party,\n          IF(type=\"Construction Expenses\",\n            LET(\n              units, INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")), 1, MATCH(month, R_MONTHS, 0)),\n              unit_name, REGEXREPLACE(param, \" const[.] cost$\", \"\"),\n              singular, SWITCH(unit_name, \"clinics\", \"clinic\", \"sala toilets\", \"sala toilet\", \"complex room\", \"complex home\", unit_name),\n              plural, SWITCH(unit_name, \"lobby\", \"lobbies\", \"storage\", \"storage\", \"pool lounge seating\", \"pool lounge seating\",\n                \"general resort storage\", \"general resort storage\", \"shower & toilet\", \"showers & toilets\",\n                \"open air sala - big\", \"open air salas - big\", \"open air sala - medium\", \"open air salas - medium\", singular&\"s\"),\n              TEXT(units, \"0\")&\" \"&IF(units=1, singular, plural)\n            ),\n            param&IF(party<>\"\", \" (\"&party&\")\", \"\")\n          )\n        )\n      ),\n      source_params, MAP(CHOOSECOLS(details, 1), CHOOSECOLS(details, 3), LAMBDA(type, param,\n        SWITCH(type, \"In Loan Repayments\", \"in loans repayments\", \"Out Loan Disbursements\", \"out loans disbursements\", param))),\n      HSTACK(CHOOSECOLS(details, 1), ARRAYFORMULA(YEAR(CHOOSECOLS(details, 2))),\n        ARRAYFORMULA(\"Q\"&ROUNDUP(MONTH(CHOOSECOLS(details, 2))/3)), CHOOSECOLS(details, 2), descriptions,\n        CHOOSECOLS(details, 5, 6, 7), source_params, CHOOSECOLS(details, 8, 9, 10, 11, 12))\n    )\n  )\n)",
+  "afterFormula": "=ALL_EXPENSES(R_MONTHS)",
+  "newNamedFunctions": [
+    {
+      "name": "EXPENSE_DETAIL_ROWS",
+      "arguments": [
+        "details",
+        "eligible"
+      ],
+      "description": "Returns eligible nonzero signed expense details. Rejects nonempty text amounts and preserves source errors; empty results return one blank six-column row.",
+      "formula": "=LET(\n  empty_details, {\"\",\"\",\"\",\"\",\"\",\"\"},\n  IF(SUM(ARRAYFORMULA(N(eligible)))=0, empty_details,\n    LET(\n      selected, FILTER(details, eligible),\n      costs, CHOOSECOLS(selected, 4),\n      errors, ARRAYFORMULA(ISERROR(costs)),\n      IF(SUM(ARRAYFORMULA(N(errors)))>0, INDEX(costs, MATCH(TRUE, errors, 0)),\n        IF(SUM(ARRAYFORMULA(N((costs<>\"\")*NOT(ISNUMBER(costs)))))>0, NA(),\n          LET(\n            nonzero, ARRAYFORMULA(ISNUMBER(costs)*(costs<>0)),\n            IF(SUM(nonzero)=0, empty_details, FILTER(selected, nonzero))\n          )\n        )\n      )\n    )\n  )\n)"
+    },
+    {
+      "name": "INFRA_EXPENSES_D",
+      "arguments": [
+        "month"
+      ],
+      "description": "Returns monthly infrastructure details: type, parameter, supplier, base cost, source row and category.",
+      "formula": "=LET(\n  infra_params, COL_VALUES(S_INFRA_EXP_P, \"param\"),\n  infra_categories, COL_VALUES(S_INFRA_EXP_P, \"_category\"),\n  infra_suppliers, COL_VALUES(S_INFRA_EXP_P, \"supplier\"),\n  infra_data, DATA_ROWS(S_INFRA_EXP_P),\n  infra_headers, HEADER_ROW(S_INFRA_EXP_P),\n  infra_rows, SEQUENCE(ROWS(infra_params), 1, ROW(INDEX(S_INFRA_EXP_P, 1, 1)) + 1),\n  EXPENSE_DETAIL_ROWS(\n    HSTACK(ARRAYFORMULA(IF(infra_params<>\"\", \"Infrastructure Expenses\", \"\")), infra_params,\n      infra_suppliers, CHOOSECOLS(infra_data, MATCH(month, infra_headers, 0)), infra_rows, infra_categories),\n    ARRAYFORMULA((infra_params<>\"\")*(LOWER(TRIM(infra_categories))<>\"totals\"))\n  )\n)"
+    },
+    {
+      "name": "FINANCING_EXPENSES_D",
+      "arguments": [
+        "month",
+        "source",
+        "param_name",
+        "party_header",
+        "type_label"
+      ],
+      "description": "Returns monthly scheduled loan details for the specified source and parameter, excluding total rows.",
+      "formula": "=LET(\n  params, COL_VALUES(source, \"param\"),\n  names, COL_VALUES(source, \"_name\"),\n  parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"), COL_VALUES(source, party_header)), \"\")),\n  values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n  source_rows, SEQUENCE(ROWS(params), 1, ROW(INDEX(source, 1, 1)) + 1),\n  EXPENSE_DETAIL_ROWS(\n    HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values, source_rows, params),\n    ARRAYFORMULA((params=param_name)*(names<>\"\")*(LOWER(TRIM(names))<>\"totals\"))\n  )\n)"
+    },
+    {
+      "name": "EXPENSE_RECORDS",
+      "arguments": [
+        "expenses",
+        "month",
+        "source_name",
+        "category",
+        "basis",
+        "rate"
+      ],
+      "description": "Adds month, Budget mapping, source, basis, contingency and total to six-column source details; returns twelve internal record columns.",
+      "formula": "=LET(\n  types, CHOOSECOLS(expenses, 1),\n  params, CHOOSECOLS(expenses, 2),\n  costs, CHOOSECOLS(expenses, 4),\n  repeat, LAMBDA(value, ARRAYFORMULA(IF(types<>\"\", value, \"\"))),\n  lines, MAP(params, CHOOSECOLS(expenses, 6), LAMBDA(param, source_category,\n      IF(param=\"\", \"\", SWITCH(category,\n          \"Setup\", source_category, \"Infra\", source_category, \"Construction\", \"Construction\",\n          \"Land\", \"Land\", \"In Loans\", \"In Loan Repayment\", \"Out Loans\", \"Out Loan Disbursements\",\n          \"Operations\", SWITCH(param, \"total guest services salaries\", \"Salaries\",\n            \"total operations support salaries\", \"Salaries\", PROPER(REGEXREPLACE(param, \" expenses$\", \"\"))),\n          NA()\n      ))\n  )),\n  HSTACK(types, repeat(month), CHOOSECOLS(expenses, 2, 3, 4), repeat(category), lines,\n    repeat(source_name), repeat(basis), ARRAYFORMULA(IF(types<>\"\", costs*rate, \"\")),\n    ARRAYFORMULA(IF(types<>\"\", costs*(1+rate), \"\")), CHOOSECOLS(expenses, 5))\n)"
+    },
+    {
+      "name": "EXPENSES_FOR_MONTH",
+      "arguments": [
+        "month"
+      ],
+      "description": "Combines financing, Setup, Land, Infrastructure, Construction and Operations for one month, with their existing basis and contingency rules.",
+      "formula": "=LET(\n  actual_setup, month < MONTH_START(TODAY()),\n  VSTACK(\n    EXPENSE_RECORDS(FINANCING_EXPENSES_D(month, S_IN_LOANS, \"in loans repayments\", \"lender\", \"In Loan Repayments\"),\n      month, \"In Loans\", \"In Loans\", \"Scheduled\", 0),\n    EXPENSE_RECORDS(FINANCING_EXPENSES_D(month, S_OUT_LOANS, \"out loans disbursements\", \"debtor\", \"Out Loan Disbursements\"),\n      month, \"Out Loans\", \"Out Loans\", \"Scheduled\", 0),\n    EXPENSE_RECORDS(SETUP_EXPENSES_D(month), month, IF(actual_setup, \"Setup Exp (A)\", \"Setup Exp (P)\"),\n      \"Setup\", IF(actual_setup, \"Actual\", \"Planned\"), IF(actual_setup, 0, PARAM(\"setup contingency\"))),\n    EXPENSE_RECORDS(LAND_EXPENSES_D(month), month, \"Obligations (P)\", \"Land\", \"Scheduled\", 0),\n    EXPENSE_RECORDS(INFRA_EXPENSES_D(month), month, \"Infra Exp (P)\", \"Infra\", \"Planned\", PARAM(\"infra contingency\")),\n    EXPENSE_RECORDS(CONSTRUCTION_EXPENSES_D(month), month, \"Construction Exp (P)\", \"Construction\", \"Planned\", PARAM(\"construction contingency\")),\n    EXPENSE_RECORDS(OPERATIONAL_EXPENSES_D(month), month, \"Operational Exp (P)\", \"Operations\", \"Planned\", PARAM(\"operating contingency\"))\n  )\n)"
+    },
+    {
+      "name": "EXPENSE_DESCRIPTION",
+      "arguments": [
+        "type",
+        "month",
+        "param",
+        "party"
+      ],
+      "description": "Returns the readable expense description, including construction quantities and singular/plural unit names.",
+      "formula": "=IF(type=\"Construction Expenses\",\n  LET(\n    units, INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")), 1, MATCH(month, R_MONTHS, 0)),\n    unit_name, REGEXREPLACE(param, \" const[.] cost$\", \"\"),\n    singular, SWITCH(unit_name, \"clinics\", \"clinic\", \"sala toilets\", \"sala toilet\", \"complex room\", \"complex home\", unit_name),\n    plural, SWITCH(unit_name, \"lobby\", \"lobbies\", \"storage\", \"storage\", \"pool lounge seating\", \"pool lounge seating\",\n      \"general resort storage\", \"general resort storage\", \"shower & toilet\", \"showers & toilets\",\n      \"open air sala - big\", \"open air salas - big\", \"open air sala - medium\", \"open air salas - medium\", singular&\"s\"),\n    TEXT(units, \"0\")&\" \"&IF(units=1, singular, plural)\n  ),\n  param&IF(party<>\"\", \" (\"&party&\")\", \"\")\n)"
+    },
+    {
+      "name": "ALL_EXPENSES",
+      "arguments": [
+        "months"
+      ],
+      "description": "Returns the complete 14-column expense dataset for numeric month dates in the supplied timeline, sorted by type, month, parameter and source row. Contains no header or total record.",
+      "formula": "=LET(\n  selected_months, FILTER(months, ISNUMBER(months)),\n  empty_record, {\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"},\n  records, REDUCE(empty_record, selected_months, LAMBDA(result, month,\n      VSTACK(result, EXPENSES_FOR_MONTH(month))\n  )),\n  IF(SUM(ARRAYFORMULA(N(CHOOSECOLS(records, 1)<>\"\")))=0, {\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"},\n    LET(\n      populated, FILTER(records, CHOOSECOLS(records, 1)<>\"\"),\n      type_order, {\"In Loan Repayments\";\"Out Loan Disbursements\";\"Setup Expenses\";\"Land Expenses\";\"Infrastructure Expenses\";\"Construction Expenses\";\"Direct Operating Expenses\";\"Other Operating Expenses\"},\n      ranked, HSTACK(ARRAYFORMULA(MATCH(CHOOSECOLS(populated, 1), type_order, 0)), populated),\n      details, CHOOSECOLS(SORT(ranked, 1, TRUE, 3, TRUE, 4, TRUE, 13, TRUE), 2,3,4,5,6,7,8,9,10,11,12,13),\n      descriptions, MAP(CHOOSECOLS(details, 1), CHOOSECOLS(details, 2), CHOOSECOLS(details, 3), CHOOSECOLS(details, 4), LAMBDA(type, month, param, party, EXPENSE_DESCRIPTION(type, month, param, party))),\n      source_params, MAP(CHOOSECOLS(details, 1), CHOOSECOLS(details, 3), LAMBDA(type, param,\n          SWITCH(type, \"In Loan Repayments\", \"in loans repayments\", \"Out Loan Disbursements\", \"out loans disbursements\", param))),\n      HSTACK(CHOOSECOLS(details, 1), ARRAYFORMULA(YEAR(CHOOSECOLS(details, 2))),\n        ARRAYFORMULA(\"Q\"&ROUNDUP(MONTH(CHOOSECOLS(details, 2))/3)), CHOOSECOLS(details, 2), descriptions,\n        CHOOSECOLS(details, 5, 6, 7), source_params, CHOOSECOLS(details, 8, 9, 10, 11, 12))\n    )\n  )\n)"
+    }
+  ],
+  "existingNamedFunctionsChanged": [],
+  "existingNamedRangesChanged": [],
+  "sourceCode": "src/AllExpensesFormula.js",
+  "verification": {
+    "recordCount": 1064,
+    "columnsCompared": 14,
+    "differentCells": 0,
+    "comparison": "Exact effective-value equality in existing row order, before/after including final restoration after tests.",
+    "outputIncludingHeaderSha256": "4e5f5102350804d70e1e6ee50d18a9f55aae46fa28d8066beab886c0cbd19ff2",
+    "budgetAndCashFlowFormulasAndValuesUnchanged": true,
+    "nativeTests": [
+      {
+        "name": "signed and duplicate source rows",
+        "formula": "=EXPENSE_DETAIL_ROWS({\"Infrastructure Expenses\",\"Duplicate\",\"\",-100,4,\"Water\";\"Infrastructure Expenses\",\"Duplicate\",\"\",50,5,\"Water\";\"Infrastructure Expenses\",\"Zero\",\"\",0,6,\"Water\"},{TRUE;TRUE;TRUE})",
+        "values": [
+          [
+            "Infrastructure Expenses",
+            "Duplicate",
+            null,
+            -100,
+            4,
+            "Water"
+          ],
+          [
+            "Infrastructure Expenses",
+            "Duplicate",
+            null,
+            50,
+            5,
+            "Water"
+          ]
+        ]
+      },
+      {
+        "name": "signed contingency",
+        "formula": "=EXPENSE_RECORDS({\"Infrastructure Expenses\",\"Adjustment\",\"\",-100,4,\"Water\"},DATE(2028,2,1),\"Infra Exp (P)\",\"Infra\",\"Planned\",0.15)",
+        "values": [
+          [
+            "Infrastructure Expenses",
+            46784,
+            "Adjustment",
+            null,
+            -100,
+            "Infra",
+            "Water",
+            "Infra Exp (P)",
+            "Planned",
+            -15,
+            -114.99999999999999,
+            4
+          ]
+        ]
+      },
+      {
+        "name": "empty selection",
+        "formula": "=EXPENSE_DETAIL_ROWS({\"Infrastructure Expenses\",\"Excluded\",\"\",100,4,\"Water\"},{FALSE})",
+        "values": []
+      },
+      {
+        "name": "nonnumeric source error",
+        "formula": "=EXPENSE_DETAIL_ROWS({\"Infrastructure Expenses\",\"Invalid\",\"\",\"text\",4,\"Water\"},{TRUE})",
+        "values": [
+          [
+            {
+              "type": "N_A"
+            }
+          ]
+        ]
+      },
+      {
+        "name": "source formula error",
+        "formula": "=EXPENSE_DETAIL_ROWS(HSTACK(\"Infrastructure Expenses\",\"Invalid\",\"\",1/0,4,\"Water\"),{TRUE})",
+        "values": [
+          [
+            {
+              "type": "DIVIDE_BY_ZERO",
+              "message": "Function DIVIDE parameter 2 cannot be zero."
+            }
+          ]
+        ]
+      },
+      {
+        "name": "single month",
+        "formula": "=ALL_EXPENSES(DATE(2028,2,1))",
+        "values": [
+          [
+            "Setup Expenses",
+            2028,
+            "Q1",
+            46784,
+            "Detail Design (Sagie Schwartz)",
+            100000,
+            "Setup",
+            "Planning",
+            "Detail Design",
+            "Setup Exp (P)",
+            "Planned",
+            10000,
+            110000.00000000001,
+            23
+          ],
+          [
+            "Infrastructure Expenses",
+            2028,
+            "Q1",
+            46784,
+            "Water Tanks (Water Tank Expert)",
+            96000,
+            "Infra",
+            "Water",
+            "Water Tanks",
+            "Infra Exp (P)",
+            "Planned",
+            14400,
+            110399.99999999999,
+            9
+          ],
+          [
+            "Construction Expenses",
+            2028,
+            "Q1",
+            46784,
+            "6 complex homes",
+            5246000,
+            "Construction",
+            "Construction",
+            "complex room const. cost",
+            "Construction Exp (P)",
+            "Planned",
+            786900,
+            6032899.999999999,
+            157
+          ],
+          [
+            "Construction Expenses",
+            2028,
+            "Q1",
+            46784,
+            "1 open air sala - medium",
+            1500000,
+            "Construction",
+            "Construction",
+            "open air sala - medium const. cost",
+            "Construction Exp (P)",
+            "Planned",
+            225000,
+            1724999.9999999998,
+            147
+          ],
+          [
+            "Construction Expenses",
+            2028,
+            "Q1",
+            46784,
+            "1 solo room",
+            711000,
+            "Construction",
+            "Construction",
+            "solo room const. cost",
+            "Construction Exp (P)",
+            "Planned",
+            106650,
+            817649.9999999999,
+            156
+          ],
+          [
+            "Construction Expenses",
+            2028,
+            "Q1",
+            46784,
+            "1 suite room",
+            1293600.0000000002,
+            "Construction",
+            "Construction",
+            "suite room const. cost",
+            "Construction Exp (P)",
+            "Planned",
+            194040.00000000003,
+            1487640.0000000002,
+            155
+          ],
+          [
+            "Construction Expenses",
+            2028,
+            "Q1",
+            46784,
+            "1 therapeutic pool",
+            1572500,
+            "Construction",
+            "Construction",
+            "therapeutic pool const. cost",
+            "Construction Exp (P)",
+            "Planned",
+            235875,
+            1808374.9999999998,
+            143
+          ]
+        ]
+      }
+    ],
+    "testSummary": {
+      "signedAdjustments": true,
+      "duplicateDescriptions": true,
+      "zeroAmountsOmitted": true,
+      "signedContingency": true,
+      "emptySelection": true,
+      "nonnumericAmountError": true,
+      "sourceFormulaError": true,
+      "singleMonthRows": 7
+    },
+    "localChecks": "12 refresh/border tests passed; JavaScript syntax and diff whitespace checked."
+  },
+  "filtering": "Deferred. All Expenses remains complete; no filtered view, filter controls or extra sheets created.",
+  "rollback": "Restore beforeFormula in All Expenses A2, then remove the seven added named functions only after checking for any new consumers. Existing named functions/ranges and sheet dimensions need no restoration."
+}

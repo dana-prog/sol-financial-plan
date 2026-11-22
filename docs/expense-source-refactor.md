@@ -89,6 +89,30 @@ Reuse existing header lookup functions such as `COL_VALUES` and `DATA_ROWS`. Kee
 
 `refreshAllExpenses()` now validates the live anchor and headers, then updates formatting, the filter range and borders without writing expense values. The duplicate static financial calculation was removed. Filter criteria are retained, but saved sort specifications are not reapplied: a live test demonstrated that doing so moves the array anchor. Type/date ordering belongs to the formula. The corrected refresh was executed and verified to preserve A2 and all 1,064 records.
 
+## Named-function simplification completed
+
+All Expenses A2 now contains only `=ALL_EXPENSES(R_MONTHS)`. The named definitions and the A2 formula are maintained in `src/AllExpensesFormula.js`; they are native Sheets named functions, not Apps Script custom functions. Existing source named functions and calls remain intact.
+
+| Function | Responsibility |
+| --- | --- |
+| `EXPENSE_DETAIL_ROWS(details, eligible)` | Validate selected amounts, preserve errors and signed adjustments, omit zeros, and return an empty row when no records qualify |
+| `INFRA_EXPENSES_D(month)` | Read infrastructure details through the existing named range and header lookup functions |
+| `FINANCING_EXPENSES_D(month, source, param_name, party_header, type_label)` | Read scheduled financing details using the live source labels |
+| `EXPENSE_RECORDS(expenses, month, source_name, category, basis, rate)` | Add the Budget mapping, source, basis, contingency and total |
+| `EXPENSES_FOR_MONTH(month)` | Combine all expense sources for one month |
+| `EXPENSE_DESCRIPTION(type, month, param, party)` | Produce the readable description, retaining `CONSTRUCTION_PARAM_VALUES` for construction quantities |
+| `ALL_EXPENSES(months)` | Combine the supplied months, order the records and return the existing 14 columns |
+
+The dependency graph has no reference back to `S_ALL_EXPENSES`, Budget or Cash Flow. `IN_LOANS_EXPENSES_D` was inspected but left unchanged: it is a legacy four-column function, while the current financing calculation needs the six-column source-provenance contract and the live parameter labels.
+
+All 1,064 rows were compared across all 14 columns before and after, with exact equality. Budget and Cash Flow formulas and effective values were unchanged. Native named-function tests covered negative values, duplicate descriptions from separate source rows, zero omission, empty selections, signed contingency, nonnumeric amounts, source formula errors and a single-month input. See the [named-function migration record](../migrations/2026-11-22-all-expenses-named-functions.json).
+
+### Future display filtering
+
+Keep `=ALL_EXPENSES(R_MONTHS)` complete as the shared report source. A future display function can accept the generated rows or the complete `S_ALL_EXPENSES` dataset and filter the structured fields before displaying them. Prefer reading the existing complete dataset for a separate view to avoid recalculating the raw sources twice. No filter controls, filtered view or additional sheet were added in this refactor.
+
+Filtering records out of the source sheet would also remove them from future Budget/Cash Flow aggregations. Decide whether a filter is a viewing preference or a financial-scope rule before applying it there. No performance improvement is claimed from splitting formulas into named functions.
+
 ## Dependency boundaries
 
 1. Raw expense calculations and All Expenses must remain independent of Budget and Cash Flow.
