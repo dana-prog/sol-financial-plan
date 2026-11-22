@@ -17,6 +17,12 @@ Evidence: [original baseline and formula mapping](../migrations/2026-11-22-expen
 
 ## Corrections and source exceptions
 
+### Company Tax grouped under Operations in Budget
+
+Company Tax is now the first detail line under Operations for 2027–2029 (rows 33, 68, and 103). The separate Tax category headers were removed. This is a Budget reporting change only: the detail formulas still read `CASH_FLOW_PARAM_VALUES("company tax")`, and All Expenses still excludes tax.
+
+Operations contingency subtracts the year's company-tax payments from its total expenses before applying `PARAM("operating contingency")`. Company Tax therefore increases the Operations subtotal without receiving contingency. All 87 detail amounts, annual expense totals, contingency, required budget, available budget, headroom, and statuses were preserved (numeric tolerance THB 0.000001). The row groups and named Budget range adjusted to the new layout. See [applied migration](../migrations/2026-11-22-budget-tax-under-operations.json).
+
 ### Road correction completed
 
 Budget now includes Road in its 2027, 2028, and 2029 infrastructure sections. The 2028 amount is THB 2,000,000 plus THB 300,000 contingency. After the subsequent Water Tanks correction, the 2028 infrastructure required budget is THB 16,802,650. Annual required budget is THB 231,912,065.99853653 and headroom is THB 33,979,241.219913065. The headroom carried into 2029 leaves THB 17,028,904.4375.

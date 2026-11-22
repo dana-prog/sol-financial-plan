@@ -1,0 +1,269 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheetId": 530781649,
+  "status": "Applied and verified on 2026-11-22",
+  "description": "Move Budget Company Tax detail lines from the Tax category to Operations; preserve tax source formulas and exclude company tax from operating contingency.",
+  "changes": [
+    {
+      "year": 2027,
+      "originalTaxRow": 14,
+      "currentTaxRow": 33,
+      "operationsRow": 32,
+      "removedTaxHeaderRow": 13
+    },
+    {
+      "year": 2028,
+      "originalTaxRow": 52,
+      "currentTaxRow": 68,
+      "operationsRow": 67,
+      "removedTaxHeaderRow": 51
+    },
+    {
+      "year": 2029,
+      "originalTaxRow": 88,
+      "currentTaxRow": 103,
+      "operationsRow": 102,
+      "removedTaxHeaderRow": 87
+    }
+  ],
+  "requests": [
+    {
+      "moveDimension": {
+        "source": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 87,
+          "endIndex": 88
+        },
+        "destinationIndex": 106
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 86,
+          "endIndex": 87
+        }
+      }
+    },
+    {
+      "moveDimension": {
+        "source": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 51,
+          "endIndex": 52
+        },
+        "destinationIndex": 70
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 50,
+          "endIndex": 51
+        }
+      }
+    },
+    {
+      "moveDimension": {
+        "source": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 13,
+          "endIndex": 14
+        },
+        "destinationIndex": 34
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 12,
+          "endIndex": 13
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 530781649,
+          "startRowIndex": 31,
+          "endRowIndex": 32,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  company_tax, SUM(\n    FILTER(\n      CASH_FLOW_PARAM_VALUES(\"company tax\"),\n      IFERROR(YEAR(R_MONTHS) = BUDGET_VALUE(\"_year\"), FALSE)\n    )\n  ),\n  (BUDGET_VALUE(\"total expenses\") - company_tax) * PARAM(\"operating contingency\")\n)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 530781649,
+          "startRowIndex": 66,
+          "endRowIndex": 67,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  company_tax, SUM(\n    FILTER(\n      CASH_FLOW_PARAM_VALUES(\"company tax\"),\n      IFERROR(YEAR(R_MONTHS) = BUDGET_VALUE(\"_year\"), FALSE)\n    )\n  ),\n  (BUDGET_VALUE(\"total expenses\") - company_tax) * PARAM(\"operating contingency\")\n)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 530781649,
+          "startRowIndex": 101,
+          "endRowIndex": 102,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=LET(\n  company_tax, SUM(\n    FILTER(\n      CASH_FLOW_PARAM_VALUES(\"company tax\"),\n      IFERROR(YEAR(R_MONTHS) = BUDGET_VALUE(\"_year\"), FALSE)\n    )\n  ),\n  (BUDGET_VALUE(\"total expenses\") - company_tax) * PARAM(\"operating contingency\")\n)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    }
+  ],
+  "previousOperatingContingencyFormula": "=BUDGET_VALUE(\"total expenses\")*PARAM(\"operating contingency\")",
+  "annualBefore": [
+    {
+      "row": 2,
+      "year": 2026,
+      "past": 1833170,
+      "future": 11490920,
+      "contingency": 149092,
+      "required": 13473182,
+      "available": 16688144.588399999,
+      "headroom": 3214962.588399999,
+      "status": "Within Budget"
+    },
+    {
+      "row": 10,
+      "year": 2027,
+      "past": 0,
+      "future": 69762988.49315068,
+      "contingency": 309792,
+      "required": 70072780.49315068,
+      "available": 173214962.5884,
+      "headroom": 103142182.09524933,
+      "status": "Within Budget"
+    },
+    {
+      "row": 46,
+      "year": 2028,
+      "past": 0,
+      "future": 208971117.09104505,
+      "contingency": 22940948.90749149,
+      "required": 231912065.99853653,
+      "available": 265891307.2184496,
+      "headroom": 33979241.219913065,
+      "status": "Within Budget"
+    },
+    {
+      "row": 82,
+      "year": 2029,
+      "past": 0,
+      "future": 135217905.66614228,
+      "contingency": 7341087.479454152,
+      "required": 142558993.14559644,
+      "available": 159587897.58309644,
+      "headroom": 17028904.4375,
+      "status": "Within Budget"
+    }
+  ],
+  "annualAfter": [
+    {
+      "row": 2,
+      "year": 2026,
+      "past": 1833170,
+      "future": 11490920,
+      "contingency": 149092,
+      "required": 13473182,
+      "available": 16688144.588399999,
+      "headroom": 3214962.588399999,
+      "status": "Within Budget"
+    },
+    {
+      "row": 10,
+      "year": 2027,
+      "past": 0,
+      "future": 69762988.49315068,
+      "contingency": 309792,
+      "required": 70072780.49315068,
+      "available": 173214962.5884,
+      "headroom": 103142182.09524933,
+      "status": "Within Budget"
+    },
+    {
+      "row": 45,
+      "year": 2028,
+      "past": 0,
+      "future": 208971117.09104505,
+      "contingency": 22940948.90749149,
+      "required": 231912065.99853653,
+      "available": 265891307.2184496,
+      "headroom": 33979241.219913065,
+      "status": "Within Budget"
+    },
+    {
+      "row": 80,
+      "year": 2029,
+      "past": 0,
+      "future": 135217905.66614226,
+      "contingency": 7341087.479454152,
+      "required": 142558993.1455964,
+      "available": 159587897.58309644,
+      "headroom": 17028904.43750003,
+      "status": "Within Budget"
+    }
+  ],
+  "verification": {
+    "detailLinesUnchanged": 87,
+    "companyTaxRowsUnderOperations": 3,
+    "budgetErrors": 0,
+    "annualTotalsUnchangedWithinTHB": 0.000001,
+    "operatingContingencyUnchanged": true,
+    "preservedNamedFunctionCalls": true,
+    "cashFlowTaxAndProfitInputsUnchanged": true,
+    "allExpensesAnchorAndHeaderUnchanged": true,
+    "nativeGroupingVerified": true,
+    "visualCheck": "2029 Company Tax visible immediately under Operations; existing formatting retained."
+  },
+  "rollback": "Move the three Company Tax detail rows back to their original Tax categories and restore the three deleted category header rows from the prior revision, then restore the original Operations contingency formula. Do not remove the contingency exclusion while Company Tax remains within Operations."
+}
