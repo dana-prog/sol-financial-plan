@@ -1,37 +1,37 @@
 # Expense source refactor
 
-The migration will make All Expenses the shared expense dataset for Budget and Cash Flow. This document completes the mapping and reconciliation phase; it does not change the live All Expenses formula or either report's data source.
+The migration will make All Expenses the shared expense dataset for Budget and Cash Flow. The All Expenses dataset upgrade is live and verified. Budget and Cash Flow still read their original sources; their consumer migration is the next stage.
 
-The baseline is the SOL financial plan on 22 November 2026, after the separately applied Road correction. The spreadsheet timezone is Asia/Bangkok. Cash Flow covers January 2026 through December 2033; Budget currently covers 2026 through 2029. Do not extend Budget's horizon as part of this migration.
+The baseline is the SOL financial plan on 22 November 2026, after the Road correction and the user's numeric Water Tanks correction. The spreadsheet timezone is Asia/Bangkok. Cash Flow covers January 2026 through December 2033; Budget currently covers 2026 through 2029. Do not extend Budget's horizon as part of this migration.
 
 ## Reconciliation results
 
-Evidence: [captured baseline and formula mapping](../migrations/2026-11-22-expense-source-refactor-baseline.json).
+Evidence: [original baseline and formula mapping](../migrations/2026-11-22-expense-source-refactor-baseline.json) and [applied dataset upgrade, refreshed reconciliation and rollback](../migrations/2026-11-22-all-expenses-dataset.json). The original baseline remains an immutable record from before the Water Tanks correction.
 
-- Independently reconstructed 1,063 nonzero expense records from source values, using actual Setup before November 2026 and planned Setup thereafter.
+- Independently reconstructed 1,064 nonzero expense records from source values, using actual Setup before November 2026 and planned Setup thereafter.
 - All eight Cash Flow expense types reconcile over all 96 months: 768 comparisons, no difference greater than THB 0.01.
 - All 86 Budget detail lines reconcile for both past and future amounts: 172 comparisons, no difference greater than THB 0.01. Company Tax is compared to its existing Cash Flow source and remains outside the proposed expense dataset.
 - No nonzero source expense within Budget's existing years is missing a matching Budget line after the Road correction. Out Loan Disbursements and out loans disbursements require an explicit alias; do not rely on singular/plural display labels as keys.
-- No negative expense records were present in this baseline. Signed adjustments still require synthetic validation before rollout.
-- These are offline comparisons of captured effective values, not live replacement-formula tests or performance measurements. Budget contingency, annual totals, and headroom still require end-to-end migration verification.
+- No negative expense records were present in the baseline. Live validation temporarily set Water Tanks to -96,000, zero, nonnumeric text and a division error: the signed total was -110,400; zero produced no record; both invalid inputs surfaced errors. The original numeric 96,000 was restored and the reports rechecked.
+- The live expanded dataset was checked record by record against independently reconstructed source amounts, categories, basis and provenance. Budget and Cash Flow formulas and effective values remained unchanged after validation. This does not establish a performance improvement or validate the future report-consumer formulas.
 
 ## Corrections and source exceptions
 
 ### Road correction completed
 
-Budget now includes Road in its 2027, 2028, and 2029 infrastructure sections. The 2028 amount is THB 2,000,000 plus THB 300,000 contingency. The 2028 infrastructure required budget is THB 16,692,250. Annual required budget is THB 231,801,665.99853653 and headroom is THB 34,089,641.219913065. The lower headroom carries into 2029, reducing its headroom to THB 17,139,304.4375.
+Budget now includes Road in its 2027, 2028, and 2029 infrastructure sections. The 2028 amount is THB 2,000,000 plus THB 300,000 contingency. After the subsequent Water Tanks correction, the 2028 infrastructure required budget is THB 16,802,650. Annual required budget is THB 231,912,065.99853653 and headroom is THB 33,979,241.219913065. The headroom carried into 2029 leaves THB 17,028,904.4375.
 
 The migration record is [2026-11-22-budget-road-expense.json](../migrations/2026-11-22-budget-road-expense.json), committed separately as `80ea91b`. Existing named formulas were preserved. New rows use the existing infrastructure formulas and their source links resolve to the Road row.
 
-### Setup basis correction required in All Expenses
+### Setup basis correction completed in All Expenses
 
-Current All Expenses shows planned Setup amounts in historical months. Nine months from January through September 2026 differ from the actual-source amounts already used by Budget and Cash Flow; their aggregate difference is THB 591,150. Moving All Expenses to the agreed cutoff reduces its Setup base total by that amount while preserving the current report amounts.
+All Expenses now uses actual Setup amounts before the current month and planned amounts from the current month onward. This reduced its January–September 2026 base total by THB 591,150 and brought all nine previously differing months into agreement with Budget and Cash Flow.
 
 The current month belongs to the planned period. A missing or zero actual amount must remain missing or zero according to the existing source semantics; do not fall back to planned values. A record's basis must come from its source, not merely from its date.
 
-### Numeric-looking text remains a separate source issue
+### Water Tanks correction completed by the user
 
-`Infra Exp (P)!AE9` contains the text `฿ 96K` for February 2028. Existing source totals ignore it, and it is explicitly excluded from the reconciliation. Do not silently parse it as THB 96,000. Record it as a validation exception and resolve whether it is intended expenditure before adopting a policy that rejects all text. Changing it would be a separate financial correction.
+The user changed `Infra Exp (P)!AE9` from text `฿ 96K` to numeric 96,000 for February 2028. All Expenses now includes base cost 96,000 and contingency 14,400; Cash Flow contains total cost 110,400. No ignored nonnumeric source amount remains. Eligible nonempty text now surfaces an error instead of silently disappearing.
 
 ## Source mapping
 
@@ -71,23 +71,23 @@ Retain the existing first six columns to minimize disruption to the visible repo
 | M | Total cost | Cost plus Contingency |
 | N | Source row | Source location for traceability, not a persistent identity |
 
-Use one record per selected source row and month. Identical display descriptions may legitimately appear more than once. Source row positions can change; regenerate provenance from the source rather than treating row numbers as permanent IDs. Keep current type/date ordering. Do not use the visible filter-sensitive grand total as an input to either report.
+Use one record per selected source row and month. Identical display descriptions may legitimately appear more than once. Source row positions can change; regenerate provenance from the source rather than treating row numbers as permanent IDs. Keep current type/date ordering. The dataset has no embedded grand-total record. Report consumers must aggregate the appropriate amount column.
 
 Base and contingency stay separate. Budget's existing category contingency formulas may continue to apply once to base expenses; Cash Flow consumes Total cost. Do not feed Total cost to Budget's base-expense columns.
 
 ## Formula and refresh contract
 
-Keep All Expenses formula-driven for this migration. Extend its existing formula and named-function approach. Inventory live named ranges and definitions before implementing new names; the cell snapshot records calls, not the complete live named-function definitions.
+All Expenses is formula-driven at A2. Its formula is stored in `src/AllExpensesFormula.js`. The four existing detail functions (`SETUP_EXPENSES_D`, `CONSTRUCTION_EXPENSES_D`, `OPERATIONAL_EXPENSES_D`, `LAND_EXPENSES_D`) were extended to six outputs: type, parameter, party, base amount, source row and source category. The inventory found All Expenses A2 to be their only consumer. Their definitions and original versions are retained in the migration record. Existing named-function calls are preserved.
 
-Candidate interfaces, subject to that inventory:
+Current and proposed interfaces:
 
-- `S_ALL_EXPENSES`: header plus data, excluding the display total.
+- `S_ALL_EXPENSES` is live: All Expenses A1:N10273, with a header and no total record. Its capacity covers every currently eligible source row in all 96 months. Revisit capacity when source rows or the timeline expand.
 - `ALL_EXPENSES_MONTHLY_VALUES(expense_type, amount_column)`: returns one value for every month in `R_MONTHS`, including zero months.
 - `ALL_EXPENSES_BUDGET_SUM(budget_category, budget_line, start_month, month_count, amount_column)`: sums the base-cost field for the same date windows as the existing Budget formulas; zero months returns zero.
 
 Reuse existing header lookup functions such as `COL_VALUES` and `DATA_ROWS`. Keep `BUDGET_VALUE`, `BUDGET_CATEGORY_SUM`, `BUDGET_YEAR_SUM`, `BUDGET_YEAR_CONTINGENCY`, `BUDGET_TIMELINE_LINK`, and `CASH_FLOW_PARAM_VALUES` in their existing roles. Retain source drill-down links. Replace source-specific retrieval calls only with a reviewed named-function interface, never direct ranges or inlined implementations. Do not globally redirect source functions such as `CONSTRUCTION_PARAM_VALUES` or `OPERATIONS_PARAM_VALUES` to All Expenses: its own calculations depend on those functions.
 
-The current `refreshAllExpenses()` writes static values and can overwrite the formula anchor. It must be adapted before report consumers are switched. It also hardcodes legacy financing labels (`in loans repaid`, `out loans disbursed`) that differ from the live source parameters. Do not run it as a migration shortcut. Preserve its useful formatting behavior without maintaining a second independent financial calculation. Review related border/filter assumptions when expanding beyond six columns.
+`refreshAllExpenses()` now validates the live anchor and headers, then updates formatting, the filter range and borders without writing expense values. The duplicate static financial calculation was removed. Filter criteria are retained, but saved sort specifications are not reapplied: a live test demonstrated that doing so moves the array anchor. Type/date ordering belongs to the formula. The corrected refresh was executed and verified to preserve A2 and all 1,064 records.
 
 ## Dependency boundaries
 
@@ -100,6 +100,8 @@ The current `refreshAllExpenses()` writes static values and can overwrite the fo
 The local repayment and tax files contain pre-existing uncommitted work. The live labels and local script expectations also differ in places. Preserve that work; verify the currently deployed source before any related Apps Script deployment. Do not publish the entire dirty working tree.
 
 ## Implementation sequence and acceptance
+
+Steps 1–3 and the Apps Script synchronization for this stage are complete. The next step is to define and validate the named aggregation interfaces, then migrate Budget before Cash Flow. No report-consumer replacement has been applied.
 
 1. Inventory the live named functions/ranges and all consumers of All Expenses; retain formula snapshots and source-contract evidence.
 2. Implement the expanded formula, source mappings, and refresh behavior locally where Apps Script is involved. Validate signed adjustments, empty datasets, errors, duplicate descriptions, salary mapping, financing aliases, and the actual/planned boundary offline.

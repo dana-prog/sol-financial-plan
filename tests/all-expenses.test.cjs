@@ -1,133 +1,74 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
-const assert = require('node:assert/strict');
-const test = require('node:test');
 const ctx = vm.createContext({});
-vm.runInContext(fs.readFileSync(`${__dirname}/../src/AllExpenses.js`, 'utf8'), ctx);
-vm.runInContext(fs.readFileSync(`${__dirname}/../src/DetailsBorders.js`, 'utf8'), ctx);
-const plain = value => JSON.parse(JSON.stringify(value));
-const item = (type, year, quarter, month, cost) => [type, year, quarter, month, 'Item (detail)', cost];
-
-test('details follow the defined type order with only one grand total', () => {
-  const layout = plain(ctx._allExpensesLayout([
-    item('Land Expenses', 2027, 'Q1 2027', 46500, 50),
-    item('In Loan Repayments', 2028, 'Q1 2028', 46800, 20),
-    item('In Loan Repayments', 2027, 'Q4 2027', 46700, 10),
-  ]));
-  assert.deepEqual([...new Set(layout.rows.map(row => row[0]))], ['In Loan Repayments', 'Land Expenses', 'Total']);
-  assert.equal(layout.rows[0][5], 10);
-  assert.equal(layout.rows.length, 4);
-  assert.deepEqual(layout.rows.slice(0, -1).map(row => row[5]), [10, 20, 50]);
-  assert.equal(layout.rows[3][5], '=SUBTOTAL(9,F2:F4)');
-  assert.equal(layout.rows.filter(row => typeof row[5] === 'string').length, 1);
-});
-
-test('empty plans produce a zero total; invalid calculation results are rejected', () => {
-  assert.deepEqual(plain(ctx._allExpensesLayout([])), {
-    rows: [['Total', '', '', '', '', '=0']], totalRow: 2,
-  });
-  assert.throws(() => ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1', 1, '#VALUE!')]), /invalid rows/);
-  assert.throws(() => ctx._allExpensesLayout([item('Unknown', 2027, 'Q1', 1, 1)]), /invalid rows/);
-});
-
-test('parenthesis font spans include delimiters, nested details and multiple pairs', () => {
-  const text = 'Clinic (large (east)) and room (west)';
-  const spans = plain(ctx._parenthesisSpans(text));
-  assert.deepEqual(spans.map(([start,end]) => text.slice(start,end)), ['(large (east))', '(west)']);
-  assert.deepEqual(plain(ctx._parenthesisSpans('Plain text')), []);
-  assert.deepEqual(plain(ctx._parenthesisSpans('Unmatched (detail')), []);
-});
-
-test('rich text switches to 10pt only inside parentheses and has unique ordered offsets', () => {
-  assert.deepEqual(plain(ctx._allExpensesTextRuns('Item (detail) rest')), [
-    {startIndex: 0, format: {fontSize: 11}}, {startIndex: 5, format: {fontSize: 10}},
-    {startIndex: 13, format: {fontSize: 11}},
-  ]);
-  const adjacent = plain(ctx._allExpensesTextRuns('(a)(b)'));
-  assert.deepEqual(adjacent.map(run => run.startIndex), [0, 3]);
-  assert.ok(adjacent.every(run => run.format.fontSize === 10));
-});
-
-test('atomic display write preserves filters and repeats type, year and quarter labels without merges', () => {
-  const sheet = {properties: {sheetId: 12, gridProperties: {rowCount: 20}},
-    merges: [{sheetId: 12, startRowIndex: 1, endRowIndex: 3, startColumnIndex: 0, endColumnIndex: 1}],
-    basicFilter: {filterSpecs: [{columnIndex: 1, filterCriteria: {hiddenValues: ['', '2028']}}]}};
-  const layout = ctx._allExpensesLayout([
-    item('Land Expenses', 2027, 'Q1 2027', 46400, 50),
-    item('Land Expenses', 2027, 'Q1 2027', 46401, 60),
-  ]);
-  const requests = plain(ctx._allExpensesWriteRequests(sheet, layout));
-  const write = requests.find(request => request.updateCells).updateCells;
-  assert.equal(write.rows[0].values[5].userEnteredValue.numberValue, 50);
-  assert.equal(write.rows[2].values[5].userEnteredValue.formulaValue, '=SUBTOTAL(9,F2:F3)');
-  assert.deepEqual(write.rows[0].values[4].textFormatRuns, [
-    {startIndex: 0, format: {fontSize: 11}}, {startIndex: 5, format: {fontSize: 10}},
-  ]);
-  const filter = requests.find(request => request.setBasicFilter).setBasicFilter.filter;
-  assert.deepEqual(filter.filterSpecs[0].filterCriteria.hiddenValues, ['', '2028']);
-  assert.equal(filter.range.endRowIndex, 3);
-  assert.equal(requests.filter(request => request.addDimensionGroup).length, 0);
-  assert.equal(requests.filter(request => request.mergeCells).length, 0);
-  assert.deepEqual(requests.filter(request => request.unmergeCells).map(request => request.unmergeCells.range), sheet.merges);
-  for (const row of write.rows.slice(0, -1)) {
-    assert.deepEqual(row.values.slice(0, 3).map(cell => cell.userEnteredValue), [
-      {stringValue: 'Land Expenses'}, {numberValue: 2027}, {stringValue: 'Q1 2027'},
-    ]);
-  }
-  assert.equal(requests.at(-1).updateSheetProperties.properties.gridProperties.rowCount, 4);
-  assert.deepEqual(sheet.basicFilter.filterSpecs[0].filterCriteria.hiddenValues, ['', '2028']);
-});
-
-function sheetSnapshot(layout) {
-  const sheet = {properties: {sheetId: 12, title: 'All Expenses', gridProperties: {rowCount: layout.totalRow}},
-    basicFilter: {range: {sheetId: 12, startRowIndex: 0, endRowIndex: layout.totalRow - 1, startColumnIndex: 0, endColumnIndex: 6},
-      filterSpecs: [{columnIndex: 1, filterCriteria: {hiddenValues: ['2028']}}]}};
-  const write = ctx._allExpensesWriteRequests(sheet, layout).find(request => request.updateCells).updateCells;
-  sheet.data = [{rowData: [{values: [{userEnteredValue: {stringValue: 'Expense Type'}}]}, ...plain(write.rows)]}];
-  return sheet;
+for (const file of ['AllExpensesFormula.js', 'DetailsBorders.js', 'AllExpenses.js']) {
+  vm.runInContext(fs.readFileSync(`${__dirname}/../src/${file}`, 'utf8'), ctx);
+}
+const headers = vm.runInContext('ALL_EXPENSES_HEADERS', ctx);
+function snapshot() {
+  const data = ['Setup Expenses', 2026, 'Q1', 46023, 'Design', -100, 'Setup', 'Planning', 'Design', 'Setup Exp (A)', 'Actual', 0, -100, 4];
+  const cells = values => values.map(value => ({effectiveValue: {[typeof value === 'number' ? 'numberValue' : 'stringValue']: value}, formattedValue: String(value)}));
+  const rows = [{values: cells(headers)}, {values: cells(data)}];
+  rows[1].values[0].userEnteredValue = {formulaValue: '=LIVE_EXPENSES()'};
+  return {
+    properties: {sheetId: 1, gridProperties: {rowCount: 100, columnCount: 14}},
+    basicFilter: {range: {sheetId: 1}, sortSpecs: [{dimensionIndex: 1, sortOrder: 'ASCENDING'}], criteria: {'0': {hiddenValues: ['Land Expenses']}}},
+    data: [{rowData: rows, rowMetadata: [{}, {hiddenByUser: true}]}],
+  };
 }
 
-test('unchanged labels retain formatting while refreshed costs and rich text are written', () => {
-  const layout = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 50)]);
-  const sheet = sheetSnapshot(layout);
-  const next = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 75)]);
-  const requests = plain(ctx._allExpensesRefreshRequests(sheet, next));
-  assert.equal(requests.some(request => request.updateBorders), false);
-  assert.equal(requests.some(request => request.repeatCell?.fields.includes('userEnteredFormat')), false);
-  const write = requests.find(request => request.updateCells).updateCells;
-  assert.equal(write.rows[0].values[5].userEnteredValue.numberValue, 75);
-  assert.equal(write.rows[0].values[4].textFormatRuns[1].format.fontSize, 10);
-  assert.equal(write.rows[1].values[5].userEnteredValue.formulaValue, '=SUBTOTAL(9,F2:F2)');
-  assert.deepEqual(requests.find(request => request.setBasicFilter).setBasicFilter.filter.filterSpecs, sheet.basicFilter.filterSpecs);
-  assert.equal(requests.at(-1).updateSheetProperties.properties.gridProperties.rowCount, 3);
+test('formatting refresh preserves the live formula, signed records and filter criteria', () => {
+  const sheet = snapshot();
+  const before = JSON.stringify(sheet);
+  const requests = ctx._allExpensesRefreshRequests(sheet);
+  assert.equal(JSON.stringify(sheet), before);
+  for (const request of requests) {
+    assert.ok(!request.updateCells && !request.updateDimensionProperties && !request.updateSheetProperties);
+    if (request.repeatCell) assert.equal(request.repeatCell.fields, 'userEnteredFormat.numberFormat');
+  }
+  const filter = requests.find(r => r.setBasicFilter).setBasicFilter.filter;
+  assert.deepEqual(filter.criteria, sheet.basicFilter.criteria);
+  assert.equal(filter.sortSpecs, undefined);
+  assert.equal(filter.range.endColumnIndex, 14);
+  assert.equal(filter.range.endRowIndex, 100);
+  assert.equal(requests.find(r => r.repeatCell?.range.startColumnIndex === 3).repeatCell.cell.userEnteredFormat.numberFormat.pattern, 'mmmm');
 });
 
-test('changed labels rebuild the formatting and remove unused calculation rows', () => {
-  const previous = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 50)]);
-  const sheet = sheetSnapshot(previous);
-  const next = ctx._allExpensesLayout([]);
-  const requests = plain(ctx._allExpensesRefreshRequests(sheet, next));
-  assert.ok(requests.some(request => request.repeatCell?.fields === 'userEnteredFormat'));
-  assert.equal(requests.at(-1).updateSheetProperties.properties.gridProperties.rowCount, 2);
+test('invalid or static datasets fail before any write', () => {
+  const sheet = snapshot();
+  delete sheet.data[0].rowData[1].values[0].userEnteredValue;
+  assert.throws(() => ctx._allExpensesRefreshRequests(sheet), /live formula/);
+  const error = snapshot();
+  error.data[0].rowData[1].values[5].effectiveValue = {errorValue: {message: 'Source amount is text'}};
+  assert.throws(() => ctx._allExpensesRefreshRequests(error), /row 2: Source amount is text/);
+  error.data[0].rowData[1].values[5].effectiveValue = {errorValue: {type: 'N_A'}};
+  assert.throws(() => ctx._allExpensesRefreshRequests(error), /row 2: N_A/);
+  const wrongHeader = snapshot();
+  wrongHeader.data[0].rowData[0].values[5].effectiveValue.stringValue = 'Total';
+  assert.throws(() => ctx._allExpensesRefreshRequests(wrongHeader), /headers/);
 });
 
-test('an unchanged result does not write or resize the sheet', () => {
-  const layout = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 50)]);
-  assert.deepEqual(plain(ctx._allExpensesRefreshRequests(sheetSnapshot(layout), layout)), []);
+test('empty live dataset can be formatted without adding static totals', () => {
+  const sheet = snapshot();
+  sheet.data[0].rowData[1].values = [{userEnteredValue: {formulaValue: '=LIVE_EXPENSES()'}, effectiveValue: {stringValue: ''}}];
+  assert.ok(ctx._allExpensesRefreshRequests(sheet).every(request => !request.updateCells));
 });
 
-
-test('an empty result also skips writes once its zero total is current', () => {
-  const layout = ctx._allExpensesLayout([]);
-  const sheet = sheetSnapshot(layout);
-  delete sheet.basicFilter;
-  assert.deepEqual(plain(ctx._allExpensesRefreshRequests(sheet, layout)), []);
-});
-
-test('refresh repairs a filter that accidentally includes the grand total', () => {
-  const layout = ctx._allExpensesLayout([item('Land Expenses', 2027, 'Q1 2027', 46400, 50)]);
-  const sheet = sheetSnapshot(layout);
-  sheet.basicFilter.range.endRowIndex = layout.totalRow;
-  const requests = ctx._allExpensesRefreshRequests(sheet, layout);
-  assert.equal(requests.find(request => request.setBasicFilter).setBasicFilter.filter.range.endRowIndex, layout.totalRow - 1);
+test('refresh releases the lock and never reads or rewrites raw expense sources', () => {
+  let released = false;
+  let saved;
+  ctx.SpreadsheetApp = {getActiveSpreadsheet: () => ({getId: () => 'book'}), flush() {}};
+  ctx.LockService = {getDocumentLock: () => ({tryLock: () => true, releaseLock: () => {released = true;}})};
+  ctx.Sheets = {Spreadsheets: {
+    get(id, options) {assert.equal(id, 'book'); assert.equal(options.ranges[0], "'All Expenses'"); return {sheets: [snapshot()]};},
+    batchUpdate(body) {saved = body;},
+  }};
+  assert.match(ctx.refreshAllExpenses(), /updates automatically/);
+  assert.ok(saved.requests.length && released);
+  released = false;
+  ctx.Sheets.Spreadsheets.get = () => {throw new Error('Read failed');};
+  assert.throws(() => ctx.refreshAllExpenses(), /Read failed/);
+  assert.ok(released);
 });
