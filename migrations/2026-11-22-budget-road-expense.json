@@ -1,0 +1,283 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheetId": 530781649,
+  "description": "Include the Road infrastructure category in Budget for each existing infrastructure year, preserving named formulas and source drill-down links.",
+  "status": "Applied and verified on 2026-11-22",
+  "preconditions": {
+    "rowCount": 114,
+    "insertBefore": {
+      "30": "Cars 2027",
+      "65": "Cars 2028",
+      "100": "Cars 2029"
+    },
+    "source": "Infra Exp (P)!AD20:AO20",
+    "baseCost": 2000000,
+    "contingencyRate": 0.15
+  },
+  "requests": [
+    {
+      "insertDimension": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 99,
+          "endIndex": 100
+        },
+        "inheritFromBefore": true
+      }
+    },
+    {
+      "copyPaste": {
+        "source": {
+          "sheetId": 530781649,
+          "startRowIndex": 98,
+          "endRowIndex": 99,
+          "startColumnIndex": 2,
+          "endColumnIndex": 13
+        },
+        "destination": {
+          "sheetId": 530781649,
+          "startRowIndex": 99,
+          "endRowIndex": 100,
+          "startColumnIndex": 2,
+          "endColumnIndex": 13
+        },
+        "pasteType": "PASTE_NORMAL",
+        "pasteOrientation": "NORMAL"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 530781649,
+          "startRowIndex": 99,
+          "endRowIndex": 100,
+          "startColumnIndex": 4,
+          "endColumnIndex": 5
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Road"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "insertDimension": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 64,
+          "endIndex": 65
+        },
+        "inheritFromBefore": true
+      }
+    },
+    {
+      "copyPaste": {
+        "source": {
+          "sheetId": 530781649,
+          "startRowIndex": 63,
+          "endRowIndex": 64,
+          "startColumnIndex": 2,
+          "endColumnIndex": 13
+        },
+        "destination": {
+          "sheetId": 530781649,
+          "startRowIndex": 64,
+          "endRowIndex": 65,
+          "startColumnIndex": 2,
+          "endColumnIndex": 13
+        },
+        "pasteType": "PASTE_NORMAL",
+        "pasteOrientation": "NORMAL"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 530781649,
+          "startRowIndex": 64,
+          "endRowIndex": 65,
+          "startColumnIndex": 4,
+          "endColumnIndex": 5
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Road"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "insertDimension": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 29,
+          "endIndex": 30
+        },
+        "inheritFromBefore": true
+      }
+    },
+    {
+      "copyPaste": {
+        "source": {
+          "sheetId": 530781649,
+          "startRowIndex": 28,
+          "endRowIndex": 29,
+          "startColumnIndex": 2,
+          "endColumnIndex": 13
+        },
+        "destination": {
+          "sheetId": 530781649,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 2,
+          "endColumnIndex": 13
+        },
+        "pasteType": "PASTE_NORMAL",
+        "pasteOrientation": "NORMAL"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 530781649,
+          "startRowIndex": 29,
+          "endRowIndex": 30,
+          "startColumnIndex": 4,
+          "endColumnIndex": 5
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Road"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    }
+  ],
+  "verification": {
+    "roadRows": [
+      {
+        "year": 2027,
+        "row": 30,
+        "baseCost": 0
+      },
+      {
+        "year": 2028,
+        "row": 66,
+        "baseCost": 2000000
+      },
+      {
+        "year": 2029,
+        "row": 102,
+        "baseCost": 0
+      }
+    ],
+    "existingFormulaChanges": [],
+    "valueChanges": [
+      {
+        "oldRow": 45,
+        "newRow": 46,
+        "column": 7,
+        "before": 206875117.09104505,
+        "after": 208875117.09104505
+      },
+      {
+        "oldRow": 45,
+        "newRow": 46,
+        "column": 8,
+        "before": 206875117.09104505,
+        "after": 208875117.09104505
+      },
+      {
+        "oldRow": 45,
+        "newRow": 46,
+        "column": 9,
+        "before": 22626548.90749149,
+        "after": 22926548.90749149
+      },
+      {
+        "oldRow": 45,
+        "newRow": 46,
+        "column": 10,
+        "before": 229501665.99853653,
+        "after": 231801665.99853653
+      },
+      {
+        "oldRow": 45,
+        "newRow": 46,
+        "column": 12,
+        "before": 36389641.219913065,
+        "after": 34089641.219913065
+      },
+      {
+        "oldRow": 59,
+        "newRow": 60,
+        "column": 7,
+        "before": 12515000,
+        "after": 14515000
+      },
+      {
+        "oldRow": 59,
+        "newRow": 60,
+        "column": 8,
+        "before": 12515000,
+        "after": 14515000
+      },
+      {
+        "oldRow": 59,
+        "newRow": 60,
+        "column": 9,
+        "before": 1877250,
+        "after": 2177250
+      },
+      {
+        "oldRow": 59,
+        "newRow": 60,
+        "column": 10,
+        "before": 14392250,
+        "after": 16692250
+      },
+      {
+        "oldRow": 80,
+        "newRow": 82,
+        "column": 11,
+        "before": 161998297.58309644,
+        "after": 159698297.58309644
+      },
+      {
+        "oldRow": 80,
+        "newRow": 82,
+        "column": 12,
+        "before": 19439304.4375,
+        "after": 17139304.4375
+      }
+    ],
+    "errors": [],
+    "visual": "Road lines and 2028 year totals inspected in native Google Sheets.",
+    "scope": "All Expenses and Apps Script unchanged."
+  }
+}
