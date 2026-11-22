@@ -119,7 +119,7 @@ function _allExpensesWriteRequests(sheet, layout) {
   const columns = [
     [1, {horizontalAlignment: 'CENTER', numberFormat: {type: 'NUMBER', pattern: '0'}}],
     [2, {horizontalAlignment: 'CENTER', numberFormat: {type: 'TEXT', pattern: '@'}}],
-    [3, {horizontalAlignment: 'CENTER', numberFormat: {type: 'DATE', pattern: 'mmmm yyyy'}}],
+    [3, {horizontalAlignment: 'CENTER', numberFormat: {type: 'DATE', pattern: 'mmmm'}}],
     [4, {wrapStrategy: 'WRAP'}],
     [5, {horizontalAlignment: 'RIGHT', numberFormat: {type: 'NUMBER', pattern: '฿ #,##0,"K"'}}],
   ];
