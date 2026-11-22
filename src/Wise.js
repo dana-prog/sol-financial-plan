@@ -223,19 +223,42 @@ function wiseCell_(value) {
 
 function wiseWriteTransactions_(sheet, headers, rows) {
   if (!rows.length) return;
-  const firstRow = sheet.getLastRow() + 1;
-  const rowCount = firstRow + rows.length - 1;
-  if (sheet.getMaxRows() < rowCount) sheet.insertRowsAfter(sheet.getMaxRows(), rowCount - sheet.getMaxRows());
+  const firstRow = 2;
+  const hasTemplate = sheet.getMaxRows() >= firstRow;
+  const rulesBefore = sheet.getConditionalFormatRules();
+  const extendRanges = rulesBefore.map(rule => rule.getRanges().map(range => range.getRow() === firstRow));
+  sheet.insertRowsAfter(1, rows.length);
+  if (hasTemplate) {
+    sheet.getRange(firstRow + rows.length, 1, 1, headers.length)
+      .copyTo(sheet.getRange(firstRow, 1, rows.length, headers.length), SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
+  }
+  const rules = sheet.getConditionalFormatRules();
+  let changed = false;
+  const updatedRules = rules.map((rule, index) => {
+    const ranges = rule.getRanges().map((range, rangeIndex) => {
+      if (!extendRanges[index] || !extendRanges[index][rangeIndex] || range.getRow() <= firstRow) return range;
+      changed = true;
+      return sheet.getRange(firstRow, range.getColumn(), range.getLastRow() - firstRow + 1, range.getNumColumns());
+    });
+    return rule.copy().setRanges(ranges).build();
+  });
+  if (changed) sheet.setConditionalFormatRules(updatedRules);
   const columnRange = header => sheet.getRange(firstRow, headers.indexOf(header) + 1, rows.length, 1);
-  // Preserve numeric-looking identifiers and leading zeroes before Sheets parses the values.
-  ['Currency', 'Fee currency', 'Direction', 'Description', 'Payment reference', 'Wise reference', 'Balance ID', 'Profile ID']
-    .forEach(header => columnRange(header).setNumberFormat('@'));
-  columnRange('Date').setNumberFormat('yyyy-mm-dd hh:mm');
-  ['Amount', 'Fees', 'Running balance'].forEach(header => columnRange(header).setNumberFormat('#,##0.00;[Red](#,##0.00)'));
+  if (!hasTemplate) {
+    ['Currency', 'Fee currency', 'Direction', 'Description', 'Payment reference', 'Wise reference', 'Balance ID', 'Profile ID']
+      .forEach(header => columnRange(header).setNumberFormat('@'));
+    columnRange('Date').setNumberFormat('yyyy-mm-dd hh:mm');
+    ['Amount', 'Fees', 'Running balance'].forEach(header => columnRange(header).setNumberFormat('#,##0.00;[Red](#,##0.00)'));
+  }
   // Manual columns, including Counterparty and Item, start empty for every new transaction.
   const values = rows.map(row => headers.map(header => {
     const index = WISE_TRANSACTION_HEADERS.indexOf(header);
-    return index < 0 ? '' : wiseCell_(row[index]);
+    if (index < 0) return '';
+    const value = row[index];
+    // Keep numeric-looking identifiers as text even if the copied format is not plain text.
+    if (['Payment reference', 'Wise reference', 'Balance ID', 'Profile ID'].includes(header)
+      && typeof value === 'string' && /^\d+$/.test(value)) return "'" + value;
+    return wiseCell_(value);
   }));
   sheet.getRange(firstRow, 1, rows.length, headers.length).setValues(values);
 }

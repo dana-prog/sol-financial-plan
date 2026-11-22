@@ -6,15 +6,17 @@ function calculateInLoanRepayments(model) {
   const warnings = [];
   const cash = [];
   const interestAccrued = [];
+  const interestByLoan = model.loans.map(() => []);
   let balance = 0;
   model.months.forEach((month, index) => {
     const accrued = model.loans.map((loan, i) => accrueInLoanMonth(loan, states[i], month, loan.draws[index]));
+    accrued.forEach((state, i) => interestByLoan[i].push(state.interest - states[i].interest));
     interestAccrued.push(accrued.reduce((sum, state, i) => sum + state.interest - states[i].interest, 0));
     const draws = model.loans.reduce((sum, loan) => sum + loan.draws[index], 0);
     const beforeRepayments = balance + model.receipts[index] + draws - model.expenses[index];
     let available = Math.max(0, beforeRepayments - model.reserve);
-    // Interest is due from its start deadline. For principal, earliest maturity
-    // takes precedence; priority and sheet order break ties.
+    // Pay interest from its deadline month, prioritizing earlier deadlines.
+    // Principal is ordered by maturity; priority and row break ties.
     for (const kind of ['interest', 'principal']) {
       const dueOrder = [...order].sort((a, b) => {
         const dueA = kind === 'interest' ? model.loans[a.index].interestRepaymentStart : model.loans[a.index].maturity;
@@ -22,9 +24,12 @@ function calculateInLoanRepayments(model) {
         return (dueA ?? Infinity) - (dueB ?? Infinity) || a.priority - b.priority || a.row - b.row;
       });
       dueOrder.forEach(({index: i}) => {
-        const start = kind === 'interest' ? model.loans[i].interestRepaymentStart : model.principalRepaymentStart;
+        const loan = model.loans[i];
+        const start = kind === 'interest' ? loan.interestRepaymentStart : model.principalRepaymentStart;
+        const requested = model.paymentPlan ? model.paymentPlan[i][kind][index] : available;
+        if (model.paymentPlan && (!Number.isFinite(requested) || requested < -0.001)) throw new Error('Invalid repayment plan. Nothing was written.');
         const payment = start !== null && month >= start
-          ? Math.min(Math.max(0, accrued[i][kind]), available) : 0;
+          ? Math.min(Math.max(0, accrued[i][kind]), Math.max(0, requested)) : 0;
         payments[i][kind].push(payment);
         accrued[i][kind] -= payment;
         available -= payment;
@@ -34,10 +39,11 @@ function calculateInLoanRepayments(model) {
     model.loans.forEach((loan, i) => {
       if (loan.interestRepaymentStart === month && accrued[i].interest > 0.01 &&
           !payments[i].interest.some(value => value > 0.01)) {
-        warnings.push(loan.name + ': interest payment has not started by its deadline');
+        warnings.push({kind: 'interest', loanIndex: i, deadline: month});
       }
-      if (loan.maturity === month && accrued[i].principal + accrued[i].interest > 0.01) {
-        warnings.push(loan.name + ': principal or interest remains unpaid at maturity');
+      if (loan.maturity === month && accrued[i].principal > 0.01) {
+        warnings.push({kind: 'maturity', loanIndex: i, deadline: month,
+          principal: accrued[i].principal, interest: accrued[i].interest});
       }
     });
     balance = beforeRepayments - paid;
@@ -49,7 +55,29 @@ function calculateInLoanRepayments(model) {
   if (![...cash, ...payments.flatMap(p => [...p.principal, ...p.interest])].every(Number.isFinite)) {
     throw new Error('Repayment calculation produced an invalid amount. Nothing was written.');
   }
-  return {payments, cash, interestAccrued, warnings};
+  const warningMessages = warnings.map(warning => {
+    const loan = model.loans[warning.loanIndex];
+    const label = loan.name + ': ';
+    const amount = value => 'THB ' + value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    if (warning.kind === 'interest') {
+      const firstPayment = payments[warning.loanIndex].interest.findIndex(value => value > 0.01);
+      return label + 'interest payment has not started by its deadline\n'
+        + '  Interest deadline month: ' + repaymentDisplayDate(warning.deadline, true) + '\n'
+        + '  Projected first payment: ' + (firstPayment < 0 ? 'Not within the forecast' : repaymentDisplayDate(model.months[firstPayment], true));
+    }
+    return label + 'principal remains unpaid at maturity\n'
+      + '  Maturity month: ' + repaymentDisplayDate(warning.deadline, true) + '\n'
+      + '  Principal unpaid: ' + amount(warning.principal) + '\n'
+      + '  Interest unpaid: ' + amount(warning.interest);
+  });
+  return {payments, cash, interestAccrued, interestByLoan, warnings: warningMessages, warningDetails: warnings};
+}
+
+function repaymentDisplayDate(day, monthOnly = false) {
+  if (day == null) return 'Not available';
+  const date = new Date((day - 25569) * 86400000);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return (monthOnly ? '' : String(date.getUTCDate()).padStart(2, '0') + ' ') + months[date.getUTCMonth()] + ' ' + date.getUTCFullYear();
 }
 
 function accrueInLoanMonth(loan, previous, month, draw) {
@@ -94,10 +122,64 @@ function interestRepaymentStartMonth(date, rate, years, name) {
   return start;
 }
 
+/** Loan receipts are fixed inputs; report missed deadlines without changing them. */
+function outgoingLoanWarnings(grid, paramIndex, months, timezone) {
+  const header = grid[0];
+  if (!grid.slice(1).some(row => row[paramIndex] === 'start balance')) return [];
+  const col = name => repaymentHeaderIndex(header, name, 'Out Loans');
+  const nameCol = col('Name'), dateCol = col('Date'), rateCol = col('Interest');
+  const principalYearsCol = col('Full repayment within (years)');
+  const interestYearsCol = col('Interest repayment start deadline (years)');
+  const issues = [];
+  const amount = value => 'THB ' + value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  grid.forEach((row, index) => {
+    if (index === 0 || row[paramIndex] !== 'start balance') return;
+    const name = String(row[nameCol] || 'Unnamed loan');
+    if (!(row[dateCol] instanceof Date)) throw new Error('Expected a date for loan ' + name + '. Nothing was written.');
+    const date = repaymentDate(row[dateCol], timezone, name + ' date');
+    const rate = repaymentNumber(row[rateCol], name + ' interest');
+    const years = row[principalYearsCol];
+    if (!Number.isInteger(years) || years < 0) throw new Error('Expected a non-negative whole number of repayment years for loan ' + name + '. Nothing was written.');
+    const principalRow = grid[index + 7], generatedRow = grid[index + 2], interestRow = grid[index + 9];
+    if (!principalRow || principalRow[paramIndex] !== 'principal carried forward' || !generatedRow
+      || generatedRow[paramIndex] !== 'interest generated' || !interestRow || interestRow[paramIndex] !== 'interest received') {
+      throw new Error('Unexpected loan schedule layout for ' + name + '. Nothing was written.');
+    }
+    const d = new Date((date - 25569) * 86400000);
+    const maturity = repaymentDay(d.getUTCFullYear() + years, d.getUTCMonth(), 1);
+    const maturityIndex = months.indexOf(maturity);
+    if (maturityIndex >= 0) {
+      const outstanding = repaymentNumber(principalRow[paramIndex + 1 + maturityIndex], name + ' principal carried forward');
+      if (outstanding > 0.01) issues.push('Loan ' + name + ': principal remains unpaid at maturity\n  Maturity month: '
+        + repaymentDisplayDate(maturity, true) + '\n  Principal unpaid: ' + amount(outstanding));
+    }
+    const deadline = interestRepaymentStartMonth(date, rate, row[interestYearsCol], name);
+    const deadlineIndex = months.indexOf(deadline);
+    if (deadlineIndex >= 0) {
+      const total = (r, end) => months.slice(0, end + 1).reduce((sum, _, i) =>
+        sum + repaymentNumber(r[paramIndex + 1 + i], name + ' interest schedule'), 0);
+      if (total(generatedRow, deadlineIndex) > 0.01 && total(interestRow, deadlineIndex) <= 0.01) {
+        const first = months.findIndex((_, i) => repaymentNumber(interestRow[paramIndex + 1 + i], name + ' interest received') > 0.01);
+        issues.push('Loan ' + name + ': interest receipt has not started by its deadline\n  Interest deadline month: '
+          + repaymentDisplayDate(deadline, true) + '\n  Projected first receipt: '
+          + (first < 0 ? 'Not within the forecast' : repaymentDisplayDate(months[first], true)));
+      }
+    }
+  });
+  return issues;
+}
+
 function showRepaymentCalculation() {
   const template = HtmlService.createTemplateFromFile('RepaymentProgress');
   template.action = 'Calculating repayments and tax…';
   SpreadsheetApp.getUi().showModalDialog(template.evaluate().setWidth(460).setHeight(160), 'Recalculate In Loan Payments and Tax');
+}
+
+function repaymentResultsChanged(previous, next) {
+  if (!Array.isArray(previous) || previous.length !== next.length) return true;
+  return next.some((row, index) => !Array.isArray(previous[index]) || previous[index].length !== row.length
+    || row.some((value, column) => typeof previous[index][column] !== 'number'
+      || !Number.isFinite(previous[index][column]) || Math.abs(previous[index][column] - value) > 0.000001));
 }
 
 function recalculateInLoanRepayments() {
@@ -112,7 +194,10 @@ function recalculateInLoanRepayments() {
     const model = readInLoanRepaymentModel(spreadsheet);
     timings.readMs = Date.now() - phase;
     phase = Date.now();
-    const result = calculateRepaymentsWithCompanyTax(model);
+    const initial = calculateRepaymentsWithCompanyTax(model);
+    const needsSearch = initial.warnings.length || initial.cash.some(value => value < -0.01);
+    const search = needsSearch ? searchRepaymentSchedule(model, initial) : {result: initial, found: true};
+    const result = search.result;
     timings.calculateMs = Date.now() - phase;
     phase = Date.now();
     const sheet = repaymentSheet(spreadsheet, 'In Loans');
@@ -141,8 +226,21 @@ function recalculateInLoanRepayments() {
       throw new Error('Could not save repayments and tax (HTTP ' + response.getResponseCode() + '). ' + response.getContentText());
     }
     timings.saveMs = Date.now() - phase;
-    const message = 'InLoan payments and tax updated in ' + ((Date.now() - started) / 1000).toFixed(1) + ' seconds.';
-    return result.warnings.length ? message + '\n\nDeadlines at risk:\n' + result.warnings.join('\n') : message + '\n\nAll in loan deadlines within the forecast are met.';
+    const issues = [...result.warnings, ...(model.outgoingWarnings || [])];
+    result.cash.forEach((balance, index) => {
+      if (balance < -0.01) issues.push('Negative cash closing: ' + repaymentDisplayDate(model.months[index], true)
+        + '\n  Shortfall: THB ' + Math.abs(balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+    });
+    const repaymentsChanged = repaymentResultsChanged(model.existingRepayments,
+      result.payments.flatMap(payment => [payment.principal, payment.interest]));
+    const taxChanged = repaymentResultsChanged(model.existingTaxResults, [result.tax.cashPayments,
+      model.tax.depreciation, result.tax.lossCarryforward, result.tax.taxableProfit, result.tax.taxExpense]);
+    const message = !repaymentsChanged && !taxChanged ? 'Repayment and tax results are unchanged.'
+      : repaymentsChanged && taxChanged ? 'Repayment and tax results changed.'
+      : repaymentsChanged ? 'Repayment results changed; tax results are unchanged.'
+      : 'Tax results changed; repayment results are unchanged.';
+    return (issues.length ? message + '\n\nCould not find a repayment schedule that resolves all issues:\n' + issues.join('\n\n')
+      : message + '\n\nNo deadline or negative cash closing issues found within the forecast.');
   } finally {
     lock.releaseLock();
     console.log('Repayment calculation timings (ms): ' + JSON.stringify({...timings, totalMs: Date.now() - started}));
@@ -181,6 +279,7 @@ function readInLoanRepaymentModel(spreadsheet) {
   const reserve = repaymentNumber(parameter('minimum cash reserve'), 'minimum cash reserve');
   if (reserve < 0) throw new Error('Minimum cash reserve cannot be negative.');
   const loans = [];
+  const existingRepayments = [];
   const labels = ['start balance', 'in loans received', 'interest generated', 'in loans repaid', 'end balance', 'principal outstanding',
     'principal paid', 'principal carried forward', 'interest outstanding', 'interest paid', 'interest carried forward',
     'interest capitalization month', 'capitalized interest', 'balance bearing interest'];
@@ -202,6 +301,8 @@ function readInLoanRepaymentModel(spreadsheet) {
     const maturity = maturityValue === '' || maturityValue == null ? null : repaymentMonthStart(repaymentDate(maturityValue, timezone, row[columns.Name] + ' maturity date'));
     loans.push({row: index + 3, name: row[columns.Name], priority: repaymentNumber(row[columns.Priority], row[columns.Name] + ' priority'),
       date, rate, draws, interestRepaymentStart, maturity});
+    existingRepayments.push(grid[index + 6].slice(timelineIndex, timelineIndex + months.length),
+      grid[index + 9].slice(timelineIndex, timelineIndex + months.length));
   });
   if (!loans.length) throw new Error('No in loan schedules were found.');
   const cash = inputs['Cash Flow'].map(row => row.slice(0, months.length + 1));
@@ -215,7 +316,9 @@ function readInLoanRepaymentModel(spreadsheet) {
   ['land expenses', 'setup expenses', 'construction expenses', 'infra expenses',
     'direct operating expenses', 'other operating expenses', 'out loans disbursed']
     .forEach(name => cashRow(name, name === 'out loans disbursed' ? 'loans disbursed' : null).forEach((value, i) => { expenses[i] += value; }));
-  const outgoingRows = inputs['Out Loans'].map(row => row.slice(0, months.length + 1));
+  const outgoingGrid = inputs['Out Loans'];
+  const outgoingParam = repaymentHeaderIndex(outgoingGrid[0], 'Param', 'Out Loans');
+  const outgoingRows = outgoingGrid.map(row => row.slice(outgoingParam, outgoingParam + months.length + 1));
   checkRepaymentTimeline(outgoingRows[0].slice(1), months, timezone, 'Out Loans');
   const receiptsRows = outgoingRows.filter(row => ['total out loan repayments received', 'total loan repayments received', 'total loan paid'].includes(row[0]));
   if (receiptsRows.length !== 1) throw new Error('Expected one total out loan repayments received row in Out Loans.');
@@ -229,7 +332,10 @@ function readInLoanRepaymentModel(spreadsheet) {
   const tax = {rate: repaymentNumber(parameter('company tax rate'), 'company tax rate'),
     yearEndMonth: repaymentNumber(parameter('financial year-end month'), 'financial year-end month'), depreciation,
     profitBeforeInterest: operatingProfit.map((profit, i) => profit + interestIncome[i] - depreciation[i] - otherDepreciation[i])};
-  return {months, loans, principalRepaymentStart, reserve, receipts, expenses, tax, timelineColumn: timelineIndex + 1,
+  const outgoingWarnings = outgoingLoanWarnings(outgoingGrid, outgoingParam, months, timezone);
+  const existingTaxResults = ['company tax', 'construction depreciation', 'loss carryforward', 'taxable profit', 'monthly company tax']
+    .map(label => cash.find(row => row[0] === label)?.slice(1));
+  return {months, loans, principalRepaymentStart, reserve, receipts, expenses, tax, outgoingWarnings, existingRepayments, existingTaxResults, timelineColumn: timelineIndex + 1,
     cashLabels: ['', '', ...cash.map(row => row[0])]};
 }
 
@@ -239,9 +345,9 @@ function readRepaymentInputs(spreadsheet) {
     {name: 'In Loans', row: 3, column: 1},
     {name: 'Params', row: 2, column: 2, width: 2},
     {name: 'Cash Flow', row: 3, column: 2},
-    {name: 'Out Loans', row: 3, column: 9},
-    {name: 'Construction Exp (P)', row: 3, column: 2},
-    {name: 'Units', row: 2, column: 4, width: 13}
+    {name: 'Out Loans', row: 3, column: 1},
+    {name: 'Construction Exp (P)', row: 3, column: 1},
+    {name: 'Units', row: 1, column: 4}
   ].map(input => {
     const sheet = repaymentSheet(spreadsheet, input.name);
     const height = sheet.getLastRow() - input.row + 1;
@@ -307,10 +413,10 @@ function checkRepaymentTimeline(dates, months, timezone, sheet) {
 }
 
 
-function repaymentHeaderIndex(headers, name) {
+function repaymentHeaderIndex(headers, name, sheetName = 'In Loans') {
   const index = headers.indexOf(name);
   if (index < 0 || headers.lastIndexOf(name) !== index) {
-    throw new Error('Expected exactly one In Loans header: ' + name + '. Nothing was written.');
+    throw new Error('Expected exactly one ' + sheetName + ' header: ' + name + '. Nothing was written.');
   }
   return index;
 }

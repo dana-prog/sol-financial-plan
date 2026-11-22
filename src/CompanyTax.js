@@ -91,14 +91,18 @@ function calculateRepaymentsWithCompanyTax(model) {
 }
 
 function readUnitDepreciation(inputs, months, timezone) {
-  const grid = inputs['Construction Exp (P)'].map(row => row.slice(0, months.length + 1));
+  const construction = inputs['Construction Exp (P)'];
+  const paramIndex = repaymentHeaderIndex(construction[0], 'param', 'Construction Exp (P)');
+  const grid = construction.map(row => row.slice(paramIndex, paramIndex + months.length + 1));
   checkRepaymentTimeline(grid[0].slice(1), months, timezone, 'Construction Exp (P)');
-  const rows = inputs.Units;
-  const assets = rows.filter(row => row[0] !== '').map(row => {
-    const name = String(row[0]);
+  const [headers, ...rows] = inputs.Units;
+  const typeIndex = repaymentHeaderIndex(headers, 'Type', 'Units');
+  const lifeIndex = repaymentHeaderIndex(headers, 'Useful Life Years', 'Units');
+  const assets = rows.filter(row => row[typeIndex] !== '').map(row => {
+    const name = String(row[typeIndex]);
     const matches = grid.filter(item => item[0] === name.toLowerCase() + ' const. cost');
     if (matches.length !== 1) throw new Error('Expected one construction cost schedule for ' + name);
-    return {name, lifeYears: repaymentNumber(row[12], name + ' useful life'),
+    return {name, lifeYears: repaymentNumber(row[lifeIndex], name + ' useful life'),
       costs: matches[0].slice(1).map(value => repaymentNumber(value, name + ' cost'))};
   });
   if (!assets.length) throw new Error('No unit depreciation inputs found.');

@@ -76,3 +76,30 @@ test("non-timeline border action fails before any format write", () => {
   assert.throws(() => ctx.setTimelineSheetBorders(), /No borders were changed/);
   assert.equal(actions.length, 0);
 });
+
+test("timeline borders use the category header rather than a populated helper column", () => {
+  const writes = [];
+  const sheet = {
+    getName: () => "Operational Exp (P)",
+    getLastRow: () => 7,
+    getLastColumn: () => 5,
+    getRange: (row, col, height, width) => ({
+      getValues: () => {
+        if (row === 1) return [["", "", "", 1, 1]].map(r => r.slice(col - 1, col - 1 + width));
+        if (row === 2) return [[1, 1]];
+        if (row === 3) return [["_category", "category", "param", "Jan", "Feb"]];
+        if (row === 4 && col === 2) return [["Salaries"], [""], ["Expenses"], [""]];
+        throw new Error(`Unexpected read: ${row}, ${col}`);
+      },
+      setBorder: (...args) => writes.push({ row, col, height, width, args }),
+    }),
+  };
+  const ctx = evalFiles(["TimelineSheetBorders.js"], {
+    SpreadsheetApp: {
+      getActiveSpreadsheet: () => ({ getActiveSheet: () => sheet }),
+      BorderStyle: { SOLID_THICK: "thick", SOLID: "solid" },
+    },
+  });
+  ctx.setTimelineSheetBorders();
+  assert.deepEqual(writes.filter(w => w.args[0] === true).map(w => w.row), [6]);
+});

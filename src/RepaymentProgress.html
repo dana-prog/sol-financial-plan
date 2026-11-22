@@ -7,7 +7,8 @@
     .status { display: flex; align-items: flex-start; gap: 14px; }
     #spinner { width: 24px; height: 24px; flex: 0 0 24px; border: 3px solid #dadce0;
       border-top-color: #202124; border-radius: 50%; animation: spin 1s linear infinite; }
-    p { line-height: 1.5; margin: 0; min-width: 0; overflow-wrap: anywhere; }
+    p { line-height: 1.5; margin: 0; min-width: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+    .projected-payment { color: #b3261e; }
     .actions { margin-top: 16px; }
     .actions { text-align: right; }
     button { border: 0; border-radius: 4px; padding: 8px 22px; background: #1a73e8;
@@ -29,7 +30,21 @@
   <script>
     function finish(message) {
       document.getElementById('spinner').hidden = true;
-      document.getElementById('message').textContent = message;
+      const messageElement = document.getElementById('message');
+      messageElement.textContent = '';
+      message.split('\n').forEach((line, index) => {
+        if (index) messageElement.appendChild(document.createTextNode('\n'));
+        const prefix = '  Projected first payment: ';
+        if (line.startsWith(prefix)) {
+          messageElement.appendChild(document.createTextNode(prefix));
+          const value = document.createElement('span');
+          value.className = 'projected-payment';
+          value.textContent = line.slice(prefix.length);
+          messageElement.appendChild(value);
+        } else {
+          messageElement.appendChild(document.createTextNode(line));
+        }
+      });
       const close = document.getElementById('close');
       close.hidden = false;
       requestAnimationFrame(() => {

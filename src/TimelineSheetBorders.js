@@ -2,13 +2,12 @@ const YEARS_ROW_NUM = 1;
 const QUARTERS_ROW_NUM = 2;
 const HEADER_ROW = 3;
 const FIRST_CATEGORY_ROW = 4;
-const CATEGORY_COL = 1;
 const BORDER_COLOR = "#666666";
 
 // assumptions:
 // 1. The first row is years (starting from the 4th column)
 // 2. The second row is quarters (starting from the 4th column)
-// 3. The first column is category (starting from the 4th row)
+// 3. Row 3 contains a category header; category labels start in row 4.
 function setTimelineSheetBorders() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
@@ -17,8 +16,10 @@ function setTimelineSheetBorders() {
   const lastCol = sheet.getLastColumn();
 
   if (firstDateCol < 1 || lastRow < FIRST_CATEGORY_ROW) throw new Error('Select a populated timeline sheet. No borders were changed.');
+  const headers = sheet.getRange(HEADER_ROW, 1, 1, lastCol).getValues()[0];
+  const categoryCol = headers.findIndex(value => String(value).trim().toLowerCase() === 'category') + 1;
+  if (!categoryCol) throw new Error('Could not find the Category column. No borders were changed.');
   if (sheet.getName() === 'In Loans' || sheet.getName() === 'Out Loans') {
-    const headers = sheet.getRange(HEADER_ROW, 1, 1, lastCol).getValues()[0];
     if (!headers.some(value => String(value).trim().toLowerCase() === 'param')) {
       throw new Error('Could not find the Param column. No borders were changed.');
     }
@@ -60,7 +61,7 @@ function setTimelineSheetBorders() {
 
   // Horizontal borders (categories)
   const categories = sheet
-    .getRange(FIRST_CATEGORY_ROW, CATEGORY_COL, lastRow - FIRST_CATEGORY_ROW + 1, 1)
+    .getRange(FIRST_CATEGORY_ROW, categoryCol, lastRow - FIRST_CATEGORY_ROW + 1, 1)
     .getValues()
     .flat();
 
@@ -75,11 +76,11 @@ function setTimelineSheetBorders() {
 
 
   if (sheet.getName() === "In Loans" || sheet.getName() === "Out Loans") {
-    setLoanSectionBorders(sheet, lastRow, lastCol);
+    setLoanSectionBorders(sheet, lastRow, lastCol, categoryCol);
   }
 }
 
-function setLoanSectionBorders(sheet, lastRow, lastCol) {
+function setLoanSectionBorders(sheet, lastRow, lastCol, categoryCol) {
   const headers = sheet.getRange(HEADER_ROW, 1, 1, lastCol).getValues()[0];
   const paramCol = headers.findIndex(
     value => String(value).trim().toLowerCase() === "param"
@@ -90,7 +91,7 @@ function setLoanSectionBorders(sheet, lastRow, lastCol) {
   }
 
   const rows = sheet
-    .getRange(FIRST_CATEGORY_ROW, 1, lastRow - FIRST_CATEGORY_ROW + 1, paramCol)
+    .getRange(FIRST_CATEGORY_ROW, 1, lastRow - FIRST_CATEGORY_ROW + 1, Math.max(paramCol, categoryCol))
     .getValues();
 
   const borderAfter = new Set([
@@ -102,7 +103,7 @@ function setLoanSectionBorders(sheet, lastRow, lastCol) {
   let inLoanSection = false;
 
   rows.forEach((row, index) => {
-    const category = String(row[CATEGORY_COL - 1]).trim().toLowerCase();
+    const category = String(row[categoryCol - 1]).trim().toLowerCase();
     const param = String(row[paramCol - 1]).trim().toLowerCase();
 
     if (category === "totals") {

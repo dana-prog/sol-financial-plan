@@ -36,7 +36,7 @@ test('pays all interest before principal and resolves equal priority by sheet ro
   near(result.payments[0].principal[0], 0);
 });
 
-test('interest starts in each contract month independently of the principal start', () => {
+test('interest starts no earlier than each loan deadline, independently of principal start', () => {
   const months = [day(2026, 1), day(2026, 2), day(2026, 3)];
   const result = calc(model({months, loans: [
     loan({rate: 0.365, draws: [100, 0, 0], interestRepaymentStart: months[0]}),
@@ -45,6 +45,7 @@ test('interest starts in each contract month independently of the principal star
   near(result.payments[0].interest[0], 3.1);
   near(result.payments[1].interest[0], 0);
   near(result.payments[1].interest[1], 5.9);
+  assert.equal(result.warnings.length, 0);
   for (const payment of result.payments) {
     assert.deepEqual(Array.from(payment.principal).slice(0, 2), [0, 0]);
     assert.ok(payment.interest[2] > 0);
@@ -68,7 +69,18 @@ test('interest before the principal start still respects cash availability and t
   near(result.cash[0], 99);
 });
 
-test('a future interest start does not block otherwise eligible principal', () => {
+test('available funds do not start interest payments before the deadline', () => {
+  const months = [day(2026, 1), day(2026, 2), day(2026, 3)];
+  const result = calc(model({months, loans: [loan({rate: 0.365, draws: [100, 0, 0], interestRepaymentStart: months[2]})],
+    receipts: [0, 10, 0], expenses: [0, 0, 0], reserve: 100, principalRepaymentStart: day(2027, 1)}));
+  near(result.payments[0].interest[0], 0);
+  near(result.payments[0].interest[1], 0);
+  near(result.payments[0].interest[2], 9);
+  assert.ok(result.cash.every(value => value >= 100));
+  assert.equal(result.warnings.length, 0);
+});
+
+test('future interest deadline does not block eligible principal', () => {
   const result = calc(model({loans: [loan({rate: 0.365, interestRepaymentStart: day(2027, 1)})]}));
   near(result.payments[0].interest[0], 0);
   near(result.payments[0].principal[0], 100);
@@ -113,7 +125,33 @@ test('reports missed interest start and maturity while respecting cash reserve',
   assert.equal(result.warnings.length, 2);
   assert.match(result.warnings[0], /interest payment has not started/);
   assert.match(result.warnings[1], /remains unpaid at maturity/);
+  assert.match(result.warnings[0], /Interest deadline month: Jan 2026\n  Projected first payment: Not within the forecast$/);
+  assert.match(result.warnings[1], /Maturity month: Jan 2026\n  Principal unpaid: THB 100.00\n  Interest unpaid: THB 3.10/);
   near(result.cash[0], 100);
+});
+
+test('missed interest deadline reports the later projected payment month', () => {
+  const result = calc(model({months: [day(2026, 1), day(2026, 2)],
+    loans: [loan({date: day(2026, 1, 10), rate: 0.365, draws: [100, 0]})],
+    receipts: [0, 10], expenses: [0, 0], reserve: 100}));
+  assert.match(result.warnings[0], /Interest deadline month: Jan 2026/);
+  assert.match(result.warnings[0], /Projected first payment: Feb 2026/);
+});
+
+test('dialog highlights only the projected payment value and treats message text as text', () => {
+  const html = fs.readFileSync(require('node:path').join(__dirname, '../src/RepaymentProgress.html'), 'utf8');
+  const elements = {spinner: {}, message: {children: [], appendChild(node) { this.children.push(node); }},
+    close: {addEventListener() {}}};
+  const document = {getElementById: id => elements[id], createTextNode: text => ({textContent: text}),
+    createElement: () => ({})};
+  const dialog = vm.createContext({document, requestAnimationFrame() {}});
+  vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1], dialog);
+  dialog.finish('<Loan>\n  Interest deadline month: Jan 2026\n  Projected first payment: Feb 2026');
+  const children = elements.message.children;
+  assert.equal(children[0].textContent, '<Loan>');
+  assert.equal(children.at(-1).className, 'projected-payment');
+  assert.equal(children.at(-1).textContent, 'Feb 2026');
+  assert.match(html, /\.projected-payment\s*\{\s*color:\s*#b3261e/);
 });
 
 test('a loan with zero draws produces no debt or repayments', () => {
@@ -192,21 +230,36 @@ test('server action saves payments, tax and timestamp in one batch and releases 
     }}
   });
   vm.runInContext(source, server);
-  server.readInLoanRepaymentModel = () => model({timelineColumn: 14});
-  server.calculateRepaymentsWithCompanyTax = value => server.calculateInLoanRepayments(value);
+  server.readInLoanRepaymentModel = () => model({timelineColumn: 14, tax: {depreciation: [0]},
+    existingRepayments: [[100], [0]], existingTaxResults: [[0], [0], [0], [0], [0]]});
+  server.calculateRepaymentsWithCompanyTax = value => ({...server.calculateInLoanRepayments(value),
+    tax: {cashPayments: [0], lossCarryforward: [0], taxableProfit: [0], taxExpense: [0]}});
   const taxRequest = {updateCells: {fields: 'userEnteredValue'}};
   server.companyTaxWriteRequests = () => [taxRequest];
-  server.recalculateInLoanRepayments();
+  assert.match(server.recalculateInLoanRepayments(), /Repayment and tax results are unchanged/);
   assert.equal(fetches, 1);
   assert.deepEqual(requests[0], taxRequest);
   assert.deepEqual(requests.slice(1, 3).map(x => x.updateCells.range.startRowIndex), [9, 12]);
   assert.deepEqual(requests.slice(1, 3).map(x => x.updateCells.range.startColumnIndex), [13, 13]);
   assert.ok(requests.at(-1).updateCells.rows[0].values[0].userEnteredValue.stringValue.startsWith('Last Repayment Calculation Time'));
   assert.equal(released, true);
+  server.searchRepaymentSchedule = (_, initial) => ({result: initial, found: false, reason: 'Internal reason'});
+  server.readInLoanRepaymentModel = () => model({timelineColumn: 14, expenses: [150], tax: {depreciation: [0]},
+    existingRepayments: [[0], [0]], existingTaxResults: [[0], [0], [0], [0], [0]]});
+  const message = server.recalculateInLoanRepayments();
+  assert.match(message, /^Repayment and tax results are unchanged\.\n\nCould not find a repayment schedule that resolves all issues:\nNegative cash closing:/);
+  assert.doesNotMatch(message, /Calculation complete|Issues found|Internal reason/);
   released = false;
   server.UrlFetchApp.fetch = () => ({getResponseCode: () => 403, getContentText: () => 'Protected range'});
   assert.throws(() => server.recalculateInLoanRepayments(), /HTTP 403/);
   assert.equal(released, true);
+});
+
+test('compares numeric results without treating blanks as zero or floating point noise as changes', () => {
+  assert.equal(context.repaymentResultsChanged([[1, 0]], [[1 + 1e-8, 0]]), false);
+  assert.equal(context.repaymentResultsChanged([[1, '']], [[1, 0]]), true);
+  assert.equal(context.repaymentResultsChanged([[1, 0]], [[1, 0.01]]), true);
+  assert.equal(context.repaymentResultsChanged(undefined, [[1]]), true);
 });
 
 test('input failure causes no writes and releases the lock', () => {
@@ -312,9 +365,23 @@ test('batch reader maps sheets by name and restores omitted empty rows and cells
   assert.equal(actual.Params.length, 3);
   assert.equal(actual.Params[2].length, 2);
   assert.deepEqual(Array.from(actual.Params[2]), ['', '']);
-  assert.equal(actual['Out Loans'][0].length, 8);
+  assert.equal(actual['Out Loans'][0].length, 16);
   response.sheets.pop();
   assert.throws(() => reader.readRepaymentInputs(book), /Missing repayment inputs/);
   reader.UrlFetchApp.fetch = () => ({getResponseCode: () => 403, getContentText: () => 'Denied'});
   assert.throws(() => reader.readRepaymentInputs(book), /HTTP 403.*Nothing was written/);
+});
+
+test('checks fixed loan receipts for principal and interest deadlines', () => {
+  const date = new Date('2026-01-01T00:00:00Z');
+  const months = [day(2026, 1), day(2026, 2)];
+  const header = ['Name', 'Date', 'Interest', 'Full repayment within (years)', 'Interest repayment start deadline (years)', 'Param'];
+  const labels = ['start balance', 'out loans disbursed', 'interest generated', 'out loan repayments received', 'end balance',
+    'principal outstanding', 'principal received', 'principal carried forward', 'interest outstanding', 'interest received'];
+  const grid = [header, ...labels.map((label, i) => [i ? '' : 'A', i ? '' : date, i ? '' : 0.1,
+    i ? '' : 0, i ? '' : 0, label, ...(i === 2 ? [1, 1] : i === 7 ? [100, 100] : i === 9 ? [0, 1] : [0, 0])])];
+  const warnings = context.outgoingLoanWarnings(grid, 5, months, 'UTC');
+  assert.equal(warnings.length, 2);
+  assert.match(warnings[0], /principal remains unpaid/);
+  assert.match(warnings[1], /Projected first receipt: Feb 2026/);
 });

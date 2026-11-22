@@ -12,6 +12,34 @@ const timeline = (count, year = 2026, month = 1) => Array.from({length: count}, 
 const near = (a, b) => assert.ok(Math.abs(a - b) < 0.00001, `${a} != ${b}`);
 const sum = values => values.reduce((a, b) => a + b, 0);
 
+test('unit depreciation reads useful life by header after columns move', () => {
+  const month = day(2026, 1);
+  const date = new Date(Date.UTC(2026, 0, 1));
+  const inputs = {
+    Units: [['Type', 'Architecture', 'Contingency', 'Useful Life Years'], ['Lobby', true, 194400, 20]],
+    'Construction Exp (P)': [['param', date], ['lobby const. cost', 2400]]
+  };
+  near(context.readUnitDepreciation(inputs, [month], 'UTC')[0], 10);
+  assert.throws(() => context.readUnitDepreciation({...inputs, Units: [['Type'], ['Lobby']]}, [month], 'UTC'), /Units header: Useful Life Years/);
+});
+
+test('unit depreciation locates the construction parameter column by header', () => {
+  const month = day(2026, 1);
+  const date = new Date(Date.UTC(2026, 0, 1));
+  const inputs = {
+    Units: [['Type', 'Useful Life Years'], ['Lobby', 20]],
+    'Construction Exp (P)': [['_category', 'category', 'param', date],
+      ['Construction Expenses', '', 'lobby const. cost', 2400]]
+  };
+  near(context.readUnitDepreciation(inputs, [month], 'UTC')[0], 10);
+  const shifted = {...inputs, 'Construction Exp (P)': inputs['Construction Exp (P)'].map(row => ['extra', ...row])};
+  near(context.readUnitDepreciation(shifted, [month], 'UTC')[0], 10);
+  const missing = {...inputs, 'Construction Exp (P)': [['category', date], ['lobby const. cost', 2400]]};
+  assert.throws(() => context.readUnitDepreciation(missing, [month], 'UTC'), /Construction Exp \(P\) header: param/);
+  const duplicate = {...inputs, 'Construction Exp (P)': [['param', 'param', date], ['', 'lobby const. cost', 2400]]};
+  assert.throws(() => context.readUnitDepreciation(duplicate, [month], 'UTC'), /Construction Exp \(P\) header: param/);
+});
+
 test('depreciation uses each asset life, each completion month, and stops at cost', () => {
   const actual = context.calculateUnitDepreciation([
     {name: 'Short', lifeYears: 0.25, costs: [90, 30]},
@@ -113,7 +141,7 @@ test('tax deducts accrued interest even when repayments have not started', () =>
   const months = timeline(12);
   const model = {months, loans: [{row: 4, name: 'Loan', priority: 1, date: months[0], rate: 0.1,
     draws: months.map((_, i) => i ? 0 : 1000), interestRepaymentStart: day(2030, 1)}],
-    receipts: months.map(() => 100), expenses: months.map(() => 0), reserve: 0,
+    receipts: months.map(() => 100), expenses: months.map(() => 0), reserve: 10000,
     principalRepaymentStart: day(2030, 1), tax: {rate: 0.2, yearEndMonth: 12, profitBeforeInterest: months.map(() => 100)}};
   const result = context.calculateRepaymentsWithCompanyTax(model);
   near(sum(result.payments[0].interest), 0);

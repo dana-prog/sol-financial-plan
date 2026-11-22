@@ -173,16 +173,16 @@ test('text formatting is applied before writing numeric-looking payment referenc
   const events = [];
   const range = {setValues: rows => events.push({write: rows}), setNumberFormat: format => events.push({format}),
     createFilter() {}, clearContent() {}, setWrap() {}};
-  const sheet = {getLastRow: () => 1, getMaxRows: () => 1000, getMaxColumns: () => 26,
+  const sheet = {insertRowsAfter: () => {}, getMaxRows: () => 1, getConditionalFormatRules: () => [],
     getRange: (...args) => {events.push({range:args}); return range;}, getFilter: () => null, autoResizeRows() {}};
   const ctx = load();
   const row = ctx.wiseTransactionRows_([transaction({details:{paymentReference:'026073154018474'}})], balance, '20')[0];
   ctx.wiseWriteTransactions_(sheet, headers, [row]);
   const writeIndex = events.findIndex(event => event.write);
-  assert.equal(events[writeIndex].write[0][9], '026073154018474');
+  assert.equal(events[writeIndex].write[0][9], "'026073154018474");
   assert.equal(events.slice(0,writeIndex).filter(event => event.format === '@').length, 8);
 });
-test('sync appends under reordered headers without touching existing cells, formatting or manual entries', () => {
+test('sync inserts new rows below reordered headers and preserves existing entries', () => {
   const {ctx,spreadsheet} = syncFixture();
   const reordered = [...headers].reverse();
   const original = ctx.wiseTransactionRows_([transaction()], balance, '20')[0];
@@ -191,23 +191,28 @@ test('sync appends under reordered headers without touching existing cells, form
     : header === 'Item' ? '=NAMED_ITEM()' : original[canonical.indexOf(header)]);
   const data = [reordered,existing];
   const before = structuredClone(data);
-  let maxRows = 2;
   const sheet = {
     getLastColumn: () => reordered.length, getLastRow: () => data.length,
-    getMaxRows: () => maxRows,
-    insertRowsAfter: (after, count) => {assert.equal(after,maxRows); maxRows += count;},
+    getMaxRows: () => 100, getConditionalFormatRules: () => [],
+    insertRowsAfter: (after, count) => {
+      assert.equal(after,1);
+      data.splice(1, 0, ...Array.from({length:count}, () => Array(reordered.length).fill('')));
+    },
     getRange: (row,col,height,width) => ({
       getValues: () => data.slice(row - 1,row - 1 + height).map(values => values.slice(col - 1,col - 1 + width)),
-      setNumberFormat: () => assert.ok(row > 2, 'existing formatting must remain untouched'),
+      setNumberFormat: () => assert.equal(row,2),
+      copyTo: (target, type, transposed) => { assert.equal(row,3); assert.equal(type,'FORMAT'); assert.equal(transposed,false); },
       setValues: values => {
-        assert.equal(row,3); assert.equal(col,1); assert.equal(width,14);
-        data.push(...values.map(values => Array.from(values)));
+        assert.equal(row,2); assert.equal(col,1); assert.equal(width,14);
+        data.splice(row - 1, values.length, ...values.map(values => Array.from(values, value =>
+          typeof value === 'string' && value.startsWith("'") ? value.slice(1) : value)));
       },
     }),
   };
+  ctx.SpreadsheetApp.CopyPasteType = {PASTE_FORMAT:'FORMAT'};
   const overview = spreadsheet.getSheetById(190902611);
   spreadsheet.getSheetById = id => id === 190902611 ? overview : id === 2089007372 ? sheet : null;
-  ctx.wiseWriteTransactions_ = load().wiseWriteTransactions_;
+  ctx.wiseWriteTransactions_ = load({SpreadsheetApp:ctx.SpreadsheetApp}).wiseWriteTransactions_;
   const get = ctx.wiseGet_;
   ctx.wiseGet_ = path => path.includes('statement.json') ? {transactions:[
     transaction({amount:{value:-120,currency:'USD'}}),
@@ -216,14 +221,15 @@ test('sync appends under reordered headers without touching existing cells, form
   ]} : get(path);
   const now = new Date('2026-11-13');
   assert.equal(ctx.wiseSync_(spreadsheet,now),2);
-  assert.deepEqual(data.slice(0,2),before);
-  assert.equal(data[2][reordered.indexOf('Counterparty')],'');
-  assert.equal(data[2][reordered.indexOf('Item')],'');
-  assert.equal(data[2][reordered.indexOf('Amount')],-100);
-  assert.equal(data[2][reordered.indexOf('Wise reference')],'TRANSFER-2');
+  assert.deepEqual(data[0],before[0]);
+  assert.deepEqual(data[2],before[1]);
+  assert.equal(data[1][reordered.indexOf('Counterparty')],'');
+  assert.equal(data[1][reordered.indexOf('Item')],'');
+  assert.equal(data[1][reordered.indexOf('Amount')],-100);
+  assert.equal(data[1][reordered.indexOf('Wise reference')],'TRANSFER-2');
   assert.equal(ctx.wiseSync_(spreadsheet,now),2);
   assert.equal(data.length,3);
-  assert.deepEqual(data.slice(0,2),before);
+  assert.deepEqual(data[2],before[1]);
 });
 test('missing tab or invalid headers fail before requesting Wise or writing anything', () => {
   const {ctx,spreadsheet,events} = syncFixture();
@@ -240,6 +246,33 @@ test('missing tab or invalid headers fail before requesting Wise or writing anyt
 });
 test('no new transactions causes no sheet mutation', () => {
   load().wiseWriteTransactions_({},headers,[]);
+});
+test('new rows inherit formats and extend conditional rules starting at the first data row', () => {
+  let inserted = false, copied = false, updated;
+  const range = (row, column, height, width) => ({
+    getRow: () => row, getColumn: () => column, getLastRow: () => row + height - 1,
+    getNumColumns: () => width,
+    copyTo: (target, type) => { copied = row === 4 && type === 'FORMAT'; },
+    setValues: () => {},
+  });
+  const rule = start => ({
+    getRanges: () => [range(start, 3, 10, 2)],
+    copy: () => ({setRanges: ranges => ({build: () => ranges})}),
+  });
+  const sheet = {
+    getMaxRows: () => 100,
+    getConditionalFormatRules: () => [rule(inserted ? 4 : 2)],
+    insertRowsAfter: (row, count) => { assert.equal(row, 1); assert.equal(count, 2); inserted = true; },
+    getRange: range,
+    setConditionalFormatRules: rules => { updated = rules; },
+  };
+  const ctx = load({SpreadsheetApp:{CopyPasteType:{PASTE_FORMAT:'FORMAT'}}});
+  const row = ctx.wiseTransactionRows_([transaction()], balance, '20')[0];
+  ctx.wiseWriteTransactions_(sheet, headers, [row, row]);
+  assert.ok(copied);
+  assert.equal(updated[0][0].getRow(), 2);
+  assert.equal(updated[0][0].getLastRow(), 13);
+  assert.equal(updated[0][0].getColumn(), 3);
 });
 test('user balance header names map to the statement balance without renaming the sheet column', () => {
   const ctx = load();
