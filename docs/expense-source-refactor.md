@@ -136,7 +136,7 @@ Current and proposed interfaces:
 
 Reuse existing header lookup functions such as `COL_VALUES` and `DATA_ROWS`. Keep `BUDGET_VALUE`, `BUDGET_CATEGORY_SUM`, `BUDGET_YEAR_SUM`, `BUDGET_YEAR_CONTINGENCY`, `BUDGET_TIMELINE_LINK`, and `CASH_FLOW_PARAM_VALUES` in their existing roles. Retain source drill-down links. Replace source-specific retrieval calls only with a reviewed named-function interface, never direct ranges or inlined implementations. Do not globally redirect source functions such as `CONSTRUCTION_PARAM_VALUES` or `OPERATIONS_PARAM_VALUES` to All Expenses: its own calculations depend on those functions.
 
-`refreshAllExpenses()` now validates the live anchor and headers, then updates formatting, the filter range and borders without writing expense values. The duplicate static financial calculation was removed. Filter criteria are retained, but saved sort specifications are not reapplied: a live test demonstrated that doing so moves the array anchor. Type/date ordering belongs to the formula. The corrected refresh was executed and verified to preserve A2 and all 1,064 records.
+The former `refreshAllExpenses()` validated the live anchor and headers, then updated formatting, the filter range and borders without writing expense values. The duplicate static financial calculation was removed. Filter criteria were retained, but saved sort specifications were not reapplied: a live test demonstrated that doing so moves the array anchor. Type/date ordering belongs to the formula. The corrected refresh was executed and verified to preserve A2 and all 1,064 records. The refresh command and implementation were subsequently removed as recorded below.
 
 ## Named-function simplification completed
 
@@ -213,3 +213,7 @@ The All Expenses tab is now Budget Items, retaining sheet ID 1623286087 and its 
 ## Budget Items border automation removed — 23 November 2026
 
 At the user's request, refreshing Budget Items no longer generates border requests, and Set Timeline Borders does nothing when Budget Items is active. Refresh still applies number formats and preserves the filter criteria. The Details and timeline border tools remain available for other sheets. Existing cell borders were not cleared; this change removes the code paths that modify them.
+
+## Budget Items refresh removed — 23 November 2026
+
+The SOL refresh command, `refreshAllExpenses()`, its formatting/filter request builder and the tests dedicated to that deleted implementation have been removed at the user's request. Budget Items continues to update through `ALL_EXPENSES_ROWS(R_MONTHS)`; the generator, named ranges, Budget formulas and existing sheet formatting are unchanged. Earlier refresh descriptions above are historical.
