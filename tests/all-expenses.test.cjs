@@ -65,7 +65,7 @@ test('refresh releases the lock and never reads or rewrites raw expense sources'
   ctx.SpreadsheetApp = {getActiveSpreadsheet: () => ({getId: () => 'book'}), flush() {}};
   ctx.LockService = {getDocumentLock: () => ({tryLock: () => true, releaseLock: () => {released = true;}})};
   ctx.Sheets = {Spreadsheets: {
-    get(id, options) {assert.equal(id, 'book'); assert.equal(options.ranges[0], "'All Expenses'"); return {sheets: [snapshot()]};},
+    get(id, options) {assert.equal(id, 'book'); assert.equal(options.ranges[0], "'Budget Items'"); return {sheets: [snapshot()]};},
     batchUpdate(body) {saved = body;},
   }};
   assert.match(ctx.refreshAllExpenses(), /updates automatically/);

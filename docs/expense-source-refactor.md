@@ -1,6 +1,6 @@
 # Expense source refactor
 
-All Expenses is now Budget's source for ordinary expense amounts and category contingency. Company Tax remains a Cash Flow result displayed under Operations; revenue and funding retain their original sources. Cash Flow remains on its original expense sources; migrating that consumer is outside this restoration.
+Budget Items (formerly All Expenses) is now Budget's source for ordinary expense amounts and category contingency. Company Tax remains a Cash Flow result displayed under Operations; revenue and funding retain their original sources. Cash Flow remains on its original expense sources; migrating that consumer is outside this restoration.
 
 The baseline is the SOL financial plan on 22 November 2026, after the Road correction and the user's numeric Water Tanks correction. The spreadsheet timezone is Asia/Bangkok. Cash Flow covers January 2026 through December 2033; Budget currently covers 2026 through 2029. Do not extend Budget's horizon as part of this migration.
 
@@ -205,3 +205,7 @@ Rollback must restore each changed formula and named-range definition from a fre
 ## Expense function and range names — 22 November 2026
 
 The generator is now `ALL_EXPENSES_ROWS(months)`, called from All Expenses A1 as `=ALL_EXPENSES_ROWS(R_MONTHS)`. `ALL_EXPENSES` is a named range covering All Expenses A1:M10273, including the title row and spare capacity. `S_ALL_EXPENSES` remains an alias of the same range for existing consumers. The rename changes no expense selection or calculations; all 1,064 records and 13 headers were verified unchanged.
+
+## Sheet renamed to Budget Items — 23 November 2026
+
+The All Expenses tab is now Budget Items, retaining sheet ID 1623286087 and its existing data, formulas, formatting and named ranges. `ALL_EXPENSES` and `S_ALL_EXPENSES` still identify the same dataset, and `ALL_EXPENSES_ROWS` remains the generator. The SOL refresh menu label, refresh sheet lookup/messages and details-border routing use the new sheet title; internal function names remain compatible. Historical references to All Expenses above describe this same sheet.

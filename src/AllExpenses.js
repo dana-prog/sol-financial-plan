@@ -5,14 +5,14 @@ function refreshAllExpenses() {
   try {
     SpreadsheetApp.flush();
     const result = Sheets.Spreadsheets.get(spreadsheetId, {
-      ranges: ["'All Expenses'"],
+      ranges: ["'Budget Items'"],
       fields: 'sheets(properties,basicFilter,merges,data(rowData(values(userEnteredValue,effectiveValue,formattedValue)),rowMetadata(hiddenByFilter,hiddenByUser)))',
     });
     const sheet = result.sheets?.[0];
-    if (!sheet) throw new Error('Could not find All Expenses.');
+    if (!sheet) throw new Error('Could not find Budget Items.');
     const requests = _allExpensesRefreshRequests(sheet);
     Sheets.Spreadsheets.batchUpdate({requests}, spreadsheetId);
-    return 'All Expenses updates automatically. Formatting refreshed.';
+    return 'Budget Items updates automatically. Formatting refreshed.';
   } finally {
     lock.releaseLock();
   }
@@ -22,17 +22,17 @@ function _allExpensesRefreshRequests(sheet) {
   const rows = sheet.data?.[0]?.rowData || [];
   const headers = rows[0]?.values || [];
   if (!rows[0]?.values?.[0]?.userEnteredValue?.formulaValue) {
-    throw new Error('All Expenses must retain its live formula in A1. No changes were made.');
+    throw new Error('Budget Items must retain its live formula in A1. No changes were made.');
   }
   for (let index = 0; index < rows.length; index++) {
     for (const cell of rows[index].values || []) {
       if (cell.effectiveValue?.errorValue) {
-        throw new Error(`All Expenses row ${index + 1}: ${cell.effectiveValue.errorValue.message || cell.effectiveValue.errorValue.type}. No changes were made.`);
+        throw new Error(`Budget Items row ${index + 1}: ${cell.effectiveValue.errorValue.message || cell.effectiveValue.errorValue.type}. No changes were made.`);
       }
     }
   }
   if (!ALL_EXPENSES_HEADERS.every((name, column) => headers[column]?.effectiveValue?.stringValue === name)) {
-    throw new Error('All Expenses headers do not match the expense dataset. No changes were made.');
+    throw new Error('Budget Items headers do not match the expense dataset. No changes were made.');
   }
   const sheetId = sheet.properties.sheetId;
   const endRowIndex = sheet.properties.gridProperties.rowCount;

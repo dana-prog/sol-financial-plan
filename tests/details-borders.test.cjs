@@ -51,7 +51,7 @@ test('expense headers and subtotal rows retain year dividers without a spurious 
 });
 
 const plain = value => JSON.parse(JSON.stringify(value));
-const sheetHandle = {getName: () => 'All Expenses', getParent: () => ({getId: () => 'copy-id'})};
+const sheetHandle = {getName: () => 'Budget Items', getParent: () => ({getId: () => 'copy-id'})};
 function sheetData(values, merges = [], rowMetadata = []) {
   return {properties: {sheetId: 12}, merges, data: [{
     rowData: values.map(row => ({values: row.map(value => ({formattedValue: value}))})), rowMetadata,
@@ -75,7 +75,7 @@ test('border command uses one read and one atomic horizontal border update', () 
   ctx.setDetailsSheetBorders(sheetHandle);
   assert.equal(calls.length, 2);
   assert.equal(calls[0].id, 'copy-id');
-  assert.deepEqual(Array.from(calls[0].options.ranges), ["'All Expenses'"]);
+  assert.deepEqual(Array.from(calls[0].options.ranges), ["'Budget Items'"]);
   const requests = calls[1].body.requests;
   assert.ok(requests.every(request => Object.keys(request).join() === 'updateBorders'));
   assert.ok(requests.every(({updateBorders: border}) => !border.left && !border.right && !border.innerVertical));
@@ -154,7 +154,7 @@ test('the menu supports both expense sheet names, including renamed workbook cop
   vm.runInContext(fs.readFileSync(`${__dirname}/../src/Main.js`, 'utf8'), ctx);
   ctx.setDetailsSheetBorders = target => { assert.equal(target, sheet); calls.push('details'); };
   ctx._onSetTimelineBorders();
-  activeName = 'All Expenses';
+  activeName = 'Budget Items';
   ctx._onSetTimelineBorders();
   activeName = 'Operational Exp (P)';
   ctx._onSetTimelineBorders();

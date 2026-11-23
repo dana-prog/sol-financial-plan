@@ -20,7 +20,7 @@ function onInstallableEdit(e) {
 function _createMenu() {
   SpreadsheetApp.getUi().createMenu('SOL')
     .addItem('Set Timeline Borders', '_onSetTimelineBorders')
-    .addItem('Refresh All Expenses', 'refreshAllExpenses')
+    .addItem('Refresh Budget Items', 'refreshAllExpenses')
     .addSeparator()
     .addItem('Recalculate In Loan Payments and Tax', 'showRepaymentCalculation')
     .addItem('Sync Wise Transactions', 'syncWiseScheduled')
@@ -53,7 +53,7 @@ function _onToggleWriteLogsToFile() {
 
 function _onSetTimelineBorders() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  if (['Details', 'All Expenses'].includes(sheet.getName())) {
+  if (['Details', 'Budget Items'].includes(sheet.getName())) {
     setDetailsSheetBorders(sheet);
     return;
   }
