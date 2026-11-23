@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const ctx = vm.createContext({});
-for (const file of ['AllExpensesFormula.js', 'DetailsBorders.js', 'AllExpenses.js']) {
+for (const file of ['AllExpensesFormula.js', 'AllExpenses.js']) {
   vm.runInContext(fs.readFileSync(`${__dirname}/../src/${file}`, 'utf8'), ctx);
 }
 const headers = vm.runInContext('ALL_EXPENSES_HEADERS', ctx);
@@ -19,13 +19,13 @@ function snapshot() {
   };
 }
 
-test('formatting refresh preserves the live formula, signed records and filter criteria', () => {
+test('formatting refresh preserves the live formula, signed records, filter criteria and borders', () => {
   const sheet = snapshot();
   const before = JSON.stringify(sheet);
   const requests = ctx._allExpensesRefreshRequests(sheet);
   assert.equal(JSON.stringify(sheet), before);
   for (const request of requests) {
-    assert.ok(!request.updateCells && !request.updateDimensionProperties && !request.updateSheetProperties);
+    assert.ok(!request.updateCells && !request.updateDimensionProperties && !request.updateSheetProperties && !request.updateBorders);
     if (request.repeatCell) assert.equal(request.repeatCell.fields, 'userEnteredFormat.numberFormat');
   }
   const filter = requests.find(r => r.setBasicFilter).setBasicFilter.filter;

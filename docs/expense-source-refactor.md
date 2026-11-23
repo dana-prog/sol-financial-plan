@@ -208,4 +208,8 @@ The generator is now `ALL_EXPENSES_ROWS(months)`, called from All Expenses A1 as
 
 ## Sheet renamed to Budget Items — 23 November 2026
 
-The All Expenses tab is now Budget Items, retaining sheet ID 1623286087 and its existing data, formulas, formatting and named ranges. `ALL_EXPENSES` and `S_ALL_EXPENSES` still identify the same dataset, and `ALL_EXPENSES_ROWS` remains the generator. The SOL refresh menu label, refresh sheet lookup/messages and details-border routing use the new sheet title; internal function names remain compatible. Historical references to All Expenses above describe this same sheet.
+The All Expenses tab is now Budget Items, retaining sheet ID 1623286087 and its existing data, formulas, formatting and named ranges. `ALL_EXPENSES` and `S_ALL_EXPENSES` still identify the same dataset, and `ALL_EXPENSES_ROWS` remains the generator. The SOL refresh menu label and refresh sheet lookup/messages use the new sheet title; internal function names remain compatible. Historical references to All Expenses above describe this same sheet.
+
+## Budget Items border automation removed — 23 November 2026
+
+At the user's request, refreshing Budget Items no longer generates border requests, and Set Timeline Borders does nothing when Budget Items is active. Refresh still applies number formats and preserves the filter criteria. The Details and timeline border tools remain available for other sheets. Existing cell borders were not cleared; this change removes the code paths that modify them.

@@ -142,7 +142,7 @@ test('quarter changes within one year receive no horizontal divider', () => {
   assert.ok(!borders.some(border => border.top && border.range.startRowIndex === 2));
 });
 
-test('the menu supports both expense sheet names, including renamed workbook copies', () => {
+test('the border menu skips Budget Items and retains Details and timeline routing', () => {
   let activeName = 'Details';
   const calls = [];
   const sheet = { getName: () => activeName };
@@ -158,7 +158,7 @@ test('the menu supports both expense sheet names, including renamed workbook cop
   ctx._onSetTimelineBorders();
   activeName = 'Operational Exp (P)';
   ctx._onSetTimelineBorders();
-  assert.deepEqual(calls, ['details', 'details', 'timeline']);
+  assert.deepEqual(calls, ['details', 'timeline']);
 });
 
 test('the reordered expense dataset groups by Budget Category and finds Year after Basis', () => {

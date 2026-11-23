@@ -6,7 +6,7 @@ function refreshAllExpenses() {
     SpreadsheetApp.flush();
     const result = Sheets.Spreadsheets.get(spreadsheetId, {
       ranges: ["'Budget Items'"],
-      fields: 'sheets(properties,basicFilter,merges,data(rowData(values(userEnteredValue,effectiveValue,formattedValue)),rowMetadata(hiddenByFilter,hiddenByUser)))',
+      fields: 'sheets(properties,basicFilter,data(rowData(values(userEnteredValue,effectiveValue))))',
     });
     const sheet = result.sheets?.[0];
     if (!sheet) throw new Error('Could not find Budget Items.');
@@ -59,6 +59,5 @@ function _allExpensesRefreshRequests(sheet) {
   else if (sheet.basicFilter?.criteria) filter.criteria = sheet.basicFilter.criteria;
   // Reapplying a saved sort moves the array anchor; ordering belongs to the formula.
   requests.push({setBasicFilter: {filter}});
-  requests.push(..._detailsBorderRequests(sheet));
   return requests;
 }
