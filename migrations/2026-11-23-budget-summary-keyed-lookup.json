@@ -1,0 +1,267 @@
+{
+  "date": "2026-11-23",
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "status": "applied and verified",
+  "description": "Prepare Budget Summary amounts once by year, category and line, including category totals. Budget performs one exact XMATCH and retrieves the requested scalar with INDEX through named column ranges.",
+  "summary": {
+    "sheetId": 2026112301,
+    "cell": "A1",
+    "before": "=LET(\n  expenses, S_ALL_EXPENSES,\n  positions, SEQUENCE(ROWS(expenses)),\n  category_column, CHOOSECOLS(expenses, MATCH(\"Budget Category\", HEADER_ROW(expenses), 0)),\n  source, FILTER(expenses, ARRAYFORMULA((category_column<>\"\")+(positions=2))),\n  years, COL_VALUES(source, \"Year\"),\n  categories, COL_VALUES(source, \"Budget Category\"),\n  lines, ARRAYFORMULA(LOWER(TRIM(COL_VALUES(source, \"Budget Line\")))),\n  bases, COL_VALUES(source, \"Basis\"),\n  costs, COL_VALUES(source, \"Cost\"),\n  contingency, COL_VALUES(source, \"Contingency\"),\n  fields, TOCOL(HSTACK(years, categories, lines, bases, costs, contingency)),\n  errors, ARRAYFORMULA(ISERROR(fields)),\n  IF(SUM(ARRAYFORMULA(N(errors)))>0, INDEX(fields, MATCH(TRUE, errors, 0)),\n    IF(SUM(ARRAYFORMULA((categories<>\"\")*(NOT(ISNUMBER(costs))+NOT(ISNUMBER(contingency)))))>0, NA(),\n      QUERY(HSTACK(ARRAYFORMULA(IF(categories=\"\", 0, years)), categories, lines, bases,\n        ARRAYFORMULA(IF(categories=\"\", 0, costs)), ARRAYFORMULA(IF(categories=\"\", 0, contingency))),\n        \"select Col1,Col2,Col3,Col4,sum(Col5),sum(Col6) group by Col1,Col2,Col3,Col4 label Col1 'Year',Col2 'Budget Category',Col3 'Budget Line',Col4 'Basis',sum(Col5) 'Cost',sum(Col6) 'Contingency'\", 0)\n    )\n  )\n)",
+    "after": "=LET(\n  expenses, S_ALL_EXPENSES,\n  positions, SEQUENCE(ROWS(expenses)),\n  category_column, CHOOSECOLS(expenses, MATCH(\"Budget Category\", HEADER_ROW(expenses), 0)),\n  source, FILTER(expenses, ARRAYFORMULA((category_column<>\"\")+(positions=2))),\n  years, COL_VALUES(source, \"Year\"),\n  categories, ARRAYFORMULA(LOWER(COL_VALUES(source, \"Budget Category\"))),\n  lines, ARRAYFORMULA(LOWER(TRIM(COL_VALUES(source, \"Budget Line\")))),\n  bases, COL_VALUES(source, \"Basis\"),\n  costs, COL_VALUES(source, \"Cost\"),\n  contingency, COL_VALUES(source, \"Contingency\"),\n  titles, {\"Year\",\"Budget Category\",\"Budget Line\",\"Past Expenses\",\"Future Expenses\",\"Total Expenses\",\"Past Contingency\",\"Future Contingency\",\"Contingency\",\"Lookup Key\"},\n  fields, TOCOL(HSTACK(years, categories, lines, bases, costs, contingency)),\n  errors, ARRAYFORMULA(ISERROR(fields)),\n  IF(SUM(ARRAYFORMULA(N(errors)))>0, INDEX(fields, MATCH(TRUE, errors, 0)),\n    IF(SUM(ARRAYFORMULA((categories<>\"\")*(NOT(ISNUMBER(costs))+NOT(ISNUMBER(contingency))+((bases<>\"Actual\")*(bases<>\"Planned\")))))>0, NA(),\n      IF(SUM(ARRAYFORMULA(N(categories<>\"\")))=0, titles,\n        LET(\n          detail, DATA_ROWS(QUERY(\n            HSTACK(years, categories, lines,\n              ARRAYFORMULA(IF(bases=\"Actual\", costs, 0)),\n              ARRAYFORMULA(IF(bases=\"Planned\", costs, 0)),\n              ARRAYFORMULA(IF(bases=\"Actual\", contingency, 0)),\n              ARRAYFORMULA(IF(bases=\"Planned\", contingency, 0))),\n            \"select Col1,Col2,Col3,sum(Col4),sum(Col5),sum(Col6),sum(Col7) where Col2 is not null group by Col1,Col2,Col3\", 0)),\n          totals, DATA_ROWS(QUERY(detail,\n            \"select Col1,Col2,sum(Col4),sum(Col5),sum(Col6),sum(Col7) group by Col1,Col2\", 0)),\n          category_rows, HSTACK(CHOOSECOLS(totals, 1, 2),\n            ARRAYFORMULA(IF(CHOOSECOLS(totals, 2)<>\"\", \"\", \"\")), CHOOSECOLS(totals, 3, 4, 5, 6)),\n          combined, VSTACK(detail, category_rows),\n          keep_rows, VSTACK(ARRAYFORMULA(CHOOSECOLS(detail, 3)<>\"\"), ARRAYFORMULA(CHOOSECOLS(category_rows, 2)<>\"\")),\n          summary, SORT(FILTER(combined, keep_rows), 1, TRUE, 2, TRUE, 3, TRUE),\n          summary_years, CHOOSECOLS(summary, 1),\n          summary_categories, CHOOSECOLS(summary, 2),\n          summary_lines, CHOOSECOLS(summary, 3),\n          past, CHOOSECOLS(summary, 4),\n          future, CHOOSECOLS(summary, 5),\n          past_contingency, CHOOSECOLS(summary, 6),\n          future_contingency, CHOOSECOLS(summary, 7),\n          keys, ARRAYFORMULA(summary_years&\"|\"&LEN(summary_categories)&\":\"&summary_categories&\"|\"&summary_lines),\n          VSTACK(titles, HSTACK(summary_years, summary_categories, summary_lines,\n            past, future, ARRAYFORMULA(past+future), past_contingency, future_contingency,\n            ARRAYFORMULA(past_contingency+future_contingency), keys))\n        )\n      )\n    )\n  )\n)",
+    "columns": [
+      "Year",
+      "Budget Category",
+      "Budget Line",
+      "Past Expenses",
+      "Future Expenses",
+      "Total Expenses",
+      "Past Contingency",
+      "Future Contingency",
+      "Contingency",
+      "Lookup Key"
+    ],
+    "dataRows": 117,
+    "categoryTotalRows": 22,
+    "categoryTotalConvention": "Blank Budget Line means the total for the year/category.",
+    "key": "year|category-length:lowercase-category|normalized-budget-line",
+    "keyColumnHidden": true,
+    "oldColumnCount": 6,
+    "newColumnCount": 10,
+    "namedRange": {
+      "name": "BUDGET_SUMMARY",
+      "id": "1613259532",
+      "before": "A1:F500",
+      "after": "A1:J500"
+    }
+  },
+  "namedFunction": {
+    "name": "BUDGET_ITEMS_SUM",
+    "arguments": [
+      "basis",
+      "amount_column"
+    ],
+    "before": "=LET(\n  category, BUDGET_VALUE(\"_category\"),\n  budget_year, BUDGET_VALUE(\"_year\"),\n  budget_line, LOWER(TRIM(BUDGET_VALUE(\"budget line\"))),\n  line_key, IF(budget_line=\"out loans disbursements\", \"out loan disbursements\", budget_line),\n  categories, COL_VALUES(BUDGET_SUMMARY, \"Budget Category\"),\n  lines, COL_VALUES(BUDGET_SUMMARY, \"Budget Line\"),\n  years, COL_VALUES(BUDGET_SUMMARY, \"Year\"),\n  bases, COL_VALUES(BUDGET_SUMMARY, \"Basis\"),\n  amounts, COL_VALUES(BUDGET_SUMMARY, amount_column),\n  matches, ARRAYFORMULA((categories=category)*(years=budget_year)*\n    IF(line_key=\"\", 1, LOWER(TRIM(lines))=line_key)*\n    IF(basis=\"\", 1, bases=basis)),\n  IF(SUM(matches)=0, 0, SUM(FILTER(amounts, matches)))\n)",
+    "after": "=IF(ISERROR(BUDGET_SUMMARY_STATUS), BUDGET_SUMMARY_STATUS,\n  LET(\n    category, LOWER(BUDGET_VALUE(\"_category\")),\n    budget_year, BUDGET_VALUE(\"_year\"),\n    budget_line, LOWER(TRIM(BUDGET_VALUE(\"budget line\"))),\n    line_key, IF(budget_line=\"out loans disbursements\", \"out loan disbursements\", budget_line),\n    key, budget_year&\"|\"&LEN(category)&\":\"&category&\"|\"&line_key,\n    lookup_row, IFNA(XMATCH(key, BUDGET_SUMMARY_KEYS, 0), 0),\n    lookup_amount, LAMBDA(amounts, IF(lookup_row=0, 0, INDEX(amounts, lookup_row))),\n    SWITCH(amount_column,\n      \"Cost\", SWITCH(basis,\n        \"Actual\", lookup_amount(BUDGET_SUMMARY_PAST),\n        \"Planned\", lookup_amount(BUDGET_SUMMARY_FUTURE),\n        \"\", lookup_amount(BUDGET_SUMMARY_COST),\n        0),\n      \"Contingency\", SWITCH(basis,\n        \"Actual\", lookup_amount(BUDGET_SUMMARY_PAST_CONTINGENCY),\n        \"Planned\", lookup_amount(BUDGET_SUMMARY_FUTURE_CONTINGENCY),\n        \"\", lookup_amount(BUDGET_SUMMARY_CONTINGENCY),\n        0),\n      NA())\n  )\n)",
+    "note": "The user renamed BUDGET_EXPENSE_SUM to BUDGET_ITEMS_SUM during preparation; the live name and all 189 consumer formulas were preserved."
+  },
+  "newNamedRanges": [
+    {
+      "name": "BUDGET_SUMMARY_STATUS",
+      "range": {
+        "sheetId": 2026112301,
+        "startRowIndex": 0,
+        "endRowIndex": 1,
+        "startColumnIndex": 0,
+        "endColumnIndex": 1
+      },
+      "namedRangeId": "1671552255"
+    },
+    {
+      "name": "BUDGET_SUMMARY_KEYS",
+      "range": {
+        "sheetId": 2026112301,
+        "startRowIndex": 1,
+        "endRowIndex": 500,
+        "startColumnIndex": 9,
+        "endColumnIndex": 10
+      },
+      "namedRangeId": "1122283613"
+    },
+    {
+      "name": "BUDGET_SUMMARY_PAST",
+      "range": {
+        "sheetId": 2026112301,
+        "startRowIndex": 1,
+        "endRowIndex": 500,
+        "startColumnIndex": 3,
+        "endColumnIndex": 4
+      },
+      "namedRangeId": "907284244"
+    },
+    {
+      "name": "BUDGET_SUMMARY_FUTURE",
+      "range": {
+        "sheetId": 2026112301,
+        "startRowIndex": 1,
+        "endRowIndex": 500,
+        "startColumnIndex": 4,
+        "endColumnIndex": 5
+      },
+      "namedRangeId": "185962961"
+    },
+    {
+      "name": "BUDGET_SUMMARY_COST",
+      "range": {
+        "sheetId": 2026112301,
+        "startRowIndex": 1,
+        "endRowIndex": 500,
+        "startColumnIndex": 5,
+        "endColumnIndex": 6
+      },
+      "namedRangeId": "720449706"
+    },
+    {
+      "name": "BUDGET_SUMMARY_PAST_CONTINGENCY",
+      "range": {
+        "sheetId": 2026112301,
+        "startRowIndex": 1,
+        "endRowIndex": 500,
+        "startColumnIndex": 6,
+        "endColumnIndex": 7
+      },
+      "namedRangeId": "469682877"
+    },
+    {
+      "name": "BUDGET_SUMMARY_FUTURE_CONTINGENCY",
+      "range": {
+        "sheetId": 2026112301,
+        "startRowIndex": 1,
+        "endRowIndex": 500,
+        "startColumnIndex": 7,
+        "endColumnIndex": 8
+      },
+      "namedRangeId": "220708367"
+    },
+    {
+      "name": "BUDGET_SUMMARY_CONTINGENCY",
+      "range": {
+        "sheetId": 2026112301,
+        "startRowIndex": 1,
+        "endRowIndex": 500,
+        "startColumnIndex": 8,
+        "endColumnIndex": 9
+      },
+      "namedRangeId": "38045338"
+    }
+  ],
+  "formatting": {
+    "header": "Existing header style extended through J; wrap enabled.",
+    "amounts": "D2:I500 uses existing THB number format.",
+    "columnWidths": "D:I 170 px; A:C unchanged.",
+    "hiddenColumns": [
+      "J"
+    ]
+  },
+  "verification": {
+    "budgetValuesAndLinksUnchanged": true,
+    "budgetFormulasUnchanged": true,
+    "cashFlowValuesAndFormulasUnchanged": true,
+    "numericToleranceTHB": 0.000001,
+    "errors": [],
+    "independentSummaryReconciliation": {
+      "rows": 117,
+      "uniqueKeys": 117,
+      "differences": []
+    },
+    "nativeLookupCases": [
+      {
+        "name": "Past costs",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Future costs",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Combined costs",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Category total",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Missing line",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Other year",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Legacy label",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Case and spaces",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Contingency",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Past contingency",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Future contingency",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Unknown basis",
+        "result": {
+          "boolValue": true
+        }
+      },
+      {
+        "name": "Invalid amount header",
+        "result": {
+          "boolValue": true
+        }
+      }
+    ],
+    "nativeSummaryCases": [
+      {
+        "name": "Duplicate rows, signed credits and case/whitespace variants",
+        "passed": true
+      },
+      {
+        "name": "Blank-line expenses contribute once to category totals",
+        "passed": true
+      },
+      {
+        "name": "Source errors propagate through summary and lookup guard",
+        "passed": true
+      },
+      {
+        "name": "Empty source returns titles and missing lookup returns zero",
+        "passed": true
+      }
+    ],
+    "savedNamedDefinitionMatches": true,
+    "otherNamedDefinitionsUnchanged": true,
+    "visual": "Budget Summary and Budget inspected in native Google Sheets at 100%; headers and currency amounts fit, Budget totals and underlined links intact."
+  },
+  "validationCopy": {
+    "spreadsheetId": "1PHy9uvXAAFdk7EqDM6uO1wlIszjeB23k-2RBCsurtkk",
+    "purpose": "Correctness checks only; no timings or source-input benchmark.",
+    "summaryFormulaValuesAndColumnCountRestored": true,
+    "noNewSheets": true
+  },
+  "appsScript": "Native spreadsheet formulas and named ranges only. No Apps Script source changes and no clasp push required.",
+  "performance": "No benchmark run and no measured speedup claim. The upstream source sheets → Budget Items → Budget Summary dependency remains.",
+  "rollback": "After checking for intervening edits, restore summary.before and namedFunction.before together; restore BUDGET_SUMMARY to A1:F500, remove the eight added named ranges, restore D as text and reduce the summary column count to six. Budget cell formulas require no rollback."
+}
