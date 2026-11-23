@@ -96,7 +96,7 @@ const BUDGET_ROWS_NAMED_FUNCTIONS = [
   {
     name: 'BUDGET_ROWS',
     arguments: [],
-    description: 'Generates Budget headers, detail lines, subtotals, funding, carry-forward and statuses. Aggregates the ALL_EXPENSES named range once; Company Tax remains sourced from Cash Flow.',
+    description: 'Generates Budget headers, detail lines, subtotals, funding, carry-forward and statuses. Aggregates the BUDGET_ITEMS named range once; Company Tax remains sourced from Cash Flow.',
     formula: String.raw`=LET(
   headers, {${BUDGET_REPORT_HEADERS.map(header => '"' + header + '"').join(',')}},
   totals_headers, {"Year","Category","Line","Past Expenses","Future Expenses","Contingency"},
@@ -108,7 +108,7 @@ const BUDGET_ROWS_NAMED_FUNCTIONS = [
   report_years, FILTER(years, kinds="Year"),
   cutoff, MONTH_START(TODAY()),
   month_years, ARRAYFORMULA(YEAR(R_MONTHS)),
-  expense_totals, BUDGET_EXPENSE_TOTALS(ALL_EXPENSES),
+  expense_totals, BUDGET_EXPENSE_TOTALS(BUDGET_ITEMS),
   tax, CASH_FLOW_PARAM_VALUES("company tax"),
   tax_for_period, LAMBDA(budget_year, basis,
     LET(matches, ARRAYFORMULA((month_years=budget_year)*IF(basis="Actual", R_MONTHS<cutoff, R_MONTHS>=cutoff)),

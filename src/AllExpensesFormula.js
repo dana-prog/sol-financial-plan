@@ -4,7 +4,7 @@ const ALL_EXPENSES_HEADERS = [
 ];
 
 // A1 is the public entry point; definitions below are maintained in Sheets as named functions.
-const ALL_EXPENSES_FORMULA = '=ALL_EXPENSES_ROWS(R_MONTHS)';
+const ALL_EXPENSES_FORMULA = '=BUDGET_ITEMS_ROWS(R_MONTHS)';
 
 // Dependency order supports importing or reviewing the definitions from top to bottom.
 const ALL_EXPENSES_NAMED_FUNCTIONS = [
@@ -126,7 +126,7 @@ const ALL_EXPENSES_NAMED_FUNCTIONS = [
 )`,
   },
   {
-    name: 'ALL_EXPENSES_ROWS',
+    name: 'BUDGET_ITEMS_ROWS',
     arguments: ['months'],
     description: 'Returns titles and expense records: Actual before the current month, Planned from the current month onward, with no fallback for missing actuals. Sorted by type, month, parameter and source row; an empty result returns titles only.',
     formula: String.raw`=LET(

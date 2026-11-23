@@ -6,7 +6,7 @@ for (const file of ['BudgetFormula.js', 'AllExpensesFormula.js']) {
   vm.runInContext(fs.readFileSync(`${__dirname}/../src/${file}`, 'utf8'), context);
 }
 const budget = vm.runInContext('BUDGET_EXPENSE_SUM_DEFINITION.formula', context).slice(1);
-const expenses = vm.runInContext('ALL_EXPENSES_NAMED_FUNCTIONS.find(f => f.name === "ALL_EXPENSES_ROWS").formula', context);
+const expenses = vm.runInContext('ALL_EXPENSES_NAMED_FUNCTIONS.find(f => f.name === "BUDGET_ITEMS_ROWS").formula', context);
 const quote = value => typeof value === 'number' ? String(value) : '"' + value.replaceAll('"', '""') + '"';
 const table = rows => '{' + rows.map(row => row.map(quote).join(',')).join(';') + '}';
 const headers = ['Budget Category', 'Budget Line', 'Year', 'Basis', 'Cost', 'Contingency'];
@@ -27,7 +27,7 @@ function aggregation({category = 'Setup', line = 'Legal', year = 2026,
     .replaceAll('BUDGET_VALUE("_category")', quote(category))
     .replaceAll('BUDGET_VALUE("_year")', String(year))
     .replaceAll('BUDGET_VALUE("budget line")', quote(line))
-    .replaceAll('ALL_EXPENSES', source)
+    .replaceAll('BUDGET_ITEMS', source)
     .replace(/\bbasis\b/g, quote(basis))
     .replace(/\bamount_column\b/g, quote(amount));
 }
@@ -64,7 +64,7 @@ cases.push({
 });
 cases.push({
   name: 'Native empty-month generator returns exactly the title row',
-  formula: '=AND(ROWS(ALL_EXPENSES_ROWS(DATE(2026,1,1)))=1,COLUMNS(ALL_EXPENSES_ROWS(DATE(2026,1,1)))=13)',
+  formula: '=AND(ROWS(BUDGET_ITEMS_ROWS(DATE(2026,1,1)))=1,COLUMNS(BUDGET_ITEMS_ROWS(DATE(2026,1,1)))=13)',
 });
 
 module.exports = cases;
