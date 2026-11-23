@@ -1,0 +1,524 @@
+{
+  "date": "2026-11-23",
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "changes": {
+    "renamedSheet": {
+      "sheetId": 1623286087,
+      "before": "All Expenses",
+      "after": "Budget Items"
+    },
+    "addedSheet": {
+      "sheetId": 2026112301,
+      "title": "Budget Summary",
+      "range": "A1:F500",
+      "namedRange": "BUDGET_SUMMARY",
+      "formula": "=LET(\n  expenses, S_ALL_EXPENSES,\n  positions, SEQUENCE(ROWS(expenses)),\n  category_column, CHOOSECOLS(expenses, MATCH(\"Budget Category\", HEADER_ROW(expenses), 0)),\n  source, FILTER(expenses, ARRAYFORMULA((category_column<>\"\")+(positions=2))),\n  years, COL_VALUES(source, \"Year\"),\n  categories, COL_VALUES(source, \"Budget Category\"),\n  lines, ARRAYFORMULA(LOWER(TRIM(COL_VALUES(source, \"Budget Line\")))),\n  bases, COL_VALUES(source, \"Basis\"),\n  costs, COL_VALUES(source, \"Cost\"),\n  contingency, COL_VALUES(source, \"Contingency\"),\n  fields, TOCOL(HSTACK(years, categories, lines, bases, costs, contingency)),\n  errors, ARRAYFORMULA(ISERROR(fields)),\n  IF(SUM(ARRAYFORMULA(N(errors)))>0, INDEX(fields, MATCH(TRUE, errors, 0)),\n    IF(SUM(ARRAYFORMULA((categories<>\"\")*(NOT(ISNUMBER(costs))+NOT(ISNUMBER(contingency)))))>0, NA(),\n      QUERY(HSTACK(ARRAYFORMULA(IF(categories=\"\", 0, years)), categories, lines, bases,\n        ARRAYFORMULA(IF(categories=\"\", 0, costs)), ARRAYFORMULA(IF(categories=\"\", 0, contingency))),\n        \"select Col1,Col2,Col3,Col4,sum(Col5),sum(Col6) group by Col1,Col2,Col3,Col4 label Col1 'Year',Col2 'Budget Category',Col3 'Budget Line',Col4 'Basis',sum(Col5) 'Cost',sum(Col6) 'Contingency'\", 0)\n    )\n  )\n)",
+      "groupedRows": 98,
+      "sourceRecords": 1064
+    },
+    "liveBudgetFormulasChanged": false,
+    "existingNamedFunctionDefinitionsChanged": false,
+    "existingNamedRangesPreserved": true
+  },
+  "verification": {
+    "summaryMatchesIndependentAggregation": true,
+    "candidateBudgetValuesAndLinksUnchanged": true,
+    "benchmarkCopyOriginalBudgetAndTestInputsRestored": true,
+    "visualReview": "Not completed before user requested the benchmark stop; native values and output formatting metadata checked."
+  },
+  "benchmark": {
+    "spreadsheetId": "1PHy9uvXAAFdk7EqDM6uO1wlIszjeB23k-2RBCsurtkk",
+    "status": "stopped at user request; no final baseline recheck",
+    "method": "API-observed time from source write to first complete matching Budget, Cash Flow and expense-data read. Matching output then had to remain unchanged for at least 2.5 seconds. Completion time excludes this confirmation interval; request/network latency is included. Warmups excluded. The first full warmup snapshots were retained as expected outputs. Each edit adds THB 1,000 and is followed by restoring the input.",
+    "configuration": "Candidate reuses the existing BUDGET_EXPENSE_SUM, with only its ALL_EXPENSES range alias redirected to the physical summary in the benchmark copy; S_ALL_EXPENSES remains the detailed data source. 189 Budget consumers use named lookups; existing links and all values are preserved. Baseline has the summary anchor cleared. Candidate and alias were restored after stopping; the populated summary is retained.",
+    "limitations": "Stopped before the planned final direct-source recheck. Two measured baseline rounds and three summary rounds completed; results are preliminary and may include run-order/server effects. No live Budget migration was performed.",
+    "statistics": [
+      {
+        "case": "Setup planned",
+        "baselineRuns": 4,
+        "summaryRuns": 6,
+        "baselineMedianMs": 18323.5,
+        "summaryMedianMs": 12051
+      },
+      {
+        "case": "Setup actual",
+        "baselineRuns": 4,
+        "summaryRuns": 6,
+        "baselineMedianMs": 15064,
+        "summaryMedianMs": 12103.5
+      },
+      {
+        "case": "Infrastructure",
+        "baselineRuns": 4,
+        "summaryRuns": 6,
+        "baselineMedianMs": 18754,
+        "summaryMedianMs": 12441.5
+      }
+    ],
+    "runs": [
+      {
+        "phase": "direct-source",
+        "round": 0,
+        "warmup": true,
+        "case": "Setup planned",
+        "direction": "change",
+        "writeMs": 1020,
+        "completionMs": 21984,
+        "verifiedMs": 25434,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 0,
+        "warmup": true,
+        "case": "Setup planned",
+        "direction": "restore",
+        "writeMs": 1126,
+        "completionMs": 22784,
+        "verifiedMs": 26416,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 0,
+        "warmup": true,
+        "case": "Setup actual",
+        "direction": "change",
+        "writeMs": 673,
+        "completionMs": 15551,
+        "verifiedMs": 19202,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 0,
+        "warmup": true,
+        "case": "Setup actual",
+        "direction": "restore",
+        "writeMs": 1037,
+        "completionMs": 14496,
+        "verifiedMs": 18132,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 0,
+        "warmup": true,
+        "case": "Infrastructure",
+        "direction": "change",
+        "writeMs": 876,
+        "completionMs": 18870,
+        "verifiedMs": 22312,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 0,
+        "warmup": true,
+        "case": "Infrastructure",
+        "direction": "restore",
+        "writeMs": 863,
+        "completionMs": 18505,
+        "verifiedMs": 22609,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 1,
+        "warmup": false,
+        "case": "Setup planned",
+        "direction": "change",
+        "writeMs": 871,
+        "completionMs": 18520,
+        "verifiedMs": 22255,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 1,
+        "warmup": false,
+        "case": "Setup planned",
+        "direction": "restore",
+        "writeMs": 1024,
+        "completionMs": 20107,
+        "verifiedMs": 23644,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 1,
+        "warmup": false,
+        "case": "Setup actual",
+        "direction": "change",
+        "writeMs": 740,
+        "completionMs": 12815,
+        "verifiedMs": 16237,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 1,
+        "warmup": false,
+        "case": "Setup actual",
+        "direction": "restore",
+        "writeMs": 719,
+        "completionMs": 14008,
+        "verifiedMs": 17096,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 1,
+        "warmup": false,
+        "case": "Infrastructure",
+        "direction": "change",
+        "writeMs": 831,
+        "completionMs": 16601,
+        "verifiedMs": 20520,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 1,
+        "warmup": false,
+        "case": "Infrastructure",
+        "direction": "restore",
+        "writeMs": 732,
+        "completionMs": 15856,
+        "verifiedMs": 18729,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 2,
+        "warmup": false,
+        "case": "Setup planned",
+        "direction": "change",
+        "writeMs": 930,
+        "completionMs": 18127,
+        "verifiedMs": 22151,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 2,
+        "warmup": false,
+        "case": "Setup planned",
+        "direction": "restore",
+        "writeMs": 861,
+        "completionMs": 16731,
+        "verifiedMs": 20066,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 2,
+        "warmup": false,
+        "case": "Setup actual",
+        "direction": "change",
+        "writeMs": 835,
+        "completionMs": 16120,
+        "verifiedMs": 19749,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 2,
+        "warmup": false,
+        "case": "Setup actual",
+        "direction": "restore",
+        "writeMs": 846,
+        "completionMs": 20340,
+        "verifiedMs": 23960,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 2,
+        "warmup": false,
+        "case": "Infrastructure",
+        "direction": "change",
+        "writeMs": 1108,
+        "completionMs": 21436,
+        "verifiedMs": 25053,
+        "reads": 3
+      },
+      {
+        "phase": "direct-source",
+        "round": 2,
+        "warmup": false,
+        "case": "Infrastructure",
+        "direction": "restore",
+        "writeMs": 709,
+        "completionMs": 20907,
+        "verifiedMs": 24423,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 0,
+        "warmup": true,
+        "case": "Setup planned",
+        "direction": "change",
+        "writeMs": 797,
+        "completionMs": 14678,
+        "verifiedMs": 18605,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 0,
+        "warmup": true,
+        "case": "Setup planned",
+        "direction": "restore",
+        "writeMs": 982,
+        "completionMs": 12883,
+        "verifiedMs": 17622,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 0,
+        "warmup": true,
+        "case": "Setup actual",
+        "direction": "change",
+        "writeMs": 889,
+        "completionMs": 15010,
+        "verifiedMs": 18767,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 0,
+        "warmup": true,
+        "case": "Setup actual",
+        "direction": "restore",
+        "writeMs": 767,
+        "completionMs": 14078,
+        "verifiedMs": 17828,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 0,
+        "warmup": true,
+        "case": "Infrastructure",
+        "direction": "change",
+        "writeMs": 733,
+        "completionMs": 13397,
+        "verifiedMs": 16909,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 0,
+        "warmup": true,
+        "case": "Infrastructure",
+        "direction": "restore",
+        "writeMs": 702,
+        "completionMs": 12391,
+        "verifiedMs": 27615,
+        "reads": 2
+      },
+      {
+        "phase": "shared-summary",
+        "round": 1,
+        "warmup": false,
+        "case": "Setup planned",
+        "direction": "change",
+        "writeMs": 754,
+        "completionMs": 11128,
+        "verifiedMs": 14159,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 1,
+        "warmup": false,
+        "case": "Setup planned",
+        "direction": "restore",
+        "writeMs": 765,
+        "completionMs": 11836,
+        "verifiedMs": 15439,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 1,
+        "warmup": false,
+        "case": "Setup actual",
+        "direction": "change",
+        "writeMs": 688,
+        "completionMs": 13416,
+        "verifiedMs": 16927,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 1,
+        "warmup": false,
+        "case": "Setup actual",
+        "direction": "restore",
+        "writeMs": 712,
+        "completionMs": 12144,
+        "verifiedMs": 15113,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 1,
+        "warmup": false,
+        "case": "Infrastructure",
+        "direction": "change",
+        "writeMs": 782,
+        "completionMs": 12595,
+        "verifiedMs": 15633,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 1,
+        "warmup": false,
+        "case": "Infrastructure",
+        "direction": "restore",
+        "writeMs": 760,
+        "completionMs": 11581,
+        "verifiedMs": 14725,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 2,
+        "warmup": false,
+        "case": "Setup planned",
+        "direction": "change",
+        "writeMs": 698,
+        "completionMs": 11276,
+        "verifiedMs": 14319,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 2,
+        "warmup": false,
+        "case": "Setup planned",
+        "direction": "restore",
+        "writeMs": 661,
+        "completionMs": 12745,
+        "verifiedMs": 16030,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 2,
+        "warmup": false,
+        "case": "Setup actual",
+        "direction": "change",
+        "writeMs": 725,
+        "completionMs": 11455,
+        "verifiedMs": 14656,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 2,
+        "warmup": false,
+        "case": "Setup actual",
+        "direction": "restore",
+        "writeMs": 679,
+        "completionMs": 12063,
+        "verifiedMs": 15614,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 2,
+        "warmup": false,
+        "case": "Infrastructure",
+        "direction": "change",
+        "writeMs": 843,
+        "completionMs": 13079,
+        "verifiedMs": 16188,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 2,
+        "warmup": false,
+        "case": "Infrastructure",
+        "direction": "restore",
+        "writeMs": 682,
+        "completionMs": 12628,
+        "verifiedMs": 16583,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 3,
+        "warmup": false,
+        "case": "Setup planned",
+        "direction": "change",
+        "writeMs": 1493,
+        "completionMs": 12266,
+        "verifiedMs": 16525,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 3,
+        "warmup": false,
+        "case": "Setup planned",
+        "direction": "restore",
+        "writeMs": 668,
+        "completionMs": 12629,
+        "verifiedMs": 15456,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 3,
+        "warmup": false,
+        "case": "Setup actual",
+        "direction": "change",
+        "writeMs": 843,
+        "completionMs": 11888,
+        "verifiedMs": 15296,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 3,
+        "warmup": false,
+        "case": "Setup actual",
+        "direction": "restore",
+        "writeMs": 847,
+        "completionMs": 12823,
+        "verifiedMs": 16028,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 3,
+        "warmup": false,
+        "case": "Infrastructure",
+        "direction": "change",
+        "writeMs": 890,
+        "completionMs": 12099,
+        "verifiedMs": 15496,
+        "reads": 3
+      },
+      {
+        "phase": "shared-summary",
+        "round": 3,
+        "warmup": false,
+        "case": "Infrastructure",
+        "direction": "restore",
+        "writeMs": 670,
+        "completionMs": 12288,
+        "verifiedMs": 15108,
+        "reads": 2
+      }
+    ]
+  },
+  "repositoryScope": "Spreadsheet-only changes and benchmark evidence; no Apps Script source changed, so clasp push is not required."
+}
