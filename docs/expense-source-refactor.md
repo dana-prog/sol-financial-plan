@@ -39,6 +39,20 @@ The C17 clear test settled in 21.716 seconds with the original formulas and 5.21
 
 Fourteen native formula cases and thirteen related local tests passed. Every Budget result, Cash Flow value and all 1,064 expense records matched the pre-change snapshot within THB 0.000001. Budget formatting, validation and links were unchanged. The native Budget definition matches local source, which was synchronized through clasp. See the [performance migration and rollback record](../migrations/2026-11-23-budget-expense-performance.json).
 
+### Single-formula Budget — 23 November 2026
+
+Budget A1 now contains `=BUDGET_ROWS()`, generating the existing 114 × 13 report. Native definitions are maintained in `src/BudgetRowsFormula.js`. This supersedes the individual Budget cell formulas described above; the older named functions remain available for compatibility and rollback.
+
+`BUDGET_EXPENSE_TOTALS(ALL_EXPENSES)` groups the existing named range once by year, category and normalized line, with separate Actual Cost, Planned Cost and Contingency amounts. It does not call `ALL_EXPENSES_ROWS`. `BUDGET_REPORT_AMOUNT` reads this compact summary. `BUDGET_ROW_LAYOUT()` preserves the current 2026–2029 catalog, including zero-cost lines. New categories, lines or years require updating this catalog and the sheet formatting/range together.
+
+`BUDGET_ROWS()` builds detail amounts and subtotals, adds Company Tax from the existing Cash Flow named function, and calculates funding and cumulative headroom using the existing funding/revenue named functions. Company Tax remains under Operations with no contingency. The output creates links through `BUDGET_SOURCE_LINK` and the existing `BUDGET_TIMELINE_LINK` at the final `MAKEARRAY` step: building links before stacking the arrays loses their hyperlink metadata in native Sheets.
+
+All numeric amounts reconcile within THB 0.000001, and all 110 source links are preserved. The two literal `))` status cells (M53 and M88) are blank as approved. The previously empty J13 now shows a zero Required Budget subtotal for 2027 In Loans, without changing annual totals. The 27 label merges were removed to accommodate the array, and columns C/D widened to 100/116 pixels; formatting, groups, filter and conditional formatting are otherwise retained. Do not enter values inside the generated output, because that would block the array.
+
+Thirteen native formula cases passed for credits, duplicates, period separation, contingency, subtotals, aliases, missing lines, empty data, gaps and error propagation; 48 related local tests passed. Every existing named range/function was unchanged, and the five new native definitions match source. Cash Flow and All Expenses values and formulas are unchanged. The final report was visually checked at 100% zoom. See the [migration and rollback record](../migrations/2026-11-23-budget-single-formula.json).
+
+No speed improvement is claimed yet. The initial timing probe did not observe the recalculation bar, and user browser interaction interrupted the subsequent attempt, so those measurements were discarded. The single report reduces repeated All Expenses scans but still recalculates the whole report when its dependencies change; upstream All Expenses generation remains part of the dependency chain.
+
 ### Company Tax grouped under Operations in Budget
 
 Company Tax is now the first detail line under Operations for 2027–2029 (rows 33, 68, and 103). The separate Tax category headers were removed. This is a Budget reporting change only: the detail formulas still read `CASH_FLOW_PARAM_VALUES("company tax")`, and All Expenses still excludes tax.
