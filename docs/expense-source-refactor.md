@@ -39,9 +39,17 @@ The C17 clear test settled in 21.716 seconds with the original formulas and 5.21
 
 Fourteen native formula cases and thirteen related local tests passed. Every Budget result, Cash Flow value and all 1,064 expense records matched the pre-change snapshot within THB 0.000001. Budget formatting, validation and links were unchanged. The native Budget definition matches local source, which was synchronized through clasp. See the [performance migration and rollback record](../migrations/2026-11-23-budget-expense-performance.json).
 
-### Single-formula Budget — 23 November 2026
+### Individual Budget formulas restored — 23 November 2026
 
-Budget A1 now contains `=BUDGET_ROWS()`, generating the existing 114 × 13 report. Native definitions are maintained in `src/BudgetRowsFormula.js`. This supersedes the individual Budget cell formulas described above; the older named functions remain available for compatibility and rollback.
+At the user's request after reporting slower performance, Budget again uses individual cell formulas for details, category/year totals, contingency, funding, headroom and statuses. The 189 expense lookups still call `BUDGET_EXPENSE_SUM` against the existing `ALL_EXPENSES` named range. This restores the optimized version immediately before the single-formula experiment, not the older direct-source expense formulas. Company Tax and funding retain their existing named-function sources.
+
+The 27 label merges and original C/D widths are restored. M53 and M88 remain blank as previously approved. J13 retains its zero Required Budget subtotal through `BUDGET_VALUE("total expenses") + BUDGET_VALUE("contingency")`, for 463 formulas in total. All Budget values match the live pre-restoration snapshot within THB 0.000001, and the 110 source links match the original individual-formula baseline. Cash Flow and All Expenses formulas and values are unchanged. Native visual verification completed at 100% zoom. No new performance claim is made.
+
+The unused `BUDGET_ROWS` definitions remain available for historical reference; Budget no longer calls them. No Apps Script or named-function definitions changed, so no clasp synchronization was required. See the [restoration record](../migrations/2026-11-23-budget-restore-cell-formulas.json).
+
+### Single-formula Budget experiment — 23 November 2026 (subsequently reversed)
+
+During this experiment, Budget A1 contained `=BUDGET_ROWS()`, generating the existing 114 × 13 report. Native definitions are maintained in `src/BudgetRowsFormula.js`. The individual Budget cell formulas have since been restored as described above.
 
 `BUDGET_EXPENSE_TOTALS(ALL_EXPENSES)` groups the existing named range once by year, category and normalized line, with separate Actual Cost, Planned Cost and Contingency amounts. It does not call `ALL_EXPENSES_ROWS`. `BUDGET_REPORT_AMOUNT` reads this compact summary. `BUDGET_ROW_LAYOUT()` preserves the current 2026–2029 catalog, including zero-cost lines. New categories, lines or years require updating this catalog and the sheet formatting/range together.
 
