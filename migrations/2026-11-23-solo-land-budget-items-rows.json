@@ -1,0 +1,635 @@
+{
+  "spreadsheetId": "1Y_GUzkXYzkhZr6Mhqw6ngkYgAGw1uOt6CTBcUGfs8nM",
+  "sheetId": 1623286087,
+  "range": "All Expenses!A1:M1075",
+  "status": "Applied and verified 2026-11-23",
+  "description": "Install BUDGET_ITEMS_ROWS and required native named functions in Solo Land, and use it as the single All Expenses spill formula.",
+  "before": {
+    "headers": [
+      "Type",
+      "Year",
+      "Quarter",
+      "Month",
+      "Param",
+      "Cost"
+    ],
+    "formulaCell": "A2",
+    "formula": "=LET(\n  months, FILTER(R_MONTHS, ISNUMBER(R_MONTHS)),\n  setup_params, COL_VALUES(S_SETUP_EXP_P, \"param\"),\n  setup_categories, COL_VALUES(S_SETUP_EXP_P, \"_category\"),\n  construction_params, COL_VALUES(S_CONSTRUCTION_EXP_P, \"param\"),\n  construction_categories, COL_VALUES(S_CONSTRUCTION_EXP_P, \"_category\"),\n  operating_params, COL_VALUES(S_OPERATIONAL_EXP, \"param\"),\n  operating_categories, COL_VALUES(S_OPERATIONAL_EXP, \"_category\"),\n  infra_params, COL_VALUES(S_INFRA_EXP_P, \"param\"),\n  infra_suppliers, COL_VALUES(S_INFRA_EXP_P, \"supplier\"),\n  infra_categories, COL_VALUES(S_INFRA_EXP_P, \"_category\"),\n  infra_headers, HEADER_ROW(S_INFRA_EXP_P),\n  infra_data, DATA_ROWS(S_INFRA_EXP_P),\n  in_loan_params, COL_VALUES(S_IN_LOANS, \"param\"),\n  in_loan_names, COL_VALUES(S_IN_LOANS, \"_name\"),\n  in_loan_parties, ARRAYFORMULA(IFNA(XLOOKUP(in_loan_names,\n    COL_VALUES(S_IN_LOANS, \"name\"), COL_VALUES(S_IN_LOANS, \"lender\")), \"\")),\n  in_loan_headers, HEADER_ROW(S_IN_LOANS),\n  in_loan_data, DATA_ROWS(S_IN_LOANS),\n  out_loan_params, COL_VALUES(S_OUT_LOANS, \"param\"),\n  out_loan_names, COL_VALUES(S_OUT_LOANS, \"_name\"),\n  out_loan_parties, ARRAYFORMULA(IFNA(XLOOKUP(out_loan_names,\n    COL_VALUES(S_OUT_LOANS, \"name\"), COL_VALUES(S_OUT_LOANS, \"debtor\")), \"\")),\n  out_loan_headers, HEADER_ROW(S_OUT_LOANS),\n  out_loan_data, DATA_ROWS(S_OUT_LOANS),\n  without_totals, LAMBDA(expenses, source_params, source_categories,\n    LET(\n      categories, ARRAYFORMULA(IFNA(XLOOKUP(CHOOSECOLS(expenses, 2),\n        source_params, source_categories), \"\")),\n      IFNA(FILTER(expenses, ARRAYFORMULA(LOWER(TRIM(categories))<>\"totals\")), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  infra_details, LAMBDA(month,\n    LET(\n      values, CHOOSECOLS(infra_data, MATCH(month, infra_headers, 0)),\n      IFNA(FILTER(\n        HSTACK(ARRAYFORMULA(IF(infra_params<>\"\", \"Infrastructure\", \"\")), infra_params, infra_suppliers, values),\n        ARRAYFORMULA(LOWER(TRIM(infra_categories))<>\"totals\"),\n        ISNUMBER(values),\n        values>0\n      ), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  financing_details, LAMBDA(month, params, names, parties, headers, data, param_name, type_label,\n    LET(\n      values, CHOOSECOLS(data, MATCH(month, headers, 0)),\n      IFNA(FILTER(\n        HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values),\n        params=param_name,\n        ARRAYFORMULA(LOWER(TRIM(names))<>\"totals\"),\n        ISNUMBER(values),\n        values>0\n      ), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  monthly_details, LAMBDA(month,\n    LET(\n      operating, without_totals(OPERATIONAL_EXPENSES_D(month), operating_params, operating_categories),\n      all_expenses, VSTACK(\n        financing_details(month, in_loan_params, in_loan_names, in_loan_parties, in_loan_headers, in_loan_data, \"in loans repaid\", \"In Loan Repayments\"),\n        financing_details(month, out_loan_params, out_loan_names, out_loan_parties, out_loan_headers, out_loan_data, \"out loans disbursed\", \"Out Loan Disbursements\"),\n        without_totals(SETUP_EXPENSES_D(month), setup_params, setup_categories),\n        LAND_EXPENSES_D(month),\n        infra_details(month),\n        without_totals(CONSTRUCTION_EXPENSES_D(month), construction_params, construction_categories),\n        IFNA(FILTER(operating, ARRAYFORMULA(\n          (CHOOSECOLS(operating, 1)=\"Direct Operating Expenses\")+\n          (CHOOSECOLS(operating, 1)=\"Other Operating Expenses\"))), {\"\",\"\",\"\",\"\"})\n      ),\n      IFNA(FILTER(all_expenses, CHOOSECOLS(all_expenses, 1)<>\"\"), {\"\",\"\",\"\",\"\"})\n    )\n  ),\n  expenses, REDUCE({\"\",0,\"\",\"\",0}, months,\n    LAMBDA(result, month,\n      LET(\n        monthly, monthly_details(month),\n        VSTACK(result, HSTACK(\n          CHOOSECOLS(monthly, 1),\n          ARRAYFORMULA(IF(CHOOSECOLS(monthly, 1)<>\"\", month, \"\")),\n          CHOOSECOLS(monthly, 2, 3, 4)\n        ))\n      )\n    )),\n  grouped, IFNA(QUERY(expenses,\n    \"select Col1, Col2, Col3, Col4, sum(Col5) where Col1 is not null group by Col1, Col2, Col3, Col4 label sum(Col5) ''\", 0),\n    {\"\",\"\",\"\",\"\",0}),\n  type_labels, MAP(CHOOSECOLS(grouped, 1), LAMBDA(type,\n    SWITCH(type, \"Construction\", \"Construction Expenses\", \"Infrastructure\", \"Infrastructure Expenses\",\n      \"Setup\", \"Setup Expenses\", \"Land\", \"Land Expenses\", type)\n  )),\n  type_order, {\"In Loan Repayments\";\"Out Loan Disbursements\";\"Setup Expenses\";\"Land Expenses\";\"Infrastructure Expenses\";\"Construction Expenses\";\"Direct Operating Expenses\";\"Other Operating Expenses\"},\n  ranked, HSTACK(ARRAYFORMULA(IFNA(MATCH(type_labels, type_order, 0), 9)), type_labels, CHOOSECOLS(grouped, 2, 3, 4, 5)),\n  details, SORT(ranked, 1, TRUE, 3, TRUE, 4, TRUE),\n  item_values, MAP(CHOOSECOLS(details, 2), CHOOSECOLS(details, 3), CHOOSECOLS(details, 4), CHOOSECOLS(details, 5),\n    LAMBDA(type, month, param, detail,\n      IF(type=\"Construction Expenses\",\n        LET(\n          units, INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")), 1, MATCH(month, R_MONTHS, 0)),\n          unit_name, REGEXREPLACE(param, \" const[.] cost$\", \"\"),\n          singular, SWITCH(unit_name, \"clinics\", \"clinic\", \"sala toilets\", \"sala toilet\", \"complex room\", \"complex home\", unit_name),\n          plural, SWITCH(unit_name,\n            \"lobby\", \"lobbies\", \"storage\", \"storage\", \"pool lounge seating\", \"pool lounge seating\",\n            \"general resort storage\", \"general resort storage\", \"shower & toilet\", \"showers & toilets\",\n            \"open air sala - big\", \"open air salas - big\", \"open air sala - medium\", \"open air salas - medium\",\n            singular&\"s\"),\n          TEXT(units, \"0\")&\" \"&IF(units=1, singular, plural)\n        ),\n        param&IF(detail<>\"\", \" (\"&detail&\")\", \"\")\n      )\n    )),\n  IF(SUM(ARRAYFORMULA(N(type_labels<>\"\")))=0, {\"\",\"\",\"\",\"\",\"\",\"\"},\n    HSTACK(CHOOSECOLS(details, 2),\n      ARRAYFORMULA(YEAR(CHOOSECOLS(details, 3))),\n      ARRAYFORMULA(\"Q\"&ROUNDUP(MONTH(CHOOSECOLS(details, 3))/3)&\" \"&YEAR(CHOOSECOLS(details, 3))),\n      CHOOSECOLS(details, 3),\n      item_values, CHOOSECOLS(details, 6)))\n)",
+    "basicFilter": {
+      "range": {
+        "sheetId": 1623286087,
+        "startRowIndex": 0,
+        "endRowIndex": 1075,
+        "startColumnIndex": 0,
+        "endColumnIndex": 6
+      },
+      "sortSpecs": [
+        {
+          "dimensionIndex": 2,
+          "sortOrder": "ASCENDING"
+        },
+        {
+          "dimensionIndex": 1,
+          "sortOrder": "ASCENDING"
+        }
+      ],
+      "criteria": {
+        "0": {
+          "hiddenValues": [
+            "",
+            "Out Loan Disbursements"
+          ]
+        },
+        "1": {},
+        "2": {}
+      },
+      "filterSpecs": [
+        {
+          "columnIndex": 2,
+          "filterCriteria": {}
+        },
+        {
+          "columnIndex": 1,
+          "filterCriteria": {}
+        },
+        {
+          "columnIndex": 0,
+          "filterCriteria": {
+            "hiddenValues": [
+              "",
+              "Out Loan Disbursements"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "after": {
+    "formulaCell": "A1",
+    "formula": "=BUDGET_ITEMS_ROWS(R_MONTHS)",
+    "headers": [
+      "Budget Category",
+      "Budget Line",
+      "Param",
+      "Status",
+      "Year",
+      "Quarter",
+      "Month",
+      "Cost",
+      "Contingency",
+      "Total Cost",
+      "Source Sheet",
+      "Source Parameter",
+      "Source Row"
+    ],
+    "loanParameters": {
+      "In Loans": "in loans repaid",
+      "Out Loans": "out loans disbursed"
+    }
+  },
+  "requests": [
+    {
+      "updateSheetProperties": {
+        "properties": {
+          "sheetId": 1623286087,
+          "gridProperties": {
+            "columnCount": 13
+          }
+        },
+        "fields": "gridProperties.columnCount"
+      }
+    },
+    {
+      "clearBasicFilter": {
+        "sheetId": 1623286087
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 0,
+          "endRowIndex": 2,
+          "startColumnIndex": 0,
+          "endColumnIndex": 6
+        },
+        "rows": [],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 1623286087,
+          "rowIndex": 0,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=BUDGET_ITEMS_ROWS(R_MONTHS)"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 0,
+          "endRowIndex": 1,
+          "startColumnIndex": 0,
+          "endColumnIndex": 13
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.2627451,
+              "green": 0.2627451,
+              "blue": 0.2627451
+            },
+            "verticalAlignment": "MIDDLE",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 1,
+                "green": 1,
+                "blue": 1
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "bold": true,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                }
+              }
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "red": 0.2627451,
+                "green": 0.2627451,
+                "blue": 0.2627451
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 1,
+          "endRowIndex": 1075,
+          "startColumnIndex": 0,
+          "endColumnIndex": 13
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "verticalAlignment": "MIDDLE",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.4,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.4,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 1,
+          "endRowIndex": 1075,
+          "startColumnIndex": 2,
+          "endColumnIndex": 3
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "verticalAlignment": "MIDDLE",
+            "wrapStrategy": "WRAP",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.4,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.4,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 1,
+          "endRowIndex": 1075,
+          "startColumnIndex": 6,
+          "endColumnIndex": 7
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "DATE",
+              "pattern": "mmmm yyyy"
+            },
+            "horizontalAlignment": "CENTER",
+            "verticalAlignment": "MIDDLE",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.4,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.4,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 1623286087,
+          "startRowIndex": 1,
+          "endRowIndex": 1075,
+          "startColumnIndex": 7,
+          "endColumnIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "numberFormat": {
+              "type": "NUMBER",
+              "pattern": "฿ #,##0,\"K\""
+            },
+            "horizontalAlignment": "RIGHT",
+            "verticalAlignment": "MIDDLE",
+            "textFormat": {
+              "foregroundColor": {
+                "red": 0.4,
+                "green": 0.4,
+                "blue": 0.4
+              },
+              "fontFamily": "Arial",
+              "fontSize": 11,
+              "foregroundColorStyle": {
+                "rgbColor": {
+                  "red": 0.4,
+                  "green": 0.4,
+                  "blue": 0.4
+                }
+              }
+            }
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "setBasicFilter": {
+        "filter": {
+          "range": {
+            "sheetId": 1623286087,
+            "startRowIndex": 0,
+            "endRowIndex": 1075,
+            "startColumnIndex": 0,
+            "endColumnIndex": 13
+          },
+          "sortSpecs": [
+            {
+              "dimensionIndex": 5,
+              "sortOrder": "ASCENDING"
+            },
+            {
+              "dimensionIndex": 4,
+              "sortOrder": "ASCENDING"
+            }
+          ],
+          "criteria": {
+            "0": {
+              "hiddenValues": [
+                "",
+                "Out Loans"
+              ]
+            },
+            "4": {},
+            "5": {}
+          }
+        }
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 160
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 1,
+          "endIndex": 2
+        },
+        "properties": {
+          "pixelSize": 220
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 2,
+          "endIndex": 3
+        },
+        "properties": {
+          "pixelSize": 300
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 3,
+          "endIndex": 4
+        },
+        "properties": {
+          "pixelSize": 100
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 4,
+          "endIndex": 5
+        },
+        "properties": {
+          "pixelSize": 80
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 5,
+          "endIndex": 6
+        },
+        "properties": {
+          "pixelSize": 90
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 6,
+          "endIndex": 7
+        },
+        "properties": {
+          "pixelSize": 145
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 7,
+          "endIndex": 8
+        },
+        "properties": {
+          "pixelSize": 130
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 8,
+          "endIndex": 9
+        },
+        "properties": {
+          "pixelSize": 130
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 9,
+          "endIndex": 10
+        },
+        "properties": {
+          "pixelSize": 130
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 10,
+          "endIndex": 11
+        },
+        "properties": {
+          "pixelSize": 180
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 11,
+          "endIndex": 12
+        },
+        "properties": {
+          "pixelSize": 210
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 1623286087,
+          "dimension": "COLUMNS",
+          "startIndex": 12,
+          "endIndex": 13
+        },
+        "properties": {
+          "pixelSize": 100
+        },
+        "fields": "pixelSize"
+      }
+    }
+  ],
+  "verification": {
+    "nativeErrorCount": 0,
+    "budgetFormulasAndValuesUnchanged": true,
+    "cashFlowFormulasAndValuesUnchanged": true,
+    "renderedInNativeSheets": true,
+    "appsScriptSourceChanged": false,
+    "claspPushRequired": false,
+    "notes": [
+      "Only seven new named functions and four required six-column source detail definitions changed; unrelated named functions and named ranges preserved.",
+      "The source Actual/Planned policy is preserved: actuals before current month; planned current month onward; no planned fallback.",
+      "The existing hidden Out Loan Disbursements filter was mapped to Out Loans, with Year/Quarter filter and sort column indices remapped."
+    ],
+    "reconciliation": {
+      "rows": 44,
+      "errors": [],
+      "totals": {
+        "Out Loans Planned": {
+          "rows": 2,
+          "cost": 30000000,
+          "contingency": 0,
+          "total": 30000000
+        },
+        "Setup Actual": {
+          "rows": 14,
+          "cost": 1833170,
+          "contingency": 0,
+          "total": 1833170
+        },
+        "Setup Planned": {
+          "rows": 25,
+          "cost": 3258840,
+          "contingency": 325884,
+          "total": 3584724
+        },
+        "Land Planned": {
+          "rows": 3,
+          "cost": 86665068.49315068,
+          "contingency": 0,
+          "total": 86665068.49315068
+        }
+      }
+    }
+  },
+  "namedFunctionChanges": {
+    "EXPENSE_RECORDS": {
+      "before": null,
+      "after": "LAMBDA(expenses, month, source_name, category, basis, rate, LET(\n  types, CHOOSECOLS(expenses, 1),\n  params, CHOOSECOLS(expenses, 2),\n  costs, CHOOSECOLS(expenses, 4),\n  repeat, LAMBDA(value, ARRAYFORMULA(IF(types<>\"\", value, \"\"))),\n  lines, MAP(params, CHOOSECOLS(expenses, 6), LAMBDA(param, source_category,\n    IF(param=\"\", \"\", SWITCH(category,\n      \"Setup\", source_category, \"Infra\", source_category, \"Construction\", \"Construction\",\n      \"Land\", \"Land\", \"In Loans\", \"In Loan Repayment\", \"Out Loans\", \"Out Loan Disbursements\",\n      \"Operations\", SWITCH(param, \"total guest services salaries\", \"Salaries\",\n        \"total operations support salaries\", \"Salaries\", PROPER(REGEXREPLACE(param, \" expenses$\", \"\"))),\n      NA()\n    ))\n  )),\n  HSTACK(types, repeat(month), CHOOSECOLS(expenses, 2, 3, 4), repeat(category), lines,\n    repeat(source_name), repeat(basis), ARRAYFORMULA(IF(types<>\"\", costs*rate, \"\")),\n    ARRAYFORMULA(IF(types<>\"\", costs*(1+rate), \"\")), CHOOSECOLS(expenses, 5))\n))"
+    },
+    "EXPENSES_FOR_MONTH": {
+      "before": null,
+      "after": "LAMBDA(month, LET(\n  actual_setup, month < MONTH_START(TODAY()),\n  VSTACK(\n    EXPENSE_RECORDS(FINANCING_EXPENSES_D(month, S_IN_LOANS, \"in loans repaid\", \"lender\", \"In Loan Repayments\"),\n      month, \"In Loans\", \"In Loans\", \"Planned\", 0),\n    EXPENSE_RECORDS(FINANCING_EXPENSES_D(month, S_OUT_LOANS, \"out loans disbursed\", \"debtor\", \"Out Loan Disbursements\"),\n      month, \"Out Loans\", \"Out Loans\", \"Planned\", 0),\n    EXPENSE_RECORDS(SETUP_EXPENSES_D(month), month, IF(actual_setup, \"Setup Exp (A)\", \"Setup Exp (P)\"),\n      \"Setup\", IF(actual_setup, \"Actual\", \"Planned\"), IF(actual_setup, 0, PARAM(\"setup contingency\"))),\n    EXPENSE_RECORDS(LAND_EXPENSES_D(month), month, \"Obligations (P)\", \"Land\", \"Planned\", 0),\n    EXPENSE_RECORDS(INFRA_EXPENSES_D(month), month, \"Infra Exp (P)\", \"Infra\", \"Planned\", PARAM(\"infra contingency\")),\n    EXPENSE_RECORDS(CONSTRUCTION_EXPENSES_D(month), month, \"Construction Exp (P)\", \"Construction\", \"Planned\", PARAM(\"construction contingency\")),\n    EXPENSE_RECORDS(OPERATIONAL_EXPENSES_D(month), month, \"Operational Exp (P)\", \"Operations\", \"Planned\", PARAM(\"operating contingency\"))\n  )\n))"
+    },
+    "OPERATIONAL_EXPENSES_D": {
+      "before": "LAMBDA(m, LET(\n  rows, SEQUENCE(ROWS(S_OPERATIONAL_EXP) - 1, 1, 2),\n  params, COL_VALUES(CHOOSECOLS(S_OPERATIONAL_EXP, MATCH(\"param\", INDEX(S_OPERATIONAL_EXP, 1, 0), 0)), \"param\"),\n  categories, COL_VALUES(CHOOSECOLS(S_OPERATIONAL_EXP, MATCH(\"_category\", INDEX(S_OPERATIONAL_EXP, 1, 0), 0)), \"_category\"),\n  month_col, MATCH(m, INDEX(S_OPERATIONAL_EXP,1,), 0),\n  values, CHOOSEROWS(INDEX(S_OPERATIONAL_EXP,,month_col), rows),\n  IFNA(\n    FILTER(\n      HSTACK(categories, params, \"\", values),\n      REGEXMATCH(categories, \"^(Direct Operating Expenses|Other Operating Expenses)$\"),\n      params <> \"\",\n      ISNUMBER(values),\n      values > 0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n))",
+      "after": "LAMBDA(m, LET(\n  source, S_OPERATIONAL_EXP,\n  params, COL_VALUES(source, \"param\"),\n  categories, COL_VALUES(source, \"_category\"),\n  values, CHOOSECOLS(DATA_ROWS(source), MATCH(m, HEADER_ROW(source), 0)),\n  source_rows, SEQUENCE(ROWS(params), 1, ROW(INDEX(source, 1, 1)) + 1),\n  eligible, ARRAYFORMULA((params<>\"\")*REGEXMATCH(categories, \"^(Direct Operating Expenses|Other Operating Expenses)$\")),\n  empty, {\"\",\"\",\"\",\"\",\"\",\"\"},\n  IF(SUM(eligible)=0, empty,\n    LET(\n      selected, FILTER(HSTACK(categories, params, ARRAYFORMULA(IF(params<>\"\", \"\", \"\")), values, source_rows, categories), eligible),\n      costs, CHOOSECOLS(selected, 4),\n      errors, ARRAYFORMULA(ISERROR(costs)),\n      IF(SUM(ARRAYFORMULA(N(errors)))>0, INDEX(costs, MATCH(TRUE, errors, 0)),\n        IF(SUM(ARRAYFORMULA(N((costs<>\"\")*NOT(ISNUMBER(costs)))))>0, NA(),\n          LET(\n            nonzero, ARRAYFORMULA(ISNUMBER(costs)*(costs<>0)),\n            IF(SUM(nonzero)=0, empty, FILTER(selected, nonzero))\n          )\n        )\n      )\n    )\n  )\n))"
+    },
+    "EXPENSE_DETAIL_ROWS": {
+      "before": null,
+      "after": "LAMBDA(details, eligible, LET(\n  empty_details, {\"\",\"\",\"\",\"\",\"\",\"\"},\n  IF(SUM(ARRAYFORMULA(N(eligible)))=0, empty_details,\n    LET(\n      selected, FILTER(details, eligible),\n      costs, CHOOSECOLS(selected, 4),\n      errors, ARRAYFORMULA(ISERROR(costs)),\n      IF(SUM(ARRAYFORMULA(N(errors)))>0, INDEX(costs, MATCH(TRUE, errors, 0)),\n        IF(SUM(ARRAYFORMULA(N((costs<>\"\")*NOT(ISNUMBER(costs)))))>0, NA(),\n          LET(\n            nonzero, ARRAYFORMULA(ISNUMBER(costs)*(costs<>0)),\n            IF(SUM(nonzero)=0, empty_details, FILTER(selected, nonzero))\n          )\n        )\n      )\n    )\n  )\n))"
+    },
+    "SETUP_EXPENSES_D": {
+      "before": "LAMBDA(m, LET(\n  rows, SEQUENCE(ROWS(S_SETUP_EXP_P) - 1, 1, 2),\n  params, COL_VALUES(CHOOSECOLS(S_SETUP_EXP_P, MATCH(\"param\", INDEX(S_SETUP_EXP_P, 1, 0), 0)), \"param\"),\n  month_col, MATCH(m, INDEX(S_SETUP_EXP_P,1,), 0),\n  values, CHOOSEROWS(INDEX(S_SETUP_EXP_P,,month_col), rows),\n  suppliers, COL_VALUES(CHOOSECOLS(S_SETUP_EXP_P, MATCH(\"supplier\", INDEX(S_SETUP_EXP_P, 1, 0), 0)), \"supplier\"),\n  IFNA(\n    FILTER(\n      HSTACK(\n        ARRAYFORMULA(IF(params<>\"\",\"Setup\",\"\")),\n        params,\n        suppliers,\n        values\n      ),\n      params <> \"total costs\",\n      values > 0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n))",
+      "after": "LAMBDA(m, LET(\n  source, IF(m < MONTH_START(TODAY()), S_SETUP_EXP_A, S_SETUP_EXP_P),\n  params, COL_VALUES(source, \"param\"),\n  categories, COL_VALUES(source, \"_category\"),\n  values, CHOOSECOLS(DATA_ROWS(source), MATCH(m, HEADER_ROW(source), 0)),\n  source_rows, SEQUENCE(ROWS(params), 1, ROW(INDEX(source, 1, 1)) + 1),\n  eligible, ARRAYFORMULA((params<>\"\")*(LOWER(TRIM(categories))<>\"totals\")*(LOWER(params)<>\"total costs\")),\n  empty, {\"\",\"\",\"\",\"\",\"\",\"\"},\n  IF(SUM(eligible)=0, empty,\n    LET(\n      selected, FILTER(HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Setup Expenses\", \"\")), params, COL_VALUES(source, \"supplier\"), values, source_rows, categories), eligible),\n      costs, CHOOSECOLS(selected, 4),\n      errors, ARRAYFORMULA(ISERROR(costs)),\n      IF(SUM(ARRAYFORMULA(N(errors)))>0, INDEX(costs, MATCH(TRUE, errors, 0)),\n        IF(SUM(ARRAYFORMULA(N((costs<>\"\")*NOT(ISNUMBER(costs)))))>0, NA(),\n          LET(\n            nonzero, ARRAYFORMULA(ISNUMBER(costs)*(costs<>0)),\n            IF(SUM(nonzero)=0, empty, FILTER(selected, nonzero))\n          )\n        )\n      )\n    )\n  )\n))"
+    },
+    "LAND_EXPENSES_D": {
+      "before": "LAMBDA(m, LET(\n  source, S_OBLIGATIONS,\n  categories, COL_VALUES(source, \"_category\"),\n  names, COL_VALUES(source, \"name\"),\n  creditors, COL_VALUES(source, \"creditor\"),\n  values, CHOOSECOLS(DATA_ROWS(source), MATCH(m, HEADER_ROW(source), 0)),\n  IFNA(\n    FILTER(\n      HSTACK(categories, names, creditors, values),\n      ARRAYFORMULA(LOWER(TRIM(categories))=\"land\"),\n      names<>\"\",\n      ISNUMBER(values),\n      values>0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n))",
+      "after": "LAMBDA(m, LET(\n  source, S_OBLIGATIONS,\n  params, COL_VALUES(source, \"name\"),\n  categories, COL_VALUES(source, \"_category\"),\n  values, CHOOSECOLS(DATA_ROWS(source), MATCH(m, HEADER_ROW(source), 0)),\n  source_rows, SEQUENCE(ROWS(params), 1, ROW(INDEX(source, 1, 1)) + 1),\n  eligible, ARRAYFORMULA((params<>\"\")*(LOWER(TRIM(categories))=\"land\")),\n  empty, {\"\",\"\",\"\",\"\",\"\",\"\"},\n  IF(SUM(eligible)=0, empty,\n    LET(\n      selected, FILTER(HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Land Expenses\", \"\")), params, COL_VALUES(source, \"creditor\"), values, source_rows, categories), eligible),\n      costs, CHOOSECOLS(selected, 4),\n      errors, ARRAYFORMULA(ISERROR(costs)),\n      IF(SUM(ARRAYFORMULA(N(errors)))>0, INDEX(costs, MATCH(TRUE, errors, 0)),\n        IF(SUM(ARRAYFORMULA(N((costs<>\"\")*NOT(ISNUMBER(costs)))))>0, NA(),\n          LET(\n            nonzero, ARRAYFORMULA(ISNUMBER(costs)*(costs<>0)),\n            IF(SUM(nonzero)=0, empty, FILTER(selected, nonzero))\n          )\n        )\n      )\n    )\n  )\n))"
+    },
+    "CONSTRUCTION_EXPENSES_D": {
+      "before": "LAMBDA(m, LET(\n  rows, SEQUENCE(ROWS(S_CONSTRUCTION_EXP_P) - 1, 1, 2),\n  params, COL_VALUES(CHOOSECOLS(S_CONSTRUCTION_EXP_P, MATCH(\"param\", INDEX(S_CONSTRUCTION_EXP_P, 1, 0), 0)), \"param\"),\n  month_col, MATCH(m, INDEX(S_CONSTRUCTION_EXP_P,1,), 0),\n  values, CHOOSEROWS(INDEX(S_CONSTRUCTION_EXP_P,,month_col), rows),\n  IFNA(\n    FILTER(\n      HSTACK(\n        ARRAYFORMULA(IF(params <> \"\",\"Construction\",\"\")),\n        params,\n        \"\",\n        values\n      ),\n      REGEXMATCH(params, \"const\\. cost$\"),\n      values > 0\n    ),\n    {\"\",\"\",\"\",\"\"}\n  )\n))",
+      "after": "LAMBDA(m, LET(\n  source, S_CONSTRUCTION_EXP_P,\n  params, COL_VALUES(source, \"param\"),\n  categories, COL_VALUES(source, \"_category\"),\n  values, CHOOSECOLS(DATA_ROWS(source), MATCH(m, HEADER_ROW(source), 0)),\n  source_rows, SEQUENCE(ROWS(params), 1, ROW(INDEX(source, 1, 1)) + 1),\n  eligible, ARRAYFORMULA(REGEXMATCH(params, \" const[.] cost$\")*(LOWER(TRIM(categories))<>\"totals\")),\n  empty, {\"\",\"\",\"\",\"\",\"\",\"\"},\n  IF(SUM(eligible)=0, empty,\n    LET(\n      selected, FILTER(HSTACK(ARRAYFORMULA(IF(params<>\"\", \"Construction Expenses\", \"\")), params, ARRAYFORMULA(IF(params<>\"\", \"\", \"\")), values, source_rows, categories), eligible),\n      costs, CHOOSECOLS(selected, 4),\n      errors, ARRAYFORMULA(ISERROR(costs)),\n      IF(SUM(ARRAYFORMULA(N(errors)))>0, INDEX(costs, MATCH(TRUE, errors, 0)),\n        IF(SUM(ARRAYFORMULA(N((costs<>\"\")*NOT(ISNUMBER(costs)))))>0, NA(),\n          LET(\n            nonzero, ARRAYFORMULA(ISNUMBER(costs)*(costs<>0)),\n            IF(SUM(nonzero)=0, empty, FILTER(selected, nonzero))\n          )\n        )\n      )\n    )\n  )\n))"
+    },
+    "INFRA_EXPENSES_D": {
+      "before": null,
+      "after": "LAMBDA(month, LET(\n  infra_params, COL_VALUES(S_INFRA_EXP_P, \"param\"),\n  infra_categories, COL_VALUES(S_INFRA_EXP_P, \"_category\"),\n  infra_suppliers, COL_VALUES(S_INFRA_EXP_P, \"supplier\"),\n  infra_data, DATA_ROWS(S_INFRA_EXP_P),\n  infra_headers, HEADER_ROW(S_INFRA_EXP_P),\n  infra_rows, SEQUENCE(ROWS(infra_params), 1, ROW(INDEX(S_INFRA_EXP_P, 1, 1)) + 1),\n  EXPENSE_DETAIL_ROWS(\n    HSTACK(ARRAYFORMULA(IF(infra_params<>\"\", \"Infrastructure Expenses\", \"\")), infra_params,\n      infra_suppliers, CHOOSECOLS(infra_data, MATCH(month, infra_headers, 0)), infra_rows, infra_categories),\n    ARRAYFORMULA((infra_params<>\"\")*(LOWER(TRIM(infra_categories))<>\"totals\"))\n  )\n))"
+    },
+    "FINANCING_EXPENSES_D": {
+      "before": null,
+      "after": "LAMBDA(month, source, param_name, party_header, type_label, LET(\n  params, COL_VALUES(source, \"param\"),\n  names, COL_VALUES(source, \"_name\"),\n  parties, ARRAYFORMULA(IFNA(XLOOKUP(names, COL_VALUES(source, \"name\"), COL_VALUES(source, party_header)), \"\")),\n  values, CHOOSECOLS(DATA_ROWS(source), MATCH(month, HEADER_ROW(source), 0)),\n  source_rows, SEQUENCE(ROWS(params), 1, ROW(INDEX(source, 1, 1)) + 1),\n  EXPENSE_DETAIL_ROWS(\n    HSTACK(ARRAYFORMULA(IF(names<>\"\", type_label, \"\")), names, parties, values, source_rows, params),\n    ARRAYFORMULA((params=param_name)*(names<>\"\")*(LOWER(TRIM(names))<>\"totals\"))\n  )\n))"
+    },
+    "BUDGET_ITEMS_ROWS": {
+      "before": null,
+      "after": "LAMBDA(months, LET(\n  headers, {\"Budget Category\",\"Budget Line\",\"Param\",\"Status\",\"Year\",\"Quarter\",\"Month\",\"Cost\",\"Contingency\",\"Total Cost\",\"Source Sheet\",\"Source Parameter\",\"Source Row\"},\n  selected_months, FILTER(months, ISNUMBER(months)),\n  empty_record, {\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"},\n  records, REDUCE(empty_record, selected_months, LAMBDA(result, month,\n      VSTACK(result, EXPENSES_FOR_MONTH(month))\n  )),\n  eligible, ARRAYFORMULA((CHOOSECOLS(records, 1)<>\"\") *\n    IF(CHOOSECOLS(records, 2)<MONTH_START(TODAY()),\n      CHOOSECOLS(records, 9)=\"Actual\", CHOOSECOLS(records, 9)=\"Planned\")),\n  IF(SUM(eligible)=0, headers,\n    LET(\n      populated, FILTER(records, eligible),\n      type_order, {\"In Loan Repayments\";\"Out Loan Disbursements\";\"Setup Expenses\";\"Land Expenses\";\"Infrastructure Expenses\";\"Construction Expenses\";\"Direct Operating Expenses\";\"Other Operating Expenses\"},\n      ranked, HSTACK(ARRAYFORMULA(MATCH(CHOOSECOLS(populated, 1), type_order, 0)), populated),\n      details, CHOOSECOLS(SORT(ranked, 1, TRUE, 3, TRUE, 4, TRUE, 13, TRUE), 2,3,4,5,6,7,8,9,10,11,12,13),\n      descriptions, MAP(CHOOSECOLS(details, 1), CHOOSECOLS(details, 2), CHOOSECOLS(details, 3), CHOOSECOLS(details, 4), LAMBDA(type, month, param, party, EXPENSE_DESCRIPTION(type, month, param, party))),\n      source_params, MAP(CHOOSECOLS(details, 1), CHOOSECOLS(details, 3), LAMBDA(type, param,\n          SWITCH(type, \"In Loan Repayments\", \"in loans repaid\", \"Out Loan Disbursements\", \"out loans disbursed\", param))),\n      VSTACK(headers, HSTACK(CHOOSECOLS(details, 6, 7), descriptions, CHOOSECOLS(details, 9),\n        ARRAYFORMULA(YEAR(CHOOSECOLS(details, 2))), ARRAYFORMULA(\"Q\"&ROUNDUP(MONTH(CHOOSECOLS(details, 2))/3)),\n        CHOOSECOLS(details, 2, 5, 10, 11, 8), source_params, CHOOSECOLS(details, 12)))\n    )\n  )\n))"
+    },
+    "EXPENSE_DESCRIPTION": {
+      "before": null,
+      "after": "LAMBDA(type, month, param, party, IF(type=\"Construction Expenses\",\n  LET(\n    units, INDEX(CONSTRUCTION_PARAM_VALUES(REGEXREPLACE(param, \" const[.] cost$\", \" const. count\")), 1, MATCH(month, R_MONTHS, 0)),\n    unit_name, REGEXREPLACE(param, \" const[.] cost$\", \"\"),\n    singular, SWITCH(unit_name, \"clinics\", \"clinic\", \"sala toilets\", \"sala toilet\", \"complex room\", \"complex home\", unit_name),\n    plural, SWITCH(unit_name, \"lobby\", \"lobbies\", \"storage\", \"storage\", \"pool lounge seating\", \"pool lounge seating\",\n      \"general resort storage\", \"general resort storage\", \"shower & toilet\", \"showers & toilets\",\n      \"open air sala - big\", \"open air salas - big\", \"open air sala - medium\", \"open air salas - medium\", singular&\"s\"),\n    TEXT(units, \"0\")&\" \"&IF(units=1, singular, plural)\n  ),\n  param&IF(party<>\"\", \" (\"&party&\")\", \"\")\n))"
+    }
+  }
+}
