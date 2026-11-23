@@ -1,0 +1,1116 @@
+{
+  "date": "2026-11-23",
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheetId": 530781649,
+  "description": "Move period boundaries into BUDGET_TIMELINE_LINK; retain named amount lookups.",
+  "cells": [
+    {
+      "row": 4,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OUT_LOANS,\n        198423991,\n        \"param\",\n        \"total out loans disbursements\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OUT_LOANS,\n  198423991,\n  \"param\",\n  \"total out loans disbursements\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 4,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OUT_LOANS,\n        198423991,\n        \"param\",\n        \"total out loans disbursements\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OUT_LOANS,\n  198423991,\n  \"param\",\n  \"total out loans disbursements\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 6,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 7,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 8,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 9,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 12,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OUT_LOANS,\n        198423991,\n        \"param\",\n        \"total out loans disbursements\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OUT_LOANS,\n  198423991,\n  \"param\",\n  \"total out loans disbursements\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 12,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OUT_LOANS,\n        198423991,\n        \"param\",\n        \"total out loans disbursements\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OUT_LOANS,\n  198423991,\n  \"param\",\n  \"total out loans disbursements\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 14,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_IN_LOANS,\n        1346380865,\n        \"param\",\n        \"total in loans repayments\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_IN_LOANS,\n  1346380865,\n  \"param\",\n  \"total in loans repayments\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 14,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_IN_LOANS,\n        1346380865,\n        \"param\",\n        \"total in loans repayments\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_IN_LOANS,\n  1346380865,\n  \"param\",\n  \"total in loans repayments\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 16,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OBLIGATIONS,\n        1675897452,\n        \"_category\",\n        \"Land\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OBLIGATIONS,\n  1675897452,\n  \"_category\",\n  \"Land\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 16,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OBLIGATIONS,\n        1675897452,\n        \"_category\",\n        \"Land\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OBLIGATIONS,\n  1675897452,\n  \"_category\",\n  \"Land\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 18,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 19,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 20,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 21,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 23,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 23,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 24,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 24,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 25,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 25,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 26,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 26,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 27,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 27,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 28,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 28,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 29,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 29,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 31,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_CONSTRUCTION_EXP_P,\n        462995266,\n        \"param\",\n        \"total costs\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_CONSTRUCTION_EXP_P,\n  462995266,\n  \"param\",\n  \"total costs\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 31,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_CONSTRUCTION_EXP_P,\n        462995266,\n        \"param\",\n        \"total costs\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_CONSTRUCTION_EXP_P,\n  462995266,\n  \"param\",\n  \"total costs\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 34,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 34,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 35,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 35,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 36,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 36,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 37,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 37,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 38,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 38,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 39,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 39,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 40,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 40,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 41,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 41,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 42,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 42,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 43,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 43,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 44,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 44,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 47,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OUT_LOANS,\n        198423991,\n        \"param\",\n        \"total out loans disbursements\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OUT_LOANS,\n  198423991,\n  \"param\",\n  \"total out loans disbursements\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 47,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OUT_LOANS,\n        198423991,\n        \"param\",\n        \"total out loans disbursements\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OUT_LOANS,\n  198423991,\n  \"param\",\n  \"total out loans disbursements\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 49,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_IN_LOANS,\n        1346380865,\n        \"param\",\n        \"total in loans repayments\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_IN_LOANS,\n  1346380865,\n  \"param\",\n  \"total in loans repayments\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 49,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_IN_LOANS,\n        1346380865,\n        \"param\",\n        \"total in loans repayments\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_IN_LOANS,\n  1346380865,\n  \"param\",\n  \"total in loans repayments\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 51,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OBLIGATIONS,\n        1675897452,\n        \"_category\",\n        \"Land\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OBLIGATIONS,\n  1675897452,\n  \"_category\",\n  \"Land\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 51,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OBLIGATIONS,\n        1675897452,\n        \"_category\",\n        \"Land\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OBLIGATIONS,\n  1675897452,\n  \"_category\",\n  \"Land\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 53,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 54,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 55,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 56,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 58,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 58,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 59,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 59,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 60,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 60,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 61,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 61,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 62,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 62,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 63,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 63,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 64,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 64,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 66,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_CONSTRUCTION_EXP_P,\n        462995266,\n        \"param\",\n        \"total costs\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_CONSTRUCTION_EXP_P,\n  462995266,\n  \"param\",\n  \"total costs\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 66,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_CONSTRUCTION_EXP_P,\n        462995266,\n        \"param\",\n        \"total costs\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_CONSTRUCTION_EXP_P,\n  462995266,\n  \"param\",\n  \"total costs\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 69,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 69,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 70,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 70,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 71,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 71,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 72,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 72,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 73,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 73,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 74,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 74,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 75,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 75,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 76,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 76,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 77,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 77,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 78,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 78,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 79,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 79,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 82,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OUT_LOANS,\n        198423991,\n        \"param\",\n        \"total out loans disbursements\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OUT_LOANS,\n  198423991,\n  \"param\",\n  \"total out loans disbursements\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 82,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OUT_LOANS,\n        198423991,\n        \"param\",\n        \"total out loans disbursements\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OUT_LOANS,\n  198423991,\n  \"param\",\n  \"total out loans disbursements\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 82,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OUT_LOANS,\n    198423991,\n    \"param\",\n    \"total out loans disbursements\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OUT_LOANS,\n  198423991,\n  \"param\",\n  \"total out loans disbursements\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 84,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_IN_LOANS,\n        1346380865,\n        \"param\",\n        \"total in loans repayments\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_IN_LOANS,\n  1346380865,\n  \"param\",\n  \"total in loans repayments\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 84,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_IN_LOANS,\n        1346380865,\n        \"param\",\n        \"total in loans repayments\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_IN_LOANS,\n  1346380865,\n  \"param\",\n  \"total in loans repayments\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 84,
+      "column": 8,
+      "before": "=LET(\n  y, BUDGET_VALUE(\"_year\"),\n  amount, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_IN_LOANS,\n    1346380865,\n    \"param\",\n    \"total in loans repayments\",\n    DATE(y, 1, 1),\n    12,\n    amount\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_IN_LOANS,\n  1346380865,\n  \"param\",\n  \"total in loans repayments\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 86,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OBLIGATIONS,\n        1675897452,\n        \"_category\",\n        \"Land\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OBLIGATIONS,\n  1675897452,\n  \"_category\",\n  \"Land\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 86,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OBLIGATIONS,\n        1675897452,\n        \"_category\",\n        \"Land\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OBLIGATIONS,\n  1675897452,\n  \"_category\",\n  \"Land\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 86,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OBLIGATIONS,\n    1675897452,\n    \"_category\",\n    \"Land\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OBLIGATIONS,\n  1675897452,\n  \"_category\",\n  \"Land\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 88,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 88,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_SETUP_EXP_P,\n    1304432573,\n    \"_category\",\n    BUDGET_VALUE(\"budget line\"),\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 89,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 89,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_SETUP_EXP_P,\n    1304432573,\n    \"_category\",\n    BUDGET_VALUE(\"budget line\"),\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 90,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 90,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_SETUP_EXP_P,\n    1304432573,\n    \"_category\",\n    BUDGET_VALUE(\"budget line\"),\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 91,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_SETUP_EXP_P,\n        1304432573,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 91,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_SETUP_EXP_P,\n    1304432573,\n    \"_category\",\n    BUDGET_VALUE(\"budget line\"),\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_SETUP_EXP_P,\n  1304432573,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 93,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 93,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 93,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_INFRA_EXP_P,\n    1754072773,\n    \"_category\",\n    BUDGET_VALUE(\"budget line\"),\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 94,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 94,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 94,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_INFRA_EXP_P,\n    1754072773,\n    \"_category\",\n    BUDGET_VALUE(\"budget line\"),\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 95,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 95,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 95,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_INFRA_EXP_P,\n    1754072773,\n    \"_category\",\n    BUDGET_VALUE(\"budget line\"),\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 96,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 96,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 96,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_INFRA_EXP_P,\n    1754072773,\n    \"_category\",\n    BUDGET_VALUE(\"budget line\"),\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 97,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 97,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 97,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_INFRA_EXP_P,\n    1754072773,\n    \"_category\",\n    BUDGET_VALUE(\"budget line\"),\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 98,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 98,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 98,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_INFRA_EXP_P,\n    1754072773,\n    \"_category\",\n    BUDGET_VALUE(\"budget line\"),\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 99,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 99,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_INFRA_EXP_P,\n        1754072773,\n        \"_category\",\n        BUDGET_VALUE(\"budget line\"),\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 99,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_INFRA_EXP_P,\n    1754072773,\n    \"_category\",\n    BUDGET_VALUE(\"budget line\"),\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_INFRA_EXP_P,\n  1754072773,\n  \"_category\",\n  BUDGET_VALUE(\"budget line\"),\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 101,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_CONSTRUCTION_EXP_P,\n        462995266,\n        \"param\",\n        \"total costs\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_CONSTRUCTION_EXP_P,\n  462995266,\n  \"param\",\n  \"total costs\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 101,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_CONSTRUCTION_EXP_P,\n        462995266,\n        \"param\",\n        \"total costs\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_CONSTRUCTION_EXP_P,\n  462995266,\n  \"param\",\n  \"total costs\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 101,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_CONSTRUCTION_EXP_P,\n    462995266,\n    \"param\",\n    \"total costs\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_CONSTRUCTION_EXP_P,\n  462995266,\n  \"param\",\n  \"total costs\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 104,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 104,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 104,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OPERATIONAL_EXP,\n    1093991711,\n    \"param\",\n    LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 105,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 105,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 105,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OPERATIONAL_EXP,\n    1093991711,\n    \"param\",\n    LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 106,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 106,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 106,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OPERATIONAL_EXP,\n    1093991711,\n    \"param\",\n    LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 107,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 107,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 107,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OPERATIONAL_EXP,\n    1093991711,\n    \"param\",\n    LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 108,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 108,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 108,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OPERATIONAL_EXP,\n    1093991711,\n    \"param\",\n    LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 109,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 109,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 109,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OPERATIONAL_EXP,\n    1093991711,\n    \"param\",\n    LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 110,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 110,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 110,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OPERATIONAL_EXP,\n    1093991711,\n    \"param\",\n    LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 111,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 111,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 111,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OPERATIONAL_EXP,\n    1093991711,\n    \"param\",\n    LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 112,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 112,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 112,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OPERATIONAL_EXP,\n    1093991711,\n    \"param\",\n    LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 113,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 113,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 113,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OPERATIONAL_EXP,\n    1093991711,\n    \"param\",\n    LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    },
+    {
+      "row": 114,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, MAX(0, MIN(12, (YEAR(TODAY()) - budget_year) * 12 + MONTH(TODAY()) - 1)),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Actual\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Past\",\n  BUDGET_ITEMS_SUM(\"Actual\", \"Cost\")\n)"
+    },
+    {
+      "row": 114,
+      "column": 7,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, MAX(DATE(budget_year, 1, 1), MONTH_START(TODAY())),\n  month_count, MAX(0, MIN(12, (budget_year - YEAR(TODAY())) * 12 + 13 - MONTH(TODAY()))),\n  IF(month_count=0, 0,\n    LET(\n      amount, BUDGET_ITEMS_SUM(\"Planned\", \"Cost\"),\n      BUDGET_TIMELINE_LINK(\n        S_OPERATIONAL_EXP,\n        1093991711,\n        \"param\",\n        LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n        start_month,\n        month_count,\n        amount\n      )\n    )\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Future\",\n  BUDGET_ITEMS_SUM(\"Planned\", \"Cost\")\n)"
+    },
+    {
+      "row": 114,
+      "column": 8,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  start_month, DATE(budget_year, 1, 1),\n  month_count, 12,\n  actual, BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\"),\n  BUDGET_TIMELINE_LINK(\n    S_OPERATIONAL_EXP,\n    1093991711,\n    \"param\",\n    LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n    start_month,\n    month_count,\n    actual\n  )\n)",
+      "after": "=BUDGET_TIMELINE_LINK(\n  S_OPERATIONAL_EXP,\n  1093991711,\n  \"param\",\n  LOWER(BUDGET_VALUE(\"budget line\")) & \" expenses\",\n  BUDGET_VALUE(\"_year\"),\n  \"Full Year\",\n  BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")\n)"
+    }
+  ],
+  "namedFunctionsBefore": {
+    "BUDGET_TIMELINE_LINK": "LAMBDA(source_table, sheet_id, lookup_col, lookup_value, start_month, month_count, amount, IF(\n  month_count = 0,\n  0,\n  LET(\n    keys, COL_VALUES(source_table, lookup_col),\n    first_row, ROW(INDEX(source_table, 1, 1)) + MATCH(lookup_value, keys, 0),\n    last_row, ROW(INDEX(source_table, 1, 1)) + LOOKUP(2, ARRAYFORMULA(1 / (keys = lookup_value)), SEQUENCE(ROWS(keys))),\n    first_col, COLUMN(INDEX(source_table, 1, 1)) - 1 + MATCH(start_month, INDEX(source_table, 1, 0), 0),\n    HYPERLINK(\n      \"#gid=\" & sheet_id & \"&range=\" & ADDRESS(first_row, first_col, 4) & \":\" & ADDRESS(last_row, first_col + month_count - 1, 4),\n      amount\n    )\n  )\n))",
+    "BUDGET_SOURCE_LINK": "LAMBDA(category, budget_line, start_month, month_count, amount, IF(month_count=0, 0,\n  SWITCH(category,\n    \"Out Loans\", BUDGET_TIMELINE_LINK(S_OUT_LOANS, 198423991, \"param\", \"total out loans disbursements\", start_month, month_count, amount),\n    \"In Loans\", BUDGET_TIMELINE_LINK(S_IN_LOANS, 1346380865, \"param\", \"total in loans repayments\", start_month, month_count, amount),\n    \"Land\", BUDGET_TIMELINE_LINK(S_OBLIGATIONS, 1675897452, \"_category\", \"Land\", start_month, month_count, amount),\n    \"Setup\", BUDGET_TIMELINE_LINK(S_SETUP_EXP_P, 1304432573, \"_category\", budget_line, start_month, month_count, amount),\n    \"Infra\", BUDGET_TIMELINE_LINK(S_INFRA_EXP_P, 1754072773, \"_category\", budget_line, start_month, month_count, amount),\n    \"Construction\", BUDGET_TIMELINE_LINK(S_CONSTRUCTION_EXP_P, 462995266, \"param\", \"total costs\", start_month, month_count, amount),\n    \"Operations\", BUDGET_TIMELINE_LINK(S_OPERATIONAL_EXP, 1093991711, \"param\", LOWER(budget_line)&\" expenses\", start_month, month_count, amount),\n    NA()\n  )\n))",
+    "BUDGET_ROWS": "LAMBDA(LET(\n  \nheaders, {\"_category\",\"_year\",\"Year\",\"Category\",\"Budget line\",\"Past Expenses\",\"Future Expenses\",\"Total Expenses\",\"Contingency\",\"Required Budget\",\"Available Budget\",\"Headroom\",\"Projected Status\"},\n  \ntotals_headers, {\"Year\",\"Category\",\"Line\",\"Past Expenses\",\"Future Expenses\",\"Contingency\"},\n  \nlayout, BUDGET_ROW_LAYOUT(),\n  \nyears, CHOOSECOLS(layout, 1),\n  \ncategories, CHOOSECOLS(layout, 2),\n  \nlines, CHOOSECOLS(layout, 3),\n  \nkinds, CHOOSECOLS(layout, 4),\n  \nreport_years, FILTER(years, kinds=\"Year\"),\n  \ncutoff, MONTH_START(TODAY()),\n  \nmonth_years, ARRAYFORMULA(YEAR(R_MONTHS)),\n  \nexpense_totals, BUDGET_EXPENSE_TOTALS(BUDGET_ITEMS),\n  \ntax, COMPANY_TAX_VALUES(),\n  \ntax_for_period, LAMBDA(budget_year, basis,\n    \nLET(matches, ARRAYFORMULA((month_years=budget_year)*IF(basis=\"Actual\", R_MONTHS<cutoff, R_MONTHS>=cutoff)),\n      \nIF(SUM(matches)=0, 0, SUM(FILTER(tax, matches))))),\n  \ntax_past, MAP(report_years, LAMBDA(budget_year, tax_for_period(budget_year, \"Actual\"))),\n  \ntax_future, MAP(report_years, LAMBDA(budget_year, tax_for_period(budget_year, \"Planned\"))),\n  \nline_past, MAP(years, categories, lines, LAMBDA(budget_year, category, line,\n    \nIF(line=\"\", 0, IF(line=\"Company Tax\", XLOOKUP(budget_year, report_years, tax_past),\n      \nBUDGET_REPORT_AMOUNT(expense_totals, budget_year, category, line, \"Past Expenses\"))))),\n  \nline_future, MAP(years, categories, lines, LAMBDA(budget_year, category, line,\n    \nIF(line=\"\", 0, IF(line=\"Company Tax\", XLOOKUP(budget_year, report_years, tax_future),\n      \nBUDGET_REPORT_AMOUNT(expense_totals, budget_year, category, line, \"Future Expenses\"))))),\n  \nline_contingency, MAP(years, categories, lines, LAMBDA(budget_year, category, line,\n    \nIF(OR(line=\"\", line=\"Company Tax\"), 0,\n      \nBUDGET_REPORT_AMOUNT(expense_totals, budget_year, category, line, \"Contingency\")))),\n  \ndetail_totals, VSTACK(totals_headers, HSTACK(years, categories, lines, line_past, line_future, line_contingency)),\n  \npast, MAP(years, categories, lines, line_past, LAMBDA(budget_year, category, line, amount,\n    \nIF(line=\"\", BUDGET_REPORT_AMOUNT(detail_totals, budget_year, category, \"\", \"Past Expenses\"), amount))),\n  \nfuture, MAP(years, categories, lines, line_future, LAMBDA(budget_year, category, line, amount,\n    \nIF(line=\"\", BUDGET_REPORT_AMOUNT(detail_totals, budget_year, category, \"\", \"Future Expenses\"), amount))),\n  \ntotal, ARRAYFORMULA(past+future),\n  \ncontingency, MAP(years, categories, lines, LAMBDA(budget_year, category, line,\n    \nIF(line=\"\", BUDGET_REPORT_AMOUNT(detail_totals, budget_year, category, \"\", \"Contingency\"), \"\"))),\n  \nrequired, ARRAYFORMULA(IF(lines=\"\", total+N(contingency), \"\")),\n  \nannual_required, FILTER(required, kinds=\"Year\"),\n  \nfunding, ARRAYFORMULA(IN_LOAN_PARAM_VALUES_BY_LOAN(\"totals\", \"total in loans received\")+\n    \nOUT_LOAN_PARAM_VALUES_BY_LOAN(\"totals\", \"total out loan repayments received\")+REVENUE_PARAM_VALUES(\"total revenue\")),\n  \nannual_funding, MAP(report_years, LAMBDA(budget_year, SUM(FILTER(funding, month_years=budget_year)))),\n  \nannual_headroom, SCAN(0, ARRAYFORMULA(annual_funding-annual_required), LAMBDA(balance, change, balance+change)),\n  \navailable, MAP(years, kinds, LAMBDA(budget_year, kind,\n    \nIF(kind=\"Year\", XLOOKUP(budget_year, report_years, ARRAYFORMULA(annual_headroom+annual_required)), \"\"))),\n  \nheadroom, MAP(years, kinds, LAMBDA(budget_year, kind,\n    \nIF(kind=\"Year\", XLOOKUP(budget_year, report_years, annual_headroom), \"\"))),\n  \nstatuses, MAP(kinds, past, required, available, LAMBDA(kind, paid, needed, funds,\n    \nIF(kind<>\"Year\", \"\", IFS(paid>funds, \"Over Budget\", needed>funds, \"Projected Over Budget\", funds=0, \"No Budget\", TRUE, \"Within Budget\")))),\n  \npast_display, MAP(years, categories, lines, past, LAMBDA(budget_year, category, line, amount,\n    \nIF(OR(line=\"\", line=\"Company Tax\", category=\"Setup\"), amount,\n      \nBUDGET_SOURCE_LINK(category, line, DATE(budget_year, 1, 1), MAX(0, MIN(12, (YEAR(cutoff)-budget_year)*12+MONTH(cutoff)-1)), amount)))),\n  \nfuture_display, MAP(years, categories, lines, future, LAMBDA(budget_year, category, line, amount,\n    \nIF(OR(line=\"\", line=\"Company Tax\"), amount,\n      \nBUDGET_SOURCE_LINK(category, line, MAX(DATE(budget_year, 1, 1), cutoff), MAX(0, MIN(12, (budget_year-YEAR(cutoff))*12+13-MONTH(cutoff))), amount)))),\n  \ntotal_display, MAP(years, categories, lines, CHOOSECOLS(layout, 5), total, LAMBDA(budget_year, category, line, linked, amount,\n    \nIF(linked, BUDGET_SOURCE_LINK(category, line, DATE(budget_year, 1, 1), 12, amount), amount))),\n  \nVSTACK(headers, HSTACK(categories, years, ARRAYFORMULA(IF(kinds=\"Year\", years, \"\")),\n    \nARRAYFORMULA(IF(kinds=\"Category\", categories, \"\")), lines,\n    \npast_display, future_display, total_display, contingency, required, available, headroom, statuses))\n\n))"
+  },
+  "namedFunctionsAfter": [
+    {
+      "name": "BUDGET_TIMELINE_LINK",
+      "arguments": [
+        "source_table",
+        "sheet_id",
+        "lookup_col",
+        "lookup_value",
+        "budget_year",
+        "period",
+        "amount"
+      ],
+      "description": "Links an amount to source rows within the budget year. Period is Past (before the current month), Future (current month onward), or Full Year. Empty periods return zero.",
+      "formula": "=LET(\n  cutoff, MONTH_START(TODAY()),\n  year_start, DATE(budget_year, 1, 1),\n  past_months, MAX(0, MIN(12, (YEAR(cutoff)-budget_year)*12+MONTH(cutoff)-1)),\n  month_count, SWITCH(period, \"Past\", past_months, \"Future\", 12-past_months, \"Full Year\", 12, NA()),\n  start_month, IF(period=\"Future\", MAX(year_start, cutoff), year_start),\n  IF(month_count=0, 0,\n    LET(\n      keys, COL_VALUES(source_table, lookup_col),\n      first_row, ROW(INDEX(source_table, 1, 1)) + MATCH(lookup_value, keys, 0),\n      last_row, ROW(INDEX(source_table, 1, 1)) + LOOKUP(2, ARRAYFORMULA(1 / (keys = lookup_value)), SEQUENCE(ROWS(keys))),\n      first_col, COLUMN(INDEX(source_table, 1, 1)) - 1 + MATCH(start_month, INDEX(source_table, 1, 0), 0),\n      HYPERLINK(\n        \"#gid=\" & sheet_id & \"&range=\" & ADDRESS(first_row, first_col, 4) & \":\" & ADDRESS(last_row, first_col + month_count - 1, 4),\n        amount\n      )\n    )\n  )\n)"
+    },
+    {
+      "name": "BUDGET_SOURCE_LINK",
+      "arguments": [
+        "category",
+        "budget_line",
+        "budget_year",
+        "period",
+        "amount"
+      ],
+      "description": "Preserves Budget drill-down destinations through BUDGET_TIMELINE_LINK. Source tables locate links only; amount is already calculated.",
+      "formula": "=SWITCH(category,\n    \"Out Loans\", BUDGET_TIMELINE_LINK(S_OUT_LOANS, 198423991, \"param\", \"total out loans disbursements\", budget_year, period, amount),\n    \"In Loans\", BUDGET_TIMELINE_LINK(S_IN_LOANS, 1346380865, \"param\", \"total in loans repayments\", budget_year, period, amount),\n    \"Land\", BUDGET_TIMELINE_LINK(S_OBLIGATIONS, 1675897452, \"_category\", \"Land\", budget_year, period, amount),\n    \"Setup\", BUDGET_TIMELINE_LINK(S_SETUP_EXP_P, 1304432573, \"_category\", budget_line, budget_year, period, amount),\n    \"Infra\", BUDGET_TIMELINE_LINK(S_INFRA_EXP_P, 1754072773, \"_category\", budget_line, budget_year, period, amount),\n    \"Construction\", BUDGET_TIMELINE_LINK(S_CONSTRUCTION_EXP_P, 462995266, \"param\", \"total costs\", budget_year, period, amount),\n    \"Operations\", BUDGET_TIMELINE_LINK(S_OPERATIONAL_EXP, 1093991711, \"param\", LOWER(budget_line)&\" expenses\", budget_year, period, amount),\n    NA()\n)"
+    },
+    {
+      "name": "BUDGET_ROWS",
+      "arguments": [],
+      "description": "Generates Budget headers, detail lines, subtotals, funding, carry-forward and statuses. Aggregates the BUDGET_ITEMS named range once; Company Tax remains sourced from Cash Flow.",
+      "formula": "=LET(\nheaders, {\"_category\",\"_year\",\"Year\",\"Category\",\"Budget line\",\"Past Expenses\",\"Future Expenses\",\"Total Expenses\",\"Contingency\",\"Required Budget\",\"Available Budget\",\"Headroom\",\"Projected Status\"},\ntotals_headers, {\"Year\",\"Category\",\"Line\",\"Past Expenses\",\"Future Expenses\",\"Contingency\"},\nlayout, BUDGET_ROW_LAYOUT(),\nyears, CHOOSECOLS(layout, 1),\ncategories, CHOOSECOLS(layout, 2),\nlines, CHOOSECOLS(layout, 3),\nkinds, CHOOSECOLS(layout, 4),\nreport_years, FILTER(years, kinds=\"Year\"),\ncutoff, MONTH_START(TODAY()),\nmonth_years, ARRAYFORMULA(YEAR(R_MONTHS)),\nexpense_totals, BUDGET_EXPENSE_TOTALS(BUDGET_ITEMS),\ntax, COMPANY_TAX_VALUES(),\ntax_for_period, LAMBDA(budget_year, basis,\nLET(matches, ARRAYFORMULA((month_years=budget_year)*IF(basis=\"Actual\", R_MONTHS<cutoff, R_MONTHS>=cutoff)),\nIF(SUM(matches)=0, 0, SUM(FILTER(tax, matches))))),\ntax_past, MAP(report_years, LAMBDA(budget_year, tax_for_period(budget_year, \"Actual\"))),\ntax_future, MAP(report_years, LAMBDA(budget_year, tax_for_period(budget_year, \"Planned\"))),\nline_past, MAP(years, categories, lines, LAMBDA(budget_year, category, line,\nIF(line=\"\", 0, IF(line=\"Company Tax\", XLOOKUP(budget_year, report_years, tax_past),\nBUDGET_REPORT_AMOUNT(expense_totals, budget_year, category, line, \"Past Expenses\"))))),\nline_future, MAP(years, categories, lines, LAMBDA(budget_year, category, line,\nIF(line=\"\", 0, IF(line=\"Company Tax\", XLOOKUP(budget_year, report_years, tax_future),\nBUDGET_REPORT_AMOUNT(expense_totals, budget_year, category, line, \"Future Expenses\"))))),\nline_contingency, MAP(years, categories, lines, LAMBDA(budget_year, category, line,\nIF(OR(line=\"\", line=\"Company Tax\"), 0,\nBUDGET_REPORT_AMOUNT(expense_totals, budget_year, category, line, \"Contingency\")))),\ndetail_totals, VSTACK(totals_headers, HSTACK(years, categories, lines, line_past, line_future, line_contingency)),\npast, MAP(years, categories, lines, line_past, LAMBDA(budget_year, category, line, amount,\nIF(line=\"\", BUDGET_REPORT_AMOUNT(detail_totals, budget_year, category, \"\", \"Past Expenses\"), amount))),\nfuture, MAP(years, categories, lines, line_future, LAMBDA(budget_year, category, line, amount,\nIF(line=\"\", BUDGET_REPORT_AMOUNT(detail_totals, budget_year, category, \"\", \"Future Expenses\"), amount))),\ntotal, ARRAYFORMULA(past+future),\ncontingency, MAP(years, categories, lines, LAMBDA(budget_year, category, line,\nIF(line=\"\", BUDGET_REPORT_AMOUNT(detail_totals, budget_year, category, \"\", \"Contingency\"), \"\"))),\nrequired, ARRAYFORMULA(IF(lines=\"\", total+N(contingency), \"\")),\nannual_required, FILTER(required, kinds=\"Year\"),\nfunding, ARRAYFORMULA(IN_LOAN_PARAM_VALUES_BY_LOAN(\"totals\", \"total in loans received\")+\nOUT_LOAN_PARAM_VALUES_BY_LOAN(\"totals\", \"total out loan repayments received\")+REVENUE_PARAM_VALUES(\"total revenue\")),\nannual_funding, MAP(report_years, LAMBDA(budget_year, SUM(FILTER(funding, month_years=budget_year)))),\nannual_headroom, SCAN(0, ARRAYFORMULA(annual_funding-annual_required), LAMBDA(balance, change, balance+change)),\navailable, MAP(years, kinds, LAMBDA(budget_year, kind,\nIF(kind=\"Year\", XLOOKUP(budget_year, report_years, ARRAYFORMULA(annual_headroom+annual_required)), \"\"))),\nheadroom, MAP(years, kinds, LAMBDA(budget_year, kind,\nIF(kind=\"Year\", XLOOKUP(budget_year, report_years, annual_headroom), \"\"))),\nstatuses, MAP(kinds, past, required, available, LAMBDA(kind, paid, needed, funds,\nIF(kind<>\"Year\", \"\", IFS(paid>funds, \"Over Budget\", needed>funds, \"Projected Over Budget\", funds=0, \"No Budget\", TRUE, \"Within Budget\")))),\npast_display, MAP(years, categories, lines, past, LAMBDA(budget_year, category, line, amount,\nIF(OR(line=\"\", line=\"Company Tax\", category=\"Setup\"), amount,\nBUDGET_SOURCE_LINK(category, line, budget_year, \"Past\", amount)))),\nfuture_display, MAP(years, categories, lines, future, LAMBDA(budget_year, category, line, amount,\nIF(OR(line=\"\", line=\"Company Tax\"), amount,\nBUDGET_SOURCE_LINK(category, line, budget_year, \"Future\", amount)))),\ntotal_display, MAP(years, categories, lines, CHOOSECOLS(layout, 5), total, LAMBDA(budget_year, category, line, linked, amount,\nIF(linked, BUDGET_SOURCE_LINK(category, line, budget_year, \"Full Year\", amount), amount))),\nVSTACK(headers, HSTACK(categories, years, ARRAYFORMULA(IF(kinds=\"Year\", years, \"\")),\nARRAYFORMULA(IF(kinds=\"Category\", categories, \"\")), lines,\npast_display, future_display, total_display, contingency, required, available, headroom, statuses))\n)"
+    }
+  ],
+  "validation": {
+    "nativeBoundaryChecksPassed": 13,
+    "nativeLinkChecksPassed": 4,
+    "allBudgetValuesAndLinksUnchanged": true,
+    "budgetItemsAndCashFlowUnchanged": true,
+    "formattingUnchanged": true,
+    "configScratchCellRestoredEmpty": true,
+    "note": "The live BUDGET_ROWS tax call and MAP-based output were preserved rather than overwritten by an older local definition.",
+    "nativeDefinitionsMatchLocalSource": true,
+    "otherNamedDefinitionsUnchanged": true,
+    "visualCheck": "Native Google Sheets at 100% zoom: Budget totals and source links visible."
+  },
+  "rollback": "Restore the three named function definitions above and every cell before formula; do not alter other cells or sheet formatting."
+}

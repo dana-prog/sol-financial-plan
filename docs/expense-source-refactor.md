@@ -229,3 +229,11 @@ The SOL refresh command, `refreshAllExpenses()`, its formatting/filter request b
 The user renamed the live lookup to `BUDGET_ITEMS_SUM(status, amount_column)` and changed its header lookup to Status. The generator still emitted Basis, causing CHOOSEROWS errors. The generated fourth header is now Status, and the compact summary function `BUDGET_EXPENSE_TOTALS` uses that header too. Local source preserves the user's function/argument rename. Internal record parameters retain their existing names and behavior.
 
 All Budget errors cleared and its values match the last healthy snapshot. Budget Items differs only in D1's header, and Cash Flow values are unchanged. Formula fixtures use the new header and lookup argument. The sheet anchor and all existing named-function calls remain in place.
+
+## Budget timeline-link interface simplified — 23 November 2026
+
+`BUDGET_TIMELINE_LINK(source_table, sheet_id, lookup_col, lookup_value, budget_year, period, amount)` now derives the start month and month count internally. `period` is `"Past"` (before the current month), `"Future"` (current month onward), or `"Full Year"`. Empty periods return zero before source-row lookup; unknown periods remain errors. The native definition is maintained in `src/BudgetTimelineLinkFormula.js`.
+
+All 176 live Budget callers now pass `BUDGET_VALUE("_year")` and a period directly, retaining their existing named amount calculations and source destinations. Their outer LET blocks and duplicated month calculations were removed. `BUDGET_SOURCE_LINK` accepts the same year/period pair, and `BUDGET_ROWS` uses the simplified wrapper. The live report's existing `COMPANY_TAX_VALUES()` call and MAP-based output were preserved when updating local source.
+
+Thirteen native boundary checks cover current, past and future years, January, December and invalid periods. Four additional native checks compare exact link destinations and values with the old interface, including an empty period with an error-valued amount. All Budget values, links and formatting were unchanged; Budget Items and Cash Flow were unchanged. See [formulas, definitions and rollback](../migrations/2026-11-23-budget-timeline-link.json).

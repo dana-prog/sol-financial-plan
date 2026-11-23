@@ -78,19 +78,17 @@ const BUDGET_ROWS_NAMED_FUNCTIONS = [
   },
   {
     name: 'BUDGET_SOURCE_LINK',
-    arguments: ['category', 'budget_line', 'start_month', 'month_count', 'amount'],
+    arguments: ['category', 'budget_line', 'budget_year', 'period', 'amount'],
     description: 'Preserves Budget drill-down destinations through BUDGET_TIMELINE_LINK. Source tables locate links only; amount is already calculated.',
-    formula: String.raw`=IF(month_count=0, 0,
-  SWITCH(category,
-    "Out Loans", BUDGET_TIMELINE_LINK(S_OUT_LOANS, 198423991, "param", "total out loans disbursements", start_month, month_count, amount),
-    "In Loans", BUDGET_TIMELINE_LINK(S_IN_LOANS, 1346380865, "param", "total in loans repayments", start_month, month_count, amount),
-    "Land", BUDGET_TIMELINE_LINK(S_OBLIGATIONS, 1675897452, "_category", "Land", start_month, month_count, amount),
-    "Setup", BUDGET_TIMELINE_LINK(S_SETUP_EXP_P, 1304432573, "_category", budget_line, start_month, month_count, amount),
-    "Infra", BUDGET_TIMELINE_LINK(S_INFRA_EXP_P, 1754072773, "_category", budget_line, start_month, month_count, amount),
-    "Construction", BUDGET_TIMELINE_LINK(S_CONSTRUCTION_EXP_P, 462995266, "param", "total costs", start_month, month_count, amount),
-    "Operations", BUDGET_TIMELINE_LINK(S_OPERATIONAL_EXP, 1093991711, "param", LOWER(budget_line)&" expenses", start_month, month_count, amount),
+    formula: String.raw`=SWITCH(category,
+    "Out Loans", BUDGET_TIMELINE_LINK(S_OUT_LOANS, 198423991, "param", "total out loans disbursements", budget_year, period, amount),
+    "In Loans", BUDGET_TIMELINE_LINK(S_IN_LOANS, 1346380865, "param", "total in loans repayments", budget_year, period, amount),
+    "Land", BUDGET_TIMELINE_LINK(S_OBLIGATIONS, 1675897452, "_category", "Land", budget_year, period, amount),
+    "Setup", BUDGET_TIMELINE_LINK(S_SETUP_EXP_P, 1304432573, "_category", budget_line, budget_year, period, amount),
+    "Infra", BUDGET_TIMELINE_LINK(S_INFRA_EXP_P, 1754072773, "_category", budget_line, budget_year, period, amount),
+    "Construction", BUDGET_TIMELINE_LINK(S_CONSTRUCTION_EXP_P, 462995266, "param", "total costs", budget_year, period, amount),
+    "Operations", BUDGET_TIMELINE_LINK(S_OPERATIONAL_EXP, 1093991711, "param", LOWER(budget_line)&" expenses", budget_year, period, amount),
     NA()
-  )
 )`,
   },
   {
@@ -109,7 +107,7 @@ const BUDGET_ROWS_NAMED_FUNCTIONS = [
   cutoff, MONTH_START(TODAY()),
   month_years, ARRAYFORMULA(YEAR(R_MONTHS)),
   expense_totals, BUDGET_EXPENSE_TOTALS(BUDGET_ITEMS),
-  tax, CASH_FLOW_PARAM_VALUES("company tax"),
+  tax, COMPANY_TAX_VALUES(),
   tax_for_period, LAMBDA(budget_year, basis,
     LET(matches, ARRAYFORMULA((month_years=budget_year)*IF(basis="Actual", R_MONTHS<cutoff, R_MONTHS>=cutoff)),
       IF(SUM(matches)=0, 0, SUM(FILTER(tax, matches))))),
@@ -144,28 +142,17 @@ const BUDGET_ROWS_NAMED_FUNCTIONS = [
     IF(kind="Year", XLOOKUP(budget_year, report_years, annual_headroom), ""))),
   statuses, MAP(kinds, past, required, available, LAMBDA(kind, paid, needed, funds,
     IF(kind<>"Year", "", IFS(paid>funds, "Over Budget", needed>funds, "Projected Over Budget", funds=0, "No Budget", TRUE, "Within Budget")))),
-  report, VSTACK(headers, HSTACK(categories, years, ARRAYFORMULA(IF(kinds="Year", years, "")),
+  past_display, MAP(years, categories, lines, past, LAMBDA(budget_year, category, line, amount,
+    IF(OR(line="", line="Company Tax", category="Setup"), amount,
+      BUDGET_SOURCE_LINK(category, line, budget_year, "Past", amount)))),
+  future_display, MAP(years, categories, lines, future, LAMBDA(budget_year, category, line, amount,
+    IF(OR(line="", line="Company Tax"), amount,
+      BUDGET_SOURCE_LINK(category, line, budget_year, "Future", amount)))),
+  total_display, MAP(years, categories, lines, CHOOSECOLS(layout, 5), total, LAMBDA(budget_year, category, line, linked, amount,
+    IF(linked, BUDGET_SOURCE_LINK(category, line, budget_year, "Full Year", amount), amount))),
+  VSTACK(headers, HSTACK(categories, years, ARRAYFORMULA(IF(kinds="Year", years, "")),
     ARRAYFORMULA(IF(kinds="Category", categories, "")), lines,
-    past, future, total, contingency, required, available, headroom, statuses)),
-  MAKEARRAY(ROWS(report), COLUMNS(report), LAMBDA(report_row, report_column,
-    LET(amount, INDEX(report, report_row, report_column),
-      IF(OR(report_row=1, report_column<6, report_column>8), amount,
-        LET(detail_row, report_row-1,
-          budget_year, INDEX(years, detail_row),
-          category, INDEX(categories, detail_row),
-          line, INDEX(lines, detail_row),
-          IF(OR(line="", line="Company Tax"), amount,
-            SWITCH(report_column,
-              6, IF(category="Setup", amount,
-                BUDGET_SOURCE_LINK(category, line, DATE(budget_year, 1, 1), MAX(0, MIN(12, (YEAR(cutoff)-budget_year)*12+MONTH(cutoff)-1)), amount)),
-              7, BUDGET_SOURCE_LINK(category, line, MAX(DATE(budget_year, 1, 1), cutoff), MAX(0, MIN(12, (budget_year-YEAR(cutoff))*12+13-MONTH(cutoff))), amount),
-              8, IF(INDEX(layout, detail_row, 5), BUDGET_SOURCE_LINK(category, line, DATE(budget_year, 1, 1), 12, amount), amount)
-            )
-          )
-        )
-      )
-    )
-  ))
+    past_display, future_display, total_display, contingency, required, available, headroom, statuses))
 )`,
   },
 ];
