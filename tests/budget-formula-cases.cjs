@@ -5,11 +5,11 @@ const context = vm.createContext({});
 for (const file of ['BudgetFormula.js', 'AllExpensesFormula.js']) {
   vm.runInContext(fs.readFileSync(`${__dirname}/../src/${file}`, 'utf8'), context);
 }
-const budget = vm.runInContext('BUDGET_EXPENSE_SUM_DEFINITION.formula', context).slice(1);
+const budget = vm.runInContext('BUDGET_ITEMS_SUM_DEFINITION.formula', context).slice(1);
 const expenses = vm.runInContext('ALL_EXPENSES_NAMED_FUNCTIONS.find(f => f.name === "BUDGET_ITEMS_ROWS").formula', context);
 const quote = value => typeof value === 'number' ? String(value) : '"' + value.replaceAll('"', '""') + '"';
 const table = rows => '{' + rows.map(row => row.map(quote).join(',')).join(';') + '}';
-const headers = ['Budget Category', 'Budget Line', 'Year', 'Basis', 'Cost', 'Contingency'];
+const headers = ['Budget Category', 'Budget Line', 'Year', 'Status', 'Cost', 'Contingency'];
 const records = [
   ['Setup', 'Legal', 2026, 'Actual', 100, 0],
   ['Setup', 'Legal', 2026, 'Actual', -25, 0],
@@ -28,7 +28,7 @@ function aggregation({category = 'Setup', line = 'Legal', year = 2026,
     .replaceAll('BUDGET_VALUE("_year")', String(year))
     .replaceAll('BUDGET_VALUE("budget line")', quote(line))
     .replaceAll('BUDGET_ITEMS', source)
-    .replace(/\bbasis\b/g, quote(basis))
+    .replace(/\bstatus\b/g, quote(basis))
     .replace(/\bamount_column\b/g, quote(amount));
 }
 

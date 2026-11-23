@@ -2,7 +2,7 @@
 
 Budget Items (formerly All Expenses) is now Budget's source for ordinary expense amounts and category contingency. Company Tax remains a Cash Flow result displayed under Operations; revenue and funding retain their original sources. Cash Flow remains on its original expense sources; migrating that consumer is outside this restoration.
 
-Current names: the sheet anchor is `=BUDGET_ITEMS_ROWS(R_MONTHS)` and Budget reads the `BUDGET_ITEMS` named range. Earlier names in the migration history below describe the same generator and dataset.
+Current names: the sheet anchor is `=BUDGET_ITEMS_ROWS(R_MONTHS)` and Budget reads the `BUDGET_ITEMS` named range through `BUDGET_ITEMS_SUM(status, amount_column)`. The Actual/Planned column is named `Status`. Earlier names in the migration history below describe the same generator and dataset.
 
 The baseline is the SOL financial plan on 22 November 2026, after the Road correction and the user's numeric Water Tanks correction. The spreadsheet timezone is Asia/Bangkok. Cash Flow covers January 2026 through December 2033; Budget currently covers 2026 through 2029. Do not extend Budget's horizon as part of this migration.
 
@@ -223,3 +223,9 @@ The SOL refresh command, `refreshAllExpenses()`, its formatting/filter request b
 ## Budget Items function and range renamed — 23 November 2026
 
 `ALL_EXPENSES_ROWS(months)` is now `BUDGET_ITEMS_ROWS(months)`, and the primary named range `ALL_EXPENSES` is now `BUDGET_ITEMS`. Sheets updated the A1 caller and the references inside `BUDGET_EXPENSE_SUM` and the unused `BUDGET_ROWS` function. The existing `S_ALL_EXPENSES` compatibility alias is retained. All native named definitions were compared against the prior export: only the requested name substitutions changed. Every Budget Items, Budget and Cash Flow value was unchanged, with no formula errors. Local definitions and formula fixtures use the new names and were synchronized through clasp.
+
+## Basis renamed to Status — 23 November 2026
+
+The user renamed the live lookup to `BUDGET_ITEMS_SUM(status, amount_column)` and changed its header lookup to Status. The generator still emitted Basis, causing CHOOSEROWS errors. The generated fourth header is now Status, and the compact summary function `BUDGET_EXPENSE_TOTALS` uses that header too. Local source preserves the user's function/argument rename. Internal record parameters retain their existing names and behavior.
+
+All Budget errors cleared and its values match the last healthy snapshot. Budget Items differs only in D1's header, and Cash Flow values are unchanged. Formula fixtures use the new header and lookup argument. The sheet anchor and all existing named-function calls remain in place.

@@ -1,5 +1,5 @@
 const ALL_EXPENSES_HEADERS = [
-  'Budget Category', 'Budget Line', 'Param', 'Basis', 'Year', 'Quarter', 'Month',
+  'Budget Category', 'Budget Line', 'Param', 'Status', 'Year', 'Quarter', 'Month',
   'Cost', 'Contingency', 'Total Cost', 'Source Sheet', 'Source Parameter', 'Source Row',
 ];
 

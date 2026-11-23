@@ -46,7 +46,7 @@ const BUDGET_ROWS_NAMED_FUNCTIONS = [
   years, COL_VALUES(source, "Year"),
   categories, COL_VALUES(source, "Budget Category"),
   lines, COL_VALUES(source, "Budget Line"),
-  bases, COL_VALUES(source, "Basis"),
+  bases, COL_VALUES(source, "Status"),
   costs, COL_VALUES(source, "Cost"),
   contingency, COL_VALUES(source, "Contingency"),
   fields, TOCOL(HSTACK(years, categories, lines, bases, costs, contingency)),

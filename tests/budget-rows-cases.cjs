@@ -1,5 +1,5 @@
 // Execute these cases in native Google Sheets against the installed named functions.
-const headers = ['Budget Category', 'Budget Line', 'Year', 'Basis', 'Cost', 'Contingency'];
+const headers = ['Budget Category', 'Budget Line', 'Year', 'Status', 'Cost', 'Contingency'];
 const records = [
   ['Setup', 'Legal', 2026, 'Actual', 100, 0],
   ['Setup', 'Legal', 2026, 'Actual', -25, 0],
