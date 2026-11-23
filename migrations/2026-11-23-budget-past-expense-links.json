@@ -1,0 +1,139 @@
+{
+  "date": "2026-11-23",
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheetId": 530781649,
+  "description": "Add missing Setup Past Expenses drill-down links to the actual Setup timeline, preserving the live named amount calculation.",
+  "ranges": [
+    "Budget!F6:F9",
+    "Budget!F18:F21",
+    "Budget!F53:F56",
+    "Budget!F88:F91"
+  ],
+  "cells": [
+    {
+      "row": 6,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 7,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 8,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 9,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 18,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 19,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 20,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 21,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 53,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 54,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 55,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 56,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 88,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 89,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 90,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    },
+    {
+      "row": 91,
+      "column": 6,
+      "before": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  )\n)",
+      "after": "=LET(\n  budget_year, BUDGET_VALUE(\"_year\"),\n  year_start, DATE(budget_year, 1, 1),\n  next_year_start, DATE(budget_year + 1, 1, 1),\n  current_month, MONTH_START(TODAY()),\n  past_months, IF(\n    current_month <= year_start,\n    0,\n    DATEDIF(year_start, MIN(current_month, next_year_start), \"M\")\n  ),\n  amount, TIMELINE_CATEGORY_SUM(\n    S_SETUP_EXP_A,\n    BUDGET_VALUE(\"budget line\"),\n    year_start,\n    past_months\n  ),\n  IF(past_months=0, 0,\n    BUDGET_TIMELINE_LINK(\n      S_SETUP_EXP_A,\n      2082967509,\n      \"_category\",\n      BUDGET_VALUE(\"budget line\"),\n      year_start,\n      past_months,\n      amount\n    )\n  )\n)"
+    }
+  ],
+  "verification": {
+    "changedCells": 16,
+    "allBudgetEffectiveValuesUnchanged": true,
+    "budgetFormulaErrors": 0,
+    "existingNamedCallsPreserved": true,
+    "formattingAndValidationUnchangedExceptGeneratedLinks": true,
+    "nativeVisualCheck": true,
+    "currentYearDestinations": [
+      {
+        "cell": "F6",
+        "hyperlink": "#gid=2082967509&range=F4:O5"
+      },
+      {
+        "cell": "F7",
+        "hyperlink": "#gid=2082967509&range=F6:O13"
+      },
+      {
+        "cell": "F8",
+        "hyperlink": "#gid=2082967509&range=F14:O17"
+      },
+      {
+        "cell": "F9",
+        "hyperlink": "#gid=2082967509&range=F18:O32"
+      }
+    ],
+    "futureYearPastPeriodsRemainZeroWithoutLinks": true
+  },
+  "notes": "The live workbook uses the start_month/month_count BUDGET_TIMELINE_LINK interface, as verified from existing future-expense callers and native calculation. This migration follows that live interface; the repository's newer year/period definition was not published or substituted. No Apps Script source or named-function definition changed, so clasp push is not required.",
+  "rollback": "Restore before only where the current formula exactly matches after."
+}
