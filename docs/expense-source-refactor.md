@@ -29,6 +29,16 @@ All 83 ordinary detail lines now use that function for Cost in Past Expenses (Ac
 
 Validation compared every Budget result, all expense records and the complete Cash Flow snapshot before and after (numeric tolerance THB 0.000001). Twelve native Sheets formula cases cover signed credits, duplicate records, basis/year matching, category contingency, aliases, empty results, source errors and the month boundary; thirteen existing local tests passed. Native function exports match local source. See [migration and rollback](../migrations/2026-11-22-budget-all-expenses.json).
 
+### Budget recalculation optimization — 23 November 2026
+
+`BUDGET_EXPENSE_SUM` now finds populated rows from the category column, then selects each requested column before calling the existing `COL_VALUES`. The 10,272-row source capacity remains available for growth, but the five matching/amount arrays only contain populated records plus the first data row. Retaining that row lets the existing column function handle an empty dataset. Blank gaps, later-added records, signed amounts and source errors remain supported. Unknown amount headers still surface an error, although the column-selection path may return a different error type.
+
+The 166 ordinary Past/Future Expense formulas now return zero before the expense lookup when their period contains no eligible months. Currently this avoids work for 78 future-year Past Expense cells. All named-function calls remain in place, including source drill-down links. Company Tax and the All Expenses generator are unchanged.
+
+The C17 clear test settled in 21.716 seconds with the original formulas and 5.219 seconds with the final Budget-only optimization; restoration took 5.266 seconds. Timing used the visible Sheets recalculation bar followed by 2.5 seconds of quiet. This small sample includes browser/network overhead and is not a general performance guarantee. A separate loan-detail named range showed no clear additional benefit and was removed.
+
+Fourteen native formula cases and thirteen related local tests passed. Every Budget result, Cash Flow value and all 1,064 expense records matched the pre-change snapshot within THB 0.000001. Budget formatting, validation and links were unchanged. The native Budget definition matches local source, which was synchronized through clasp. See the [performance migration and rollback record](../migrations/2026-11-23-budget-expense-performance.json).
+
 ### Company Tax grouped under Operations in Budget
 
 Company Tax is now the first detail line under Operations for 2027–2029 (rows 33, 68, and 103). The separate Tax category headers were removed. This is a Budget reporting change only: the detail formulas still read `CASH_FLOW_PARAM_VALUES("company tax")`, and All Expenses still excludes tax.

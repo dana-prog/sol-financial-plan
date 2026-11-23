@@ -42,7 +42,9 @@ const cases = [
   {name: 'Source NA errors remain visible', formula: `=ISNA(${aggregation({error: 'NA()'})})`},
   {name: 'Other source errors remain visible', formula: `=ISERROR(${aggregation({error: '1/0'})})`},
   {name: 'Header and empty capacity produce zero', formula: `=${aggregation({rows: [['', '', '', '', '', '']]})}=0`},
-  {name: 'Invalid amount header is not silently ignored', formula: `=ISNA(${aggregation({amount: 'Missing'})})`},
+  {name: 'Blank capacity and gaps do not drop later expense records', formula: `=${aggregation({rows: [['', '', '', '', '', ''], records[0], ['', '', '', '', '', ''], records[1], ['', '', '', '', '', '']]})}=75`},
+  {name: 'Amounts added beyond initially populated rows remain included', formula: `=${aggregation({rows: [...records, ...Array.from({length: 20}, () => ['', '', '', '', '', '']), ['Setup', 'Legal', 2026, 'Actual', 40, 0]]})}=115`},
+  {name: 'Invalid amount header is not silently ignored', formula: `=ISERROR(${aggregation({amount: 'Missing'})})`},
 ];
 
 // Exercise the exact eligibility expression from the production formula against

@@ -1,4 +1,5 @@
 // Native Sheets definition: Budget reads the materialized expense dataset, not its generator.
+// Retain the first data row even when blank so COL_VALUES can handle an empty dataset.
 const BUDGET_EXPENSE_SUM_DEFINITION = {
   name: 'BUDGET_EXPENSE_SUM',
   arguments: ['basis', 'amount_column'],
@@ -8,11 +9,17 @@ const BUDGET_EXPENSE_SUM_DEFINITION = {
   budget_year, BUDGET_VALUE("_year"),
   budget_line, LOWER(TRIM(BUDGET_VALUE("budget line"))),
   line_key, IF(budget_line="out loans disbursements", "out loan disbursements", budget_line),
-  categories, COL_VALUES(ALL_EXPENSES, "Budget Category"),
-  lines, COL_VALUES(ALL_EXPENSES, "Budget Line"),
-  years, COL_VALUES(ALL_EXPENSES, "Year"),
-  bases, COL_VALUES(ALL_EXPENSES, "Basis"),
-  amounts, COL_VALUES(ALL_EXPENSES, amount_column),
+  headers, HEADER_ROW(ALL_EXPENSES),
+  positions, SEQUENCE(ROWS(ALL_EXPENSES)),
+  category_column, CHOOSECOLS(ALL_EXPENSES, MATCH("Budget Category", headers, 0)),
+  populated_rows, FILTER(positions, ARRAYFORMULA((category_column<>"")+(positions=2))),
+  expense_column, LAMBDA(header,
+    COL_VALUES(CHOOSEROWS(CHOOSECOLS(ALL_EXPENSES, MATCH(header, headers, 0)), populated_rows), header)),
+  categories, expense_column("Budget Category"),
+  lines, expense_column("Budget Line"),
+  years, expense_column("Year"),
+  bases, expense_column("Basis"),
+  amounts, expense_column(amount_column),
   matches, ARRAYFORMULA((categories=category)*(years=budget_year)*
     IF(line_key="", 1, LOWER(TRIM(lines))=line_key)*
     IF(basis="", 1, bases=basis)),
