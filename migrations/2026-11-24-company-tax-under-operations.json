@@ -1,0 +1,4650 @@
+{
+  "spreadsheetId": "1mxvjXTedpabDNPl-WOEie4vdpeIwCnXDlzvihZvUML4",
+  "sheetId": 530781649,
+  "status": "Applied and verified 2026-11-24",
+  "verification": {
+    "companyTaxUnderOperations": [2026, 2027, 2028, 2029],
+    "taxRows": [36, 71, 106, 141],
+    "annualTotalsUnchanged": true,
+    "operatingContingencyUnchanged": true,
+    "companyTaxAmountsAndFormulasUnchanged": true,
+    "cashFlowUnchanged": true,
+    "formulaErrors": 0,
+    "appsScript": "No source changes; clasp push not required."
+  },
+  "description": "Move Company Tax into Operations in each year by removing the Provisions header; exclude company tax from operating contingency so yearly required budgets remain unchanged.",
+  "before": {
+    "operations": [
+      {
+        "row": 24,
+        "cells": {
+          "values": [
+            {
+              "effectiveValue": {
+                "stringValue": "Operations"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "effectiveValue": {
+                "numberValue": 2026
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.24705882,
+                    "green": 0.24705882,
+                    "blue": 0.24705882
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.24705882,
+                      "green": 0.24705882,
+                      "blue": 0.24705882
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Operations"
+              },
+              "effectiveValue": {
+                "stringValue": "Operations"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 1,
+                      "green": 1,
+                      "blue": 1
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {},
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\")*PARAM(\"operating contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\") + BUDGET_VALUE(\"contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "wrapStrategy": "WRAP",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "borders": {
+                  "right": {
+                    "style": "SOLID_THICK",
+                    "width": 3,
+                    "color": {
+                      "red": 0.2627451,
+                      "green": 0.2627451,
+                      "blue": 0.2627451
+                    },
+                    "colorStyle": {
+                      "rgbColor": {
+                        "red": 0.2627451,
+                        "green": 0.2627451,
+                        "blue": 0.2627451
+                      }
+                    }
+                  }
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "row": 60,
+        "cells": {
+          "values": [
+            {
+              "effectiveValue": {
+                "stringValue": "Operations"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "effectiveValue": {
+                "numberValue": 2027
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.24705882,
+                    "green": 0.24705882,
+                    "blue": 0.24705882
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.24705882,
+                      "green": 0.24705882,
+                      "blue": 0.24705882
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Operations"
+              },
+              "effectiveValue": {
+                "stringValue": "Operations"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 1,
+                      "green": 1,
+                      "blue": 1
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {},
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\")*PARAM(\"operating contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\") + BUDGET_VALUE(\"contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "wrapStrategy": "WRAP",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "borders": {
+                  "right": {
+                    "style": "SOLID_THICK",
+                    "width": 3,
+                    "color": {
+                      "red": 0.2627451,
+                      "green": 0.2627451,
+                      "blue": 0.2627451
+                    },
+                    "colorStyle": {
+                      "rgbColor": {
+                        "red": 0.2627451,
+                        "green": 0.2627451,
+                        "blue": 0.2627451
+                      }
+                    }
+                  }
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "row": 96,
+        "cells": {
+          "values": [
+            {
+              "effectiveValue": {
+                "stringValue": "Operations"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "effectiveValue": {
+                "numberValue": 2028
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.24705882,
+                    "green": 0.24705882,
+                    "blue": 0.24705882
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.24705882,
+                      "green": 0.24705882,
+                      "blue": 0.24705882
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Operations"
+              },
+              "effectiveValue": {
+                "stringValue": "Operations"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 1,
+                      "green": 1,
+                      "blue": 1
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {},
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 18191228.14982983
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 18191228.14982983
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\")*PARAM(\"operating contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 909561.4074914916
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\") + BUDGET_VALUE(\"contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 19100789.55732132
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "wrapStrategy": "WRAP",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=LET(\n  available_budget, BUDGET_VALUE(\"available budget\"),\n  IF(\n    available_budget = \"\",\n    \"\",\n    LET(\n      past_payments, BUDGET_VALUE(\"past expenses\"),\n      planned_budget, BUDGET_VALUE(\"required budget\"),\n      IFS(\n        past_payments > available_budget,\n        \"Already Over Budget\",\n        planned_budget > available_budget,\n        \"Projected Over Budget\",\n        available_budget = 0,\n        \"No Budget\",\n        TRUE,\n        \"Within Budget\"\n      )\n    )\n  )\n)"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "borders": {
+                  "right": {
+                    "style": "SOLID_THICK",
+                    "width": 3,
+                    "color": {
+                      "red": 0.2627451,
+                      "green": 0.2627451,
+                      "blue": 0.2627451
+                    },
+                    "colorStyle": {
+                      "rgbColor": {
+                        "red": 0.2627451,
+                        "green": 0.2627451,
+                        "blue": 0.2627451
+                      }
+                    }
+                  }
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "row": 132,
+        "cells": {
+          "values": [
+            {
+              "effectiveValue": {
+                "stringValue": "Operations"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "effectiveValue": {
+                "numberValue": 2029
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.24705882,
+                    "green": 0.24705882,
+                    "blue": 0.24705882
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.24705882,
+                      "green": 0.24705882,
+                      "blue": 0.24705882
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Operations"
+              },
+              "effectiveValue": {
+                "stringValue": "Operations"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 1,
+                      "green": 1,
+                      "blue": 1
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {},
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 57248049.58908304
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 57248049.58908304
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\")*PARAM(\"operating contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 2862402.4794541523
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\") + BUDGET_VALUE(\"contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 60110452.06853719
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "wrapStrategy": "WRAP",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=LET(\n  available_budget, BUDGET_VALUE(\"available budget\"),\n  IF(\n    available_budget = \"\",\n    \"\",\n    LET(\n      past_payments, BUDGET_VALUE(\"past expenses\"),\n      planned_budget, BUDGET_VALUE(\"required budget\"),\n      IFS(\n        past_payments > available_budget,\n        \"Already Over Budget\",\n        planned_budget > available_budget,\n        \"Projected Over Budget\",\n        available_budget = 0,\n        \"No Budget\",\n        TRUE,\n        \"Within Budget\"\n      )\n    )\n  )\n)"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "borders": {
+                  "right": {
+                    "style": "SOLID_THICK",
+                    "width": 3,
+                    "color": {
+                      "red": 0.2627451,
+                      "green": 0.2627451,
+                      "blue": 0.2627451
+                    },
+                    "colorStyle": {
+                      "rgbColor": {
+                        "red": 0.2627451,
+                        "green": 0.2627451,
+                        "blue": 0.2627451
+                      }
+                    }
+                  }
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "provisions": [
+      {
+        "row": 36,
+        "cells": {
+          "values": [
+            {
+              "effectiveValue": {
+                "stringValue": "Provisions"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "effectiveValue": {
+                "numberValue": 2026
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.24705882,
+                    "green": 0.24705882,
+                    "blue": 0.24705882
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.24705882,
+                      "green": 0.24705882,
+                      "blue": 0.24705882
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Provisions"
+              },
+              "effectiveValue": {
+                "stringValue": "Provisions"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 1,
+                      "green": 1,
+                      "blue": 1
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {},
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=0"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\") + BUDGET_VALUE(\"contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "wrapStrategy": "WRAP",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "borders": {
+                  "right": {
+                    "style": "SOLID_THICK",
+                    "width": 3,
+                    "color": {
+                      "red": 0.2627451,
+                      "green": 0.2627451,
+                      "blue": 0.2627451
+                    },
+                    "colorStyle": {
+                      "rgbColor": {
+                        "red": 0.2627451,
+                        "green": 0.2627451,
+                        "blue": 0.2627451
+                      }
+                    }
+                  }
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "row": 72,
+        "cells": {
+          "values": [
+            {
+              "effectiveValue": {
+                "stringValue": "Provisions"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "effectiveValue": {
+                "numberValue": 2027
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.24705882,
+                    "green": 0.24705882,
+                    "blue": 0.24705882
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.24705882,
+                      "green": 0.24705882,
+                      "blue": 0.24705882
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Provisions"
+              },
+              "effectiveValue": {
+                "stringValue": "Provisions"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 1,
+                      "green": 1,
+                      "blue": 1
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {},
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=0"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\") + BUDGET_VALUE(\"contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "wrapStrategy": "WRAP",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "borders": {
+                  "right": {
+                    "style": "SOLID_THICK",
+                    "width": 3,
+                    "color": {
+                      "red": 0.2627451,
+                      "green": 0.2627451,
+                      "blue": 0.2627451
+                    },
+                    "colorStyle": {
+                      "rgbColor": {
+                        "red": 0.2627451,
+                        "green": 0.2627451,
+                        "blue": 0.2627451
+                      }
+                    }
+                  }
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "row": 108,
+        "cells": {
+          "values": [
+            {
+              "effectiveValue": {
+                "stringValue": "Provisions"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "effectiveValue": {
+                "numberValue": 2028
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.24705882,
+                    "green": 0.24705882,
+                    "blue": 0.24705882
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.24705882,
+                      "green": 0.24705882,
+                      "blue": 0.24705882
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Provisions"
+              },
+              "effectiveValue": {
+                "stringValue": "Provisions"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 1,
+                      "green": 1,
+                      "blue": 1
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {},
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=0"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\") + BUDGET_VALUE(\"contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "wrapStrategy": "WRAP",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "borders": {
+                  "right": {
+                    "style": "SOLID_THICK",
+                    "width": 3,
+                    "color": {
+                      "red": 0.2627451,
+                      "green": 0.2627451,
+                      "blue": 0.2627451
+                    },
+                    "colorStyle": {
+                      "rgbColor": {
+                        "red": 0.2627451,
+                        "green": 0.2627451,
+                        "blue": 0.2627451
+                      }
+                    }
+                  }
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "row": 144,
+        "cells": {
+          "values": [
+            {
+              "effectiveValue": {
+                "stringValue": "Provisions"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "effectiveValue": {
+                "numberValue": 2029
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 1,
+                  "green": 1,
+                  "blue": 1
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.24705882,
+                    "green": 0.24705882,
+                    "blue": 0.24705882
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.24705882,
+                      "green": 0.24705882,
+                      "blue": 0.24705882
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Provisions"
+              },
+              "effectiveValue": {
+                "stringValue": "Provisions"
+              },
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                  },
+                  "fontSize": 11,
+                  "bold": true,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 1,
+                      "green": 1,
+                      "blue": 1
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {},
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"past expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_CATEGORY_SUM(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 2621221.472881146
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"past expenses\") + BUDGET_VALUE(\"future expenses\")"
+              },
+              "effectiveValue": {
+                "numberValue": 2621221.472881146
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=0"
+              },
+              "effectiveValue": {
+                "numberValue": 0
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredValue": {
+                "formulaValue": "=BUDGET_VALUE(\"total expenses\") + BUDGET_VALUE(\"contingency\")"
+              },
+              "effectiveValue": {
+                "numberValue": 2621221.472881146
+              },
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "wrapStrategy": "WRAP",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "numberFormat": {
+                  "type": "NUMBER",
+                  "pattern": "฿#,##0,\"K\""
+                },
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            },
+            {
+              "userEnteredFormat": {
+                "backgroundColor": {
+                  "red": 0.9372549,
+                  "green": 0.9372549,
+                  "blue": 0.9372549
+                },
+                "borders": {
+                  "right": {
+                    "style": "SOLID_THICK",
+                    "width": 3,
+                    "color": {
+                      "red": 0.2627451,
+                      "green": 0.2627451,
+                      "blue": 0.2627451
+                    },
+                    "colorStyle": {
+                      "rgbColor": {
+                        "red": 0.2627451,
+                        "green": 0.2627451,
+                        "blue": 0.2627451
+                      }
+                    }
+                  }
+                },
+                "horizontalAlignment": "CENTER",
+                "verticalAlignment": "MIDDLE",
+                "textFormat": {
+                  "foregroundColor": {
+                    "red": 0.4,
+                    "green": 0.4,
+                    "blue": 0.4
+                  },
+                  "fontSize": 11,
+                  "foregroundColorStyle": {
+                    "rgbColor": {
+                      "red": 0.4,
+                      "green": 0.4,
+                      "blue": 0.4
+                    }
+                  }
+                },
+                "backgroundColorStyle": {
+                  "rgbColor": {
+                    "red": 0.9372549,
+                    "green": 0.9372549,
+                    "blue": 0.9372549
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "groups": [
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 2,
+          "endIndex": 37
+        },
+        "depth": 1
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 3,
+          "endIndex": 4
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 5,
+          "endIndex": 6
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 7,
+          "endIndex": 8
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 9,
+          "endIndex": 13
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 14,
+          "endIndex": 21
+        },
+        "depth": 2
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 22,
+          "endIndex": 23
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 24,
+          "endIndex": 35
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 36,
+          "endIndex": 37
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 38,
+          "endIndex": 73
+        },
+        "depth": 1,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 39,
+          "endIndex": 40
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 41,
+          "endIndex": 42
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 43,
+          "endIndex": 44
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 45,
+          "endIndex": 49
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 50,
+          "endIndex": 57
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 58,
+          "endIndex": 59
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 60,
+          "endIndex": 71
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 72,
+          "endIndex": 73
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 74,
+          "endIndex": 109
+        },
+        "depth": 1,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 75,
+          "endIndex": 76
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 77,
+          "endIndex": 78
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 79,
+          "endIndex": 80
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 81,
+          "endIndex": 85
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 86,
+          "endIndex": 93
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 94,
+          "endIndex": 95
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 96,
+          "endIndex": 107
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 108,
+          "endIndex": 109
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 110,
+          "endIndex": 145
+        },
+        "depth": 1,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 111,
+          "endIndex": 112
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 113,
+          "endIndex": 114
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 115,
+          "endIndex": 116
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 117,
+          "endIndex": 121
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 122,
+          "endIndex": 129
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 130,
+          "endIndex": 131
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 132,
+          "endIndex": 143
+        },
+        "depth": 2,
+        "collapsed": true
+      },
+      {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 144,
+          "endIndex": 145
+        },
+        "depth": 2,
+        "collapsed": true
+      }
+    ]
+  },
+  "after": {
+    "operationsContingency": "=(BUDGET_VALUE(\"total expenses\") - SUM(FILTER(\n  CASH_FLOW_PARAM_VALUES(\"company tax\"),\n  ARRAYFORMULA(YEAR(R_MONTHS)) = BUDGET_VALUE(\"_year\")\n))) * PARAM(\"operating contingency\")",
+    "rowCount": 141
+  },
+  "requests": [
+    {
+      "deleteDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 24,
+          "endIndex": 35
+        }
+      }
+    },
+    {
+      "deleteDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 36,
+          "endIndex": 37
+        }
+      }
+    },
+    {
+      "deleteDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 60,
+          "endIndex": 71
+        }
+      }
+    },
+    {
+      "deleteDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 72,
+          "endIndex": 73
+        }
+      }
+    },
+    {
+      "deleteDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 96,
+          "endIndex": 107
+        }
+      }
+    },
+    {
+      "deleteDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 108,
+          "endIndex": 109
+        }
+      }
+    },
+    {
+      "deleteDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 132,
+          "endIndex": 143
+        }
+      }
+    },
+    {
+      "deleteDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 144,
+          "endIndex": 145
+        }
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 143,
+          "endIndex": 144
+        }
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 107,
+          "endIndex": 108
+        }
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 71,
+          "endIndex": 72
+        }
+      }
+    },
+    {
+      "deleteDimension": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 35,
+          "endIndex": 36
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 530781649,
+          "startRowIndex": 23,
+          "endRowIndex": 24,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=(BUDGET_VALUE(\"total expenses\") - SUM(FILTER(\n  CASH_FLOW_PARAM_VALUES(\"company tax\"),\n  ARRAYFORMULA(YEAR(R_MONTHS)) = BUDGET_VALUE(\"_year\")\n))) * PARAM(\"operating contingency\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "addDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 24,
+          "endIndex": 36
+        }
+      }
+    },
+    {
+      "updateDimensionGroup": {
+        "dimensionGroup": {
+          "range": {
+            "sheetId": 530781649,
+            "dimension": "ROWS",
+            "startIndex": 24,
+            "endIndex": 36
+          },
+          "depth": 2,
+          "collapsed": true
+        },
+        "fields": "collapsed"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 530781649,
+          "startRowIndex": 58,
+          "endRowIndex": 59,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=(BUDGET_VALUE(\"total expenses\") - SUM(FILTER(\n  CASH_FLOW_PARAM_VALUES(\"company tax\"),\n  ARRAYFORMULA(YEAR(R_MONTHS)) = BUDGET_VALUE(\"_year\")\n))) * PARAM(\"operating contingency\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "addDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 59,
+          "endIndex": 71
+        }
+      }
+    },
+    {
+      "updateDimensionGroup": {
+        "dimensionGroup": {
+          "range": {
+            "sheetId": 530781649,
+            "dimension": "ROWS",
+            "startIndex": 59,
+            "endIndex": 71
+          },
+          "depth": 2,
+          "collapsed": true
+        },
+        "fields": "collapsed"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 530781649,
+          "startRowIndex": 93,
+          "endRowIndex": 94,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=(BUDGET_VALUE(\"total expenses\") - SUM(FILTER(\n  CASH_FLOW_PARAM_VALUES(\"company tax\"),\n  ARRAYFORMULA(YEAR(R_MONTHS)) = BUDGET_VALUE(\"_year\")\n))) * PARAM(\"operating contingency\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "addDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 94,
+          "endIndex": 106
+        }
+      }
+    },
+    {
+      "updateDimensionGroup": {
+        "dimensionGroup": {
+          "range": {
+            "sheetId": 530781649,
+            "dimension": "ROWS",
+            "startIndex": 94,
+            "endIndex": 106
+          },
+          "depth": 2,
+          "collapsed": true
+        },
+        "fields": "collapsed"
+      }
+    },
+    {
+      "updateCells": {
+        "range": {
+          "sheetId": 530781649,
+          "startRowIndex": 128,
+          "endRowIndex": 129,
+          "startColumnIndex": 8,
+          "endColumnIndex": 9
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=(BUDGET_VALUE(\"total expenses\") - SUM(FILTER(\n  CASH_FLOW_PARAM_VALUES(\"company tax\"),\n  ARRAYFORMULA(YEAR(R_MONTHS)) = BUDGET_VALUE(\"_year\")\n))) * PARAM(\"operating contingency\")"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "addDimensionGroup": {
+        "range": {
+          "sheetId": 530781649,
+          "dimension": "ROWS",
+          "startIndex": 129,
+          "endIndex": 141
+        }
+      }
+    },
+    {
+      "updateDimensionGroup": {
+        "dimensionGroup": {
+          "range": {
+            "sheetId": 530781649,
+            "dimension": "ROWS",
+            "startIndex": 129,
+            "endIndex": 141
+          },
+          "depth": 2,
+          "collapsed": true
+        },
+        "fields": "collapsed"
+      }
+    }
+  ]
+}
